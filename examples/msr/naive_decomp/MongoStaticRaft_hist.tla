@@ -3,12 +3,12 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
 CONSTANTS Server, Quorums, FinNat
 
-VARIABLES committed, currentTerm, log, Fluent6, state, config
+VARIABLES committed, currentTerm, log, Fluent5, Fluent4, state, config
 
-vars == <<committed, currentTerm, log, Fluent6, state, config>>
+vars == <<committed, currentTerm, log, Fluent5, Fluent4, state, config>>
 
 CandSep ==
-\E var0 \in FinNat : \E var1 \in Server : Fluent6[var0]
+(\E var0 \in FinNat : Fluent5[var0][var0]) => (\A var0 \in FinNat : (Fluent4[var0]) => (Fluent5[var0][var0]))
 
 Secondary == "secondary"
 
@@ -56,7 +56,7 @@ ClientRequest(i,curTerm) ==
 /\ currentTerm[i] = curTerm
 /\ log' = [log EXCEPT![i] = Append(log[i],curTerm)]
 /\ UNCHANGED <<currentTerm,state,committed,config>>
-/\ UNCHANGED<<Fluent6>>
+/\ UNCHANGED<<Fluent5, Fluent4>>
 
 GetEntries(i,j) ==
 /\ state[i] = Secondary
@@ -68,14 +68,14 @@ GetEntries(i,j) ==
       newLog == Append(log[i],newEntry) IN
     /\ log' = [log EXCEPT![i] = newLog]
 /\ UNCHANGED <<committed,currentTerm,state,config>>
-/\ UNCHANGED<<Fluent6>>
+/\ UNCHANGED<<Fluent5, Fluent4>>
 
 RollbackEntries(i,j) ==
 /\ state[i] = Secondary
 /\ CanRollback(i,j)
 /\ log' = [log EXCEPT![i] = SubSeq(log[i],1,(Len(log[i]) - 1))]
 /\ UNCHANGED <<committed,currentTerm,state,config>>
-/\ UNCHANGED<<Fluent6>>
+/\ UNCHANGED<<Fluent5, Fluent4>>
 
 BecomeLeader(i,voteQuorum,newTerm) ==
 /\ newTerm = (currentTerm[i] + 1)
@@ -84,8 +84,7 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]]
 /\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]]
 /\ UNCHANGED <<log,config,committed>>
-/\ Fluent6' = [Fluent6 EXCEPT![newTerm] = FALSE]
-/\ UNCHANGED<<>>
+/\ UNCHANGED<<Fluent5, Fluent4>>
 
 CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ curTerm = currentTerm[i]
@@ -97,13 +96,14 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ ~((\E c \in committed : c.entry = <<ind,curTerm>>))
 /\ committed' = (committed \cup {[entry |-> <<ind,curTerm>>,term |-> curTerm]})
 /\ UNCHANGED <<currentTerm,state,log,config>>
-/\ Fluent6' = [Fluent6 EXCEPT![ind] = FALSE]
+/\ Fluent5' = [Fluent5 EXCEPT![ind][curTerm] = TRUE]
+/\ Fluent4' = [Fluent4 EXCEPT![curTerm] = TRUE]
 /\ UNCHANGED<<>>
 
 UpdateTerms(i,j) ==
 /\ UpdateTermsExpr(i,j)
 /\ UNCHANGED <<log,config,committed>>
-/\ UNCHANGED<<Fluent6>>
+/\ UNCHANGED<<Fluent5, Fluent4>>
 
 Init ==
 /\ currentTerm = [i \in Server |-> 0]
@@ -111,7 +111,8 @@ Init ==
 /\ log = [i \in Server |-> <<>>]
 /\ (\E initConfig \in SUBSET(Server) : (initConfig /= {} /\ config = [i \in Server |-> initConfig]))
 /\ committed = {}
-/\ Fluent6 = [ x0 \in FinNat |-> TRUE]
+/\ Fluent5 = [ x0 \in FinNat |-> [ x1 \in FinNat |-> FALSE]]
+/\ Fluent4 = [ x0 \in FinNat |-> FALSE]
 
 Next ==
 \/ (\E s \in Server : (\E t \in FinNat : ClientRequest(s,t)))
