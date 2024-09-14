@@ -17,6 +17,8 @@ import tlc2.TLC;
 import tlc2.Utils;
 
 public class FormulaSynthWorker implements Runnable {
+	public static final String alsmFormulaSynthEnvVar = "ALSM_FORMULA_SYNTH";
+	
 	// TODO make these params
 	private static final int MAX_FORMULA_SIZE = 7;
 	private static final int MAX_NUM_FLUENT_ACTS = 5;
@@ -118,8 +120,7 @@ public class FormulaSynthWorker implements Runnable {
 		
 		StringBuilder formulaBuilder = new StringBuilder();
 		try {
-			// TODO do we really need 25GB of memory?
-			final String[] cmd = {"java", "-Djava.library.path=" + openWboLibPath, "-Xmx25G", "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
+			final String[] cmd = {"java", "-Djava.library.path=" + openWboLibPath, "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
 			this.process = createProcess(cmd);
 			if (this.process == null) {
 				// in this case, the worker has been killed so we simply return
@@ -452,9 +453,9 @@ public class FormulaSynthWorker implements Runnable {
 		return product;
 	}
 	
-	// TODO fix path
-	private static final String alloyFormlaInferJar = "/Users/idardik/Documents/CMU/compositional_ii/alsm-formula-synthesis/bin/alsm-formula-synthesis.jar";
-	private static final String openWboLibPath = "/Users/idardik/Documents/CMU/compositional_ii/alsm-formula-synthesis/lib/";
+	private static final String alsmFormulaSynthesisPath = System.getenv(alsmFormulaSynthEnvVar);
+	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/target/alsm-formula-synthesis-1.0.jar";
+	private static final String openWboLibPath = alsmFormulaSynthesisPath + "/lib/";
 	
 	private static final String baseAlloyFormulaInfer = "open util/boolean\n"
 			+ "open util/ordering[Idx] as IdxOrder\n"

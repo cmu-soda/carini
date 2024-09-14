@@ -9,13 +9,19 @@ import lts.SymbolTable;
 import recomp.Composition;
 import recomp.Decomposition;
 import recomp.FormulaSeparation;
+import recomp.FormulaSynthWorker;
 import recomp.RecompVerify;
 import recomp.WeakestAssumption;
 
 public class Main {
     public static void main(String[] args) {
 		SymbolTable.init();
-    	//calc(args);
+		
+		if (!System.getenv().containsKey(FormulaSynthWorker.alsmFormulaSynthEnvVar)) {
+			System.out.println("Please set the env var: " + FormulaSynthWorker.alsmFormulaSynthEnvVar);
+			return;
+		}
+		
     	if (args.length >= 5) {
     		final String tlaSys = args[0];
     		final String cfgSys = args[1];

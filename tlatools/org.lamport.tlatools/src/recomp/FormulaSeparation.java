@@ -51,8 +51,13 @@ public class FormulaSeparation {
 		this.useIntermediateProp = !propFile.equals("none");
 		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
 		
+		System.out.println("Building the system LTS (for " + tlaSys + ")");
+		PerfTimer timer = new PerfTimer();
 		tlcSys = new TLC();
     	tlcSys.modelCheck(tlaSys, cfgSys);
+		System.out.println("Built the system LTS in " + timer.timeElapsedSeconds() + "s");
+		System.out.println();
+		
 		tlcComp = new TLC();
     	tlcComp.initialize(tlaComp, cfgComp);
     	
