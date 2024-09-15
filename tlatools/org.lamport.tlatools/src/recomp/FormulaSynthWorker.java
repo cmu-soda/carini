@@ -454,7 +454,7 @@ public class FormulaSynthWorker implements Runnable {
 	}
 	
 	private static final String alsmFormulaSynthesisPath = System.getenv(alsmFormulaSynthEnvVar);
-	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/target/alsm-formula-synthesis-1.0.jar";
+	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/bin/alsm-formula-synthesis.jar";
 	private static final String openWboLibPath = alsmFormulaSynthesisPath + "/lib/";
 	
 	private static final String baseAlloyFormulaInfer = "open util/boolean\n"
