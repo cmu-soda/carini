@@ -1,5 +1,6 @@
 package recomp;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,16 @@ public class FormulaSynth {
 		this.threadPool.shutdownNow();
 		for (FormulaSynthWorker worker : this.workers) {
 			worker.kill();
+		}
+		
+		// also clean up temp files that the workers wrote to free up disk space
+		try {
+			Runtime runtime = Runtime.getRuntime();
+			runtime.exec(new String[]{"rm", "-f", "/tmp/alloy_heredoc*.als"});
+			runtime.exec(new String[]{"rm", "-f", "/tmp/kodkod*.log"});
+			runtime.exec(new String[]{"rm", "-f", "/tmp/tmp*.wcnf"});
+		} catch (IOException e) {
+			// nothing to do if this fails
 		}
 	}
 	
