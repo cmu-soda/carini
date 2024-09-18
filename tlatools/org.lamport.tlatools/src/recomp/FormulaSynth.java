@@ -116,9 +116,9 @@ public class FormulaSynth {
 		// also clean up temp files that the workers wrote to free up disk space
 		try {
 			Runtime runtime = Runtime.getRuntime();
-			runtime.exec(new String[]{"rm", "-f", "/tmp/alloy_heredoc*.als"});
-			runtime.exec(new String[]{"rm", "-f", "/tmp/kodkod*.log"});
-			runtime.exec(new String[]{"rm", "-f", "/tmp/tmp*.wcnf"});
+			runtime.exec(new String[]{"sh", "-c", "rm -f /tmp/alloy_heredoc*.als"});
+			runtime.exec(new String[]{"sh", "-c", "rm -f /tmp/kodkod*.log"});
+			runtime.exec(new String[]{"sh", "-c", "rm -f /tmp/tmp*.wcnf"});
 		} catch (IOException e) {
 			// nothing to do if this fails
 		}
