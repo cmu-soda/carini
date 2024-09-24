@@ -120,7 +120,7 @@ public class FormulaSynthWorker implements Runnable {
 		
 		StringBuilder formulaBuilder = new StringBuilder();
 		try {
-			final String[] cmd = {"java", "-Djava.library.path=" + openWboLibPath, "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
+			final String[] cmd = {"java", "-Xmx8G", "-Djava.library.path=" + openWboLibPath, "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
 			this.process = createProcess(cmd);
 			if (this.process == null) {
 				// in this case, the worker has been killed so we simply return
