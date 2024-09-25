@@ -14,7 +14,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import tlc2.TLC;
 
 public class FormulaSynth {
-	private static final int MAX_NUM_THREADS = 25;
+	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
+	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	
 	private String globalFormula;
 	private int winningWorkerId;
@@ -74,6 +75,7 @@ public class FormulaSynth {
 				this.workers.add(worker);
 			}
 		}
+		System.out.println("Total # synth jobs: " + this.workers.size());
 
 		try {
 			this.lock.lock();

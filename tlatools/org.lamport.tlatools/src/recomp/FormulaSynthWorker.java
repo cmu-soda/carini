@@ -18,6 +18,7 @@ import tlc2.Utils;
 
 public class FormulaSynthWorker implements Runnable {
 	public static final String alsmFormulaSynthEnvVar = "ALSM_FORMULA_SYNTH";
+	public static final String workerHeapSizeEnvVar = "FSYNTH_WORKER_HEAP_SIZE";
 	
 	// TODO make these params
 	private static final int MAX_FORMULA_SIZE = 7;
@@ -120,7 +121,7 @@ public class FormulaSynthWorker implements Runnable {
 		
 		StringBuilder formulaBuilder = new StringBuilder();
 		try {
-			final String[] cmd = {"java", "-Xmx4G", "-Djava.library.path=" + openWboLibPath, "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
+			final String[] cmd = {"java", "-Xmx"+workerHeapSize, "-Djava.library.path=" + openWboLibPath, "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
 			this.process = createProcess(cmd);
 			if (this.process == null) {
 				// in this case, the worker has been killed so we simply return
@@ -454,6 +455,7 @@ public class FormulaSynthWorker implements Runnable {
 	}
 	
 	private static final String alsmFormulaSynthesisPath = System.getenv(alsmFormulaSynthEnvVar);
+	private static final String workerHeapSize = System.getenv(workerHeapSizeEnvVar) != null ? System.getenv(workerHeapSizeEnvVar) : "2G";
 	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/bin/alsm-formula-synthesis.jar";
 	private static final String openWboLibPath = alsmFormulaSynthesisPath + "/lib/";
 	
