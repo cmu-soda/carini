@@ -38,7 +38,6 @@ public class FormulaSynthWorker implements Runnable {
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
-	private final int numQuantifiers;
 
 	// for some reason using a lock is much faster than using the synchronized keyword
 	private final Lock lock;
@@ -51,7 +50,7 @@ public class FormulaSynthWorker implements Runnable {
 			TLC tlcSys, TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents, int numQuantifiers) {
+			int curNumFluents) {
 		this.formulaSynth = formulaSynth;
 		this.envVarTypes = envVarTypes;
 		this.id = id;
@@ -66,7 +65,6 @@ public class FormulaSynthWorker implements Runnable {
 		this.qvars = qvars;
 		this.legalEnvVarCombos = legalEnvVarCombos;
 		this.curNumFluents = curNumFluents;
-		this.numQuantifiers = numQuantifiers;
 		
 		this.lock = new ReentrantLock();
 		this.process = null;
@@ -370,9 +368,9 @@ public class FormulaSynthWorker implements Runnable {
 					"}";
 		
 		// number of quantifiers
-		final String numQuantifiersFacts = "fact {\n"
+		/*final String numQuantifiersFacts = "fact {\n"
 				+ "	#(Forall + Exists) = " + this.numQuantifiers + "\n"
-				+ "}";
+				+ "}";*/
 		
 		// pos trace delcs
 		final List<String> posTraceDecls = posTraces
@@ -395,7 +393,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ "\n" + qvarDelc + "\n\n"
 				+ "\n" + strNonEmptyEnvsDecls + "\n\n"
 				+ "\n" + partialInstance + "\n\n"
-				+ "\n" + numQuantifiersFacts + "\n\n"
+				//+ "\n" + numQuantifiersFacts + "\n\n" // results in too many threads
 				+ "\n" + negTrace + "\n\n"
 				+ String.join("\n", posTraceDecls) + "\n";
 		Utils.writeFile(fileName, alloyFormulaInfer);
