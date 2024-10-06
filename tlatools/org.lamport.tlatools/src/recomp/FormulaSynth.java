@@ -1,7 +1,8 @@
 package recomp;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +22,7 @@ public class FormulaSynth {
 	private int winningWorkerId;
 	private double winningTimeElapsedInSeconds;
 	private int numWorkersDone;
-	private Set<FormulaSynthWorker> workers;
+	private List<FormulaSynthWorker> workers;
 	private ExecutorService threadPool;
 
 	private final Lock lock = new ReentrantLock();
@@ -73,6 +74,7 @@ public class FormulaSynth {
 					qvars, legalEnvVarCombos, curNumFluents);
 			this.workers.add(worker);
 		}
+		Collections.shuffle(this.workers);
 		System.out.println("Total # synth jobs: " + this.workers.size());
 
 		try {
@@ -129,6 +131,6 @@ public class FormulaSynth {
 		this.winningWorkerId = -1;
 		this.winningTimeElapsedInSeconds = 0.0;
 		this.numWorkersDone = 0;
-		this.workers = new HashSet<>();
+		this.workers = new ArrayList<>();
 	}
 }
