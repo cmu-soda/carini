@@ -38,6 +38,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
+	private final int numQuantifiers;
 
 	// for some reason using a lock is much faster than using the synchronized keyword
 	private final Lock lock;
@@ -50,7 +51,7 @@ public class FormulaSynthWorker implements Runnable {
 			TLC tlcSys, TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents) {
+			int curNumFluents, int numQuantifiers) {
 		this.formulaSynth = formulaSynth;
 		this.envVarTypes = envVarTypes;
 		this.id = id;
@@ -65,6 +66,7 @@ public class FormulaSynthWorker implements Runnable {
 		this.qvars = qvars;
 		this.legalEnvVarCombos = legalEnvVarCombos;
 		this.curNumFluents = curNumFluents;
+		this.numQuantifiers = numQuantifiers;
 		
 		this.lock = new ReentrantLock();
 		this.process = null;
@@ -368,9 +370,12 @@ public class FormulaSynthWorker implements Runnable {
 					"}";
 		
 		// number of quantifiers
-		/*final String numQuantifiersFacts = "fact {\n"
-				+ "	#(Forall + Exists) = " + this.numQuantifiers + "\n"
-				+ "}";*/
+		// numQuants=2 represents 1 and 2 quantifiers, while n (larger than 3) represents exactly n.
+		// this is hacky, but works for now.
+		final String quantFactsOp = this.numQuantifiers == 2 ? "<=" : "=";
+		final String numQuantifiersFacts = "fact {\n"
+				+ "	#(Forall + Exists) " + quantFactsOp + " " + this.numQuantifiers + "\n"
+				+ "}";
 		
 		// pos trace delcs
 		final List<String> posTraceDecls = posTraces
@@ -393,7 +398,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ "\n" + qvarDelc + "\n\n"
 				+ "\n" + strNonEmptyEnvsDecls + "\n\n"
 				+ "\n" + partialInstance + "\n\n"
-				//+ "\n" + numQuantifiersFacts + "\n\n" // results in too many threads
+				+ "\n" + numQuantifiersFacts + "\n\n"
 				+ "\n" + negTrace + "\n\n"
 				+ String.join("\n", posTraceDecls) + "\n";
 		Utils.writeFile(fileName, alloyFormulaInfer);
@@ -590,6 +595,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all f1, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
+			+ "\n"
+			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n" // not clear whether this is efficient
 			+ "}\n"
 			+ "\n"
 			+ "\n"
