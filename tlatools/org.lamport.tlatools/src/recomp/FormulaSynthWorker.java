@@ -21,7 +21,7 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String workerHeapSizeEnvVar = "FSYNTH_WORKER_HEAP_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_FORMULA_SIZE = 7;
+	private static final int MAX_FORMULA_SIZE = 8; //7;
 	private static final int MAX_NUM_FLUENT_ACTS = 5;
 	
 	private final FormulaSynth formulaSynth;
