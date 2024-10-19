@@ -3,12 +3,12 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
 CONSTANTS Server, Quorums, FinNat
 
-VARIABLES committed, currentTerm, log, Fluent5, Fluent4, state, config
+VARIABLES Fluent12, Fluent11, committed, currentTerm, Fluent13, log, state, config
 
-vars == <<committed, currentTerm, log, Fluent5, Fluent4, state, config>>
+vars == <<Fluent12, Fluent11, committed, currentTerm, Fluent13, log, state, config>>
 
 CandSep ==
-(\E var0 \in FinNat : Fluent5[var0][var0]) => (\A var0 \in FinNat : (Fluent4[var0]) => (Fluent5[var0][var0]))
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent11[var0][var1]) => ((Fluent13[var1]) => (Fluent12[var0]))
 
 Secondary == "secondary"
 
@@ -56,7 +56,7 @@ ClientRequest(i,curTerm) ==
 /\ currentTerm[i] = curTerm
 /\ log' = [log EXCEPT![i] = Append(log[i],curTerm)]
 /\ UNCHANGED <<currentTerm,state,committed,config>>
-/\ UNCHANGED<<Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent12, Fluent11, Fluent13>>
 
 GetEntries(i,j) ==
 /\ state[i] = Secondary
@@ -68,14 +68,14 @@ GetEntries(i,j) ==
       newLog == Append(log[i],newEntry) IN
     /\ log' = [log EXCEPT![i] = newLog]
 /\ UNCHANGED <<committed,currentTerm,state,config>>
-/\ UNCHANGED<<Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent12, Fluent11, Fluent13>>
 
 RollbackEntries(i,j) ==
 /\ state[i] = Secondary
 /\ CanRollback(i,j)
 /\ log' = [log EXCEPT![i] = SubSeq(log[i],1,(Len(log[i]) - 1))]
 /\ UNCHANGED <<committed,currentTerm,state,config>>
-/\ UNCHANGED<<Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent12, Fluent11, Fluent13>>
 
 BecomeLeader(i,voteQuorum,newTerm) ==
 /\ newTerm = (currentTerm[i] + 1)
@@ -84,7 +84,9 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]]
 /\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]]
 /\ UNCHANGED <<log,config,committed>>
-/\ UNCHANGED<<Fluent5, Fluent4>>
+/\ Fluent12' = [Fluent12 EXCEPT![voteQuorum] = TRUE]
+/\ Fluent13' = [Fluent13 EXCEPT![newTerm] = FALSE]
+/\ UNCHANGED<<Fluent11>>
 
 CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ curTerm = currentTerm[i]
@@ -96,14 +98,13 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ ~((\E c \in committed : c.entry = <<ind,curTerm>>))
 /\ committed' = (committed \cup {[entry |-> <<ind,curTerm>>,term |-> curTerm]})
 /\ UNCHANGED <<currentTerm,state,log,config>>
-/\ Fluent5' = [Fluent5 EXCEPT![ind][curTerm] = TRUE]
-/\ Fluent4' = [Fluent4 EXCEPT![curTerm] = TRUE]
-/\ UNCHANGED<<>>
+/\ Fluent11' = [Fluent11 EXCEPT![commitQuorum][ind] = TRUE]
+/\ UNCHANGED<<Fluent12, Fluent13>>
 
 UpdateTerms(i,j) ==
 /\ UpdateTermsExpr(i,j)
 /\ UNCHANGED <<log,config,committed>>
-/\ UNCHANGED<<Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent12, Fluent11, Fluent13>>
 
 Init ==
 /\ currentTerm = [i \in Server |-> 0]
@@ -111,8 +112,9 @@ Init ==
 /\ log = [i \in Server |-> <<>>]
 /\ (\E initConfig \in SUBSET(Server) : (initConfig /= {} /\ config = [i \in Server |-> initConfig]))
 /\ committed = {}
-/\ Fluent5 = [ x0 \in FinNat |-> [ x1 \in FinNat |-> FALSE]]
-/\ Fluent4 = [ x0 \in FinNat |-> FALSE]
+/\ Fluent12 = [ x0 \in Quorums |-> FALSE]
+/\ Fluent11 = [ x0 \in Quorums |-> [ x1 \in FinNat |-> FALSE]]
+/\ Fluent13 = [ x0 \in FinNat |-> TRUE]
 
 Next ==
 \/ (\E s \in Server : (\E t \in FinNat : ClientRequest(s,t)))
