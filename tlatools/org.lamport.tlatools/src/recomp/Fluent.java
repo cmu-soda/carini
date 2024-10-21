@@ -8,14 +8,16 @@ import java.util.stream.Collectors;
 
 import gov.nasa.jpf.util.json.JSONObject;
 import tlc2.Utils;
+import tlc2.Utils.Pair;
 
 public class Fluent {
 	public final String name;
 	public final List<String> paramTypes;
 	public final String initially;
-	public final Set<String> init;
-	public final Set<String> term;
-	public final Map<String, List<Integer>> symActParamMaps;
+	public final Set<Pair<String, List<Integer>>> init;
+	public final Set<Pair<String, List<Integer>>> term;
+	public final Set<String> initBaseNames;
+	public final Set<String> termBaseNames;
 	
 	public Fluent(final String name, final JSONObject fluentInfo) {
 		this.name = name;
@@ -26,22 +28,38 @@ public class Fluent {
 		this.initially = fluentInfo.getValue("initially").getString();
 		this.init = Utils.toArrayList(fluentInfo.getValue("init").getArray())
 				.stream()
-				.map(v -> v.getString())
+				.map(kv -> {
+					final JSONObject actInfo = kv.getObject();
+					Utils.assertTrue(actInfo.getValuesKeys().length == 1, "Fluent init act info has multiple keys");
+					final String act = actInfo.getValuesKeys()[0];
+					final List<Integer> paramMap = Utils.toArrayList(actInfo.getValue(act).getArray())
+							.stream()
+							.map(v -> v.getDouble().intValue())
+							.collect(Collectors.toList());
+					return new Pair<>(act, paramMap);
+				})
 				.collect(Collectors.toSet());
 		this.term = Utils.toArrayList(fluentInfo.getValue("term").getArray())
 				.stream()
-				.map(v -> v.getString())
+				.map(kv -> {
+					final JSONObject actInfo = kv.getObject();
+					Utils.assertTrue(actInfo.getValuesKeys().length == 1, "Fluent term act info has multiple keys");
+					final String act = actInfo.getValuesKeys()[0];
+					final List<Integer> paramMap = Utils.toArrayList(actInfo.getValue(act).getArray())
+							.stream()
+							.map(v -> v.getDouble().intValue())
+							.collect(Collectors.toList());
+					return new Pair<>(act, paramMap);
+				})
 				.collect(Collectors.toSet());
-		
-		this.symActParamMaps = new HashMap<>();
-		final JSONObject paramMapInfo = fluentInfo.getValue("symActParamMaps").getObject();
-		for (final String act : paramMapInfo.getValuesKeys()) {
-			final List<Integer> paramMap = Utils.toArrayList(paramMapInfo.getValue(act).getArray())
-					.stream()
-					.map(v -> v.getDouble().intValue())
-					.collect(Collectors.toList());
-			this.symActParamMaps.put(act, paramMap);
-		}
+		this.initBaseNames = this.init
+				.stream()
+				.map(p -> p.first)
+				.collect(Collectors.toSet());
+		this.termBaseNames = this.term
+				.stream()
+				.map(p -> p.first)
+				.collect(Collectors.toSet());
 	}
 	
 	public String toJson() {
@@ -52,43 +70,65 @@ public class Fluent {
 					.collect(Collectors.joining(","))
 				+ "]";
 		final String initially = "\"initially\":\"" + this.initially + "\"";
-		final String init = "\"init\":[" +
-				this.init
-				.stream()
-				.map(pt -> "\"" + pt + "\"")
-				.collect(Collectors.joining(","))
-			+ "]";
-		final String term = "\"term\":[" +
-				this.term
-				.stream()
-				.map(pt -> "\"" + pt + "\"")
-				.collect(Collectors.joining(","))
-			+ "]";
 		
-		final String symActMapsContents = this.symActParamMaps.keySet()
+		final String initActs = this.init
 				.stream()
-				.map(m -> {
-					final String strMap = this.symActParamMaps.get(m)
+				.map(a -> {
+					final String act = "\"" + a.first + "\"";
+					final String pmapContents = a.second
 							.stream()
-							.map(i -> i.toString())
+							.map(p -> Integer.toString(p))
 							.collect(Collectors.joining(","));
-					return "\"" + m + "\":[" + strMap + "]";
+					return "{" + act + ":[" + pmapContents + "]}";
 				})
 				.collect(Collectors.joining(","));
-		final String symActMaps = "\"symActParamMaps\":{" + symActMapsContents + "}";
+		final String termActs = this.term
+				.stream()
+				.map(a -> {
+					final String act = "\"" + a.first + "\"";
+					final String pmapContents = a.second
+							.stream()
+							.map(p -> Integer.toString(p))
+							.collect(Collectors.joining(","));
+					return "{" + act + ":[" + pmapContents + "]}";
+				})
+				.collect(Collectors.joining(","));
 		
-		return "{" + String.join(",", List.of(paramTypes, initially, init, term, symActMaps)) + "}";
+		final String init = "\"init\":[" + initActs + "]";
+		final String term = "\"term\":[" + termActs + "]";
+		
+		return "{" + String.join(",", List.of(paramTypes, initially, init, term)) + "}";
 	}
 	
 	@Override
 	public String toString() {
+		final String initStr = this.init
+			.stream()
+			.map(a -> {
+				final String act = a.first;
+				final String pmapContents = a.second
+						.stream()
+						.map(i -> Integer.toString(i))
+						.collect(Collectors.joining(","));
+				final String pmap = "[" + pmapContents + "]";
+				return act + ": " + pmap;
+			})
+			.collect(Collectors.joining("\n             "));
+		final String termStr = this.term
+				.stream()
+				.map(a -> {
+					final String act = a.first;
+					final String pmapContents = a.second
+							.stream()
+							.map(i -> Integer.toString(i))
+							.collect(Collectors.joining(","));
+					final String pmap = "[" + pmapContents + "]";
+					return act + ": " + pmap;
+				})
+				.collect(Collectors.joining("\n             "));
 		return this.name + ":\n"
 				+ "  initially: " + this.initially + "\n"
-				+ "  init: " + this.init.stream().collect(Collectors.joining(", ")) + "\n"
-				+ "  term: " + this.term.stream().collect(Collectors.joining(", ")) + "\n"
-				+ "  paramsMap: " + this.symActParamMaps.keySet()
-										.stream()
-										.map(p -> p + ": [" + this.symActParamMaps.get(p).stream().map(i -> ""+i).collect(Collectors.joining(",")) + "]")
-										.collect(Collectors.joining("\n             "));
+				+ "  init: " + initStr + "\n"
+				+ "  term: " + termStr;
 	}
 }

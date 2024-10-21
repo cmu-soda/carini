@@ -8,7 +8,7 @@ VARIABLES msgs, tmState, tmPrepared, Fluent5, Fluent4, rmState
 vars == <<msgs, tmState, tmPrepared, Fluent5, Fluent4, rmState>>
 
 CandSep ==
-\A var0 \in RMs : (Fluent5[var0]) => (\A var1 \in RMs : Fluent4[var1])
+\A var0 \in RMs : \A var1 \in RMs : (Fluent4[var1]) => (Fluent5[var0])
 
 Message == ([type : {"Prepared"},theRM : RMs] \cup [type : {"Commit","Abort"}])
 
@@ -18,14 +18,15 @@ Init ==
 /\ tmState = "init"
 /\ tmPrepared = {}
 /\ Fluent5 = [ x0 \in RMs |-> FALSE]
-/\ Fluent4 = [ x0 \in RMs |-> TRUE]
+/\ Fluent4 = [ x0 \in RMs |-> FALSE]
 
 SndPrepare(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Prepared",theRM |-> rm]})
 /\ rmState[rm] = "working"
 /\ rmState' = [rmState EXCEPT![rm] = "prepared"]
 /\ UNCHANGED <<tmState,tmPrepared>>
-/\ UNCHANGED<<Fluent5, Fluent4>>
+/\ Fluent5' = [Fluent5 EXCEPT ![rm] = TRUE]
+/\ UNCHANGED<<Fluent4>>
 
 RcvPrepare(rm) ==
 /\ ([type |-> "Prepared",theRM |-> rm] \in msgs)
@@ -46,8 +47,8 @@ RcvCommit(rm) ==
 /\ ([type |-> "Commit"] \in msgs)
 /\ rmState' = [rmState EXCEPT![rm] = "committed"]
 /\ UNCHANGED <<msgs,tmState,tmPrepared>>
-/\ Fluent5' = [Fluent5 EXCEPT![rm] = TRUE]
-/\ UNCHANGED<<Fluent4>>
+/\ Fluent4' = [Fluent4 EXCEPT ![rm] = TRUE]
+/\ UNCHANGED<<Fluent5>>
 
 SndAbort(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Abort"]})
@@ -60,8 +61,7 @@ RcvAbort(rm) ==
 /\ ([type |-> "Abort"] \in msgs)
 /\ rmState' = [rmState EXCEPT![rm] = "aborted"]
 /\ UNCHANGED <<msgs,tmState,tmPrepared>>
-/\ Fluent4' = [Fluent4 EXCEPT![rm] = FALSE]
-/\ UNCHANGED<<Fluent5>>
+/\ UNCHANGED<<Fluent5, Fluent4>>
 
 SilentAbort(rm) ==
 /\ rmState[rm] = "working"

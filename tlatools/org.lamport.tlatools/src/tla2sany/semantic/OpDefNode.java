@@ -55,6 +55,7 @@ import tla2sany.utilities.Strings;
 import tla2sany.utilities.Vector;
 import tla2sany.xml.SymbolContext;
 import tlc2.Utils;
+import tlc2.Utils.Pair;
 import tlc2.tool.BuiltInOPs;
 import util.UniqueString;
 import util.WrongInvocationException;
@@ -637,37 +638,59 @@ public class OpDefNode extends OpDefOrDeclNode
 	  // the name of the action this node represents
 	  final String act = this.getName().toString();
 	  
+	  // get the parameters to this action
+	  final List<String> actParams = Utils.toArrayList(this.params)
+			  .stream()
+			  .map(p -> p.getName().toString())
+			  .collect(Collectors.toList());
+	  
 	  // the fluents that are updated in this action
 	  final List<String> fluentsUpdated = formula.getFluents()
 			  .stream()
-			  .filter(fluent -> fluent.init.contains(act) || fluent.term.contains(act))
+			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act))
 			  .map(fluent -> fluent.name)
 			  .collect(Collectors.toList());
 	  
 	  // the TLA+ conjuncts that update each fluent
 	  final List<String> fluentUpdateConjuncts = formula.getFluents()
 			  .stream()
-			  .filter(fluent -> fluent.init.contains(act) || fluent.term.contains(act))
+			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act))
 			  .map(fluent -> {
-				  // for each fluent, add the init / term variables to the conjuncts of this action
-				  final String updateVal = fluent.init.contains(act) ? "TRUE" : "FALSE";
-				  
-				  // get the parameters to this action
-				  final List<String> actParams = Utils.toArrayList(this.params)
-						  .stream()
-						  .map(p -> p.getName().toString())
-						  .collect(Collectors.toList());
-				  // feed the action-params to the fluent (in the correct order)
-				  // for example, if fluentActOrdering is: [3,0,1]
+				  final Set<List<Integer>> initParamMaps = fluent.init
+				  		.stream()
+				  		.filter(p -> act.equals(p.first))
+				  		.map(p -> p.second)
+				  		.collect(Collectors.toSet());
+				  final Set<List<Integer>> termParamMaps = fluent.term
+					  		.stream()
+					  		.filter(p -> act.equals(p.first))
+					  		.map(p -> p.second)
+					  		.collect(Collectors.toSet());
+
+				  // get the action-params for each action in fluent (in the correct
+				  // order). for example, for a param map that looks like: [3,0,1]
 				  // and if the params to the action are: (var0,var1,var2,var3)
 				  // then we access the fluent as: fluentName[var3,var0,var1]
-				  final List<Integer> fluentActOrdering = fluent.symActParamMaps.get(act);
-				  final List<String> fluentActs = fluentActOrdering
+				  final Set<List<String>> initVarTuples = initParamMaps
 						  .stream()
-						  .map(i -> actParams.get(i))
-						  .collect(Collectors.toList());
-				  final String fluentActsStr = String.join("][", fluentActs);
-				  final String fluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT![" + fluentActsStr + "] = " + updateVal + "]";
+						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
+						  .collect(Collectors.toSet());
+				  final Set<List<String>> termVarTuples = termParamMaps
+						  .stream()
+						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
+						  .collect(Collectors.toSet());
+				  
+				  // TODO handle the case where init and term actions overlap
+				  final Set<String> initFluentUpdates = initVarTuples
+						  .stream()
+						  .map(t -> "![" + String.join(",",t) + "] = TRUE")
+						  .collect(Collectors.toSet());
+				  final Set<String> termFluentUpdates = termVarTuples
+						  .stream()
+						  .map(t -> "![" + String.join(",",t) + "] = FALSE")
+						  .collect(Collectors.toSet());
+				  final Set<String> fluentUpdates = Utils.union(initFluentUpdates, termFluentUpdates);
+				  final String fluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", fluentUpdates) + "]";
 				  return fluentConj;
 			  })
 			  .collect(Collectors.toList());
