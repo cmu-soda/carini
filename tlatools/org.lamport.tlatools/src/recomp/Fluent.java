@@ -113,7 +113,7 @@ public class Fluent {
 				final String pmap = "[" + pmapContents + "]";
 				return act + ": " + pmap;
 			})
-			.collect(Collectors.joining("\n             "));
+			.collect(Collectors.joining("\n        "));
 		final String termStr = this.term
 				.stream()
 				.map(a -> {
@@ -125,7 +125,7 @@ public class Fluent {
 					final String pmap = "[" + pmapContents + "]";
 					return act + ": " + pmap;
 				})
-				.collect(Collectors.joining("\n             "));
+				.collect(Collectors.joining("\n        "));
 		return this.name + ":\n"
 				+ "  initially: " + this.initially + "\n"
 				+ "  init: " + initStr + "\n"
