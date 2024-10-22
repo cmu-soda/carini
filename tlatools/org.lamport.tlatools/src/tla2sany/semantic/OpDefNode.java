@@ -683,11 +683,11 @@ public class OpDefNode extends OpDefOrDeclNode
 				  // TODO handle the case where init and term actions overlap
 				  final Set<String> initFluentUpdates = initVarTuples
 						  .stream()
-						  .map(t -> "![" + String.join(",",t) + "] = TRUE")
+						  .map(t -> "![" + String.join("][",t) + "] = TRUE")
 						  .collect(Collectors.toSet());
 				  final Set<String> termFluentUpdates = termVarTuples
 						  .stream()
-						  .map(t -> "![" + String.join(",",t) + "] = FALSE")
+						  .map(t -> "![" + String.join("][",t) + "] = FALSE")
 						  .collect(Collectors.toSet());
 				  final Set<String> fluentUpdates = Utils.union(initFluentUpdates, termFluentUpdates);
 				  final String fluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", fluentUpdates) + "]";
