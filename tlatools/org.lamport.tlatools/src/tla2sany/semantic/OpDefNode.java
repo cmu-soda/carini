@@ -689,11 +689,44 @@ public class OpDefNode extends OpDefOrDeclNode
 						  .stream()
 						  .map(t -> "![" + String.join("][",t) + "] = FALSE")
 						  .collect(Collectors.toSet());
-				  final Set<String> fluentUpdates = Utils.union(initFluentUpdates, termFluentUpdates);
-				  final String fluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", fluentUpdates) + "]";
-				  return fluentConj;
+				  
+				  // TLA+ expression for updating all fluent "cells" at once
+				  final Set<String> allFluentUpdates = Utils.union(initFluentUpdates, termFluentUpdates);
+				  final String allFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", allFluentUpdates) + "]";
+				  
+				  // TLA+ expression for only updating the init fluent "cells" (all at once)
+				  final String initFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", initFluentUpdates) + "]";
+				  
+				  // this is the usual case, when each "cell" of the fluent that we update
+				  // has the same value (i.e. they're all TRUE or all FALSE)
+				  if (initFluentUpdates.isEmpty() || termFluentUpdates.isEmpty()) {
+					  return List.of(allFluentConj);
+				  }
+				  
+				  // otherwise, it's possible that an update can set a "cell" to TRUE and
+				  // FALSE at the same time; we must take care to avoid this situation.
+				  final String initTuples = initVarTuples
+						  .stream()
+						  .map(t -> "<<" + String.join(",",t) + ">>")
+						  .collect(Collectors.joining(","));
+				  final String termTuples = termVarTuples
+						  .stream()
+						  .map(t -> "<<" + String.join(",",t) + ">>")
+						  .collect(Collectors.joining(","));
+				  final String updateTupleStr = "{"+termTuples+"} \\ {"+initTuples+"}";
+				  
+				  // TODO support larger number (ideally arbitrary number) of term actions
+				  Utils.assertTrue(termVarTuples.size() == 1, "Multiple term actions (in the presence of init actions) in a fluent is not yet implemented");
+				  
+				  // the soundness of these formulas depends on there being exactly one term fluent cell
+				  final String noOverlap = "((" + updateTupleStr + ") # {}) => " + allFluentConj;
+				  final String hasOverlap = "((" + updateTupleStr + ") = {}) => " + initFluentConj;
+				  
+				  return List.of(noOverlap, hasOverlap);
 			  })
-			  .collect(Collectors.toList());
+			  .reduce((List<String>)new ArrayList<String>(),
+					  (acc,l) -> Utils.append(acc, l),
+					  (l1,l2) -> Utils.append(l1, l2));
 	  
 	  // the new frame condition for this action
 	  final String unchangedList = formula.getFluents()

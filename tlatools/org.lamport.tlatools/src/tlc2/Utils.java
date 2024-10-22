@@ -225,6 +225,20 @@ public class Utils {
     	s.add(elem);
     	return s;
     }
+    
+    // this method is completely untested
+    public static <T> Set<Set<T>> powerSet(Set<T> set) {
+    	if (set.isEmpty()) {
+    		return new HashSet<Set<T>>();
+    	}
+    	T e = chooseOne(set);
+    	Set<T> rest = setMinus(set, setOf(e));
+    	Set<Set<T>> restPowerSetWithE = powerSet(rest);
+    	for (Set<T> s : restPowerSetWithE) {
+    		s.add(e);
+    	}
+    	return union(restPowerSetWithE, powerSet(rest));
+    }
 	
     
     public static ArrayList<Pair<String,String>> extractKeyValuePairsFromState(String tlaState) {
