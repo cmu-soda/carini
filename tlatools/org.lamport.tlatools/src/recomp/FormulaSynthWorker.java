@@ -21,7 +21,7 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String workerHeapSizeEnvVar = "FSYNTH_WORKER_HEAP_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_FORMULA_SIZE = 7;
+	private static final int MAX_FORMULA_SIZE = 8;
 	private static final int MAX_NUM_FLUENT_ACTS = 5;
 	
 	private final FormulaSynth formulaSynth;
@@ -530,7 +530,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    termFl : set FlSymAction,\n"
 			+ "\n"
 			+ "    // vars represents the parameters (including the ordering) to the fluent itself\n"
-			+ "	vars : set(ParamIdx->Var)\n"
+			+ "    vars : set(ParamIdx->Var)\n"
 			+ "} {\n"
 			+ "    no children\n"
 			+ "    no initFl & termFl // ensures initFl and termFl are mutex\n"
@@ -562,6 +562,13 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "}\n"
 			+ "\n"
+			+ "sig VarEquals extends Formula {\n"
+			+ "    lhs : Var,\n"
+			+ "    rhs : Var\n"
+			+ "} {\n"
+			+ "	no children\n"
+			+ "}\n"
+			+ "\n"
 			+ "sig Forall extends Formula {\n"
 			+ "	var : Var,\n"
 			+ "	sort : Sort,\n"
@@ -587,7 +594,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	no Root.^children & Root // root appears once\n"
 			+ "	all f : Formula | f not in f.^children // eliminates cycles in formula nodes\n"
 			+ "\n"
-			+ "	ParamIdx.(Fluent.vars) in (Forall.var + Exists.var) // approximately: no free variables=\n"
+			+ "	(ParamIdx.(Fluent.vars) + VarEquals.lhs + VarEquals.rhs) in (Forall.var + Exists.var) // no free variables\n"
 			+ "\n"
 			+ "	// do not quantify over a variable that's already in scope\n"
 			+ "	all f1, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
@@ -595,7 +602,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "\n"
-			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n" // not clear whether this is efficient
+			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n" // makes the query far more efficient
 			+ "}\n"
 			+ "\n"
 			+ "\n"
@@ -620,6 +627,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all e : Env, i : Idx, f : Implies | e->i->f in satisfies iff (e->i->f.left in satisfies implies e->i->f.right in satisfies)\n"
 			//+ "	all e : Env, i : Idx, f : And | e->i->f in satisfies iff (e->i->f.left in satisfies and e->i->f.right in satisfies)\n"
 			//+ "	all e : Env, i : Idx, f : Or | e->i->f in satisfies iff (e->i->f.left in satisfies or e->i->f.right in satisfies)\n"
+			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (some x : Atom | f.lhs->x in e.maps and f.rhs->x in e.maps)\n"
 			+ "\n"
 			+ "    // e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:\n"
 			+ "    // 1. i = 0 and f.initally = True and t[i] \\notin f.termFl\n"

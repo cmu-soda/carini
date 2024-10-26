@@ -85,7 +85,7 @@ public class FormulaSeparation {
 				.max()
 				.getAsInt();
 
-		maxNumVarsPerType = 2; // TODO make this a param
+		maxNumVarsPerType = 3; // TODO make this a param
 		final int maxNumVars = 3; // TODO make the number of vars a param
 		final int numTypes = sortElementsMap.keySet().size();
 		final int numVars = Math.min(maxNumVars, maxNumVarsPerType*numTypes);
