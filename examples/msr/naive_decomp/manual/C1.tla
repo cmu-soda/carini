@@ -1,5 +1,5 @@
 --------------------------- MODULE C1 ---------------------------
-EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
+EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC, Randomization
 
 VARIABLES committed, FluentCommitInd, FluentCommitIndTerm
 
@@ -15,6 +15,8 @@ vars == <<committed, FluentCommitInd, FluentCommitIndTerm>>
 
 CandSep ==
 /\ \A i \in FinNat : \A t1,t2 \in FinNat : FluentCommitInd[i] => (FluentCommitIndTerm[i][t1] => (FluentCommitIndTerm[i][t2] => t1=t2))
+\* add on state machine safety to make this an II
+/\ (\A c1,c2 \in committed : (c1.entry[1] = c2.entry[1] => c1 = c2))
 
 \*/\ \A i \in FinNat : FluentCommitInd[i] => \A t1,t2 \in FinNat : (FluentCommitIndTerm[i][t1] /\ FluentCommitIndTerm[i][t2]) => t1=t2
 
@@ -51,4 +53,17 @@ Next ==
 Spec == (Init /\ [][Next]_vars)
 
 StateMachineSafety == (\A c1,c2 \in committed : (c1.entry[1] = c2.entry[1] => c1 = c2))
+
+TypeOK ==
+/\ committed \in SUBSET [entry : FinNat \X FinNat, term : FinNat]
+/\ FluentCommitInd \in [FinNat -> BOOLEAN]
+/\ FluentCommitIndTerm \in [FinNat -> [FinNat -> BOOLEAN]]
+
+TypeOKRandom ==
+/\ committed \in RandomSetOfSubsets(20, 2, [entry : FinNat \X FinNat, term : FinNat])
+/\ FluentCommitInd \in RandomSubset(20, [FinNat -> BOOLEAN])
+/\ FluentCommitIndTerm \in RandomSubset(20, [FinNat -> [FinNat -> BOOLEAN]])
+
+IISpec == TypeOKRandom /\ CandSep /\ [][Next]_vars
+
 =============================================================================

@@ -2,6 +2,7 @@
 EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
 VARIABLES currentTerm
+VARIABLES FluentCommitInd, FluentCommitIndTerm
 
 CONSTANTS Server, Quorums, FinNat
 
@@ -11,7 +12,7 @@ Primary == "primary"
 
 Nil == "nil"
 
-vars == <<currentTerm>>
+vars == <<currentTerm, FluentCommitInd, FluentCommitIndTerm>>
 
 Empty(s) == Len(s) = 0
 
@@ -31,23 +32,30 @@ UpdateTermsExpr(i,j) ==
 ClientRequest(i,curTerm) ==
 /\ currentTerm[i] = curTerm
 /\ UNCHANGED <<currentTerm>>
+/\ UNCHANGED <<FluentCommitInd, FluentCommitIndTerm>>
 
 BecomeLeader(i,voteQuorum,newTerm) ==
 /\ newTerm = (currentTerm[i] + 1)
 /\ (i \in voteQuorum)
 /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
 /\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]]
+/\ UNCHANGED <<FluentCommitInd, FluentCommitIndTerm>>
 
 CommitEntry(i,commitQuorum,ind,curTerm) ==
+/\ FluentCommitIndTerm' = [FluentCommitIndTerm EXCEPT![ind][curTerm] = TRUE]
+/\ FluentCommitInd' = [FluentCommitInd EXCEPT![ind] = TRUE]
 /\ curTerm = currentTerm[i]
 /\ ind > 0
 /\ UNCHANGED <<currentTerm>>
 
 UpdateTerms(i,j) ==
 /\ UpdateTermsExpr(i,j)
+/\ UNCHANGED <<FluentCommitInd, FluentCommitIndTerm>>
 
 Init ==
 /\ currentTerm = [i \in Server |-> 0]
+/\ FluentCommitInd = [x0 \in FinNat |-> FALSE]
+/\ FluentCommitIndTerm = [ x0 \in FinNat |-> [x1 \in FinNat |-> FALSE]]
 
 Next ==
 \/ (\E s \in Server : (\E t \in FinNat : ClientRequest(s,t)))
@@ -56,4 +64,7 @@ Next ==
 \/ (\E s,t \in Server : UpdateTerms(s,t))
 
 Spec == (Init /\ [][Next]_vars)
+
+Safety ==
+/\ \A i \in FinNat : \A t1,t2 \in FinNat : FluentCommitInd[i] => (FluentCommitIndTerm[i][t1] => (FluentCommitIndTerm[i][t2] => t1=t2))
 =============================================================================
