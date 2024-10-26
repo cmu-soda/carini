@@ -217,8 +217,6 @@ StateMachineSafety ==
     \A c1, c2 \in committed : (c1.entry[1] = c2.entry[1]) => (c1 = c2)
 
 C1Inv ==
-/\ \A i \in FinNat : \A t1,t2 \in FinNat : FluentCommitInd[i] => (FluentCommitIndTerm[i][t1] => (FluentCommitIndTerm[i][t2] => t1=t2))
-
-\*/\ \A i \in FinNat : FluentCommitInd[i] => \A t1,t2 \in FinNat : (FluentCommitIndTerm[i][t1] /\ FluentCommitIndTerm[i][t2]) => t1=t2
+/\ \A i \in FinNat : \A t1,t2 \in FinNat : (FluentCommitIndTerm[i][t1] => (FluentCommitIndTerm[i][t2] => t1=t2))
 
 =============================================================================
