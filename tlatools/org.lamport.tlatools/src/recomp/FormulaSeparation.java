@@ -270,7 +270,7 @@ public class FormulaSeparation {
 		
 		FormulaSynth formSynth = new FormulaSynth();
 		return formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
-				tlcSys, tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
+				tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
 	}
 	

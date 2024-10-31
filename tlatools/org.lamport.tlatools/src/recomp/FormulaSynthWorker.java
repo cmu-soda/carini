@@ -29,7 +29,6 @@ public class FormulaSynthWorker implements Runnable {
 	private final int id;
 	private final AlloyTrace negTrace;
 	private final List<AlloyTrace> posTraces;
-	private final TLC tlcSys;
 	private final TLC tlcComp;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
@@ -48,7 +47,7 @@ public class FormulaSynthWorker implements Runnable {
 
 	public FormulaSynthWorker(FormulaSynth formulaSynth, Map<String,String> envVarTypes, int id,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
-			TLC tlcSys, TLC tlcComp, Set<String> internalActions,
+			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents, int numQuantifiers) {
@@ -57,7 +56,6 @@ public class FormulaSynthWorker implements Runnable {
 		this.id = id;
 		this.negTrace = negTrace;
 		this.posTraces = posTraces;
-		this.tlcSys = tlcSys;
 		this.tlcComp = tlcComp;
 		this.internalActions = internalActions;
 		this.sortElementsMap = sortElementsMap;
