@@ -65,17 +65,14 @@ public class FormulaSynth {
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents) {
 		
-		final int maxNumVars = Math.max(3, qvars.size());
 		resetMemberVars();
 		PerfTimer timer = new PerfTimer();
 		int id = 0;
 		for (final Map<String,String> m : envVarTypes) {
-			for (int numQuants = 2; numQuants <= maxNumVars; ++numQuants) {
-				final FormulaSynthWorker worker = new FormulaSynthWorker(this, m, id++, negTrace, posTraces,
-						tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
-						qvars, legalEnvVarCombos, curNumFluents, numQuants);
-				this.workers.add(worker);
-			}
+			final FormulaSynthWorker worker = new FormulaSynthWorker(this, m, id++, negTrace, posTraces,
+					tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
+					qvars, legalEnvVarCombos, curNumFluents);
+			this.workers.add(worker);
 		}
 		Collections.shuffle(this.workers);
 		System.out.println("Total # synth jobs: " + this.workers.size());

@@ -37,7 +37,6 @@ public class FormulaSynthWorker implements Runnable {
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
-	private final int numQuantifiers;
 
 	// for some reason using a lock is much faster than using the synchronized keyword
 	private final Lock lock;
@@ -50,7 +49,7 @@ public class FormulaSynthWorker implements Runnable {
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents, int numQuantifiers) {
+			int curNumFluents) {
 		this.formulaSynth = formulaSynth;
 		this.envVarTypes = envVarTypes;
 		this.id = id;
@@ -64,7 +63,6 @@ public class FormulaSynthWorker implements Runnable {
 		this.qvars = qvars;
 		this.legalEnvVarCombos = legalEnvVarCombos;
 		this.curNumFluents = curNumFluents;
-		this.numQuantifiers = numQuantifiers;
 		
 		this.lock = new ReentrantLock();
 		this.process = null;
@@ -367,12 +365,11 @@ public class FormulaSynthWorker implements Runnable {
 					"	" + baseNamesPartialInstance + "\n" +
 					"}";
 		
-		// number of quantifiers
-		// numQuants=2 represents 1 and 2 quantifiers, while n (larger than 3) represents exactly n.
-		// this is hacky, but works for now.
-		final String quantFactsOp = this.numQuantifiers == 2 ? "<=" : "=";
+		// restrict the number of quantifiers to 3
+		// we also require that the first quantifier is a forall
 		final String numQuantifiersFacts = "fact {\n"
-				+ "	#(Forall + Exists) " + quantFactsOp + " " + this.numQuantifiers + "\n"
+				+ "	#(Forall + Exists) <= 3 // allow only 3 quantifiers\n"
+				+ "	Root.children in Forall // the first quantifier must be a forall\n"
 				+ "}";
 		
 		// pos trace delcs
@@ -538,9 +535,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    // vars is a function\n"
 			+ "    all p : ParamIdx, v1,v2 : Var | (p->v1 in vars and p->v2 in vars) implies (v1 = v2)\n"
 			+ "\n"
-			//+ "    // a base name can only occur once across all fluents\n"
-			//+ "    all s1,s2 : (initFl + termFl) | (s1.baseName = s2.baseName) implies (s1 = s2)\n"
-			+ "\n"
 			+ "    // each fluent must accept all the fluent params in vars\n"
 			+ "    all s : (initFl + termFl) | ParamIdx.(s.actToFlParamsMap) = vars.Var\n"
 			+ "\n"
@@ -561,6 +555,13 @@ public class FormulaSynthWorker implements Runnable {
 			+ "}\n"
 			+ "\n"
 			+ "sig VarEquals extends Formula {\n"
+			+ "    lhs : Var,\n"
+			+ "    rhs : Var\n"
+			+ "} {\n"
+			+ "	no children\n"
+			+ "}\n"
+			+ "\n"
+			+ "sig VarNotEquals extends Formula {\n"
 			+ "    lhs : Var,\n"
 			+ "    rhs : Var\n"
 			+ "} {\n"
@@ -625,12 +626,13 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all e : Env, i : Idx, f : Implies | e->i->f in satisfies iff (e->i->f.left in satisfies implies e->i->f.right in satisfies)\n"
 			//+ "	all e : Env, i : Idx, f : And | e->i->f in satisfies iff (e->i->f.left in satisfies and e->i->f.right in satisfies)\n"
 			//+ "	all e : Env, i : Idx, f : Or | e->i->f in satisfies iff (e->i->f.left in satisfies or e->i->f.right in satisfies)\n"
-			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (some x : Atom | f.lhs->x in e.maps and f.rhs->x in e.maps)\n"
+			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (f.lhs).(e.maps) = (f.rhs).(e.maps)\n"
+			+ "	all e : Env, i : Idx, f : VarNotEquals | e->i->f in satisfies iff (f.lhs).(e.maps) != (f.rhs).(e.maps)\n"
 			+ "\n"
-			+ "    // e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:\n"
-			+ "    // 1. i = 0 and f.initally = True and t[i] \\notin f.termFl\n"
-			+ "    // 2. t[i] \\in f.initFl\n"
-			+ "    // 3. t[i] \\notin f.termFl and (e |- t,i-1 |= f)\n"
+			+ "	// e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:\n"
+			+ "	// 1. i = 0 and f.initally = True and t[i] \\notin f.termFl\n"
+			+ "	// 2. t[i] \\in f.initFl\n"
+			+ "	// 3. t[i] \\notin f.termFl and (e |- t,i-1 |= f)\n"
 			+ "	all e : Env, i : Idx, f : Fluent | e->i->f in satisfies iff\n"
 			+ "        // a is the action at the current index i in the trace\n"
 			+ "        let a = i.path |\n"
