@@ -70,11 +70,25 @@ public class FormulaSynthWorker implements Runnable {
 	}
 	
 	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof FormulaSynthWorker)) {
+			return false;
+		}
+		final FormulaSynthWorker fswOther = (FormulaSynthWorker) other;
+		return this.id == fswOther.id;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Integer.hashCode(this.id);
+	}
+	
+	@Override
 	public void run() {
 		// TODO change name from "formula" to "json"
 		PerfTimer timer = new PerfTimer();
 		final String formula = synthesizeFormulaWithVarTypes(this.negTrace, this.posTraces);
-		this.formulaSynth.setFormula(formula, this.id, timer.timeElapsedSeconds());
+		this.formulaSynth.setFormula(formula, this.id, this.envVarTypes, timer.timeElapsedSeconds());
 	}
 	
 	public void kill() {
@@ -529,6 +543,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "} {\n"
 			+ "    no children\n"
 			+ "    no initFl & termFl // ensures initFl and termFl are mutex\n"
+			+ "    no initFl.baseName & termFl.baseName // stronger mutex condition, a speed optimization\n"
 			+ "    some initFl + termFl\n"
 			+ "    some vars\n"
 			+ "\n"

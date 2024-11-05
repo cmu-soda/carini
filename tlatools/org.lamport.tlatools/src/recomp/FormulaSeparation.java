@@ -119,6 +119,18 @@ public class FormulaSeparation {
     	//final List<String> rawComponents = Decomposition.decompAll(tla, cfg);
     	//final List<String> components = Composition.symbolicCompose(tla, cfg, "CUSTOM", "recomp_map.csv", rawComponents);
     	
+		// split inference into several jobs, where each job assigns possible types to variables
+		// note: the variable orderings matter because of the legal environments we chose (see legalEnvVarCombos)
+		// so we need to consider the order of vars, not just how many of each type
+		final Set<String> allTypes = this.actionParamTypes.values()
+				.stream()
+				.map(l -> l.stream().collect(Collectors.toSet()))
+				.reduce((Set<String>)new HashSet<String>(),
+						(acc,s) -> Utils.union(acc, s),
+						(s1,s2) -> Utils.union(s1, s2));
+		final Set<Map<String,String>> allEnvVarTypes = createAllEnvVarTypes(allTypes);
+		Utils.assertTrue(!allEnvVarTypes.isEmpty(), "internal error: envVarTypes is empty!");
+    	
     	final AlloyTrace initPosTrace = createInitPosTrace();
     	
     	List<AlloyTrace> posTraces = new ArrayList<>();
@@ -133,6 +145,11 @@ public class FormulaSeparation {
     		System.out.println("Round " + round);
     		System.out.println("-------");
     		PerfTimer timer = new PerfTimer();
+    		
+    		// the env var types we consider for this round. it always starts as the full set, but then we eliminate
+    		// any env var type that returns UNSAT. note that envVarTypes gets modified (as an out-param) in the
+    		// synthesizeFormula() method.
+    		Set<Map<String,String>> envVarTypes = new HashSet<>(allEnvVarTypes);
     		
     		// generate a negative trace for this round; we will generate a formula (assumption) that eliminates
     		// the negative trace
@@ -150,7 +167,8 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Formula formula = synthesizeFormula(negTrace, posTraces, numFluents);
+    			final Formula formula = synthesizeFormula(negTrace, posTraces, numFluents, envVarTypes);
+    			System.out.println("Synthesized: " + formula);
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
     			if (formula.isUNSAT()) {
@@ -165,7 +183,6 @@ public class FormulaSeparation {
     			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaSysHV, cfgPosTraces, "PT", ptNum, "PosTrace", numPosTraces);
     			isInvariant = newPosTraces.stream().allMatch(t -> !t.hasError());
     			
-    			System.out.println("Synthesized: " + formula);
     			if (isInvariant) {
     				invariants.add(formula);
     				System.out.println("The formula is an invariant! Moving to the next round.");
@@ -254,20 +271,8 @@ public class FormulaSeparation {
 		return new AlloyTrace(trace, name, ext);
 	}
 	
-	private Formula synthesizeFormula(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents) {
-		// split inference into several jobs, where each job assigns possible types to variables
-		// note: the variable orderings matter because of the legal environments we chose (see legalEnvVarCombos)
-		// so we need to consider the order of vars, not just how many of each type
-		final Set<String> allTypes = this.actionParamTypes.values()
-				.stream()
-				.map(l -> l.stream().collect(Collectors.toSet()))
-				.reduce((Set<String>)new HashSet<String>(),
-						(acc,s) -> Utils.union(acc, s),
-						(s1,s2) -> Utils.union(s1, s2));
-		
-		final Set<Map<String,String>> envVarTypes = allEnvVarTypes(allTypes);
-		Utils.assertTrue(!envVarTypes.isEmpty(), "internal error: envVarTypes is empty!");
-		
+	private Formula synthesizeFormula(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
+			final Set<Map<String,String>> envVarTypes) {
 		FormulaSynth formSynth = new FormulaSynth();
 		return formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
 				tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
@@ -390,11 +395,11 @@ public class FormulaSeparation {
 	
 	/* Helper methods */
 	
-	private Set<Map<String,String>> allEnvVarTypes(final Set<String> allTypes) {
-		return allEnvVarTypes(allTypes, new HashMap<>(), new HashMap<>());
+	private Set<Map<String,String>> createAllEnvVarTypes(final Set<String> allTypes) {
+		return createAllEnvVarTypes(allTypes, new HashMap<>(), new HashMap<>());
 	}
 	
-	private Set<Map<String,String>> allEnvVarTypes(final Set<String> allTypes, Map<String,String> envTypes,
+	private Set<Map<String,String>> createAllEnvVarTypes(final Set<String> allTypes, Map<String,String> envTypes,
 			Map<String,Integer> envTypeCounts) {
 		Set<Map<String,String>> cumEnvVarTypes = new HashSet<>();
 		
@@ -421,7 +426,7 @@ public class FormulaSeparation {
 					Map<String,Integer> newEnvTypeCounts = new HashMap<>(envTypeCounts);
 					newEnvTypeCounts.put(type, numTimesTypeUsedInEnv+1);
 					
-					final Set<Map<String,String>> partialEnvVarTypes = allEnvVarTypes(allTypes, newEnvTypes, newEnvTypeCounts);
+					final Set<Map<String,String>> partialEnvVarTypes = createAllEnvVarTypes(allTypes, newEnvTypes, newEnvTypeCounts);
 					cumEnvVarTypes.addAll(partialEnvVarTypes);
 				}
 			}
