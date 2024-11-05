@@ -19,9 +19,9 @@ import tlc2.Utils;
 public class FormulaSynthWorker implements Runnable {
 	public static final String alsmFormulaSynthEnvVar = "ALSM_FORMULA_SYNTH";
 	public static final String workerHeapSizeEnvVar = "FSYNTH_WORKER_HEAP_SIZE";
+	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_FORMULA_SIZE = 7;
 	private static final int MAX_NUM_FLUENT_ACTS = 5;
 	
 	private final FormulaSynth formulaSynth;
@@ -468,6 +468,7 @@ public class FormulaSynthWorker implements Runnable {
 	
 	private static final String alsmFormulaSynthesisPath = System.getenv(alsmFormulaSynthEnvVar);
 	private static final String workerHeapSize = System.getenv(workerHeapSizeEnvVar) != null ? System.getenv(workerHeapSizeEnvVar) : "2G";
+	private static final int MAX_FORMULA_SIZE = System.getenv(maxFormulaSizeEnvVar) != null ? Integer.parseInt(System.getenv(maxFormulaSizeEnvVar)) : 7;
 	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/bin/alsm-formula-synthesis.jar";
 	private static final String openWboLibPath = alsmFormulaSynthesisPath + "/lib/";
 	
