@@ -544,7 +544,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "} {\n"
 			+ "    no children\n"
 			+ "    no initFl & termFl // ensures initFl and termFl are mutex\n"
-			+ "    no initFl.baseName & termFl.baseName // stronger mutex condition, a speed optimization\n"
+			//+ "    no initFl.baseName & termFl.baseName // stronger mutex condition, a speed optimization\n"
 			+ "    some initFl + termFl\n"
 			+ "    some vars\n"
 			+ "\n"
