@@ -10,8 +10,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.google.common.collect.Lists;
-
 import cmu.isr.ts.LTS;
 import cmu.isr.ts.lts.MultiTraceCex;
 import cmu.isr.ts.lts.RandTraceUtils;
