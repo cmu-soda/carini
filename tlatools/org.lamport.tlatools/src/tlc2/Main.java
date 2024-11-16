@@ -22,20 +22,15 @@ public class Main {
 			return;
 		}
 		
-    	if (args.length >= 5) {
-    		final String tlaSys = args[0];
-    		final String cfgSys = args[1];
-    		final String tlaComp = args[2];
-    		final String cfgComp = args[3];
-    		final String propFile = args[4];
-    		
-    		List<Utils.Pair<String,String>> otherComponents = new ArrayList<>();
-    		for (int i = 5; i < args.length; i += 2) {
-    			Utils.assertTrue(i+1 < args.length, "Each 'other' component must have a .cfg file too.");
-    			otherComponents.add(new Utils.Pair<>(args[i], args[i+1]));
-    		}
-    		
-    		final String formula = new FormulaSeparation(tlaSys, cfgSys, tlaComp, cfgComp, propFile, otherComponents).synthesizeSepInvariant();
+    	if (args.length == 7) {
+    		final String tlaComp = args[0];
+    		final String cfgComp = args[1];
+    		final String tlaRest = args[2];
+    		final String cfgRest = args[3];
+    		final String tlaSys = args[4];
+    		final String cfgSys = args[5];
+    		final String propFile = args[6];
+    		final String formula = new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, tlaSys, cfgSys, propFile).synthesizeSepInvariant();
     		
     		if (!formula.contains("UNSAT")) {
         		System.out.println("The following formula is a separating assumption:");
@@ -46,7 +41,7 @@ public class Main {
     		System.out.println(formula);
     	}
     	else {
-    		System.out.println("usage: recomp-verify <spec> <cfg>");
+    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <tlaSys> <cfgSys> <propFile>");
     	}
     	System.exit(0);
     }

@@ -22,14 +22,15 @@ import tlc2.Utils;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
-	private final String tlaSys;
-	private final String cfgSys;
 	private final String tlaComp;
 	private final String cfgComp;
+	private final String tlaRest;
+	private final String cfgRest;
 	private final boolean useIntermediateProp;
 	private final Formula intermediateProp;
-	private final TLC tlcSys;
 	private final TLC tlcComp;
+	private final TLC tlcRest;
+	private final TLC tlcSys;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
@@ -39,37 +40,29 @@ public class FormulaSeparation {
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int maxNumPosTracesToAdd;
 	
-	public FormulaSeparation(final String tlaSys, final String cfgSys, final String tlaComp, final String cfgComp,
-			final String propFile, final List<Utils.Pair<String,String>> otherComponents) {
-		this.tlaSys = tlaSys;
-		this.cfgSys = cfgSys;
+	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
+			final String tlaSys, final String cfgSys, final String propFile) {
 		this.tlaComp = tlaComp;
 		this.cfgComp = cfgComp;
+		this.tlaRest = tlaRest;
+		this.cfgRest = cfgRest;
 		
 		this.useIntermediateProp = !propFile.equals("none");
 		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
 		
-		System.out.println("Building the system LTS (for " + tlaSys + ")");
-		PerfTimer timer = new PerfTimer();
-		tlcSys = new TLC();
-    	tlcSys.modelCheck(tlaSys, cfgSys);
-		System.out.println("Built the system LTS in " + timer.timeElapsedSeconds() + "s");
-		System.out.println();
-		
 		tlcComp = new TLC();
     	tlcComp.initialize(tlaComp, cfgComp);
+		tlcSys = new TLC();
+    	tlcSys.initialize(tlaSys, cfgSys);
+
+    	System.out.println("Building the LTS for the initial trace (" + tlaSys + ")");
+    	PerfTimer timer = new PerfTimer();
+		tlcRest = new TLC();
+    	tlcRest.modelCheck(tlaRest, cfgRest);
+    	System.out.println("Built the LTS in " + timer.timeElapsedSeconds() + "s");
     	
-    	final Set<String> otherComponentActs = otherComponents
-    			.stream()
-    			.map(p -> {
-    				TLC tlc = new TLC();
-    				tlc.initialize(p.first, p.second);
-    				return tlc.actionsInSpec();
-    			})
-    			.reduce((Set<String>)new HashSet<String>(),
-    					(acc,s) -> Utils.union(acc, s),
-    					(s1,s2) -> Utils.union(s1, s2));
-    	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), otherComponentActs);
+    	// the actions that internal to "component"
+    	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort)
     	sortElementsMap = createSortElementsMap(tlcSys);
@@ -177,8 +170,8 @@ public class FormulaSeparation {
     			// generate positive traces until the formula becomes an invariant
     			final int ptNum = posTraces.size() + 1;
     			//final String ptName = "PT" + ptNum;
-    	    	final String tlaSysHV = writeHistVarsSpec(tlaSys, cfgSys, formula, false);
-    			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaSysHV, cfgPosTraces, "PT", ptNum, "PosTrace", numPosTraces);
+    	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
+    			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", numPosTraces);
     			isInvariant = newPosTraces.stream().allMatch(t -> !t.hasError());
     			
     			if (isInvariant) {
@@ -201,6 +194,10 @@ public class FormulaSeparation {
 			System.out.println();
     	}
     	
+    	// re-write the "rest" _hist file with the entire invariant. this will help the user
+    	// synthesize an inductive invariant for "rest".
+    	writeHistVarsSpec(tlaRest, cfgRest, Formula.conjunction(invariants), false);
+    	
     	// write out the formula to a file
     	final String tlaCompBaseName = this.tlaComp.replaceAll("\\.tla", "");
     	Utils.writeFile(tlaCompBaseName + ".inv", Formula.conjunction(invariants).toJson());
@@ -209,17 +206,23 @@ public class FormulaSeparation {
 	}
 	
 	private AlloyTrace createInitPosTrace() {
+		System.out.println("Creating the initial trace");
+		PerfTimer timer = new PerfTimer();
+		
 		// TODO make the init trace len a param
     	int initTraceLen = 4;
     	AlloyTrace initPosTrace = new AlloyTrace();
     	while (initPosTrace.isEmpty()) {
         	final List<String> initTrace =
-        			RandTraceUtils.INSTANCE.randTrace(tlcSys.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState(), initTraceLen)
+        			RandTraceUtils.INSTANCE.randTrace(tlcRest.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState(), initTraceLen)
         			.stream()
         			.collect(Collectors.toList());
         	initPosTrace = createAlloyTrace(initTrace, "PT1", "PosTrace");
         	++initTraceLen;
     	}
+    	
+    	System.out.println("Created the initial trace in " + timer.timeElapsedSeconds() + "s");
+    	System.out.println();
     	return initPosTrace;
 	}
 	
