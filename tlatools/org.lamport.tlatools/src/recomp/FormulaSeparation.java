@@ -22,7 +22,7 @@ import tlc2.Utils;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
-	private static final int MAX_NUM_POS_TRACES = 5;
+	private static final int INIT_MAX_POS_TRACES = 5;
 	
 	private final String tlaComp;
 	private final String cfgComp;
@@ -40,7 +40,6 @@ public class FormulaSeparation {
 	private final int maxNumVarsPerType;
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
-	private final int maxNumPosTracesToAdd;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
 			final String tlaSys, final String cfgSys, final String propFile) {
@@ -93,9 +92,6 @@ public class FormulaSeparation {
 						.mapToObj(j -> varNameBase + j)
 						.collect(Collectors.toSet()))
 				.collect(Collectors.toSet());
-		
-		// TODO numbers above 1 won't work unless Worker.java is modified to allow multiple errors
-    	maxNumPosTracesToAdd = 1; //3; // TODO this should be a param
 	}
 	
 	public String synthesizeSepInvariant() {
@@ -126,14 +122,26 @@ public class FormulaSeparation {
     	
     	final AlloyTrace initPosTrace = createInitPosTrace();
     	
-    	List<AlloyTrace> posTraces = new ArrayList<>();
-    	posTraces.add(initPosTrace);
+    	// the current pos traces that we will learn from (perform formula synth on)
+    	List<AlloyTrace> currentPosTraces = new ArrayList<>();
+    	currentPosTraces.add(initPosTrace);
+    	
+    	// all (unique) pos traces that we've generated
+    	Set<AlloyTrace> allPosTracesSeen = new HashSet<>();
+    	allPosTracesSeen.add(initPosTrace);
+
+    	// keeps track of the pos traces we've seen exactly once. we care about this because once a pos trace has
+    	// been seen twice, we will increment <maxNumPosTraces>. but we only want to increment <maxNumPosTraces> once
+    	// per a given pos trace, so we remove the pos trace from this set once we increment <maxNumPosTraces>.
+    	Set<AlloyTrace> posTracesSeenOnce = new HashSet<>();
+    	posTracesSeenOnce.add(initPosTrace);
     	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
     	
     	int round = 1;
-    	int numPosTraces = 1; // TODO this (plus dynamic tuning) should be params
+    	int cumNumPosTraces = 1; // cumulative number of pos traces seen so far
+    	int maxNumPosTraces = INIT_MAX_POS_TRACES; // the max num pos traces we'll allow during formula synthesis
     	while (!formulaSeparates) {
     		System.out.println("Round " + round);
     		System.out.println("-------");
@@ -160,7 +168,7 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Formula formula = synthesizeFormula(negTrace, posTraces, numFluents, envVarTypes);
+    			final Formula formula = synthesizeFormula(negTrace, currentPosTraces, numFluents, envVarTypes);
     			System.out.println("Synthesized: " + formula);
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
@@ -170,12 +178,12 @@ public class FormulaSeparation {
     			}
     			
     			// generate positive traces until the formula becomes an invariant
-    			final int ptNum = posTraces.size() + 1;
-    			//final String ptName = "PT" + ptNum;
+    			final int ptNum = cumNumPosTraces + 1;
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", numPosTraces);
+    			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", cumNumPosTraces);
     			Utils.assertTrue(newPosTraces.size() == 1, "Only one new pos trace at a time currently supported");
-    			isInvariant = newPosTraces.stream().allMatch(t -> !t.hasError());
+				final AlloyTrace newPosTrace = Utils.chooseOne(newPosTraces); // TODO
+    			isInvariant = !newPosTrace.hasError();
     			
     			if (isInvariant) {
     				invariants.add(formula);
@@ -183,16 +191,32 @@ public class FormulaSeparation {
     			}
     			else {
         			System.out.println();
-        			System.out.println("new pos traces:");
-    				for (final AlloyTrace posTrace : newPosTraces) {
-    					System.out.println(posTrace.fullSigString());
+        			System.out.println("new pos trace:");
+    				System.out.println(newPosTrace.fullSigString());
+    				++cumNumPosTraces;
+    				
+    				// if we've seen this trace exactly once then increment <maxNumPosTraces>. also remove it from
+    				// <posTracesSeenOnce>, since now we've seen it twice.
+    				if (posTracesSeenOnce.contains(newPosTrace)) {
+    					++maxNumPosTraces;
+    					posTracesSeenOnce.remove(newPosTrace);
     				}
-    				posTraces.addAll(newPosTraces);
-    				while (posTraces.size() > MAX_NUM_POS_TRACES) {
-    					posTraces.remove(0);
+    				
+    				// the case where <newPosTrace> is brand new, never seen before
+    				if (!allPosTracesSeen.contains(newPosTrace)) {
+    					allPosTracesSeen.add(newPosTrace);
+    					posTracesSeenOnce.add(newPosTrace);
     				}
-    				++numPosTraces;
-    				//numPosTraces = Math.min(numPosTraces+1, this.maxNumPosTracesToAdd);
+    				else {
+    					System.out.println("(trace has been seen before)");
+    				}
+    				
+    				// add the new pos trace to the set of current pos traces, then trim the set to be at most <maxNumPosTraces>
+    				currentPosTraces.add(newPosTrace);
+    				while (currentPosTraces.size() > maxNumPosTraces) {
+    					currentPosTraces.remove(0);
+    				}
+        			System.out.println("max # pos traces: " + maxNumPosTraces);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");

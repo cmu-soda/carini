@@ -91,4 +91,28 @@ public class AlloyTrace {
 	public String toString() {
 		return "one sig " + this.name + " extends " + this.ext + " {} {}";
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof AlloyTrace)) {
+			return false;
+		}
+		AlloyTrace other = (AlloyTrace) o;
+		if (this.trace == null && other.trace != null) {
+			return false;
+		}
+		if (this.trace != null && other.trace == null) {
+			return false;
+		}
+		// the == covers the case when this.trace and other.trace are both null
+		return (this.trace == other.trace) || (this.trace.equals(other.trace));
+	}
+	
+	@Override
+	public int hashCode() {
+		if (this.trace == null) {
+			return 0;
+		}
+		return this.trace.hashCode();
+	}
 }
