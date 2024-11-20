@@ -22,6 +22,8 @@ import tlc2.Utils;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
+	private static final int MAX_NUM_POS_TRACES = 5;
+	
 	private final String tlaComp;
 	private final String cfgComp;
 	private final String tlaRest;
@@ -172,6 +174,7 @@ public class FormulaSeparation {
     			//final String ptName = "PT" + ptNum;
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
     			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", numPosTraces);
+    			Utils.assertTrue(newPosTraces.size() == 1, "Only one new pos trace at a time currently supported");
     			isInvariant = newPosTraces.stream().allMatch(t -> !t.hasError());
     			
     			if (isInvariant) {
@@ -185,8 +188,11 @@ public class FormulaSeparation {
     					System.out.println(posTrace.fullSigString());
     				}
     				posTraces.addAll(newPosTraces);
-    				//++numPosTraces;
-    				numPosTraces = Math.min(numPosTraces+1, this.maxNumPosTracesToAdd);
+    				while (posTraces.size() > MAX_NUM_POS_TRACES) {
+    					posTraces.remove(0);
+    				}
+    				++numPosTraces;
+    				//numPosTraces = Math.min(numPosTraces+1, this.maxNumPosTracesToAdd);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
