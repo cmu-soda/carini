@@ -126,22 +126,11 @@ public class FormulaSeparation {
     	List<AlloyTrace> currentPosTraces = new ArrayList<>();
     	currentPosTraces.add(initPosTrace);
     	
-    	// all (unique) pos traces that we've generated
-    	Set<AlloyTrace> allPosTracesSeen = new HashSet<>();
-    	allPosTracesSeen.add(initPosTrace);
-
-    	// keeps track of the pos traces we've seen exactly once. we care about this because once a pos trace has
-    	// been seen twice, we will increment <maxNumPosTraces>. but we only want to increment <maxNumPosTraces> once
-    	// per a given pos trace, so we remove the pos trace from this set once we increment <maxNumPosTraces>.
-    	Set<AlloyTrace> posTracesSeenOnce = new HashSet<>();
-    	posTracesSeenOnce.add(initPosTrace);
-    	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
     	
     	int round = 1;
     	int cumNumPosTraces = 1; // cumulative number of pos traces seen so far
-    	int maxNumPosTraces = INIT_MAX_POS_TRACES; // the max num pos traces we'll allow during formula synthesis
     	while (!formulaSeparates) {
     		System.out.println("Round " + round);
     		System.out.println("-------");
@@ -160,6 +149,23 @@ public class FormulaSeparation {
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
+
+    		// reset the max num pos traces in every round
+        	int maxNumPosTraces = INIT_MAX_POS_TRACES; // the max num pos traces we'll allow during formula synthesis
+			while (currentPosTraces.size() > maxNumPosTraces) {
+				currentPosTraces.remove(0);
+			}
+			System.out.println("max # pos traces: " + maxNumPosTraces);
+			
+	    	// all (unique) pos traces that we've generated this round
+	    	Set<AlloyTrace> allPosTracesSeen = new HashSet<>();
+	    	allPosTracesSeen.addAll(currentPosTraces);
+
+	    	// keeps track of the pos traces we've seen exactly once. we care about this because once a pos trace has
+	    	// been seen twice, we will increment <maxNumPosTraces>. but we only want to increment <maxNumPosTraces> once
+	    	// per a given pos trace, so we remove the pos trace from this set once we increment <maxNumPosTraces>.
+	    	Set<AlloyTrace> posTracesSeenOnce = new HashSet<>();
+	    	posTracesSeenOnce.addAll(currentPosTraces);
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
