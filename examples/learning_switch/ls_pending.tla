@@ -11,6 +11,7 @@ VARIABLE
     \* @type: Set(<<Str, Str, Str, Str>>);
     pending
 
+vars == <<pending>>
 
 \* @type: (Str, Str) => Bool;
 NewPacket(ps,pd) ==
@@ -31,6 +32,8 @@ Next ==
 
 Init ==
     /\ pending = {}
+
+Spec == Init /\ [][Next]_vars
 
 NextUnchanged == UNCHANGED <<pending>>
 
