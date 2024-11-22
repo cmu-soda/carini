@@ -145,16 +145,13 @@ public class FormulaSeparation {
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
-        	final AlloyTrace negTrace = genOneCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", "NegTrace");
+        	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace");
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
 
     		// reset the max num pos traces in every round
         	int maxNumPosTraces = INIT_MAX_POS_TRACES; // the max num pos traces we'll allow during formula synthesis
-			while (currentPosTraces.size() > maxNumPosTraces) {
-				currentPosTraces.remove(0);
-			}
 			System.out.println("max # pos traces: " + maxNumPosTraces);
 			
 	    	// all (unique) pos traces that we've generated this round
@@ -171,6 +168,12 @@ public class FormulaSeparation {
 			// keep generating positive traces until the formula turns into an invariant
     		boolean isInvariant = false;
     		while (!formulaSeparates && !isInvariant) {
+				// trim <currentPosTraces> to be at most <maxNumPosTraces>
+				while (currentPosTraces.size() > maxNumPosTraces) {
+					currentPosTraces.remove(0);
+				}
+				
+				// synthesize a new formula
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
@@ -186,9 +189,7 @@ public class FormulaSeparation {
     			// generate positive traces until the formula becomes an invariant
     			final int ptNum = cumNumPosTraces + 1;
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			final Set<AlloyTrace> newPosTraces = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", cumNumPosTraces);
-    			Utils.assertTrue(newPosTraces.size() == 1, "Only one new pos trace at a time currently supported");
-				final AlloyTrace newPosTrace = Utils.chooseOne(newPosTraces); // TODO
+    			final AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace");
     			isInvariant = !newPosTrace.hasError();
     			
     			if (isInvariant) {
@@ -210,6 +211,7 @@ public class FormulaSeparation {
     				
     				// the case where <newPosTrace> is brand new, never seen before
     				if (!allPosTracesSeen.contains(newPosTrace)) {
+    					Utils.assertTrue(!currentPosTraces.contains(newPosTrace), "Synthesized a formula that doesn't respect a pos trace!");
     					allPosTracesSeen.add(newPosTrace);
     					posTracesSeenOnce.add(newPosTrace);
     				}
@@ -217,17 +219,14 @@ public class FormulaSeparation {
     					System.out.println("(trace has been seen before)");
     				}
     				
-    				// add the new pos trace to the set of current pos traces, then trim the set to be at most <maxNumPosTraces>
+    				// add the new pos trace to the set of current pos traces
     				currentPosTraces.add(newPosTrace);
-    				while (currentPosTraces.size() > maxNumPosTraces) {
-    					currentPosTraces.remove(0);
-    				}
         			System.out.println("max # pos traces: " + maxNumPosTraces);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
-    		++round;
 			System.out.println();
+    		++round;
     	}
     	
     	// re-write the "rest" _hist file with the entire invariant. this will help the user
@@ -262,30 +261,25 @@ public class FormulaSeparation {
     	return initPosTrace;
 	}
 	
-	private AlloyTrace genOneCexTraceForCandSepInvariant(final String tla, final String cfg, final String name, final String ext) {
-		final Set<AlloyTrace> traces = genCexTraceForCandSepInvariant(tla,cfg,name,1,ext,1);
-		Utils.assertTrue(traces.size() == 1, "expected one trace but there were " + traces.size());
-    	return Utils.chooseOne(traces);
-	}
-	
-	private Set<AlloyTrace> genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum,
-			final String ext, int numTraces) {
+	private AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext) {
     	TLC tlc = new TLC();
     	tlc.modelCheck(tla, cfg);
     	final LTS<Integer, String> lts = tlc.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
     	
     	if (SafetyUtils.INSTANCE.ltsIsSafe(lts)) {
-    		return Utils.setOf(new AlloyTrace());
+    		return new AlloyTrace();
     	}
 		
 		// if candSep isn't an invariant, return a trace that should be covered by the formula
+    	final int numTraces = 1; // only generate one trace at a time
     	final Set<List<String>> errTraces = MultiTraceCex.INSTANCE.findErrorTraces(lts, numTraces, this.tlcComp.actionsInSpec());
     	Set<AlloyTrace> cexs = new HashSet<>();
     	for (final List<String> errTrace : errTraces) {
     		final String name = trName + (trNum++);
     		cexs.add(createAlloyTrace(errTrace, name, ext));
     	}
-    	return cexs;
+		Utils.assertTrue(cexs.size() == 1, "expected one trace but there were " + cexs.size());
+    	return Utils.chooseOne(cexs);
 	}
 	
 	private AlloyTrace createAlloyTrace(final List<String> word, final String name, final String ext) {
