@@ -811,6 +811,30 @@ public class OpDefNode extends OpDefOrDeclNode
 	  this.body = new OpApplNode(UniqueString.of("$ConjList"), ops, this.stn, null);
   }
   
+  public void addConjunct(final String conjunct) {
+	  final int numNewOps = 1;
+	  int idx = 0;
+	  ExprOrOpArgNode[] ops = new ExprOrOpArgNode[1 + numNewOps];
+	  ops[idx++] = this.getBody();
+	  
+	  // if the body of this def node is a conj list, just merge the new conjuncts with the existing list
+	  if (this.getBody() instanceof OpApplNode) {
+		  final OpApplNode oan = (OpApplNode) this.getBody();
+		  final boolean bodyIsConj = oan.getOperator().getName().toString().equals("$ConjList");
+		  if (bodyIsConj) {
+			  ops = new ExprOrOpArgNode[oan.operands.length + numNewOps];
+			  for (idx = 0; idx < oan.operands.length; ++idx) {
+				  ops[idx] = oan.operands[idx];
+			  }
+		  }
+	  }
+	  
+	  ops[idx++] = new RawTlaNode(conjunct, this.stn);
+	  
+	  // change the child to be the new conjunct
+	  this.body = new OpApplNode(UniqueString.of("$ConjList"), ops, this.stn, null);
+  }
+  
   
   /*************************************************************************
   * The methods that return or check properties of the node.               *

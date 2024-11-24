@@ -262,12 +262,193 @@ public class FormulaSeparation {
 	}
 	
 	private AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext) {
-    	TLC tlc = new TLC();
-    	tlc.modelCheck(tla, cfg);
-    	final LTS<Integer, String> lts = tlc.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
+		final String tlaName = tla.replaceAll("\\.tla", "");
+		final String cfgName = cfg.replaceAll("\\.cfg", "");
+		final String tlaFile = tlaName + ".tla";
+		final String cfgFile = cfgName + ".cfg";
+		final String cexTraceOutputFile = "cextrace.txt";
+		try {
+			final String[] cmd = {"sh", "-c",
+					"java -jar /Users/idardik/bin/tla2tools.jar -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
+			Process proc = Runtime.getRuntime().exec(cmd);
+			synchronized (proc) {
+				final long fiveMinutes = 300000L;
+				proc.wait(fiveMinutes);
+			}
+			
+			// reached the 5m timeout--no error detected
+			if (proc.isAlive()) {
+				proc.destroyForcibly();
+				return new AlloyTrace();
+			}
+
+			// no error detected according to the ret code
+			final int retCode = proc.exitValue();
+			if (retCode == 0) {
+				return new AlloyTrace();
+			}
+			// ret code 12 is an error trace
+			if (retCode != 12) {
+				System.out.println("While generating a cex trace, unexpected ret code from TLC: " + retCode);
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Utils.assertTrue(false, "Exception while generating a cex!");
+		}
+		
+		// get the cex trace file, starting where the trace is
+		final String cexTraceTxt = Utils.fileContents(cexTraceOutputFile)
+				.stream()
+				.dropWhile(l -> !l.equals("State 1: <Initial predicate>"))
+				.collect(Collectors.joining("\n"));
+		final List<String> states = Utils.toArrayList(cexTraceTxt.split("\n\n"))
+				.stream()
+				// only consider states in the trace (i.e. chop off the suffix of the file that doesn't contain trace info)
+				.filter(s -> s.startsWith("State "))
+				.map(s -> {
+					// remove the "State i: ..." header
+					List<String> stateLines = Utils.toArrayList(s.split("\n"));
+					stateLines.remove(0);
+					return String.join("\n", stateLines);
+				})
+				.collect(Collectors.toList());
+		
+		// create a formula that says: at each time step i, we must be in the corresponding state of the cex trace
+		final String cexIdxVar = "cexTraceIdx";
+		final String traceConstraint = IntStream.range(0, states.size())
+				.mapToObj(i -> {
+					final String rawState = states.get(i);
+					final String stateConstraint = rawState.indent(2);
+					return "/\\ " + cexIdxVar + " = " + i + " =>\n" + stateConstraint;
+				})
+				.collect(Collectors.joining("\n"));
+		
+		final String tcfName = "TraceConstraint";
+		final String tcfNamePrimed = tcfName + "'";
+		
+		TLC tlc = new TLC();
+		tlc.initialize(tlaFile, cfgFile);
+
+    	final FastTool ft = (FastTool) tlc.tool;
+		final String moduleName = tlc.getModelName();
+		final ModuleNode mn = ft.getModule(moduleName);
+		final List<OpDefNode> moduleNodes = Utils.toArrayList(mn.getOpDefs())
+				.stream()
+				// only retain module for the .tla file
+				.filter(d -> moduleName.equals(d.getOriginallyDefinedInModuleNode().getName().toString()))
+				.filter(d -> !d.getName().toString().equals("vars")) // remove the vars decl; we insert this manually
+				.collect(Collectors.toList());
+		
+		List<String> strModuleNodes = moduleNodes
+				.stream()
+				.map(d -> {
+					final String dname = d.getName().toString();
+					if (tlc.actionsInSpec().contains(dname)) {
+						d.addConjunct(cexIdxVar + "' = " + cexIdxVar + " + 1");
+						d.addConjunct(tcfNamePrimed);
+					}
+					else if (dname.equals("Init")) {
+						d.addConjunct(cexIdxVar + " = 0");
+						d.addConjunct(tcfName);
+					}
+					return d;
+				 })
+				.map(d -> d.toTLA())
+				.collect(Collectors.toList());
+		
+		// add CandSep to the module definitions (after any dependencies, where a dependency
+		// is a definition for a type symbol that occurs in CandSep)
+		final Set<String> allTypes = actionParamTypes
+				.values()
+				.stream()
+				.reduce((Set<String>)new HashSet<String>(),
+						(acc,l) -> Utils.union(acc, l.stream().collect(Collectors.toSet())),
+						(l1,l2) -> Utils.union(l1,l2));
+		
+		Set<OpDefNode> candSepDependencyNodes = moduleNodes
+				.stream()
+				.filter(d -> allTypes.contains(d.getName().toString()))
+				.collect(Collectors.toSet());
+		
+		for (int i = 0; i < moduleNodes.size(); ++i) {
+			final OpDefNode defNode = moduleNodes.get(i);
+			if (candSepDependencyNodes.isEmpty()) {
+				strModuleNodes.add(i, tcfName + " ==\n" + traceConstraint);
+				break;
+			}
+			else if (candSepDependencyNodes.contains(defNode)) {
+				candSepDependencyNodes.remove(defNode);
+			}
+			Utils.assertTrue(i < moduleNodes.size()-1, "Could not find a place for " + tcfName + "!");
+		}
+		
+		final Set<String> sortConsts = this.sortElementsMap.values()
+				.stream()
+				.reduce((Set<String>)new HashSet<String>(),
+						(acc,l) -> Utils.union(acc, l.stream().collect(Collectors.toSet())),
+						(l1,l2) -> Utils.union(l1,l2));
+		final Set<String> allConsts = Utils.union(sortConsts, tlc.constantsInSpec().stream().collect(Collectors.toSet()));
+		
+		// construct the spec
+		final String specName = "CexTrace";
+		final String specBody = String.join("\n\n", strModuleNodes);
+		
+        final String specDecl = "--------------------------- MODULE " + specName + " ---------------------------";
+        final String endModule = "=============================================================================";
+        
+        final List<String> moduleWhiteList =
+        		Arrays.asList("Bags", "FiniteSets", "Functions", "Integers", "Json", "Naturals",
+        				"NaturalsInduction", "RealTime", "Sequences", "SequencesExt", "TLC", "TLCExt");
+        ArrayList<String> moduleNameList = Utils.filterArrayWhiteList(moduleWhiteList, ft.getModuleNames());
+        // ensure that the naturals are included so we can increment the cexIdxVar
+        if (!moduleNameList.contains("Naturals")) {
+        	moduleNameList.add("Naturals");
+        }
+        
+        final Set<String> stateVars = Utils.union(tlc.stateVarsInSpec(), Utils.setOf(cexIdxVar));
+
+        final String moduleList = String.join(", ", moduleNameList);
+        final String constantsDecl = "CONSTANTS " + String.join(", ", allConsts);
+        final String varList = String.join(", ", stateVars);
+        final String modulesDecl = moduleList.isEmpty() ? "" : "EXTENDS " + moduleList;
+        final String varsDecl = "VARIABLES " + varList;
+        final String varsListDecl = "vars == <<" + varList + ">>";
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append(specDecl).append("\n");
+        builder.append(modulesDecl).append("\n");
+        builder.append("\n");
+        builder.append(constantsDecl).append("\n");
+        builder.append("\n");
+        builder.append(varsDecl).append("\n");
+        builder.append("\n");
+        builder.append(varsListDecl).append("\n");
+        builder.append("\n");
+        builder.append(specBody);
+        builder.append("\n");
+        builder.append(endModule).append("\n");
+
+        final String cexTraceTla = specName + ".tla";
+        Utils.writeFile(cexTraceTla, builder.toString());
+        
+        StringBuilder cfgBuilder = new StringBuilder();
+        final String cfgContent = String.join("\n", Utils.fileContents(cfgFile)) + "\n";
+        cfgBuilder.append(cfgContent);
+        for (final String constElem : sortConsts) {
+        	final String constAssg = constElem + "=" + constElem + "\n";
+        	cfgBuilder.append(constAssg);
+        }
+
+        final String cexTraceCfg = specName + ".cfg";
+        Utils.writeFile(cexTraceCfg, cfgBuilder.toString());
+		
+    	TLC tlc2 = new TLC();
+    	tlc2.modelCheck(cexTraceTla, cexTraceCfg);
+    	final LTS<Integer, String> lts = tlc2.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
     	
     	if (SafetyUtils.INSTANCE.ltsIsSafe(lts)) {
-    		return new AlloyTrace();
+			Utils.assertTrue(false, "Couldn't reproduce TLC error!");
     	}
 		
 		// if candSep isn't an invariant, return a trace that should be covered by the formula
