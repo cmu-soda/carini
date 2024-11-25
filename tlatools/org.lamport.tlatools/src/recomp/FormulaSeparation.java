@@ -23,6 +23,7 @@ import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
 	private static final int INIT_MAX_POS_TRACES = 5;
+	private static final String TLC_JAR_PATH = System.getProperty("user.home") + "/bin/tla2tools.jar";
 	
 	private final String tlaComp;
 	private final String cfgComp;
@@ -288,7 +289,7 @@ public class FormulaSeparation {
 		// Call out to TLC to find a cex trace
 		try {
 			final String[] cmd = {"sh", "-c",
-					"java -jar /Users/idardik/bin/tla2tools.jar -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
+					"java -jar " + TLC_JAR_PATH + " -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
 			synchronized (proc) {
 				proc.wait(timeout);
