@@ -145,7 +145,8 @@ public class FormulaSeparation {
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
-        	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace");
+			final long fiveMinuteTimeout = 300000L; // use a 5m timeout for neg traces
+        	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", fiveMinuteTimeout);
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
@@ -189,7 +190,8 @@ public class FormulaSeparation {
     			// generate positive traces until the formula becomes an invariant
     			final int ptNum = cumNumPosTraces + 1;
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			final AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace");
+    			final long threeMinuteTimeout = 180000L; // use a 3m timeout for pos traces
+    			final AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", threeMinuteTimeout);
     			isInvariant = !newPosTrace.hasError();
     			
     			if (isInvariant) {
@@ -261,22 +263,38 @@ public class FormulaSeparation {
     	return initPosTrace;
 	}
 	
-	private AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext) {
+	/**
+	 * This method creates a cex traces for the given spec (or an empty trace if no error is detected). This method is implemented in
+	 * several steps:
+	 * (1) Call out to TLC to find a cex trace
+	 * (2) Parse the output of TLC to create a formula that helps reproduce the error
+	 * (3) Using the formula from (2), create a new TLA+ spec that efficiently reproduces the error
+	 * (4) Load the new TLA+ spec as a TLC object (i.e. in Java code) and get an action-based trace, which we turn into an AlloyTrace
+	 * @param tla
+	 * @param cfg
+	 * @param trName
+	 * @param trNum
+	 * @param ext
+	 * @return
+	 */
+	private AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
 		final String cfgFile = cfgName + ".cfg";
 		final String cexTraceOutputFile = "cextrace.txt";
+		
+		// Step (1)
+		// Call out to TLC to find a cex trace
 		try {
 			final String[] cmd = {"sh", "-c",
 					"java -jar /Users/idardik/bin/tla2tools.jar -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
 			synchronized (proc) {
-				final long fiveMinutes = 300000L;
-				proc.wait(fiveMinutes);
+				proc.wait(timeout);
 			}
 			
-			// reached the 5m timeout--no error detected
+			// reached the timeout but TLC is still running--no error detected
 			if (proc.isAlive()) {
 				proc.destroyForcibly();
 				return new AlloyTrace();
@@ -296,6 +314,10 @@ public class FormulaSeparation {
 			e.printStackTrace();
 			Utils.assertTrue(false, "Exception while generating a cex!");
 		}
+		
+		
+		// Step (2)
+		// Parse the output of TLC to create a formula that helps reproduce the error
 		
 		// get the cex trace file, starting where the trace is
 		final String cexTraceTxt = Utils.fileContents(cexTraceOutputFile)
@@ -327,6 +349,11 @@ public class FormulaSeparation {
 		final String tcfName = "TraceConstraint";
 		final String tcfNamePrimed = tcfName + "'";
 		
+		
+		// Step (3)
+		// Using the formula from (2), create a new TLA+ spec that efficiently reproduces the error
+		
+		// use the original TLA+ file to construct the reproducer spec
 		TLC tlc = new TLC();
 		tlc.initialize(tlaFile, cfgFile);
 
@@ -357,8 +384,7 @@ public class FormulaSeparation {
 				.map(d -> d.toTLA())
 				.collect(Collectors.toList());
 		
-		// add CandSep to the module definitions (after any dependencies, where a dependency
-		// is a definition for a type symbol that occurs in CandSep)
+		// add <traceConstraint> to the module definitions
 		final Set<String> allTypes = actionParamTypes
 				.values()
 				.stream()
@@ -366,19 +392,19 @@ public class FormulaSeparation {
 						(acc,l) -> Utils.union(acc, l.stream().collect(Collectors.toSet())),
 						(l1,l2) -> Utils.union(l1,l2));
 		
-		Set<OpDefNode> candSepDependencyNodes = moduleNodes
+		Set<OpDefNode> dependencyNodes = moduleNodes
 				.stream()
 				.filter(d -> allTypes.contains(d.getName().toString()))
 				.collect(Collectors.toSet());
 		
 		for (int i = 0; i < moduleNodes.size(); ++i) {
 			final OpDefNode defNode = moduleNodes.get(i);
-			if (candSepDependencyNodes.isEmpty()) {
+			if (dependencyNodes.isEmpty()) {
 				strModuleNodes.add(i, tcfName + " ==\n" + traceConstraint);
 				break;
 			}
-			else if (candSepDependencyNodes.contains(defNode)) {
-				candSepDependencyNodes.remove(defNode);
+			else if (dependencyNodes.contains(defNode)) {
+				dependencyNodes.remove(defNode);
 			}
 			Utils.assertTrue(i < moduleNodes.size()-1, "Could not find a place for " + tcfName + "!");
 		}
@@ -404,6 +430,10 @@ public class FormulaSeparation {
         // ensure that the naturals are included so we can increment the cexIdxVar
         if (!moduleNameList.contains("Naturals")) {
         	moduleNameList.add("Naturals");
+        }
+        // ensure that TLC is included for the definition of @@
+        if (!moduleNameList.contains("TLC")) {
+        	moduleNameList.add("TLC");
         }
         
         final Set<String> stateVars = Utils.union(tlc.stateVarsInSpec(), Utils.setOf(cexIdxVar));
@@ -432,20 +462,24 @@ public class FormulaSeparation {
         final String cexTraceTla = specName + ".tla";
         Utils.writeFile(cexTraceTla, builder.toString());
         
+        // create the config file for the TLA+ reproducer
         StringBuilder cfgBuilder = new StringBuilder();
         final String cfgContent = String.join("\n", Utils.fileContents(cfgFile)) + "\n";
         cfgBuilder.append(cfgContent);
+        cfgBuilder.append("CONSTANTS\n");
         for (final String constElem : sortConsts) {
         	final String constAssg = constElem + "=" + constElem + "\n";
         	cfgBuilder.append(constAssg);
         }
-
         final String cexTraceCfg = specName + ".cfg";
         Utils.writeFile(cexTraceCfg, cfgBuilder.toString());
 		
-    	TLC tlc2 = new TLC();
-    	tlc2.modelCheck(cexTraceTla, cexTraceCfg);
-    	final LTS<Integer, String> lts = tlc2.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
+        
+        // Step (4)
+        // Load the new TLA+ spec as a TLC object (i.e. in Java code) and get an action-based trace, which we turn into an AlloyTrace
+    	TLC tlcCexReproducer = new TLC();
+    	tlcCexReproducer.modelCheck(cexTraceTla, cexTraceCfg);
+    	final LTS<Integer, String> lts = tlcCexReproducer.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
     	
     	if (SafetyUtils.INSTANCE.ltsIsSafe(lts)) {
 			Utils.assertTrue(false, "Couldn't reproduce TLC error!");
