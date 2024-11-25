@@ -8,9 +8,9 @@ VARIABLES msgs, tmState, tmPrepared, Fluent5, Fluent4, Fluent3, Fluent2, Fluent1
 vars == <<msgs, tmState, tmPrepared, Fluent5, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
 
 CandSep ==
-/\ \A var0 \in RMs : (Fluent1[var0]) => (Fluent0[var0])
-/\ \A var0 \in RMs : \A var1 \in RMs : (Fluent2[var0]) => (Fluent3[var1])
-/\ \A var0 \in RMs : \A var1 \in RMs : (Fluent4[var1]) => (~(Fluent5[var0]))
+/\ \A var0 \in RMs : (Fluent0[var0]) => (Fluent1[var0])
+/\ \A var0 \in RMs : \A var1 \in RMs : (Fluent3[var0]) => (Fluent2[var1])
+/\ \A var0 \in RMs : \A var1 \in RMs : (Fluent4[var0]) => (~(Fluent5[var1]))
 
 Message == ([type : {"Prepared"},theRM : RMs] \cup [type : {"Commit","Abort"}])
 
@@ -28,9 +28,9 @@ Init ==
 SndPrepare(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Prepared",theRM |-> rm]})
 /\ UNCHANGED <<tmState,tmPrepared>>
-/\ Fluent3' = [Fluent3 EXCEPT ![rm] = TRUE]
-/\ Fluent0' = [Fluent0 EXCEPT ![rm] = TRUE]
-/\ UNCHANGED<<Fluent2, Fluent1, Fluent5, Fluent4>>
+/\ Fluent2' = [Fluent2 EXCEPT ![rm] = TRUE]
+/\ Fluent1' = [Fluent1 EXCEPT ![rm] = TRUE]
+/\ UNCHANGED<<Fluent3, Fluent0, Fluent5, Fluent4>>
 
 RcvPrepare(rm) ==
 /\ ([type |-> "Prepared",theRM |-> rm] \in msgs)
@@ -50,10 +50,10 @@ SndCommit(rm) ==
 RcvCommit(rm) ==
 /\ ([type |-> "Commit"] \in msgs)
 /\ UNCHANGED <<msgs,tmState,tmPrepared>>
-/\ Fluent2' = [Fluent2 EXCEPT ![rm] = TRUE]
-/\ Fluent1' = [Fluent1 EXCEPT ![rm] = TRUE]
-/\ Fluent5' = [Fluent5 EXCEPT ![rm] = TRUE]
-/\ UNCHANGED<<Fluent3, Fluent0, Fluent4>>
+/\ Fluent3' = [Fluent3 EXCEPT ![rm] = TRUE]
+/\ Fluent0' = [Fluent0 EXCEPT ![rm] = TRUE]
+/\ Fluent4' = [Fluent4 EXCEPT ![rm] = TRUE]
+/\ UNCHANGED<<Fluent2, Fluent1, Fluent5>>
 
 SndAbort(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Abort"]})
@@ -65,8 +65,8 @@ SndAbort(rm) ==
 RcvAbort(rm) ==
 /\ ([type |-> "Abort"] \in msgs)
 /\ UNCHANGED <<msgs,tmState,tmPrepared>>
-/\ Fluent4' = [Fluent4 EXCEPT ![rm] = TRUE]
-/\ UNCHANGED<<Fluent3, Fluent2, Fluent1, Fluent0, Fluent5>>
+/\ Fluent5' = [Fluent5 EXCEPT ![rm] = TRUE]
+/\ UNCHANGED<<Fluent3, Fluent2, Fluent1, Fluent0, Fluent4>>
 
 Next ==
 \E rm \in RMs :

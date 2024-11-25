@@ -5,6 +5,8 @@ CONSTANTS Node, Request, Response, DbRequestId
 
 VARIABLES db_request_sent, db_response_sent, t
 
+Symmetry == Permutations(Node) \cup Permutations(Request) \cup Permutations(Response) \cup Permutations(DbRequestId)
+
 vars == <<db_request_sent,db_response_sent, t>>
 
 NoneWithId(i) == (\A n \in Node : (<<i,n>> \notin t))

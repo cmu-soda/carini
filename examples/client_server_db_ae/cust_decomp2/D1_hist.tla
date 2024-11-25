@@ -1,11 +1,11 @@
---------------------------- MODULE D0_hist ---------------------------
+--------------------------- MODULE D1_hist ---------------------------
 EXTENDS Naturals, Sequences, FiniteSets, TLC
 
 CONSTANTS Node, Request, Response, DbRequestId
 
-VARIABLES Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent7, request_sent, Fluent6, response_sent, Fluent5, Fluent10, Fluent4, match, Fluent3, response_received, Fluent2, Fluent1, Fluent0
+VARIABLES db_request_sent, Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent7, Fluent6, Fluent5, Fluent10, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0, db_response_sent, t
 
-vars == <<Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent7, request_sent, Fluent6, response_sent, Fluent5, Fluent10, Fluent4, match, Fluent3, response_received, Fluent2, Fluent1, Fluent0>>
+vars == <<db_request_sent, Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent7, Fluent6, Fluent5, Fluent10, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0, db_response_sent, t>>
 
 CandSep ==
 /\ \A var0 \in DbRequestId : (Fluent0[var0]) => (Fluent1[var0])
@@ -18,20 +18,13 @@ CandSep ==
 
 Symmetry == (((Permutations(Node) \cup Permutations(Request)) \cup Permutations(Response)) \cup Permutations(DbRequestId))
 
-ResponseMatched(n,p) ==
-\E r \in Request :
-/\ (<<n,r>> \in request_sent)
-/\ (<<r,p>> \in match)
-
-NewRequest(n,r) ==
-/\ request_sent' = (request_sent \cup {<<n,r>>})
-/\ UNCHANGED <<match,response_sent,response_received>>
-/\ UNCHANGED<<Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent7, Fluent6, Fluent5, Fluent10, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
-/\ CandSep'
+NoneWithId(i) == (\A n \in Node : (<<i,n>> \notin t))
 
 ServerProcessRequest(n,r,i) ==
-/\ (<<n,r>> \in request_sent)
-/\ UNCHANGED <<match,request_sent,response_sent,response_received>>
+/\ NoneWithId(i)
+/\ t' = (t \cup {<<i,n>>})
+/\ db_request_sent' = (db_request_sent \cup {<<i,r>>})
+/\ UNCHANGED <<db_response_sent>>
 /\ Fluent12' = [Fluent12 EXCEPT ![i][n][r] = TRUE]
 /\ Fluent11' = [Fluent11 EXCEPT ![i][r] = TRUE]
 /\ Fluent9' = [Fluent9 EXCEPT ![r] = TRUE]
@@ -39,47 +32,36 @@ ServerProcessRequest(n,r,i) ==
 /\ Fluent6' = [Fluent6 EXCEPT ![i][n] = TRUE]
 /\ Fluent1' = [Fluent1 EXCEPT ![i] = TRUE]
 /\ UNCHANGED<<Fluent8, Fluent7, Fluent5, Fluent10, Fluent4, Fluent3, Fluent2, Fluent0>>
-/\ CandSep'
 
 DbProcessRequest(i,r,p) ==
-/\ (<<r,p>> \in match)
-/\ UNCHANGED <<match,request_sent,response_sent,response_received>>
+/\ (<<i,r>> \in db_request_sent)
+/\ db_response_sent' = (db_response_sent \cup {<<i,p>>})
+/\ UNCHANGED <<db_request_sent,t>>
 /\ Fluent8' = [Fluent8 EXCEPT ![i][r] = TRUE]
 /\ Fluent5' = [Fluent5 EXCEPT ![i][p] = TRUE]
 /\ Fluent10' = [Fluent10 EXCEPT ![r][i] = TRUE]
 /\ Fluent3' = [Fluent3 EXCEPT ![i] = TRUE]
 /\ UNCHANGED<<Fluent12, Fluent11, Fluent9, Fluent13, Fluent7, Fluent6, Fluent4, Fluent2, Fluent1, Fluent0>>
-/\ CandSep'
 
 ServerProcessDbResponse(n,i,p) ==
-/\ response_sent' = (response_sent \cup {<<n,p>>})
-/\ UNCHANGED <<match,request_sent,response_received>>
+/\ (<<i,p>> \in db_response_sent)
+/\ (<<i,n>> \in t)
+/\ UNCHANGED <<db_request_sent,db_response_sent,t>>
 /\ Fluent7' = [Fluent7 EXCEPT ![n][i] = TRUE]
 /\ Fluent4' = [Fluent4 EXCEPT ![i][p] = TRUE]
 /\ Fluent2' = [Fluent2 EXCEPT ![i] = TRUE]
 /\ Fluent0' = [Fluent0 EXCEPT ![i] = TRUE]
 /\ UNCHANGED<<Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent6, Fluent5, Fluent10, Fluent3, Fluent1>>
-/\ CandSep'
-
-ReceiveResponse(n,p) ==
-/\ (<<n,p>> \in response_sent)
-/\ response_received' = (response_received \cup {<<n,p>>})
-/\ UNCHANGED <<match,request_sent,response_sent>>
-/\ UNCHANGED<<Fluent12, Fluent11, Fluent9, Fluent8, Fluent13, Fluent7, Fluent6, Fluent5, Fluent10, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
-/\ CandSep'
 
 Next ==
-\/ (\E n \in Node, r \in Request : NewRequest(n,r))
 \/ (\E n \in Node, r \in Request, i \in DbRequestId : ServerProcessRequest(n,r,i))
 \/ (\E r \in Request, i \in DbRequestId, p \in Response : DbProcessRequest(i,r,p))
 \/ (\E n \in Node, i \in DbRequestId, p \in Response : ServerProcessDbResponse(n,i,p))
-\/ (\E n \in Node, p \in Response : ReceiveResponse(n,p))
 
 Init ==
-/\ (match \in SUBSET((Request \X Response)))
-/\ request_sent = {}
-/\ response_sent = {}
-/\ response_received = {}
+/\ db_request_sent = {}
+/\ db_response_sent = {}
+/\ t = {}
 /\ Fluent12 = [ x0 \in DbRequestId |-> [ x1 \in Node |-> [ x2 \in Request |-> FALSE]]]
 /\ Fluent11 = [ x0 \in DbRequestId |-> [ x1 \in Request |-> FALSE]]
 /\ Fluent9 = [ x0 \in Request |-> FALSE]
@@ -98,10 +80,7 @@ Init ==
 Spec == (Init /\ [][Next]_vars)
 
 TypeOK ==
-/\ (match \in SUBSET((Request \X Response)))
-/\ (request_sent \in SUBSET((Node \X Request)))
-/\ (response_sent \in SUBSET((Node \X Response)))
-/\ (response_received \in SUBSET((Node \X Response)))
-
-Safety == (\A n \in Node, p \in Response : ((<<n,p>> \in response_received) => ResponseMatched(n,p)))
+/\ (db_request_sent \in SUBSET((DbRequestId \X Request)))
+/\ (db_response_sent \in SUBSET((DbRequestId \X Response)))
+/\ (t \in SUBSET((DbRequestId \X Node)))
 =============================================================================

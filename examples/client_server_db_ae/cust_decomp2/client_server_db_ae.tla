@@ -16,6 +16,8 @@ VARIABLE db_response_sent
 
 VARIABLE t
 
+Symmetry == Permutations(Node) \cup Permutations(Request) \cup Permutations(Response) \cup Permutations(DbRequestId)
+
 vars == <<match,request_sent,response_sent,response_received,db_request_sent,db_response_sent,t>>
 
 NoneWithId(i) == \A n \in Node : <<i,n>> \notin t

@@ -5,6 +5,8 @@ CONSTANTS Node, Request, Response, DbRequestId
 
 VARIABLES request_sent, response_sent, match, response_received
 
+Symmetry == Permutations(Node) \cup Permutations(Request) \cup Permutations(Response) \cup Permutations(DbRequestId)
+
 vars == <<match,request_sent,response_sent,response_received>>
 
 ResponseMatched(n,p) ==
