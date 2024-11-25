@@ -81,6 +81,8 @@ Init ==
 /\ Fluent16 = [ x0 \in DbRequestId |-> [ x1 \in Response |-> FALSE]]
 /\ Fluent15 = [ x0 \in DbRequestId |-> [ x1 \in Response |-> FALSE]]
 
+NextUnchanged == UNCHANGED vars
+
 Spec == (Init /\ [][Next]_vars)
 
 TypeOK ==
@@ -109,4 +111,47 @@ TypeOKRandom ==
 /\ Fluent15 \in RandomSubset(RandNum, [DbRequestId -> [Response -> BOOLEAN]])
 
 Safety == (\A n \in Node, p \in Response : ((<<n,p>> \in response_received) => ResponseMatched(n,p)))
+
+
+\* Endive output
+
+Inv689_1_0_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (ResponseMatched(VARI,VARP)) \/ (~(<<VARI,VARP>> \in response_sent))
+Inv228_1_1_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (<<VARJ,VARP>> \in response_sent) \/ (~(<<VARJ,VARP>> \in response_received))
+Inv421_1_2_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (Fluent11[VARID][VARR2]) \/ (~(Fluent15[VARID][VARP]))
+Inv3533_2_3_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (ResponseMatched(VARI,VARP)) \/ (~(Fluent14[VARID][VARI]) \/ (~(Fluent16[VARID][VARP])))
+Inv486_1_0_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (Fluent12[VARR2][VARID]) \/ (~(Fluent15[VARID][VARP]))
+Inv388_1_1_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (<<VARR2,VARP>> \in match) \/ (~(Fluent15[VARID][VARP]))
+Inv601_1_2_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (Fluent14[VARID][VARI]) \/ (~(Fluent13[VARID][VARI]))
+Inv482_1_3_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (Fluent12[VARR2][VARID]) \/ (~(Fluent13[VARID][VARI]))
+Inv658_1_4_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (Fluent15[VARID][VARP]) \/ (~(Fluent16[VARID][VARP]))
+Inv420_1_5_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (Fluent11[VARID][VARR2]) \/ (~(Fluent14[VARID][VARI]))
+Inv122_1_6_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (<<VARI,VARR2>> \in request_sent) \/ (~(Fluent14[VARID][VARI]))
+Inv3554_2_7_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (ResponseMatched(VARI,VARP)) \/ (~(Fluent15[VARID][VARP])) \/ (~(Fluent14[VARID][VARI]))
+Inv1008_2_8_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (<<VARI,VARR>> \in request_sent) \/ (~(Fluent11[VARID][VARR])) \/ (~(Fluent14[VARID][VARI]))
+Inv1968_2_9_def == \A VARI \in Node : \A VARID \in DbRequestId : \A VARR \in Request : \A VARJ \in Node : \A VARP \in Response : \E VARR2 \in Request : (<<VARR,VARP>> \in match) \/ (~(Fluent11[VARID][VARR]) \/ (~(Fluent15[VARID][VARP])))
+
+\* The inductive invariant candidate.
+\* Total duration: 508.35 secs.
+\* python3 endive.py --spec benchmarks/D0 --seed 22 --ninvs 5000 --niters 3  4    2437.53s user 21.60s system 483% cpu 8:28.43 total
+IndAuto ==
+  /\ Safety
+  /\ Inv689_1_0_def
+  /\ Inv228_1_1_def
+  /\ Inv421_1_2_def
+  /\ Inv3533_2_3_def
+  /\ Inv486_1_0_def
+  /\ Inv388_1_1_def
+  /\ Inv601_1_2_def
+  /\ Inv482_1_3_def
+  /\ Inv658_1_4_def
+  /\ Inv420_1_5_def
+  /\ Inv122_1_6_def
+  /\ Inv3554_2_7_def
+  /\ Inv1008_2_8_def
+  /\ Inv1968_2_9_def
+
+IndInv == TypeOK /\ IndAuto
+IndInvRand == TypeOKRandom /\ IndAuto
+IISpec == IndInvRand /\ [][Next]_vars
+
 =============================================================================
