@@ -468,10 +468,12 @@ public class FormulaSeparation {
         final String cfgContent = String.join("\n", Utils.fileContents(cfgFile)) + "\n";
         cfgBuilder.append(cfgContent);
         cfgBuilder.append("CONSTANTS\n");
-        for (final String constElem : sortConsts) {
-        	final String constAssg = constElem + "=" + constElem + "\n";
-        	cfgBuilder.append(constAssg);
-        }
+        sortConsts.stream()
+        		.filter(c -> !Utils.isIntegerString(c))
+        		.forEach(c -> {
+                	final String constAssg = c + "=" + c + "\n";
+                	cfgBuilder.append(constAssg);
+        		});
         final String cexTraceCfg = specName + ".cfg";
         Utils.writeFile(cexTraceCfg, cfgBuilder.toString());
 		

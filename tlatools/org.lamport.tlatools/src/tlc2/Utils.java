@@ -393,6 +393,14 @@ public class Utils {
     	}
     }
     
+    public static boolean isIntegerString(final String str) {
+    	try {
+    		Integer.parseInt(str);
+    		return true;
+    	} catch (NumberFormatException e) {}
+    	return false;
+    }
+    
     // thanks https://stackoverflow.com/questions/2406121/how-do-i-escape-a-string-in-java
     public static String stringEscape(String s){
 	  return s.replace("\\", "\\\\")
