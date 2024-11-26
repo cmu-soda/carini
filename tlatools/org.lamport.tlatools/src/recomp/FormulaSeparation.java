@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -146,7 +147,7 @@ public class FormulaSeparation {
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
-			final long fiveMinuteTimeout = 300000L; // use a 5m timeout for neg traces
+			final long fiveMinuteTimeout = 5L; // use a 5m timeout for neg traces
         	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", fiveMinuteTimeout);
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
@@ -191,7 +192,7 @@ public class FormulaSeparation {
     			// generate positive traces until the formula becomes an invariant
     			final int ptNum = cumNumPosTraces + 1;
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			final long threeMinuteTimeout = 180000L; // use a 3m timeout for pos traces
+    			final long threeMinuteTimeout = 3L; // use a 3m timeout for pos traces
     			final AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", threeMinuteTimeout);
     			isInvariant = !newPosTrace.hasError();
     			
@@ -291,9 +292,7 @@ public class FormulaSeparation {
 			final String[] cmd = {"sh", "-c",
 					"java -jar " + TLC_JAR_PATH + " -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
-			synchronized (proc) {
-				proc.wait(timeout);
-			}
+			proc.waitFor(timeout, TimeUnit.MINUTES);
 			
 			// reached the timeout but TLC is still running--no error detected
 			if (proc.isAlive()) {
