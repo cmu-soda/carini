@@ -1,0 +1,23 @@
+{
+    "preds"  :  [
+        "(\E t \in FinNat : [entry |-> <<I,t>>,term |-> t] \in committed)",
+        "(\E t \in FinNat : [entry |-> <<J,t>>,term |-> t] \in committed)",
+        "(\E t \in FinNat : [entry |-> <<K,t>>,term |-> t] \in committed)",
+    ],
+    "preds_alt" : [],
+    "safety"  :  "Safety",
+    "constants"  : [
+        "CONSTANTS" ,
+        "Server = {n1,n2,n3}",
+        "Quorums = {{n1,n2},{n1,n3},{n2,n3},{n1,n2,n3}}",
+        "FinNat = {0,1,2,3}"
+    ],
+    "constraint"  :  "CONSTRAINT StateConstraint",
+    "quant_inv"  :  "\\A I \\in FinNat : \\A J \\in FinNat : \\A K \\in FinNat : ",
+    "quant_inv_alt"  :  null,
+    "quant_vars": ["I", "J", "K"],
+    "model_consts"  :  "CONSTANT n1,n2,n3,0,1,2,3,{n1,n2},{n1,n3},{n2,n3},{n1,n2,n3}",
+    "symmetry" : true,
+    "typeok"  :  "TypeOKRandom",
+    "simulate"  :  true
+}

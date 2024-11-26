@@ -1,0 +1,397 @@
+Building the system LTS (for T2.tla)
+Built the system LTS in 2.314s
+
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Round 1
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->ClientRequestn1NUM0 + T1->CommitEntryn1_n1n2_NUM1NUM0)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 47.657 seconds
+  winning worker id: 20
+  winning worker time: 47.65 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 111.619 seconds
+  winning worker id: 10
+  winning worker time: 111.619 seconds
+Synthesized: \A var0 \in Server : (Fluent4[var0]) => (Fluent3[var0])
+Fluent4:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+Fluent3:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: 
+The formula is an invariant! Moving to the next round.
+Round 1 took 569.681 seconds
+
+Round 2
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM1 + T1->ClientRequestn1NUM0 + T2->CommitEntryn1_n1n2_NUM1NUM0)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 150.796 seconds
+  winning worker id: 4
+  winning worker time: 150.787 seconds
+Synthesized: \A var0 \in FinNat : (Fluent6[var0]) => (Fluent5[var0])
+Fluent6:
+  initially: FALSE
+  init: ClientRequest: [1]
+  term: 
+Fluent5:
+  initially: FALSE
+  init: BecomeLeader: [2]
+  term: 
+The formula is an invariant! Moving to the next round.
+Round 2 took 537.516 seconds
+
+Round 3
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM0 + T1->BecomeLeadern2_n2n3_NUM1 + T2->ClientRequestn2NUM1 + T3->ClientRequestn1NUM0 + T4->CommitEntryn1_n2n3_NUM1NUM0 + T5->CommitEntryn2_n1n2_NUM1NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 145.236 seconds
+  winning worker id: 4
+  winning worker time: 145.234 seconds
+Synthesized: \A var0 \in FinNat : ~(Fluent7[var0][var0])
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [3,2]
+  term: 
+
+new pos traces:
+PT3 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 258.118 seconds
+  winning worker id: 20
+  winning worker time: 258.114 seconds
+Synthesized: \A var0 \in Server : (Fluent7[var0]) => (Fluent8[var0])
+Fluent8:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: CommitEntry: [0]
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT4 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 800.427 seconds
+  winning worker id: 24
+  winning worker time: 800.416 seconds
+Synthesized: \A var0 \in FinNat : \E var1 \in Quorums : \A var2 \in Quorums : (Fluent7[var2][var0]) => (var2 = var1)
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [1,2]
+  term: 
+
+new pos traces:
+PT5 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1 + T2->CommitEntryn1_n1n3_NUM1NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 598.618 seconds
+  winning worker id: 18
+  winning worker time: 598.606 seconds
+Synthesized: \A var0 \in Server : \A var1 \in FinNat : (Fluent7[var0][var1]) => (Fluent8[var0][var1])
+Fluent8:
+  initially: FALSE
+  init: BecomeLeader: [0,2]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [0,2]
+  term: 
+
+new pos traces:
+PT6 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 717.889 seconds
+  winning worker id: 3
+  winning worker time: 717.885 seconds
+Synthesized: \A var0 \in Quorums : \E var1 \in Server : \A var2 \in Server : (Fluent7[var2][var0]) => (var2 = var1)
+Fluent7:
+  initially: FALSE
+  init: BecomeLeader: [0,1]
+        CommitEntry: [0,1]
+  term: 
+
+new pos traces:
+PT7 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 1020.578 seconds
+  winning worker id: 7
+  winning worker time: 1020.508 seconds
+Synthesized: \A var0 \in FinNat : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent7[var2][var0]) => (var1 = var2)
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [3,2]
+  term: 
+
+new pos traces:
+PT8 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n2n3_NUM1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 2117.252 seconds
+  winning worker id: 20
+  winning worker time: 2117.181 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Server : (Fluent8[var0]) => ((Fluent7[var1]) => (var0 = var1))
+Fluent8:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT9 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 3453.579 seconds
+  winning worker id: 5
+  winning worker time: 3453.577 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Server : (Fluent7[var0]) => ((Fluent8[var1]) => (var1 = var0))
+Fluent8:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT10 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 5149.572 seconds
+  winning worker id: 3
+  winning worker time: 5149.528 seconds
+Synthesized: \A var0 \in Quorums : \E var1 \in Server : \A var2 \in Server : (Fluent8[var2]) => ((Fluent7[var0]) => (var1 = var2))
+Fluent8:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [1]
+  term: 
+
+new pos traces:
+PT11 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2 + T4->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 5873.909 seconds
+  winning worker id: 0
+  winning worker time: 5873.908 seconds
+Synthesized: \A var0 \in FinNat : \A var1 \in FinNat : (Fluent7[var1][var1]) => ((Fluent8[var0]) => (var0 = var1))
+Fluent8:
+  initially: FALSE
+  init: ClientRequest: [1]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [2,3]
+  term: 
+
+new pos traces:
+PT12 (PosTrace): (T0->BecomeLeadern2_n1n2_NUM1 + T1->ClientRequestn2NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->CommitEntryn1_n1n2_NUM2NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 10864.287 seconds
+  winning worker id: 12
+  winning worker time: 9694.697 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Quorums : \A var2 \in Quorums : (Fluent7[var2]) => ((Fluent8[var0]) => (var1 = var2))
+Fluent8:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [1]
+  term: 
+
+new pos traces:
+PT13 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1 + T2->ClientRequestn1NUM1 + T3->CommitEntryn1_n1n3_NUM1NUM1)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 8949.947 seconds
+  winning worker id: 12
+  winning worker time: 8949.908 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Quorums : \A var2 \in Quorums : (Fluent8[var2]) => ((Fluent7[var0]) => (var1 = var2))
+Fluent8:
+  initially: FALSE
+  init: BecomeLeader: [1]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT14 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n3_NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 12836.993 seconds
+  winning worker id: 9
+  winning worker time: 12836.918 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Quorums : (Fluent7[var0]) => ((Fluent8[var1]) => (Fluent9[var0][var1]))
+Fluent9:
+  initially: FALSE
+  init: BecomeLeader: [0,1]
+  term: 
+Fluent8:
+  initially: FALSE
+  init: BecomeLeader: [1]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT15 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 9121.668 seconds
+  winning worker id: 20
+  winning worker time: 8350.645 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Server : \A var2 \in Server : (Fluent8[var2]) => ((Fluent7[var0]) => (var1 = var2))
+Fluent8:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT16 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n2n3_NUM1NUM1 + T2->ClientRequestn1NUM1 + T3->BecomeLeadern2_n2n3_NUM2 + T4->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 12683.466 seconds
+  winning worker id: 4
+  winning worker time: 12683.454 seconds
+Synthesized: \A var0 \in FinNat : \E var1 \in Server : \A var2 \in Server : (Fluent7[var0][var2]) => ((Fluent8[var2]) => (var1 = var2))
+Fluent8:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [2,0]
+  term: 
+
+new pos traces:
+PT17 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n2n3_NUM1NUM1 + T2->ClientRequestn1NUM1 + T3->BecomeLeadern2_n2n3_NUM2 + T4->ClientRequestn2NUM2 + T5->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 16356.829 seconds
+  winning worker id: 20
+  winning worker time: 16356.811 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Server : ((~(var1 = var0)) => (Fluent7[var1])) => (Fluent8[var1])
+Fluent8:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: CommitEntry: [0]
+Fluent7:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+
+new pos traces:
+PT18 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n2n3_NUM1NUM1 + T3->BecomeLeadern2_n2n3_NUM2 + T4->ClientRequestn2NUM2 + T5->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 56370.664 seconds
+  winning worker id: 8
+  winning worker time: 56370.655 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Server : \A var2 \in Quorums : (Fluent8[var2]) => ((Fluent9[var0]) => (Fluent7[var2][var1]))
+Fluent9:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+Fluent8:
+  initially: FALSE
+  init: CommitEntry: [1]
+  term: BecomeLeader: [1]
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [1,0]
+  term: 
+
+new pos traces:
+PT19 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->CommitEntryn2_n1n3_NUM1NUM2)
+Total # synth jobs: 26
+Formula synthesis info:
+  overall (multithread) time: 62394.691 seconds
+  winning worker id: 8
+  winning worker time: 62394.675 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Server : \A var2 \in Quorums : (Fluent9[var0]) => ((Fluent8[var2]) => (Fluent7[var1][var2]))
+Fluent9:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+Fluent8:
+  initially: FALSE
+  init: CommitEntry: [1]
+  term: BecomeLeader: [1]
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [0,1]
+  term: 
+
+new pos traces:
+PT20 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1 + T2->ClientRequestn1NUM1 + T3->BecomeLeadern2_n2n3_NUM2 + T4->CommitEntryn2_n1n3_NUM1NUM2)
+Total # synth jobs: 26
+Formula synthesis info:
+  overall (multithread) time: 84347.277 seconds
+  winning worker id: 8
+  winning worker time: 84347.274 seconds
+Synthesized: \A var0 \in Server : \E var1 \in Server : \A var2 \in Quorums : (Fluent9[var2][var0]) => ((Fluent7[var2]) => (Fluent8[var2][var1]))
+Fluent9:
+  initially: FALSE
+  init: BecomeLeader: [1,0]
+        CommitEntry: [1,0]
+  term: 
+Fluent8:
+  initially: FALSE
+  init: CommitEntry: [1,0]
+  term: 
+Fluent7:
+  initially: FALSE
+  init: CommitEntry: [1]
+  term: BecomeLeader: [1]
+
+new pos traces:
+PT21 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n3_NUM1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->CommitEntryn2_n1n2_NUM1NUM2)
+Total # synth jobs: 26
+Synthesized: UNSAT
+
+Could not synthesize a spearating assumption. Here are the intermediate conjuncts:
+/\ \A var0 \in Server : (Fluent4[var0]) => (Fluent3[var0])
+/\ \A var0 \in FinNat : (Fluent6[var0]) => (Fluent5[var0])
+/\ UNSAT
+659913.70user 12944.20system 83:09:56elapsed 224%CPU (0avgtext+0avgdata 10376668maxresident)k
+2890632inputs+4715990832outputs (124638major+4724234363minor)pagefaults 0swaps
