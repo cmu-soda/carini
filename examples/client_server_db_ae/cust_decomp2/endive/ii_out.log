@@ -1,0 +1,1320 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 86 and seed -350400099065319117 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 62894] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:00)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:11.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 10s at (2024-11-29 08:49:11)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 4 and seed 3980794771982263696 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 62908] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:11)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:19.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 07s at (2024-11-29 08:49:19)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 107 and seed -48269114137836231 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 62976] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:19)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:28.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 08s at (2024-11-29 08:49:28)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 53 and seed -3371539735346710202 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63019] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:29)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:37.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 09s at (2024-11-29 08:49:37)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 108 and seed 723138836145346948 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63024] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:38)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:43.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 05s at (2024-11-29 08:49:43)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 10 and seed 5646791832316124855 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63029] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:44)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:49.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 04s at (2024-11-29 08:49:49)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 117 and seed 6191873457243235575 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63034] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:49)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:49:54.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 04s at (2024-11-29 08:49:54)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 99 and seed -3130984034068415092 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63039] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:49:55)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:50:07.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 12s at (2024-11-29 08:50:07)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 104 and seed 7713329619256278220 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63044] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:50:08)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:50:19.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 11s at (2024-11-29 08:50:19)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 108 and seed 3122714734030967190 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63049] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:50:19)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:50:36.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 16s at (2024-11-29 08:50:36)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 6 and seed 4530026413108605868 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63055] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:50:36)
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Computed 8 initial states...
+Finished computing initial states: 13 distinct states generated at 2024-11-29 08:51:01.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 1.6E-13
+6353 states generated, 508 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 8.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 6 and the 95th percentile is 4).
+Finished in 24s at (2024-11-29 08:51:01)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 93 and seed -8973406425428499323 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63159] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:01)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:51:14.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 13s at (2024-11-29 08:51:14)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 52 and seed 6415793087724695300 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63164] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:15)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:51:20.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 05s at (2024-11-29 08:51:20)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 121 and seed -4191870314029528029 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63169] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:21)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:51:31.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 10s at (2024-11-29 08:51:31)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 22 and seed -5907755753139282351 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63174] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:32)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:51:36.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 03s at (2024-11-29 08:51:36)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 59 and seed -3914364963998651740 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63179] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:36)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:51:42.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 06s at (2024-11-29 08:51:42)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 10 and seed -3177380966988551370 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63185] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:43)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:51:46.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 03s at (2024-11-29 08:51:46)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 51 and seed -3027389913438808651 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63190] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:51:47)
+Computing initial states...
+Computed 2 initial states...
+Finished computing initial states: 4 distinct states generated at 2024-11-29 08:52:12.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 5.6E-13
+11972 states generated, 944 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 11.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 7 and the 95th percentile is 4).
+Finished in 25s at (2024-11-29 08:52:12)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 71 and seed 7994340730930194215 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63311] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:52:13)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:52:34.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 21s at (2024-11-29 08:52:34)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 65 and seed 4038240082148441829 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63338] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:52:35)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:52:51.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 16s at (2024-11-29 08:52:51)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 63 and seed 2535787716125674648 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63402] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:52:52)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2024-11-29 08:53:07.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 1.6E-16
+181 states generated, 18 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 7.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 3 and the 95th percentile is 3).
+Finished in 15s at (2024-11-29 08:53:07)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 86 and seed 4758656937566154105 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63451] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:53:08)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:53:14.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 06s at (2024-11-29 08:53:14)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 93 and seed 5902179587320423072 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63456] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:53:15)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:53:19.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 04s at (2024-11-29 08:53:19)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 11 and seed 8652390305110183086 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63480] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:53:20)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:53:46.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 26s at (2024-11-29 08:53:46)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 83 and seed 8117157847022809849 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63522] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:53:47)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2024-11-29 08:54:01.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 8.0E-18
+41 states generated, 4 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 3.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 2 and the 95th percentile is 2).
+Finished in 14s at (2024-11-29 08:54:01)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 123 and seed 203883470353757435 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63548] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:54:02)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:54:08.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 06s at (2024-11-29 08:54:08)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 124 and seed -601980033388708894 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63553] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:54:09)
+Computing initial states...
+Computed 2 initial states...
+Finished computing initial states: 4 distinct states generated at 2024-11-29 08:54:25.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 1.3E-12
+19460 states generated, 1312 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 12.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 8 and the 95th percentile is 4).
+Finished in 17s at (2024-11-29 08:54:25)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 51 and seed -4786855021150266865 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63576] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:54:26)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:54:31.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 05s at (2024-11-29 08:54:31)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 116 and seed 4833894542679830626 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63618] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:54:32)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:54:34.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 02s at (2024-11-29 08:54:34)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 91 and seed -7506839649464083970 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63623] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:54:35)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:54:41.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 06s at (2024-11-29 08:54:41)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 99 and seed -2214064842254039218 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63725] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:54:41)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2024-11-29 08:55:08.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 8.4E-14
+4681 states generated, 360 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 11.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 6 and the 95th percentile is 4).
+Finished in 27s at (2024-11-29 08:55:08)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 127 and seed -9219430771262366859 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63745] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:55:09)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:55:19.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 10s at (2024-11-29 08:55:19)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 31 and seed -3965115133623758909 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63802] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:55:20)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:55:41.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 21s at (2024-11-29 08:55:41)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 4 and seed -7958323542638666732 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63854] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:55:42)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:55:54.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 12s at (2024-11-29 08:55:54)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 118 and seed -6316657039228046418 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63859] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:55:55)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:55:58.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 03s at (2024-11-29 08:55:58)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 119 and seed 5084906807778828200 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63864] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:55:59)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:56:17.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 18s at (2024-11-29 08:56:17)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 3 and seed -2403927773259896353 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63968] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:56:18)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:56:33.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 15s at (2024-11-29 08:56:33)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 59 and seed 7925569472446771442 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64028] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:56:34)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:56:50.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 16s at (2024-11-29 08:56:50)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 98 and seed 5362586496397277405 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64078] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:56:50)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:56:55.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 04s at (2024-11-29 08:56:55)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 14 and seed -8729003494468607360 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64135] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:56:55)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:56:58.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 03s at (2024-11-29 08:56:58)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 110 and seed -6332865718911186195 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64140] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:56:59)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:57:02.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 02s at (2024-11-29 08:57:02)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 120 and seed -2839078851827975235 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64145] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:57:02)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:57:12.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 09s at (2024-11-29 08:57:12)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 53 and seed -8537428783737844043 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64152] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:57:13)
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Computed 8 initial states...
+Finished computing initial states: 10 distinct states generated at 2024-11-29 08:57:31.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 7.2E-12
+41802 states generated, 3456 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 12.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 10 and the 95th percentile is 4).
+Finished in 19s at (2024-11-29 08:57:32)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 1 and seed 3236889196531617715 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64157] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:57:32)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:57:43.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 10s at (2024-11-29 08:57:43)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 11 and seed 1438319097124144924 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64162] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:57:44)
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Finished computing initial states: 6 distinct states generated at 2024-11-29 08:58:10.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 2.3E-12
+24986 states generated, 1836 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 10.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 9 and the 95th percentile is 4).
+Finished in 26s at (2024-11-29 08:58:10)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 56 and seed -2596836114891623168 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64214] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:58:11)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:58:21.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 10s at (2024-11-29 08:58:21)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 104 and seed 8901213254971662189 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64219] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:58:22)
+Computing initial states...
+Computed 2 initial states...
+Finished computing initial states: 3 distinct states generated at 2024-11-29 08:58:46.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 3.5E-15
+1023 states generated, 68 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 6.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 5 and the 95th percentile is 3).
+Finished in 24s at (2024-11-29 08:58:46)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 93 and seed 2133165996806510636 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64224] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:58:47)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:59:07.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 20s at (2024-11-29 08:59:07)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 55 and seed -8275892562196328428 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64238] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:59:08)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 08:59:20.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 12s at (2024-11-29 08:59:20)
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 110 and seed -3105005532965225455 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 64243] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/client_server_db_ae/cust_decomp2/endive/client_server_db_ae.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Randomization.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Randomization
+Semantic processing of module client_server_db_ae
+Starting... (2024-11-29 08:59:20)
+Computing initial states...
+Finished computing initial states: 0 distinct states generated at 2024-11-29 09:33:07.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 0.0
+0 states generated, 0 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 1.
+Finished in 33min 47s at (2024-11-29 09:33:07)
