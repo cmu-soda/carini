@@ -293,6 +293,7 @@ public class FormulaSeparation {
 		// Step (1)
 		// Call out to TLC to find a cex trace
 		try {
+			// TODO should use a temporary file for <cexTraceOutputFile>, right now there seems to be a race condition
 			final String[] cmd = {"sh", "-c",
 					"java -jar " + TLC_JAR_PATH + " -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
@@ -486,10 +487,7 @@ public class FormulaSeparation {
     	TLC tlcCexReproducer = new TLC();
     	tlcCexReproducer.modelCheck(cexTraceTla, cexTraceCfg);
     	final LTS<Integer, String> lts = tlcCexReproducer.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
-    	
-    	if (SafetyUtils.INSTANCE.ltsIsSafe(lts)) {
-			Utils.assertTrue(false, "Couldn't reproduce TLC error!");
-    	}
+    	Utils.assertTrue(!SafetyUtils.INSTANCE.ltsIsSafe(lts), "Couldn't reproduce TLC error!");
 		
 		// if candSep isn't an invariant, return a trace that should be covered by the formula
     	final int numTraces = 1; // only generate one trace at a time
