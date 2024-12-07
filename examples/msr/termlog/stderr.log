@@ -1,0 +1,5 @@
+Exception in thread "main" java.lang.NumberFormatException: For input string: "T4.tla"
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+	at java.base/java.lang.Long.parseLong(Long.java:711)
+	at java.base/java.lang.Long.parseLong(Long.java:834)
+	at tlc2.Main.main(Main.java:33)

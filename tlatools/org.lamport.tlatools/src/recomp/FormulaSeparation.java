@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -13,9 +14,7 @@ import java.util.stream.IntStream;
 
 import cmu.isr.ts.LTS;
 import cmu.isr.ts.lts.MultiTraceCex;
-import cmu.isr.ts.lts.RandTraceUtils;
 import cmu.isr.ts.lts.SafetyUtils;
-import net.automatalib.words.Word;
 import tla2sany.semantic.ModuleNode;
 import tla2sany.semantic.OpDefNode;
 import tlc2.TLC;
@@ -23,7 +22,7 @@ import tlc2.Utils;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
-	private static final int INIT_MAX_POS_TRACES = 5;
+	private static final int INIT_MAX_POS_TRACES = 1;
 	private static final String TLC_JAR_PATH = System.getProperty("user.home") + "/bin/tla2tools.jar";
 	
 	private final String tlaComp;
@@ -42,9 +41,10 @@ public class FormulaSeparation {
 	private final int maxNumVarsPerType;
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
+	private final Random seed;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
-			final String tlaSys, final String cfgSys, final String propFile) {
+			final String tlaSys, final String cfgSys, final String propFile, long rseed) {
 		this.tlaComp = tlaComp;
 		this.cfgComp = cfgComp;
 		this.tlaRest = tlaRest;
@@ -94,6 +94,8 @@ public class FormulaSeparation {
 						.mapToObj(j -> varNameBase + j)
 						.collect(Collectors.toSet()))
 				.collect(Collectors.toSet());
+		
+		seed = new Random(rseed);
 	}
 	
 	public String synthesizeSepInvariant() {
@@ -249,13 +251,15 @@ public class FormulaSeparation {
 		PerfTimer timer = new PerfTimer();
 		
 		// TODO make the init trace len a param
+		// TODO cap the number of iterations we can have, right now an inf loop is possible
     	int initTraceLen = 4;
     	AlloyTrace initPosTrace = new AlloyTrace();
     	while (initPosTrace.isEmpty()) {
-        	final List<String> initTrace =
-        			RandTraceUtils.INSTANCE.randTrace(tlcRest.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState(), initTraceLen)
-        			.stream()
-        			.collect(Collectors.toList());
+    		InitTraceVisitor<Integer,String> visitor = new InitTraceVisitor<>(initTraceLen);
+        	final List<String> initTrace = visitor.findAnInitTrace(tlcRest.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState())
+					.stream()
+					.collect(Collectors.toList());
+		        	Utils.assertTrue(initTrace.size() >= initTraceLen, "requested init trace of length " + initTraceLen + " but got length " + initTrace.size());
         	initPosTrace = createAlloyTrace(initTrace, "PT1", "PosTrace");
         	++initTraceLen;
     	}
@@ -521,7 +525,7 @@ public class FormulaSeparation {
 	
 	private Formula synthesizeFormula(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
 			final Set<Map<String,String>> envVarTypes) {
-		FormulaSynth formSynth = new FormulaSynth();
+		FormulaSynth formSynth = new FormulaSynth(this.seed);
 		return formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
 				tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);

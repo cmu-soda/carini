@@ -3,12 +3,12 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
 CONSTANTS Server, Quorums, FinNat
 
-VARIABLES currentTerm, log, Fluent2, Fluent1, Fluent0
+VARIABLES currentTerm, log, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0
 
-vars == <<currentTerm, log, Fluent2, Fluent1, Fluent0>>
+vars == <<currentTerm, log, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
 
 CandSep ==
-TRUE
+/\ \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
 
 Secondary == "secondary"
 
@@ -46,7 +46,8 @@ ClientRequest(i,curTerm) ==
 /\ currentTerm[i] = curTerm
 /\ log' = [log EXCEPT![i] = Append(log[i],curTerm)]
 /\ UNCHANGED <<currentTerm>>
-/\ UNCHANGED<<>>
+/\ Fluent3' = [Fluent3 EXCEPT ![i] = TRUE]
+/\ UNCHANGED<<Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -60,7 +61,7 @@ GetEntries(i,j) ==
       newLog == Append(log[i],newEntry) IN
     /\ log' = [log EXCEPT![i] = newLog]
 /\ UNCHANGED <<currentTerm>>
-/\ UNCHANGED<<>>
+/\ UNCHANGED<<Fluent3, Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -69,7 +70,7 @@ RollbackEntries(i,j) ==
 /\ CanRollback(i,j)
 /\ log' = [log EXCEPT![i] = SubSeq(log[i],1,(Len(log[i]) - 1))]
 /\ UNCHANGED <<currentTerm>>
-/\ UNCHANGED<<>>
+/\ UNCHANGED<<Fluent3, Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -80,7 +81,8 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
 /\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]]
 /\ UNCHANGED <<log>>
-/\ UNCHANGED<<>>
+/\ Fluent4' = [Fluent4 EXCEPT ![i] = TRUE]
+/\ UNCHANGED<<Fluent3>>
 /\ CandSep'
 /\ Fluent1' = [Fluent1 EXCEPT ![newTerm] = TRUE]
 /\ UNCHANGED<<Fluent2, Fluent0>>
@@ -92,7 +94,7 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ ind = Len(log[i])
 /\ log[i][ind] = curTerm
 /\ UNCHANGED <<currentTerm,log>>
-/\ UNCHANGED<<>>
+/\ UNCHANGED<<Fluent3, Fluent4>>
 /\ CandSep'
 /\ Fluent2' = [Fluent2 EXCEPT ![ind][curTerm] = TRUE]
 /\ Fluent0' = [Fluent0 EXCEPT ![curTerm] = TRUE]
@@ -102,7 +104,7 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 UpdateTerms(i,j) ==
 /\ UpdateTermsExpr(i,j)
 /\ UNCHANGED <<log>>
-/\ UNCHANGED<<>>
+/\ UNCHANGED<<Fluent3, Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -110,6 +112,8 @@ UpdateTerms(i,j) ==
 Init ==
 /\ currentTerm = [i \in Server |-> 0]
 /\ log = [i \in Server |-> <<>>]
+/\ Fluent3 = [ x0 \in Server |-> FALSE]
+/\ Fluent4 = [ x0 \in Server |-> FALSE]
 /\ Fluent2 = [ x0 \in FinNat |-> [ x1 \in FinNat |-> FALSE]]
 /\ Fluent1 = [ x0 \in FinNat |-> FALSE]
 /\ Fluent0 = [ x0 \in FinNat |-> FALSE]

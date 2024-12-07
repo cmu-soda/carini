@@ -250,3 +250,5 @@ Fluent7:
   initially: FALSE
   init: CommitEntry: [2,3]
   term: 
+       13.05 real         3.16 user         0.22 sys
+        5.75 real         3.17 user         0.22 sys

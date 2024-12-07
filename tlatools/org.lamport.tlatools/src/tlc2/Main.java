@@ -22,7 +22,7 @@ public class Main {
 			return;
 		}
 		
-    	if (args.length == 7) {
+    	if (args.length >= 7) {
     		final String tlaComp = args[0];
     		final String cfgComp = args[1];
     		final String tlaRest = args[2];
@@ -30,7 +30,8 @@ public class Main {
     		final String tlaSys = args[4];
     		final String cfgSys = args[5];
     		final String propFile = args[6];
-    		final String formula = new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, tlaSys, cfgSys, propFile).synthesizeSepInvariant();
+    		final long seed = args.length > 7 ? Long.parseLong(args[7]) : System.nanoTime();
+    		final String formula = new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, tlaSys, cfgSys, propFile, seed).synthesizeSepInvariant();
     		
     		if (!formula.contains("UNSAT")) {
         		System.out.println("The following formula is a separating assumption:");
@@ -41,7 +42,7 @@ public class Main {
     		System.out.println(formula);
     	}
     	else {
-    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <tlaSys> <cfgSys> <propFile>");
+    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <tlaSys> <cfgSys> <propFile> [<randomSeed>]");
     	}
     	System.exit(0);
     }

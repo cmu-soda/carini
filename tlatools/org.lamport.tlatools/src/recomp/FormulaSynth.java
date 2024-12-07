@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,12 +27,14 @@ public class FormulaSynth {
 	private Set<Map<String,String>> unsatEnvVarTypes;
 	private List<FormulaSynthWorker> workers;
 	private ExecutorService threadPool;
+	private Random seed;
 
 	private final Lock lock = new ReentrantLock();
 	private final Condition aWorkerIsDone = lock.newCondition();
 	
-	public FormulaSynth() {
+	public FormulaSynth(Random rseed) {
 		resetMemberVars();
+		this.seed = rseed;
 	}
 	
 	/**

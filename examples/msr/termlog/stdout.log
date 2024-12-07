@@ -1,49 +1,25 @@
-Building the system LTS (for T3.tla)
-Built the system LTS in 0.968s
-
-WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
-Command exited with non-zero status 130
-27.67user 1.10system 0:22.80elapsed 126%CPU (0avgtext+0avgdata 875536maxresident)k
-0inputs+664outputs (0major+476034minor)pagefaults 0swaps
-Command exited with non-zero status 130
-262.49user 6.16system 3:41.20elapsed 121%CPU (0avgtext+0avgdata 3387300maxresident)k
-16inputs+95752outputs (0major+2650311minor)pagefaults 0swaps
-Command exited with non-zero status 130
-14.52user 0.90system 0:11.45elapsed 134%CPU (0avgtext+0avgdata 815548maxresident)k
-0inputs+624outputs (0major+323447minor)pagefaults 0swaps
-Command exited with non-zero status 130
-11.59user 0.81system 0:08.57elapsed 144%CPU (0avgtext+0avgdata 842456maxresident)k
-0inputs+528outputs (0major+332203minor)pagefaults 0swaps
-Command exited with non-zero status 130
-14.66user 1.00system 0:12.59elapsed 124%CPU (0avgtext+0avgdata 794620maxresident)k
-0inputs+528outputs (0major+439155minor)pagefaults 0swaps
-Command exited with non-zero status 130
-9.45user 0.91system 0:06.79elapsed 152%CPU (0avgtext+0avgdata 830412maxresident)k
-0inputs+560outputs (0major+339065minor)pagefaults 0swaps
-Command exited with non-zero status 130
-3249.99user 150.31system 10:32.06elapsed 537%CPU (0avgtext+0avgdata 7308648maxresident)k
-408inputs+48175272outputs (2major+62526631minor)pagefaults 0swaps
-Command exited with non-zero status 130
-206.84user 11.03system 2:49.52elapsed 128%CPU (0avgtext+0avgdata 6187296maxresident)k
-0inputs+61144outputs (0major+4554672minor)pagefaults 0swaps
-Command exited with non-zero status 130
-15.09user 0.94system 0:10.44elapsed 153%CPU (0avgtext+0avgdata 869296maxresident)k
-0inputs+592outputs (0major+339805minor)pagefaults 0swaps
-Command exited with non-zero status 130
-288.53user 18.62system 2:27.92elapsed 207%CPU (0avgtext+0avgdata 5912252maxresident)k
-24inputs+316408outputs (0major+6677722minor)pagefaults 0swaps
-Command exited with non-zero status 130
-15.98user 1.02system 0:11.92elapsed 142%CPU (0avgtext+0avgdata 854880maxresident)k
-0inputs+600outputs (0major+342969minor)pagefaults 0swaps
-Command exited with non-zero status 130
-9.48user 0.91system 0:05.54elapsed 187%CPU (0avgtext+0avgdata 857216maxresident)k
-0inputs+528outputs (0major+309002minor)pagefaults 0swaps
-Command exited with non-zero status 130
-236.39user 10.69system 2:17.07elapsed 180%CPU (0avgtext+0avgdata 5886096maxresident)k
-0inputs+64264outputs (0major+3864439minor)pagefaults 0swaps
-Command exited with non-zero status 130
-854.77user 46.61system 4:29.46elapsed 334%CPU (0avgtext+0avgdata 8521392maxresident)k
-112inputs+9509392outputs (0major+18707319minor)pagefaults 0swaps
-Command exited with non-zero status 130
-23.73user 1.10system 0:21.18elapsed 117%CPU (0avgtext+0avgdata 868604maxresident)k
-16288inputs+528outputs (5major+496437minor)pagefaults 0swaps
+        0.13 real         0.17 user         0.02 sys
+        0.14 real         0.17 user         0.03 sys
+      136.19 real       136.34 user         0.84 sys
+        3.03 real         4.26 user         0.24 sys
+        3.86 real         2.52 user         0.17 sys
+        7.92 real         2.42 user         0.17 sys
+        6.66 real         2.55 user         0.16 sys
+        4.80 real         2.36 user         0.15 sys
+       31.53 real        77.47 user         2.15 sys
+        7.18 real        13.29 user         0.49 sys
+        5.89 real        11.79 user         0.44 sys
+        2.11 real         3.80 user         0.33 sys
+        7.24 real        16.52 user         0.64 sys
+        3.14 real         4.35 user         0.62 sys
+        4.72 real         2.41 user         0.15 sys
+        3.27 real         4.63 user         0.63 sys
+        5.13 real         3.11 user         0.18 sys
+        3.46 real         2.22 user         0.15 sys
+        5.84 real         2.25 user         0.16 sys
+        2.68 real         2.51 user         0.16 sys
+        2.54 real         2.82 user         0.18 sys
+        3.10 real         2.32 user         0.16 sys
+        6.27 real        26.06 user         1.54 sys
+      651.71 real      1824.27 user        53.50 sys
+     4526.26 real     14505.67 user       478.82 sys
