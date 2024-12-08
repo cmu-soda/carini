@@ -194,7 +194,7 @@ public class FormulaSeparation {
     			// generate positive traces until the formula becomes an invariant
     			final int ptNum = cumNumPosTraces + 1;
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			final long threeMinuteTimeout = 3L; // use a 3m timeout for pos traces
+    			final long threeMinuteTimeout = 5L; // use a 5m timeout for pos traces
     			final AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", threeMinuteTimeout);
     			isInvariant = !newPosTrace.hasError();
     			
