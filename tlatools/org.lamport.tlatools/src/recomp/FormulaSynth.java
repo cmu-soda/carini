@@ -18,6 +18,7 @@ import tlc2.TLC;
 
 public class FormulaSynth {
 	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
+	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	
 	private String globalFormula;
@@ -132,9 +133,9 @@ public class FormulaSynth {
 		// also clean up temp files that the workers wrote to free up disk space
 		try {
 			Runtime runtime = Runtime.getRuntime();
-			runtime.exec(new String[]{"sh", "-c", "rm -f /tmp/alloy_heredoc*.als"});
-			runtime.exec(new String[]{"sh", "-c", "rm -f /tmp/kodkod*.log"});
-			runtime.exec(new String[]{"sh", "-c", "rm -f /tmp/tmp*.wcnf"});
+			runtime.exec(new String[]{"sh", "-c", "rm -f " + TMP_DIR + "/alloy_heredoc*.als"});
+			runtime.exec(new String[]{"sh", "-c", "rm -f " + TMP_DIR + "/kodkod*.log"});
+			runtime.exec(new String[]{"sh", "-c", "rm -f " + TMP_DIR + "/tmp*.wcnf"});
 		} catch (IOException e) {
 			// nothing to do if this fails
 		}
