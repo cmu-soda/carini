@@ -540,7 +540,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    // fix the order of the param map to be ascending (since the order doesn't matter).\n"
 			+ "    // the idea is to make the ordering deterministic and, hopefully, result in a faster run time.\n"
 			+ "    all a1,f1,a2,f2 : ParamIdx |\n"
-			+ "        (a1->f1 in actToFlParamsMap and a2->f2 in actToFlParamsMap and a1.lt[a2]) implies (f1.lt[f2])\n"
+			+ "        (a1->f1 in actToFlParamsMap and a2->f2 in actToFlParamsMap and a1.lte[a2]) implies (f1.lte[f2])\n"
 			+ "}\n"
 			+ "\n"
 			+ "sig Fluent extends Formula {\n"

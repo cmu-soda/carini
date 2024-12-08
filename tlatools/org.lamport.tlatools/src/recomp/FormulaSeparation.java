@@ -140,6 +140,10 @@ public class FormulaSeparation {
     		System.out.println("-------");
     		PerfTimer timer = new PerfTimer();
     		
+    		// cache the formula synthesized for each set of positive traces. the cache is per round, so the negative
+    		// trace will be the same for all sets of positive traces stored as keys.
+    		Map<Set<AlloyTrace>, Formula> formulaCache = new HashMap<>();
+    		
     		// the env var types we consider for this round. it always starts as the full set, but then we eliminate
     		// any env var type that returns UNSAT. note that envVarTypes gets modified (as an out-param) in the
     		// synthesizeFormula() method.
@@ -182,7 +186,7 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Formula formula = synthesizeFormula(negTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Formula formula = synthesizeFormula(negTrace, currentPosTraces, numFluents, envVarTypes, formulaCache);
     			System.out.println("Synthesized: " + formula);
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
@@ -522,11 +526,23 @@ public class FormulaSeparation {
 	}
 	
 	private Formula synthesizeFormula(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
-			final Set<Map<String,String>> envVarTypes) {
+			final Set<Map<String,String>> envVarTypes, Map<Set<AlloyTrace>, Formula> formulaCache) {
+		
+		// check for a cache hit
+		final Set<AlloyTrace> posTracesSet = posTraces.stream().collect(Collectors.toSet());
+		if (formulaCache.containsKey(posTracesSet)) {
+			System.out.println("Cache hit, using cached formula");
+			return formulaCache.get(posTracesSet);
+		}
+		
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
-		return formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
+		final Formula formula = formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
 				tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
+		
+		// cache and return the results
+		formulaCache.put(posTracesSet, formula);
+		return formula;
 	}
 	
 	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {
