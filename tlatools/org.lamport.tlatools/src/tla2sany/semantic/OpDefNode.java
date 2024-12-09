@@ -647,14 +647,16 @@ public class OpDefNode extends OpDefOrDeclNode
 	  // the fluents that are updated in this action
 	  final List<String> fluentsUpdated = formula.getFluents()
 			  .stream()
-			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act))
+			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act) ||
+					  fluent.mutInitBaseNames.contains(act) || fluent.mutTermBaseNames.contains(act))
 			  .map(fluent -> fluent.name)
 			  .collect(Collectors.toList());
 	  
 	  // the TLA+ conjuncts that update each fluent
 	  final List<String> fluentUpdateConjuncts = formula.getFluents()
 			  .stream()
-			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act))
+			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act) ||
+					  fluent.mutInitBaseNames.contains(act) || fluent.mutTermBaseNames.contains(act))
 			  .map(fluent -> {
 				  final Set<List<Integer>> initParamMaps = fluent.init
 				  		.stream()
@@ -662,6 +664,16 @@ public class OpDefNode extends OpDefOrDeclNode
 				  		.map(p -> p.second)
 				  		.collect(Collectors.toSet());
 				  final Set<List<Integer>> termParamMaps = fluent.term
+					  		.stream()
+					  		.filter(p -> act.equals(p.first))
+					  		.map(p -> p.second)
+					  		.collect(Collectors.toSet());
+				  final Set<List<Integer>> mutInitParamMaps = fluent.mutInit
+					  		.stream()
+					  		.filter(p -> act.equals(p.first))
+					  		.map(p -> p.second)
+					  		.collect(Collectors.toSet());
+				  final Set<List<Integer>> mutTermParamMaps = fluent.mutTerm
 					  		.stream()
 					  		.filter(p -> act.equals(p.first))
 					  		.map(p -> p.second)
@@ -679,50 +691,93 @@ public class OpDefNode extends OpDefOrDeclNode
 						  .stream()
 						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
 						  .collect(Collectors.toSet());
-				  
-				  // TODO handle the case where init and term actions overlap
-				  final Set<String> initFluentUpdates = initVarTuples
+				  final Set<List<String>> mutInitVarTuples = mutInitParamMaps
 						  .stream()
-						  .map(t -> "![" + String.join("][",t) + "] = TRUE")
+						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
 						  .collect(Collectors.toSet());
-				  final Set<String> termFluentUpdates = termVarTuples
+				  final Set<List<String>> mutTermVarTuples = mutTermParamMaps
 						  .stream()
-						  .map(t -> "![" + String.join("][",t) + "] = FALSE")
+						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
 						  .collect(Collectors.toSet());
 				  
-				  // TLA+ expression for updating all fluent "cells" at once
-				  final Set<String> allFluentUpdates = Utils.union(initFluentUpdates, termFluentUpdates);
-				  final String allFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", allFluentUpdates) + "]";
+				  // several sanity checks to make sure the fluents don't cause a logical error in the _hist spec
+				  // essentially, the four sets are mutually exclusive. this constraint is encoded in the alloy file so these assertions
+				  // should never be violated.
+				  Utils.assertTrue(!(initVarTuples.isEmpty() && termVarTuples.isEmpty() && mutInitVarTuples.isEmpty() && mutTermVarTuples.isEmpty()),
+						  "Synthesized a formula without any fluents!");
+				  Utils.assertTrue(initVarTuples.isEmpty() || termVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(initVarTuples.isEmpty() || mutInitVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(initVarTuples.isEmpty() || mutTermVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(termVarTuples.isEmpty() || mutInitVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(termVarTuples.isEmpty() || mutTermVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(mutInitVarTuples.isEmpty() || mutTermVarTuples.isEmpty(), "Found overlapping init/term fluents");
 				  
-				  // TLA+ expression for only updating the init fluent "cells" (all at once)
-				  final String initFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", initFluentUpdates) + "]";
-				  
-				  // this is the usual case, when each "cell" of the fluent that we update
-				  // has the same value (i.e. they're all TRUE or all FALSE)
-				  if (initFluentUpdates.isEmpty() || termFluentUpdates.isEmpty()) {
+				  // the update corresponding to each fluent
+				  if (!initVarTuples.isEmpty()) {
+					  final Set<String> initFluentUpdates = initVarTuples
+							  .stream()
+							  .map(t -> "![" + String.join("][",t) + "] = TRUE")
+							  .collect(Collectors.toSet());
+					  final String allFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", initFluentUpdates) + "]";
+					  return List.of(allFluentConj);
+				  }
+				  if (!termVarTuples.isEmpty()) {
+					  final Set<String> termFluentUpdates = termVarTuples
+							  .stream()
+							  .map(t -> "![" + String.join("][",t) + "] = FALSE")
+							  .collect(Collectors.toSet());
+					  final String allFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", termFluentUpdates) + "]";
+					  return List.of(allFluentConj);
+				  }
+				  if (!mutInitVarTuples.isEmpty()) {
+					  // the fluent function, but with every value set to FALSE
+					  StringBuilder allFalseBuilder = new StringBuilder();
+					  final List<String> paramTypes = fluent.paramTypes;
+					  for (int i = 0; i < paramTypes.size(); ++i) {
+						  final String paramType = paramTypes.get(i);
+						  final String qvName = "x" + i;
+						  allFalseBuilder.append("[ ").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
+					  }
+					  allFalseBuilder.append("FALSE");
+					  for (int i = 0; i < paramTypes.size(); ++i) {
+						  allFalseBuilder.append("]");
+					  }
+					  final String allFalse = allFalseBuilder.toString();
+					  
+					  // update only the desired cell to TRUE
+					  final Set<String> mutInitFluentUpdates = mutInitVarTuples
+							  .stream()
+							  .map(t -> "![" + String.join("][",t) + "] = TRUE")
+							  .collect(Collectors.toSet());
+					  final String allFluentConj = fluent.name + "' = [" + allFalse + " EXCEPT " + String.join(", ", mutInitFluentUpdates) + "]";
+					  return List.of(allFluentConj);
+				  }
+				  if (!mutTermVarTuples.isEmpty()) {
+					  // the fluent function, but with every value set to TRUE
+					  StringBuilder allTrueBuilder = new StringBuilder();
+					  final List<String> paramTypes = fluent.paramTypes;
+					  for (int i = 0; i < paramTypes.size(); ++i) {
+						  final String paramType = paramTypes.get(i);
+						  final String qvName = "x" + i;
+						  allTrueBuilder.append("[ ").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
+					  }
+					  allTrueBuilder.append("TRUE");
+					  for (int i = 0; i < paramTypes.size(); ++i) {
+						  allTrueBuilder.append("]");
+					  }
+					  final String allTrue = allTrueBuilder.toString();
+					  
+					  // update only the desired cell to FALSE
+					  final Set<String> mutTermFluentUpdates = mutTermVarTuples
+							  .stream()
+							  .map(t -> "![" + String.join("][",t) + "] = FALSE")
+							  .collect(Collectors.toSet());
+					  final String allFluentConj = fluent.name + "' = [" + allTrue + " EXCEPT " + String.join(", ", mutTermFluentUpdates) + "]";
 					  return List.of(allFluentConj);
 				  }
 				  
-				  // otherwise, it's possible that an update can set a "cell" to TRUE and
-				  // FALSE at the same time; we must take care to avoid this situation.
-				  final String initTuples = initVarTuples
-						  .stream()
-						  .map(t -> "<<" + String.join(",",t) + ">>")
-						  .collect(Collectors.joining(","));
-				  final String termTuples = termVarTuples
-						  .stream()
-						  .map(t -> "<<" + String.join(",",t) + ">>")
-						  .collect(Collectors.joining(","));
-				  final String updateTupleStr = "{"+termTuples+"} \\ {"+initTuples+"}";
-				  
-				  // TODO support larger number (ideally arbitrary number) of term actions
-				  Utils.assertTrue(termVarTuples.size() == 1, "Multiple term actions (in the presence of init actions) in a fluent is not yet implemented");
-				  
-				  // the soundness of these formulas depends on there being exactly one term fluent cell
-				  final String noOverlap = "((" + updateTupleStr + ") # {}) => " + allFluentConj;
-				  final String hasOverlap = "((" + updateTupleStr + ") = {}) => " + initFluentConj;
-				  
-				  return List.of(noOverlap, hasOverlap);
+				  Utils.assertTrue(false, "This path is impossible");
+				  return null;
 			  })
 			  .reduce((List<String>)new ArrayList<String>(),
 					  (acc,l) -> Utils.append(acc, l),

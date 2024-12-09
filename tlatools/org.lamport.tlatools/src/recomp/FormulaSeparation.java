@@ -256,7 +256,7 @@ public class FormulaSeparation {
 		
 		// TODO make the init trace len a param
 		// TODO cap the number of iterations we can have, right now an inf loop is possible
-    	int initTraceLen = 4;
+    	int initTraceLen = 1;
     	AlloyTrace initPosTrace = new AlloyTrace();
     	while (initPosTrace.isEmpty()) {
     		InitTraceVisitor<Integer,String> visitor = new InitTraceVisitor<>(initTraceLen);
@@ -299,7 +299,7 @@ public class FormulaSeparation {
 		try {
 			// TODO should use a temporary file for <cexTraceOutputFile>, right now there seems to be a race condition
 			final String[] cmd = {"sh", "-c",
-					"java -jar " + TLC_JAR_PATH + " -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
+					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			

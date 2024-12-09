@@ -16,8 +16,12 @@ public class Fluent {
 	public final String initially;
 	public final Set<Pair<String, List<Integer>>> init;
 	public final Set<Pair<String, List<Integer>>> term;
+	public final Set<Pair<String, List<Integer>>> mutInit;
+	public final Set<Pair<String, List<Integer>>> mutTerm;
 	public final Set<String> initBaseNames;
 	public final Set<String> termBaseNames;
+	public final Set<String> mutInitBaseNames;
+	public final Set<String> mutTermBaseNames;
 	
 	public Fluent(final String name, final JSONObject fluentInfo) {
 		this.name = name;
@@ -52,11 +56,45 @@ public class Fluent {
 					return new Pair<>(act, paramMap);
 				})
 				.collect(Collectors.toSet());
+		this.mutInit = Utils.toArrayList(fluentInfo.getValue("mutInit").getArray())
+				.stream()
+				.map(kv -> {
+					final JSONObject actInfo = kv.getObject();
+					Utils.assertTrue(actInfo.getValuesKeys().length == 1, "Fluent mutInit act info has multiple keys");
+					final String act = actInfo.getValuesKeys()[0];
+					final List<Integer> paramMap = Utils.toArrayList(actInfo.getValue(act).getArray())
+							.stream()
+							.map(v -> v.getDouble().intValue())
+							.collect(Collectors.toList());
+					return new Pair<>(act, paramMap);
+				})
+				.collect(Collectors.toSet());
+		this.mutTerm = Utils.toArrayList(fluentInfo.getValue("mutTerm").getArray())
+				.stream()
+				.map(kv -> {
+					final JSONObject actInfo = kv.getObject();
+					Utils.assertTrue(actInfo.getValuesKeys().length == 1, "Fluent mutTerm act info has multiple keys");
+					final String act = actInfo.getValuesKeys()[0];
+					final List<Integer> paramMap = Utils.toArrayList(actInfo.getValue(act).getArray())
+							.stream()
+							.map(v -> v.getDouble().intValue())
+							.collect(Collectors.toList());
+					return new Pair<>(act, paramMap);
+				})
+				.collect(Collectors.toSet());
 		this.initBaseNames = this.init
 				.stream()
 				.map(p -> p.first)
 				.collect(Collectors.toSet());
 		this.termBaseNames = this.term
+				.stream()
+				.map(p -> p.first)
+				.collect(Collectors.toSet());
+		this.mutInitBaseNames = this.mutInit
+				.stream()
+				.map(p -> p.first)
+				.collect(Collectors.toSet());
+		this.mutTermBaseNames = this.mutTerm
 				.stream()
 				.map(p -> p.first)
 				.collect(Collectors.toSet());
@@ -93,11 +131,35 @@ public class Fluent {
 					return "{" + act + ":[" + pmapContents + "]}";
 				})
 				.collect(Collectors.joining(","));
+		final String mutInitActs = this.mutInit
+				.stream()
+				.map(a -> {
+					final String act = "\"" + a.first + "\"";
+					final String pmapContents = a.second
+							.stream()
+							.map(p -> Integer.toString(p))
+							.collect(Collectors.joining(","));
+					return "{" + act + ":[" + pmapContents + "]}";
+				})
+				.collect(Collectors.joining(","));
+		final String mutTermActs = this.mutTerm
+				.stream()
+				.map(a -> {
+					final String act = "\"" + a.first + "\"";
+					final String pmapContents = a.second
+							.stream()
+							.map(p -> Integer.toString(p))
+							.collect(Collectors.joining(","));
+					return "{" + act + ":[" + pmapContents + "]}";
+				})
+				.collect(Collectors.joining(","));
 		
 		final String init = "\"init\":[" + initActs + "]";
 		final String term = "\"term\":[" + termActs + "]";
+		final String mutInit = "\"mutInit\":[" + mutInitActs + "]";
+		final String mutTerm = "\"mutTerm\":[" + mutTermActs + "]";
 		
-		return "{" + String.join(",", List.of(paramTypes, initially, init, term)) + "}";
+		return "{" + String.join(",", List.of(paramTypes, initially, init, term, mutInit, mutTerm)) + "}";
 	}
 	
 	@Override
@@ -126,9 +188,36 @@ public class Fluent {
 					return act + ": " + pmap;
 				})
 				.collect(Collectors.joining("\n        "));
+		final String mutInitStr = this.mutInit
+				.stream()
+				.map(a -> {
+					final String act = a.first;
+					final String pmapContents = a.second
+							.stream()
+							.map(i -> Integer.toString(i))
+							.collect(Collectors.joining(","));
+					final String pmap = "[" + pmapContents + "]";
+					return act + ": " + pmap;
+				})
+				.collect(Collectors.joining("\n           "));
+			final String mutTermStr = this.mutTerm
+				.stream()
+				.map(a -> {
+					final String act = a.first;
+					final String pmapContents = a.second
+							.stream()
+							.map(i -> Integer.toString(i))
+							.collect(Collectors.joining(","));
+					final String pmap = "[" + pmapContents + "]";
+					return act + ": " + pmap;
+				})
+				.collect(Collectors.joining("\n           "));
+		
 		return this.name + ":\n"
 				+ "  initially: " + this.initially + "\n"
 				+ "  init: " + initStr + "\n"
-				+ "  term: " + termStr;
+				+ "  term: " + termStr + "\n"
+				+ "  mutInit: " + mutInitStr + "\n"
+				+ "  mutTerm: " + mutTermStr;
 	}
 }
