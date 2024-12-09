@@ -22,7 +22,7 @@ import tlc2.Utils;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
-	private static final int INIT_MAX_POS_TRACES = 1;
+	private static final int INIT_MAX_POS_TRACES = 3;
 	private static final String TLC_JAR_PATH = System.getProperty("user.home") + "/bin/tla2tools.jar";
 	
 	private final String tlaComp;
