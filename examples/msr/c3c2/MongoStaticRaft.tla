@@ -135,7 +135,11 @@ CommitEntry(i, commitQuorum, ind, curTerm) ==
     \* The entry was written by this leader.
     /\ log[i][ind] = curTerm
     \* all nodes have this log entry and are in the term of the leader.
-    /\ ImmediatelyCommitted(<<ind,curTerm>>, commitQuorum)
+    \*/\ ImmediatelyCommitted(<<ind,curTerm>>, commitQuorum)
+    /\ \A s \in commitQuorum :
+        /\ Len(log[s]) >= ind
+        /\ InLog(<<ind,curTerm>>, s) \* they have the entry.
+        /\ currentTerm[s] = curTerm  \* they are in the same term as the log entry. 
     \* Don't mark an entry as committed more than once.
     /\ ~\E c \in committed : c.entry = <<ind, curTerm>>
     /\ committed' = committed \cup

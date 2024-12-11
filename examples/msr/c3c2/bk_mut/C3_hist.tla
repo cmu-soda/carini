@@ -3,12 +3,13 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
 CONSTANTS Server, Quorums, FinNat
 
-VARIABLES log, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0
+VARIABLES log, Fluent6, Fluent5, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0
 
-vars == <<log, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
+vars == <<log, Fluent6, Fluent5, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
 
 CandSep ==
 /\ \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+/\ \A var0 \in Server : \A var1 \in FinNat : (Fluent6[var0][var1]) => (Fluent5[var0][var1])
 
 Secondary == "secondary"
 
@@ -39,8 +40,8 @@ LET logOk == (LastTerm(log[j]) > LastTerm(log[i]) \/ (LastTerm(log[j]) = LastTer
 
 ClientRequest(i,curTerm) ==
 /\ log' = [log EXCEPT![i] = Append(log[i],curTerm)]
-/\ Fluent3' = [[x0 \in Server |-> FALSE] EXCEPT ![i] = TRUE]
-/\ UNCHANGED<<Fluent4>>
+/\ Fluent6' = [Fluent6 EXCEPT ![i][curTerm] = TRUE]
+/\ UNCHANGED<<Fluent3, Fluent5, Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -53,7 +54,7 @@ GetEntries(i,j) ==
       newEntry == log[j][newEntryIndex]
       newLog == Append(log[i],newEntry) IN
     /\ log' = [log EXCEPT![i] = newLog]
-/\ UNCHANGED<<Fluent3, Fluent4>>
+/\ UNCHANGED<<Fluent3, Fluent6, Fluent5, Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -61,7 +62,7 @@ GetEntries(i,j) ==
 RollbackEntries(i,j) ==
 /\ CanRollback(i,j)
 /\ log' = [log EXCEPT![i] = SubSeq(log[i],1,(Len(log[i]) - 1))]
-/\ UNCHANGED<<Fluent3, Fluent4>>
+/\ UNCHANGED<<Fluent3, Fluent6, Fluent5, Fluent4>>
 /\ CandSep'
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 /\ CandSep'
@@ -70,8 +71,9 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ (i \in voteQuorum)
 /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
 /\ UNCHANGED <<log>>
+/\ Fluent5' = [Fluent5 EXCEPT ![i][newTerm] = TRUE]
 /\ Fluent4' = [Fluent4 EXCEPT ![i] = TRUE]
-/\ UNCHANGED<<Fluent3>>
+/\ UNCHANGED<<Fluent3, Fluent6>>
 /\ CandSep'
 /\ Fluent1' = [Fluent1 EXCEPT ![newTerm] = TRUE]
 /\ UNCHANGED<<Fluent2, Fluent0>>
@@ -81,9 +83,9 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ ind = Len(log[i])
 /\ ind > 0
 /\ log[i][ind] = curTerm
-/\ (\A s \in commitQuorum : (Len(log[s]) >= ind /\ InLog(<<ind,curTerm>>,s)))
 /\ UNCHANGED <<log>>
-/\ UNCHANGED<<Fluent3, Fluent4>>
+/\ Fluent3' = [[ x0 \in Server |-> FALSE] EXCEPT ![i] = TRUE]
+/\ UNCHANGED<<Fluent6, Fluent5, Fluent4>>
 /\ CandSep'
 /\ Fluent2' = [Fluent2 EXCEPT ![ind][curTerm] = TRUE]
 /\ Fluent0' = [Fluent0 EXCEPT ![curTerm] = TRUE]
@@ -93,6 +95,8 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 Init ==
 /\ log = [i \in Server |-> <<>>]
 /\ Fluent3 = [ x0 \in Server |-> FALSE]
+/\ Fluent6 = [ x0 \in Server |-> [ x1 \in FinNat |-> FALSE]]
+/\ Fluent5 = [ x0 \in Server |-> [ x1 \in FinNat |-> FALSE]]
 /\ Fluent4 = [ x0 \in Server |-> FALSE]
 /\ Fluent2 = [ x0 \in FinNat |-> [ x1 \in FinNat |-> FALSE]]
 /\ Fluent1 = [ x0 \in FinNat |-> FALSE]

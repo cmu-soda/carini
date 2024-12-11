@@ -59,6 +59,9 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ ind = Len(log[i])
 /\ ind > 0
 /\ log[i][ind] = curTerm
+/\ \A s \in commitQuorum :
+    /\ Len(log[s]) >= ind
+    /\ InLog(<<ind,curTerm>>, s) \* they have the entry.
 /\ UNCHANGED <<log>>
 
 Init ==

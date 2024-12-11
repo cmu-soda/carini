@@ -52,6 +52,8 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ (commitQuorum \in Quorums)
 /\ ind > 0
 /\ state[i] = Primary
+/\ \A s \in commitQuorum :
+    /\ currentTerm[s] = curTerm  \* they are in the same term as the log entry. 
 /\ UNCHANGED <<state,config,currentTerm>>
 
 UpdateTerms(i,j) ==
