@@ -648,7 +648,7 @@ public class OpDefNode extends OpDefOrDeclNode
 	  final List<String> fluentsUpdated = formula.getFluents()
 			  .stream()
 			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act) ||
-					  fluent.mutInitBaseNames.contains(act) || fluent.mutTermBaseNames.contains(act))
+					  fluent.mutInitBaseNames.contains(act) || fluent.falsifyBaseNames.contains(act))
 			  .map(fluent -> fluent.name)
 			  .collect(Collectors.toList());
 	  
@@ -656,7 +656,7 @@ public class OpDefNode extends OpDefOrDeclNode
 	  final List<String> fluentUpdateConjuncts = formula.getFluents()
 			  .stream()
 			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act) ||
-					  fluent.mutInitBaseNames.contains(act) || fluent.mutTermBaseNames.contains(act))
+					  fluent.mutInitBaseNames.contains(act) || fluent.falsifyBaseNames.contains(act))
 			  .map(fluent -> {
 				  final Set<List<Integer>> initParamMaps = fluent.init
 				  		.stream()
@@ -673,7 +673,7 @@ public class OpDefNode extends OpDefOrDeclNode
 					  		.filter(p -> act.equals(p.first))
 					  		.map(p -> p.second)
 					  		.collect(Collectors.toSet());
-				  final Set<List<Integer>> mutTermParamMaps = fluent.mutTerm
+				  final Set<List<Integer>> falsifyParamMaps = fluent.falsify
 					  		.stream()
 					  		.filter(p -> act.equals(p.first))
 					  		.map(p -> p.second)
@@ -695,7 +695,7 @@ public class OpDefNode extends OpDefOrDeclNode
 						  .stream()
 						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
 						  .collect(Collectors.toSet());
-				  final Set<List<String>> mutTermVarTuples = mutTermParamMaps
+				  final Set<List<String>> falsifyVarTuples = falsifyParamMaps
 						  .stream()
 						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
 						  .collect(Collectors.toSet());
@@ -703,14 +703,14 @@ public class OpDefNode extends OpDefOrDeclNode
 				  // several sanity checks to make sure the fluents don't cause a logical error in the _hist spec
 				  // essentially, the four sets are mutually exclusive. this constraint is encoded in the alloy file so these assertions
 				  // should never be violated.
-				  Utils.assertTrue(!(initVarTuples.isEmpty() && termVarTuples.isEmpty() && mutInitVarTuples.isEmpty() && mutTermVarTuples.isEmpty()),
+				  Utils.assertTrue(!(initVarTuples.isEmpty() && termVarTuples.isEmpty() && mutInitVarTuples.isEmpty() && falsifyVarTuples.isEmpty()),
 						  "Synthesized a formula without any fluents!");
 				  Utils.assertTrue(initVarTuples.isEmpty() || termVarTuples.isEmpty(), "Found overlapping init/term fluents");
 				  Utils.assertTrue(initVarTuples.isEmpty() || mutInitVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(initVarTuples.isEmpty() || mutTermVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(initVarTuples.isEmpty() || falsifyVarTuples.isEmpty(), "Found overlapping init/term fluents");
 				  Utils.assertTrue(termVarTuples.isEmpty() || mutInitVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(termVarTuples.isEmpty() || mutTermVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(mutInitVarTuples.isEmpty() || mutTermVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(termVarTuples.isEmpty() || falsifyVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  Utils.assertTrue(mutInitVarTuples.isEmpty() || falsifyVarTuples.isEmpty(), "Found overlapping init/term fluents");
 				  
 				  // the update corresponding to each fluent
 				  if (!initVarTuples.isEmpty()) {
@@ -736,7 +736,7 @@ public class OpDefNode extends OpDefOrDeclNode
 					  for (int i = 0; i < paramTypes.size(); ++i) {
 						  final String paramType = paramTypes.get(i);
 						  final String qvName = "x" + i;
-						  allFalseBuilder.append("[ ").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
+						  allFalseBuilder.append("[").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
 					  }
 					  allFalseBuilder.append("FALSE");
 					  for (int i = 0; i < paramTypes.size(); ++i) {
@@ -752,27 +752,23 @@ public class OpDefNode extends OpDefOrDeclNode
 					  final String allFluentConj = fluent.name + "' = [" + allFalse + " EXCEPT " + String.join(", ", mutInitFluentUpdates) + "]";
 					  return List.of(allFluentConj);
 				  }
-				  if (!mutTermVarTuples.isEmpty()) {
-					  // the fluent function, but with every value set to TRUE
-					  StringBuilder allTrueBuilder = new StringBuilder();
+				  if (!falsifyVarTuples.isEmpty()) {
+					  // reset every value to FALSE in the fluent function
+					  StringBuilder allFalseBuilder = new StringBuilder();
 					  final List<String> paramTypes = fluent.paramTypes;
 					  for (int i = 0; i < paramTypes.size(); ++i) {
 						  final String paramType = paramTypes.get(i);
 						  final String qvName = "x" + i;
-						  allTrueBuilder.append("[ ").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
+						  allFalseBuilder.append("[").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
 					  }
-					  allTrueBuilder.append("TRUE");
+					  allFalseBuilder.append("FALSE");
 					  for (int i = 0; i < paramTypes.size(); ++i) {
-						  allTrueBuilder.append("]");
+						  allFalseBuilder.append("]");
 					  }
-					  final String allTrue = allTrueBuilder.toString();
+					  final String allFalse = allFalseBuilder.toString();
 					  
-					  // update only the desired cell to FALSE
-					  final Set<String> mutTermFluentUpdates = mutTermVarTuples
-							  .stream()
-							  .map(t -> "![" + String.join("][",t) + "] = FALSE")
-							  .collect(Collectors.toSet());
-					  final String allFluentConj = fluent.name + "' = [" + allTrue + " EXCEPT " + String.join(", ", mutTermFluentUpdates) + "]";
+					  // update all cells to FALSE
+					  final String allFluentConj = fluent.name + "' = " + allFalse;
 					  return List.of(allFluentConj);
 				  }
 				  

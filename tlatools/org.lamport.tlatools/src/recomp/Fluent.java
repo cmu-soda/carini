@@ -17,11 +17,11 @@ public class Fluent {
 	public final Set<Pair<String, List<Integer>>> init;
 	public final Set<Pair<String, List<Integer>>> term;
 	public final Set<Pair<String, List<Integer>>> mutInit;
-	public final Set<Pair<String, List<Integer>>> mutTerm;
+	public final Set<Pair<String, List<Integer>>> falsify;
 	public final Set<String> initBaseNames;
 	public final Set<String> termBaseNames;
 	public final Set<String> mutInitBaseNames;
-	public final Set<String> mutTermBaseNames;
+	public final Set<String> falsifyBaseNames;
 	
 	public Fluent(final String name, final JSONObject fluentInfo) {
 		this.name = name;
@@ -69,11 +69,11 @@ public class Fluent {
 					return new Pair<>(act, paramMap);
 				})
 				.collect(Collectors.toSet());
-		this.mutTerm = Utils.toArrayList(fluentInfo.getValue("mutTerm").getArray())
+		this.falsify = Utils.toArrayList(fluentInfo.getValue("falsify").getArray())
 				.stream()
 				.map(kv -> {
 					final JSONObject actInfo = kv.getObject();
-					Utils.assertTrue(actInfo.getValuesKeys().length == 1, "Fluent mutTerm act info has multiple keys");
+					Utils.assertTrue(actInfo.getValuesKeys().length == 1, "Fluent falsify act info has multiple keys");
 					final String act = actInfo.getValuesKeys()[0];
 					final List<Integer> paramMap = Utils.toArrayList(actInfo.getValue(act).getArray())
 							.stream()
@@ -94,7 +94,7 @@ public class Fluent {
 				.stream()
 				.map(p -> p.first)
 				.collect(Collectors.toSet());
-		this.mutTermBaseNames = this.mutTerm
+		this.falsifyBaseNames = this.falsify
 				.stream()
 				.map(p -> p.first)
 				.collect(Collectors.toSet());
@@ -142,7 +142,7 @@ public class Fluent {
 					return "{" + act + ":[" + pmapContents + "]}";
 				})
 				.collect(Collectors.joining(","));
-		final String mutTermActs = this.mutTerm
+		final String falsifyActs = this.falsify
 				.stream()
 				.map(a -> {
 					final String act = "\"" + a.first + "\"";
@@ -157,9 +157,9 @@ public class Fluent {
 		final String init = "\"init\":[" + initActs + "]";
 		final String term = "\"term\":[" + termActs + "]";
 		final String mutInit = "\"mutInit\":[" + mutInitActs + "]";
-		final String mutTerm = "\"mutTerm\":[" + mutTermActs + "]";
+		final String falsify = "\"falsify\":[" + falsifyActs + "]";
 		
-		return "{" + String.join(",", List.of(paramTypes, initially, init, term, mutInit, mutTerm)) + "}";
+		return "{" + String.join(",", List.of(paramTypes, initially, init, term, mutInit, falsify)) + "}";
 	}
 	
 	@Override
@@ -200,7 +200,7 @@ public class Fluent {
 					return act + ": " + pmap;
 				})
 				.collect(Collectors.joining("\n           "));
-			final String mutTermStr = this.mutTerm
+			final String falsifyStr = this.falsify
 				.stream()
 				.map(a -> {
 					final String act = a.first;
@@ -218,6 +218,6 @@ public class Fluent {
 				+ "  init: " + initStr + "\n"
 				+ "  term: " + termStr + "\n"
 				+ "  mutInit: " + mutInitStr + "\n"
-				+ "  mutTerm: " + mutTermStr;
+				+ "  falsify: " + falsifyStr;
 	}
 }
