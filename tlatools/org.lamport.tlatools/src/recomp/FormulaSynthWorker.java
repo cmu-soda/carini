@@ -538,11 +538,13 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    all k,v1,v2 : ParamIdx | (k->v1 in actToFlParamsMap and k->v2 in actToFlParamsMap) implies (v1 = v2)\n"
 			+ "    // actToFlParamsMap is injective\n"
 			+ "    all k1,k2,v : ParamIdx | (k1->v in actToFlParamsMap and k2->v in actToFlParamsMap) implies (k1 = k2)\n"
-			+ "\n"
-			+ "    // fix the order of the param map to be ascending (since the order doesn't matter).\n"
-			+ "    // the idea is to make the ordering deterministic and, hopefully, result in a faster run time.\n"
-			+ "    all a1,f1,a2,f2 : ParamIdx |\n"
-			+ "        (a1->f1 in actToFlParamsMap and a2->f2 in actToFlParamsMap and a1.lt[a2]) implies (f1.lt[f2])\n"
+			// If there's multiple fluent actions in a single fluent, this following constraint could prevent us from finding
+			// legitimate solutions.
+			//+ "\n"
+			//+ "    // fix the order of the param map to be ascending (since the order doesn't matter).\n"
+			//+ "    // the idea is to make the ordering deterministic and, hopefully, result in a faster run time.\n"
+			//+ "    all a1,f1,a2,f2 : ParamIdx |\n"
+			//+ "        (a1->f1 in actToFlParamsMap and a2->f2 in actToFlParamsMap and a1.lt[a2]) implies (f1.lt[f2])\n"
 			+ "}\n"
 			+ "\n"
 			+ "sig Fluent extends Formula {\n"
