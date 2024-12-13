@@ -42,17 +42,17 @@ public class FormulaSynth {
 	 * Manually synchronized
 	 * @param formula
 	 */
-	public void setFormula(final String formula, int workerId, Map<String,String> envVarType, double timeElapsedInSeconds) {
+	public void setFormula(final String formula, int workerId, final Map<String,String> envVarType, double timeElapsedInSeconds) {
 		try {
 			this.lock.lock();
 			++this.numWorkersDone;
-			if (formula.contains("UNSAT")) {
-				this.unsatEnvVarTypes.add(envVarType);
-			}
-			else if (this.globalFormula.contains("UNSAT") && !formula.trim().isEmpty()) {
+			if (!formula.contains("UNSAT") && !formula.trim().isEmpty() && this.globalFormula.contains("UNSAT")) {
 				this.globalFormula = formula;
 				this.winningWorkerId = workerId;
 				this.winningTimeElapsedInSeconds = timeElapsedInSeconds;
+			}
+			else {
+				this.unsatEnvVarTypes.add(envVarType);
 			}
 			// no matter what, notify the master that this thread is done
 			this.aWorkerIsDone.signalAll();
@@ -83,7 +83,7 @@ public class FormulaSynth {
 					qvars, legalEnvVarCombos, curNumFluents);
 			this.workers.add(worker);
 		}
-		Collections.shuffle(this.workers);
+		Collections.shuffle(this.workers, this.seed);
 		System.out.println("Total # synth jobs: " + this.workers.size());
 
 		try {

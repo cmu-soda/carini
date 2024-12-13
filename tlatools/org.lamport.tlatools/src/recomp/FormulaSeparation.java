@@ -528,7 +528,7 @@ public class FormulaSeparation {
 	}
 	
 	private Formula synthesizeFormula(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
-			final Set<Map<String,String>> envVarTypes, Map<Set<AlloyTrace>, Formula> formulaCache) {
+			Set<Map<String,String>> envVarTypes, Map<Set<AlloyTrace>, Formula> formulaCache) {
 		
 		// check for a cache hit
 		final Set<AlloyTrace> posTracesSet = posTraces.stream().collect(Collectors.toSet());

@@ -467,7 +467,7 @@ public class FormulaSynthWorker implements Runnable {
 	}
 	
 	private static final String alsmFormulaSynthesisPath = System.getenv(alsmFormulaSynthEnvVar);
-	private static final String workerHeapSize = System.getenv(workerHeapSizeEnvVar) != null ? System.getenv(workerHeapSizeEnvVar) : "2G";
+	private static final String workerHeapSize = System.getenv(workerHeapSizeEnvVar) != null ? System.getenv(workerHeapSizeEnvVar) : "4G";
 	private static final int MAX_FORMULA_SIZE = System.getenv(maxFormulaSizeEnvVar) != null ? Integer.parseInt(System.getenv(maxFormulaSizeEnvVar)) : 7;
 	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/bin/alsm-formula-synthesis.jar";
 	private static final String openWboLibPath = alsmFormulaSynthesisPath + "/lib/";
