@@ -135,10 +135,14 @@ public class FormulaSeparation {
     	
     	final AlloyTrace initPosTrace = createInitPosTrace();
     	
+    	// the max num pos traces we'll allow during formula synthesis
+    	int maxNumPosTraces = INIT_MAX_POS_TRACES;
+    	
     	// the current pos traces that we will learn from (perform formula synth on)
-    	int maxNumPosTraces = INIT_MAX_POS_TRACES; // the max num pos traces we'll allow during formula synthesis
     	List<AlloyTrace> currentPosTraces = new ArrayList<>();
     	currentPosTraces.add(initPosTrace);
+    	
+    	// collect all pos traces we've ever seen. this will help us increase <maxNumPosTraces>
     	Set<AlloyTrace> allPosTracesSeen = new HashSet<>();
     	allPosTracesSeen.add(initPosTrace);
     	
@@ -171,8 +175,8 @@ public class FormulaSeparation {
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
 
-    		// reset the max num pos traces in every round
-			System.out.println("max # pos traces: " + maxNumPosTraces);
+    		// halve the max num pos traces in every round to "reset" them
+    		maxNumPosTraces = Math.max(maxNumPosTraces/2, INIT_MAX_POS_TRACES);
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
@@ -182,6 +186,7 @@ public class FormulaSeparation {
 				while (currentPosTraces.size() > maxNumPosTraces) {
 					currentPosTraces.remove(0);
 				}
+				System.out.println("max # pos traces: " + maxNumPosTraces);
 				
 				// synthesize a new formula
     			final int numFluents = this.useIntermediateProp ?
@@ -233,7 +238,6 @@ public class FormulaSeparation {
     				++cumNumPosTraces;
     				currentPosTraces.add(newPosTrace);
 					allPosTracesSeen.add(newPosTrace);
-        			System.out.println("max # pos traces: " + maxNumPosTraces);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
