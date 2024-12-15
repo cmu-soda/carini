@@ -124,12 +124,7 @@ public class FormulaSeparation {
 				.map(l -> l.stream().collect(Collectors.toSet()))
 				.reduce((Set<String>)new HashSet<String>(),
 						(acc,s) -> Utils.union(acc, s),
-						(s1,s2) -> Utils.union(s1, s2))
-                // TODO delete this hack!
-				.stream()
-				.filter(t -> !t.equals("Quorums"))
-				.collect(Collectors.toSet());
-				// TODO hack ends here!
+						(s1,s2) -> Utils.union(s1, s2));
 		final Set<Map<String,String>> allEnvVarTypes = createAllEnvVarTypes(allTypes);
 		Utils.assertTrue(!allEnvVarTypes.isEmpty(), "internal error: envVarTypes is empty!");
     	
