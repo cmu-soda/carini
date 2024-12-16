@@ -581,6 +581,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    termFl : set FlSymAction,\n"
 			+ "    mutInitFl : set FlSymAction,\n"
 			+ "    falsifyFl : set FlSymAction,\n"
+			+ "    dummyFl : set FlSymAction, // a dummy fluent, used only for minsome (below)\n"
 			+ "\n"
 			+ "    // vars represents the parameters (including the ordering) to the fluent itself\n"
 			+ "    vars : set(ParamIdx->Var)\n"
@@ -777,6 +778,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
 			+ "	minsome children // smallest formula possible\n"
 			+ "	minsome initFl + termFl + mutInitFl + falsifyFl // heuristic to synthesize the least complicated fluents as possible\n"
+			+ "	minsome dummyFl + mutInitFl // synthesize as few mutInit fluents as possible (dummyFl for the 'some')\n"
 			+ "	minsome Fluent // fewer fluents makes local inductive invariant inference easier\n"
 			+ "}\n";
 }
