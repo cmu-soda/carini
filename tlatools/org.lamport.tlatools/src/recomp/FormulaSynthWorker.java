@@ -32,6 +32,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final TLC tlcComp;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
+	private final Map<String, Map<String, Set<String>>> sortSetElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
 	private final Set<String> qvars;
@@ -47,7 +48,8 @@ public class FormulaSynthWorker implements Runnable {
 	public FormulaSynthWorker(FormulaSynth formulaSynth, Map<String,String> envVarTypes, int id,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
 			TLC tlcComp, Set<String> internalActions,
-			Map<String, Set<String>> sortElementsMap, Map<String, List<String>> actionParamTypes,
+			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
+			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents) {
 		this.formulaSynth = formulaSynth;
@@ -58,6 +60,7 @@ public class FormulaSynthWorker implements Runnable {
 		this.tlcComp = tlcComp;
 		this.internalActions = internalActions;
 		this.sortElementsMap = sortElementsMap;
+		this.sortSetElementsMap = sortSetElementsMap;
 		this.actionParamTypes = actionParamTypes;
 		this.maxActParamLen = maxActParamLen;
 		this.qvars = qvars;
@@ -160,6 +163,27 @@ public class FormulaSynthWorker implements Runnable {
 		final int numSymActs = MAX_NUM_FLUENT_ACTS;
 		final String strFormulaSize = "for " + formulaSize + " Formula, " + numSymActs + " FlSymAction";
 		
+		// define the setContains predicate
+		final String containsRelation = this.sortSetElementsMap
+				.values()
+				.stream()
+				.map(m -> {
+					return m.keySet()
+							.stream()
+							.map(k -> {
+								return m.get(k)
+										.stream()
+										.map(v -> k + "->" + v)
+										.collect(Collectors.joining(" + "));
+							})
+							.collect(Collectors.joining(" + "));
+				})
+				.collect(Collectors.joining(" + "));
+		final String setContainsPredicate = "pred setContains[s : Atom, e : Atom] {\n"
+				+ "	let containsRel = (" + containsRelation + ") |\n"
+				+ "		(s->e) in containsRel\n"
+				+ "}";
+		
 		// add all atoms, i.e. the values in each constant
 		final Set<String> allAtoms = this.sortElementsMap.values()
 				.stream()
@@ -175,8 +199,10 @@ public class FormulaSynthWorker implements Runnable {
 				.map(sort -> {
 					final Set<String> elems = this.sortElementsMap.get(sort);
 					final String atoms = String.join(" + ", elems);
+					final String sortSet = this.sortSetElementsMap.containsKey(sort) ? "True" : "False";
 					final String decl = "one sig " + sort + " extends Sort {} {\n"
 							+ "	atoms = " + atoms + "\n"
+							+ "	sortSet = " + sortSet + "\n"
 							+ "}";
 					return decl;
 				})
@@ -397,6 +423,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ strFormulaSize + "\n"
 				+ "\n" + paramIndicesDecl + "\n"
 				+ "\n" + paramIndicesConstraints + "\n\n"
+				+ "\n" + setContainsPredicate + "\n\n"
 				+ "\n" + atomsDecl + "\n"
 				+ "\n" + strSortDecls + "\n"
 				+ "\n" + concActsBuilder.toString()
@@ -481,7 +508,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "abstract sig Atom {}\n"
 			+ "\n"
 			+ "abstract sig Sort {\n"
-			+ "	atoms : some Atom\n"
+			+ "	atoms : some Atom,\n"
+			+ "	sortSet : Bool\n"
 			+ "}\n"
 			+ "\n"
 			+ "abstract sig ParamIdx {}\n"
@@ -596,15 +624,18 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	lhs.envVarTypes = rhs.envVarTypes // only compare vars of the same type\n"
 			+ "}\n"
 			+ "\n"
-			/*+ "sig VarNotEquals extends Formula {\n"
+			+ "sig VarSetMutex extends Formula {\n"
+			+ "    sort : Sort,\n"
 			+ "    lhs : Var,\n"
 			+ "    rhs : Var\n"
 			+ "} {\n"
 			+ "	no children\n"
 			+ "	lhs != rhs\n"
-			+ "	lhs.envVarTypes = rhs.envVarTypes // only compare vars of the same type\n"
+			+ "	lhs.envVarTypes = sort\n"
+			+ "	rhs.envVarTypes = sort\n"
+			+ "	sort.sortSet = True // the sort type must contain sets\n"
 			+ "}\n"
-			+ "\n"*/
+			+ "\n"
 			+ "sig Forall extends Formula {\n"
 			+ "	var : Var,\n"
 			+ "	sort : Sort,\n"
@@ -630,10 +661,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	no Root.(~children) // the root has no parents\n"
 			+ "	all f : (Formula - Root) | one f.(~children) // all non-root formulas have exactly one parent\n"
 			+ "	all f : Formula | f in Root.*children // not strictly needed, but seems to make things faster\n"
-			//+ "	all f : Formula | f in Root.*children // all formulas must be a sub-formula of the root\n" // unneeded
 			+ "\n"
 			+ "	// no free vars, all vars must be used in the matrix\n"
-			//+ "	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.lhs + VarEquals.rhs + VarNotEquals.lhs + VarNotEquals.rhs |\n"
 			+ "	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.lhs + VarEquals.rhs |\n"
 			+ "		varsInMatrix = (Forall.var + Exists.var)\n"
 			+ "\n"
@@ -675,7 +704,8 @@ public class FormulaSynthWorker implements Runnable {
 			//+ "	all e : Env, i : Idx, f : And | e->i->f in satisfies iff (e->i->f.left in satisfies and e->i->f.right in satisfies)\n"
 			//+ "	all e : Env, i : Idx, f : Or | e->i->f in satisfies iff (e->i->f.left in satisfies or e->i->f.right in satisfies)\n"
 			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (f.lhs).(e.maps) = (f.rhs).(e.maps)\n"
-			//+ "	all e : Env, i : Idx, f : VarNotEquals | e->i->f in satisfies iff (f.lhs).(e.maps) != (f.rhs).(e.maps)\n"
+			+ "	all e : Env, i : Idx, f : VarSetMutex | e->i->f in satisfies iff\n"
+			+ "        (all s : f.sort.atoms | not setContains[s,(f.lhs).(e.maps)] or not setContains[s,(f.rhs).(e.maps)])\n"
 			+ "\n"
 			+ "	// e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:\n"
 			+ "	// 1. t[i] \\in f.initFl\n"

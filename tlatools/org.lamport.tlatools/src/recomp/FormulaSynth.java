@@ -70,7 +70,8 @@ public class FormulaSynth {
 	public Formula synthesizeFormula(Set<Map<String,String>> envVarTypes,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
 			TLC tlcComp, Set<String> internalActions,
-			Map<String, Set<String>> sortElementsMap, Map<String, List<String>> actionParamTypes,
+			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
+			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents) {
 		
@@ -79,7 +80,7 @@ public class FormulaSynth {
 		int id = 0;
 		for (final Map<String,String> m : envVarTypes) {
 			final FormulaSynthWorker worker = new FormulaSynthWorker(this, m, id++, negTrace, posTraces,
-					tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
+					tlcComp, internalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
 					qvars, legalEnvVarCombos, curNumFluents);
 			this.workers.add(worker);
 		}

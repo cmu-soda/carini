@@ -38,6 +38,7 @@ public class FormulaSeparation {
 	private final TLC tlcSys;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
+	private final Map<String, Map<String, Set<String>>> sortSetElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
 	private final int maxNumVarsPerType;
@@ -73,6 +74,9 @@ public class FormulaSeparation {
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort)
     	sortElementsMap = createSortElementsMap(tlcSys);
+    	
+    	// obtain a map of: sort -> Set(elements/atoms in the sort) -> Set(elements/atoms in each set in the sort)
+    	sortSetElementsMap = createSortSetElementsMap(tlcSys);
 		
 		// obtain a map of: action -> List(param type)
     	FastTool ft = (FastTool) tlcSys.tool;
@@ -538,7 +542,7 @@ public class FormulaSeparation {
 		
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
 		final Formula formula = formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
-				tlcComp, internalActions, sortElementsMap, actionParamTypes, maxActParamLen,
+				tlcComp, internalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
 		
 		// cache and return the results
@@ -794,6 +798,67 @@ public class FormulaSeparation {
 			// precede numbers with "NUM" to get the Alloy file to compile
 			return elem.matches("[0-9]+") ? "NUM"+elem : elem;
 		}
+	}
+
+	
+	/* The fact that the following methods are a huge copy-pasta is really not great */
+	
+	private static Map<String, Map<String, Set<String>>> createSortSetElementsMap(TLC tlc) {
+		// create a map of sort -> elements -> elements (elements = atoms)
+		Map<String, Map<String, Set<String>>> sortSetElements = new HashMap<>();
+		for (final List<String> constList : tlc.tool.getModelConfig().getConstantsAsList()) {
+			if (constList.size() == 2) {
+				// constList is a CONSTANT assignment
+				final String sort = constList.get(0);
+				final Map<String, Set<String>> elems = parseSetElements(constList.get(1));
+				if (elems != null) {
+					sortSetElements.put(sort, elems);
+				}
+			}
+		}
+		return sortSetElements;
+	}
+	
+	/**
+	 * We expect <rawElems> to encode a set. If it doesn't, we throw.
+	 * @param rawElems
+	 * @return
+	 */
+	private static Map<String, Set<String>> parseSetElements(final String rawSet) {
+		final String trimmedRawSet = rawSet.trim(); // to be extra defensive
+		final char rawSetFirstChar = trimmedRawSet.charAt(0);
+		final char rawSetLastChar = trimmedRawSet.charAt(trimmedRawSet.length()-1);
+		Utils.assertTrue(rawSetFirstChar == '{' && rawSetLastChar == '}',
+				"Sorts must be sets of elements; encountered not set value: " + rawSet);
+		
+		final String rawElems = trimmedRawSet.substring(1, trimmedRawSet.length()-1).trim();
+		final List<String> tokens = Utils.toArrayList(rawElems.split(" "))
+				.stream()
+				.filter(e -> !e.equals(","))
+				.collect(Collectors.toList());
+		
+		final List<List<String>> tokenGroups = createTokenGroups(tokens);
+		final boolean isSortSet = tokenGroups
+				.stream()
+				.anyMatch(g -> g.size() > 1);
+		
+		// signal that this isn't a set sort (sort of sets)
+		if (!isSortSet) {
+			return null;
+		}
+		
+		// return a map of sort element (a set) to its set members
+		Map<String, Set<String>> setElements = new HashMap<>();
+		for (final List<String> toks : tokenGroups) {
+			final String set = sanitizeTokensForAlloy(toks);
+			final Set<String> setElems = toks
+					.stream()
+					.map(t -> sanitizeTokensForAlloy(List.of(t)))
+					.collect(Collectors.toSet());
+			setElements.put(set, setElems);
+		}
+		
+		return setElements;
 	}
 }
 
