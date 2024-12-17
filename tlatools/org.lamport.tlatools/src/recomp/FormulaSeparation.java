@@ -24,6 +24,8 @@ import tlc2.tool.impl.FastTool;
 public class FormulaSeparation {
 	private static final int INIT_MAX_POS_TRACES = 6;
 	private static final String TLC_JAR_PATH = System.getProperty("user.home") + "/bin/tla2tools.jar";
+	private static final long NEG_TRACE_TIMEOUT = System.getenv("FSYNTH_NEG_TRACE_TIMEOUT") != null ?
+			Long.parseLong(System.getenv("FSYNTH_NEG_TRACE_TIMEOUT")) : 5L;
 	
 	private final String tlaComp;
 	private final String cfgComp;
@@ -165,8 +167,8 @@ public class FormulaSeparation {
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
-			final long fiveMinuteTimeout = 5L; // use a 5m timeout for neg traces
-        	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", fiveMinuteTimeout);
+			// the default timeout is 5m, but can be changed via env var
+        	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
@@ -308,7 +310,7 @@ public class FormulaSeparation {
 		try {
 			// TODO should use a temporary file for <cexTraceOutputFile>, right now there seems to be a race condition
 			final String[] cmd = {"sh", "-c",
-					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers 8 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
+					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers 12 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			

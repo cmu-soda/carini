@@ -588,10 +588,10 @@ public class FormulaSynthWorker implements Runnable {
 			+ "} {\n"
 			+ "    no children\n"
 			+ "    some vars\n"
-			+ "\n"
+			/*+ "\n"
 			+ "    // no fancy fluents for now\n"
 			+ "    no mutInitFl\n"
-			+ "    no falsifyFl\n"
+			+ "    no falsifyFl\n"*/
 			+ "\n"
 			+ "    // strong condition for ensuring each fluent category is mutex\n"
 			+ "    no initFl.baseName & termFl.baseName\n"
