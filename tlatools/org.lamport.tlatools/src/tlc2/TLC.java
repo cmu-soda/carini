@@ -171,6 +171,10 @@ public class TLC {
      */
     private final String tlcKey;
     /**
+     * Keeps track of whether this TLC object is initialized
+     */
+    private boolean isInitialized;
+    /**
      * Builder class for creating an LTS.
      */
     private LTSBuilder ltsBuilder;
@@ -294,6 +298,7 @@ public class TLC {
      */
 	public TLC(final String key) {
 		tlcKey = key;
+		isInitialized = false;
 		ltsBuilder = null;
         welcomePrinted = false;
         
@@ -374,6 +379,7 @@ public class TLC {
         
         System.setOut(origPrintStream);
         TLC.currentInstance = null;
+        isInitialized = true;
     }
     
     public void modelCheckOnlyGoodStates(final String tla, final String cfg) {
@@ -393,33 +399,20 @@ public class TLC {
     }
     
     public void modelCheck(final String tla, final String cfg, boolean supressTLCOutput) {
+    	if (!isInitialized) {
+    		this.initialize(tla, cfg);
+    	}
+    	
     	if (TLC.currentInstance != null) {
     		throw new RuntimeException("Cannot run multiple instances of TLC at once!");
     	}
     	TLC.currentInstance = this;
     	
-    	final String[] args = new String[] {"-deadlock", "-config", cfg, tla};
     	PrintStream origPrintStream = System.out;
     	if (supressTLCOutput) {
     		System.setOut(TLC.SUPRESS_ALL_OUTPUT_PRINT_STREAM);
     	}
 		this.ltsBuilder = new LTSBuilder();
-
-        // Try to parse parameters.
-        if (!this.handleParameters(args)) {
-            // This is a tool failure. We must exit with a non-zero exit
-            // code or else we will mislead system tools and scripts into
-            // thinking everything went smoothly.
-            //
-            // FIXME: handleParameters should return an error object (or
-            // null), where the error object contains an error message.
-            // This makes handleParameters a function we can test.
-            System.exit(1);
-        }
-        
-        if (!this.checkEnvironment()) {
-            System.exit(1);
-        }
 
 		// Setup how spec files will be resolved in the filesystem.
 		if (MODEL_PART_OF_JAR) {

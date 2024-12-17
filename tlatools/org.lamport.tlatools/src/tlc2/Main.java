@@ -6,6 +6,7 @@ import java.util.List;
 import cmu.isr.ts.LTS;
 import cmu.isr.ts.lts.ltsa.FSPWriter;
 import lts.SymbolTable;
+import recomp.AlloyTrace;
 import recomp.Composition;
 import recomp.Decomposition;
 import recomp.FormulaSeparation;
@@ -22,6 +23,7 @@ public class Main {
 			return;
 		}
 		
+		// main business logic
     	if (args.length >= 7) {
     		final String tlaComp = args[0];
     		final String cfgComp = args[1];
@@ -40,6 +42,15 @@ public class Main {
         		System.out.println("Could not synthesize a spearating assumption. Here are the intermediate conjuncts:");
     		}
     		System.out.println(formula);
+    	}
+    	// special feature for making TLC print an action-based cex (trace)
+    	else if (args.length == 3 && args[0].equals("--cex")) {
+    		final String tla = args[1];
+    		final String cfg = args[2];
+    		final long timeout = 10000L; // 10000 min
+    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,tla,cfg,"none",0L)
+    				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
+    		System.out.println(trace.fullSigString());
     	}
     	else {
     		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <tlaSys> <cfgSys> <propFile> [<randomSeed>]");

@@ -55,19 +55,16 @@ public class FormulaSeparation {
 		this.tlaSys = tlaSys;
 		this.cfgSys = cfgSys;
 		
-		this.useIntermediateProp = !propFile.equals("none");
-		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
-		
 		tlcComp = new TLC();
     	tlcComp.initialize(tlaComp, cfgComp);
+		tlcRest = new TLC();
+    	tlcRest.initialize(tlaRest, cfgRest);
 		tlcSys = new TLC();
     	tlcSys.initialize(tlaSys, cfgSys);
-
-    	System.out.println("Building the LTS for the initial trace (" + tlaSys + ")");
-    	PerfTimer timer = new PerfTimer();
-		tlcRest = new TLC();
-    	tlcRest.modelCheck(tlaRest, cfgRest);
-    	System.out.println("Built the LTS in " + timer.timeElapsedSeconds() + "s");
+		
+    	// the property file that's used for "intermediate" (i.e. fluent) properties
+		this.useIntermediateProp = !propFile.equals("none");
+		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
     	
     	// the actions that internal to "component"
     	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
@@ -256,8 +253,15 @@ public class FormulaSeparation {
 	}
 	
 	private AlloyTrace createInitPosTrace() {
+		// create an LTS for "rest" which we will use to perform a DFS for finding the init trace
+    	System.out.println("Building the LTS for the initial trace (" + tlaRest + ")");
+    	PerfTimer timer = new PerfTimer();
+    	tlcRest.modelCheck(tlaRest, cfgRest);
+    	System.out.println("Built the LTS in " + timer.timeElapsedSeconds() + "s");
+    	
+    	// time the operation
 		System.out.println("Creating the initial trace");
-		PerfTimer timer = new PerfTimer();
+		timer = new PerfTimer();
 		
 		// TODO make the init trace len a param
 		// TODO cap the number of iterations we can have, right now an inf loop is possible
@@ -292,7 +296,7 @@ public class FormulaSeparation {
 	 * @param ext
 	 * @return
 	 */
-	private AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
+	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
