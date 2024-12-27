@@ -50,7 +50,7 @@ public class InitTraceVisitor<S,I> implements TSTraversalVisitor<S, I, S, Word<I
 	}
 	
 	public List<I> findAnInitTrace(LTS<Integer,I> lts) {
-		TSTraversal.depthFirst((TransitionSystem<S,I,S>)lts, lts.getInputAlphabet(), (TSTraversalVisitor<S, I, S, Word<I>>)this);
+		TSTraversal.breadthFirst((TransitionSystem<S,I,S>)lts, lts.getInputAlphabet(), (TSTraversalVisitor<S, I, S, Word<I>>)this);
 		//TSTraversal.depthFirst((TransitionSystem<S,I,I>)lts, lts.getInputAlphabet(), this);
 		return this.initTrace.asList();
 	}
