@@ -40,7 +40,7 @@ public class FormulaSeparation {
 	private final TLC tlcSys;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
-	private final Map<String, Map<String, Set<String>>> sortSetElementsMap;
+	private final Map<String, Map<String, Set<String>>> setSortElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
 	private final int maxNumVarsPerType;
@@ -75,7 +75,7 @@ public class FormulaSeparation {
     	sortElementsMap = createSortElementsMap(tlcSys);
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort) -> Set(elements/atoms in each set in the sort)
-    	sortSetElementsMap = createSortSetElementsMap(tlcSys);
+    	setSortElementsMap = createSetSortElementsMap(tlcSys);
 		
 		// obtain a map of: action -> List(param type)
     	FastTool ft = (FastTool) tlcSys.tool;
@@ -548,7 +548,7 @@ public class FormulaSeparation {
 		
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
 		final Formula formula = formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
-				tlcComp, internalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
+				tlcComp, internalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
 		
 		// cache and return the results
@@ -809,20 +809,20 @@ public class FormulaSeparation {
 	
 	/* The fact that the following methods are a huge copy-pasta is really not great */
 	
-	private static Map<String, Map<String, Set<String>>> createSortSetElementsMap(TLC tlc) {
+	private static Map<String, Map<String, Set<String>>> createSetSortElementsMap(TLC tlc) {
 		// create a map of sort -> elements -> elements (elements = atoms)
-		Map<String, Map<String, Set<String>>> sortSetElements = new HashMap<>();
+		Map<String, Map<String, Set<String>>> setSortElements = new HashMap<>();
 		for (final List<String> constList : tlc.tool.getModelConfig().getConstantsAsList()) {
 			if (constList.size() == 2) {
 				// constList is a CONSTANT assignment
 				final String sort = constList.get(0);
 				final Map<String, Set<String>> elems = parseSetElements(constList.get(1));
 				if (elems != null) {
-					sortSetElements.put(sort, elems);
+					setSortElements.put(sort, elems);
 				}
 			}
 		}
-		return sortSetElements;
+		return setSortElements;
 	}
 	
 	/**
@@ -844,12 +844,12 @@ public class FormulaSeparation {
 				.collect(Collectors.toList());
 		
 		final List<List<String>> tokenGroups = createTokenGroups(tokens);
-		final boolean isSortSet = tokenGroups
+		final boolean isSetSort = tokenGroups
 				.stream()
 				.anyMatch(g -> g.size() > 1);
 		
 		// signal that this isn't a set sort (sort of sets)
-		if (!isSortSet) {
+		if (!isSetSort) {
 			return null;
 		}
 		

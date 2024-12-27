@@ -32,7 +32,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final TLC tlcComp;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
-	private final Map<String, Map<String, Set<String>>> sortSetElementsMap;
+	private final Map<String, Map<String, Set<String>>> setSortElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
 	private final Set<String> qvars;
@@ -48,7 +48,7 @@ public class FormulaSynthWorker implements Runnable {
 	public FormulaSynthWorker(FormulaSynth formulaSynth, Map<String,String> envVarTypes, int id,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
 			TLC tlcComp, Set<String> internalActions,
-			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
+			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents) {
@@ -60,7 +60,7 @@ public class FormulaSynthWorker implements Runnable {
 		this.tlcComp = tlcComp;
 		this.internalActions = internalActions;
 		this.sortElementsMap = sortElementsMap;
-		this.sortSetElementsMap = sortSetElementsMap;
+		this.setSortElementsMap = setSortElementsMap;
 		this.actionParamTypes = actionParamTypes;
 		this.maxActParamLen = maxActParamLen;
 		this.qvars = qvars;
@@ -164,7 +164,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String strFormulaSize = "for " + formulaSize + " Formula, " + numSymActs + " FlSymAction";
 		
 		// define the setContains predicate
-		final String containsRelation = this.sortSetElementsMap
+		final String containsRelation = this.setSortElementsMap
 				.values()
 				.stream()
 				.map(m -> {
@@ -193,16 +193,40 @@ public class FormulaSynthWorker implements Runnable {
 		final String strAtomList = String.join(", ", allAtoms);
 		final String atomsDecl = "one sig " + strAtomList + " extends Atom {}";
 		
+		// define the lte predicate
+		final List<Integer> numbers = allAtoms
+				.stream()
+				.filter(a -> a.matches("NUM[0-9]+"))
+				.map(n -> n.substring(3)) // remove NUM
+				.map(n -> Integer.parseInt(n))
+				.sorted() // not necessary, but makes the als file easier to read
+				.collect(Collectors.toList());
+		List<String> numericSortLte = new ArrayList<>();
+		for (Integer i : numbers) {
+			for (Integer j : numbers) {
+				if (i <= j) {
+					numericSortLte.add("NUM"+i + "->" + "NUM"+j);
+				}
+			}
+		}
+		final String lteRelation = String.join(" + ", numericSortLte);
+		final String ltePredicate = "pred lte[lhs : Atom, rhs : Atom] {\n"
+				+ "	let containsRel = (" + lteRelation + ") |\n"
+				+ "		(lhs->rhs) in containsRel\n"
+				+ "}";
+		
 		// define each sort as the set of its elements (elements = atoms)
 		final String strSortDecls = this.sortElementsMap.keySet()
 				.stream()
 				.map(sort -> {
 					final Set<String> elems = this.sortElementsMap.get(sort);
 					final String atoms = String.join(" + ", elems);
-					final String sortSet = this.sortSetElementsMap.containsKey(sort) ? "True" : "False";
+					final String setSort = this.setSortElementsMap.containsKey(sort) ? "True" : "False";
+					final String numericSort = elems.contains("NUM0") ? "True" : "False"; // numeric sorts will always contain 0
 					final String decl = "one sig " + sort + " extends Sort {} {\n"
 							+ "	atoms = " + atoms + "\n"
-							+ "	sortSet = " + sortSet + "\n"
+							+ "	setSort = " + setSort + "\n"
+							+ "	numericSort = " + numericSort + "\n"
 							+ "}";
 					return decl;
 				})
@@ -424,6 +448,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ "\n" + paramIndicesDecl + "\n"
 				+ "\n" + paramIndicesConstraints + "\n\n"
 				+ "\n" + setContainsPredicate + "\n\n"
+				+ "\n" + ltePredicate + "\n\n"
 				+ "\n" + atomsDecl + "\n"
 				+ "\n" + strSortDecls + "\n"
 				+ "\n" + concActsBuilder.toString()
@@ -509,7 +534,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "abstract sig Sort {\n"
 			+ "	atoms : some Atom,\n"
-			+ "	sortSet : Bool\n"
+			+ "	setSort : Bool,\n"
+			+ "	numericSort : Bool\n"
 			+ "}\n"
 			+ "\n"
 			+ "abstract sig ParamIdx {}\n"
@@ -540,7 +566,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	child : Formula\n"
 			+ "} {\n"
 			+ "	children = child\n"
-			+ "	child in (Fluent + VarEquals + VarSetMutex)\n"
+			+ "	child in (Fluent + VarEquals + VarSetMutex + VarLTE)\n"
 			+ "}\n"
 			+ "\n"
 			+ "sig Implies extends Formula {\n"
@@ -647,7 +673,19 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	lhs != rhs\n"
 			+ "	lhs.envVarTypes = sort\n"
 			+ "	rhs.envVarTypes = sort\n"
-			+ "	sort.sortSet = True // the sort type must contain sets\n"
+			+ "	sort.setSort = True // the sort type must contain sets\n"
+			+ "}\n"
+			+ "\n"
+			+ "sig VarLTE extends Formula {\n"
+			+ "    sort : Sort,\n"
+			+ "    lhs : Var,\n"
+			+ "    rhs : Var\n"
+			+ "} {\n"
+			+ "	no children\n"
+			+ "	lhs != rhs\n"
+			+ "	lhs.envVarTypes = sort\n"
+			+ "	rhs.envVarTypes = sort\n"
+			+ "	sort.numericSort = True // the sort type must be numeric\n"
 			+ "}\n"
 			+ "\n"
 			+ "sig Forall extends Formula {\n"
@@ -720,6 +758,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (f.lhs).(e.maps) = (f.rhs).(e.maps)\n"
 			+ "	all e : Env, i : Idx, f : VarSetMutex | e->i->f in satisfies iff\n"
 			+ "        (all s : f.sort.atoms | not setContains[s,(f.lhs).(e.maps)] or not setContains[s,(f.rhs).(e.maps)])\n"
+			+ "	all e : Env, i : Idx, f : VarLTE | e->i->f in satisfies iff lte[(f.lhs).(e.maps), (f.rhs).(e.maps)]\n"
 			+ "\n"
 			+ "	// e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:\n"
 			+ "	// 1. t[i] \\in f.initFl\n"
