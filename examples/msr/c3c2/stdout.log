@@ -1,86 +1,37 @@
 Building the LTS for the initial trace (MongoStaticRaft.tla)
-Built the LTS in 0.728s
+Built the LTS in 0.4s
 Creating the initial trace
 WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
-Created the initial trace in 0.193s
+Created the initial trace in 0.143s
 
 Round 1
 -------
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->ClientRequestn2NUM0 + T1->GetEntriesn1n2 + T2->CommitEntryn1_n1n2_NUM1NUM0)
+NT1 (NegTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->ClientRequestn3NUM1 + T3->CommitEntryn1_n1n2_NUM1NUM0 + T4->RollbackEntriesn1n3 + T5->GetEntriesn1n3 + T6->CommitEntryn1_n1n3_NUM1NUM1)
 max # pos traces: 6
 Total # synth jobs: 27
 Formula synthesis info:
-  overall (multithread) time: 39.993 seconds
-  winning worker id: 20
-  winning worker time: 39.99 seconds
+  overall (multithread) time: 54.981 seconds
+  winning worker id: 5
+  winning worker time: 54.974 seconds
 Synthesized: \A var0 \in Server : ~(Fluent3[var0])
 Fluent3:
   initially: FALSE
-  init: 
-  term: 
-  mutInit: CommitEntry: [0]
-  falsify: 
-
-new pos trace:
-PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1)
-max # pos traces: 6
-Total # synth jobs: 27
-Formula synthesis info:
-  overall (multithread) time: 55.934 seconds
-  winning worker id: 20
-  winning worker time: 55.932 seconds
-Synthesized: \A var0 \in Server : ~(Fluent3[var0])
-Fluent3:
-  initially: FALSE
-  init: ClientRequest: [0]
+  init: RollbackEntries: [1]
   term: 
   mutInit: 
   falsify: 
 
 new pos trace:
-PT3 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+PT2 (PosTrace): (T0->RollbackEntriesn1n1)
 max # pos traces: 6
 Total # synth jobs: 27
-Formula synthesis info:
-  overall (multithread) time: 67.729 seconds
-  winning worker id: 20
-  winning worker time: 67.725 seconds
-Synthesized: \A var0 \in Server : ~(Fluent3[var0])
-Fluent3:
-  initially: FALSE
-  init: 
-  term: 
-  mutInit: GetEntries: [1]
-  falsify: 
-
-new pos trace:
-PT4 (PosTrace): (T0->GetEntriesn1n1)
-max # pos traces: 6
-Total # synth jobs: 27
-Formula synthesis info:
-  overall (multithread) time: 138.974 seconds
-  winning worker id: 9
-  winning worker time: 138.97 seconds
-Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
-Fluent4:
-  initially: FALSE
-  init: BecomeLeader: [0]
-  term: 
-  mutInit: 
-  falsify: 
-Fluent3:
-  initially: FALSE
-  init: 
-  term: 
-  mutInit: ClientRequest: [0]
-  falsify: 
-The formula is an invariant! Moving to the next round.
-Round 1 took 385.614 seconds
-
-Round 2
--------
-attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM0 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1 + T3->CommitEntryn1_n1n2_NUM1NUM1)
-max # pos traces: 6
-Total # synth jobs: 27
+       75.51 real       681.36 user        18.33 sys
+        0.36 real         0.89 user         0.06 sys
+        0.36 real         0.87 user         0.06 sys
+        0.37 real         0.89 user         0.06 sys
+        0.36 real         0.90 user         0.06 sys
+        0.11 real         0.16 user         0.02 sys
+       13.44 real        34.17 user         1.34 sys
+        9.33 real        37.34 user         1.40 sys
+       65.45 real       585.98 user        15.76 sys

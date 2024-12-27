@@ -93,7 +93,9 @@ public class TLC {
 	
 	private static AlphabetMembershipTester alphabetTester = null;
 	
-	public static final int maxNumStates = 500000; // 500,000
+	// we only use LTSs for (1) generating the initial trace (of length 1) and (2) reproducing cex traces
+	// so only generate a small number (10,000) of states
+	public static final int maxNumStates = 10000; // 10,000
 	
 	public static String getTlcKey() {
 		if (currentInstance == null) {

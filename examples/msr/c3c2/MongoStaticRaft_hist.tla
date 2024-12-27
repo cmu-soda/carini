@@ -56,8 +56,7 @@ ClientRequest(i,curTerm) ==
 /\ currentTerm[i] = curTerm
 /\ log' = [log EXCEPT![i] = Append(log[i],curTerm)]
 /\ UNCHANGED <<currentTerm,state,committed,config>>
-/\ Fluent3' = [[x0 \in Server |-> FALSE] EXCEPT ![i] = TRUE]
-/\ UNCHANGED<<Fluent4>>
+/\ UNCHANGED<<Fluent4, Fluent3>>
 /\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
 
 GetEntries(i,j) ==
@@ -89,7 +88,8 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]]
 /\ UNCHANGED <<log,config,committed>>
 /\ Fluent4' = [Fluent4 EXCEPT ![i] = TRUE]
-/\ UNCHANGED<<Fluent3>>
+/\ Fluent3' = [Fluent3 EXCEPT ![i] = TRUE]
+/\ UNCHANGED<<>>
 /\ Fluent1' = [Fluent1 EXCEPT ![newTerm] = TRUE]
 /\ UNCHANGED<<Fluent2, Fluent0>>
 
@@ -103,7 +103,8 @@ CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ ~((\E c \in committed : c.entry = <<ind,curTerm>>))
 /\ committed' = (committed \cup {[entry |-> <<ind,curTerm>>,term |-> curTerm]})
 /\ UNCHANGED <<currentTerm,state,log,config>>
-/\ UNCHANGED<<Fluent4, Fluent3>>
+/\ Fluent3' = [Fluent3 EXCEPT ![i] = TRUE]
+/\ UNCHANGED<<Fluent4>>
 /\ Fluent2' = [Fluent2 EXCEPT ![ind][curTerm] = TRUE]
 /\ Fluent0' = [Fluent0 EXCEPT ![curTerm] = TRUE]
 /\ UNCHANGED<<Fluent1>>
