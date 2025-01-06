@@ -444,7 +444,7 @@ public class FormulaSeparation {
         final String endModule = "=============================================================================";
         
         final List<String> moduleWhiteList =
-        		Arrays.asList("Bags", "FiniteSets", "Functions", "Integers", "Json", "Naturals",
+        		Arrays.asList("Bags", "FiniteSets", "Functions", "Integers", "Json", "Naturals", "Randomization",
         				"NaturalsInduction", "RealTime", "Sequences", "SequencesExt", "TLC", "TLCExt");
         ArrayList<String> moduleNameList = Utils.filterArrayWhiteList(moduleWhiteList, ft.getModuleNames());
         // ensure that the naturals are included so we can increment the cexIdxVar
@@ -632,7 +632,7 @@ public class FormulaSeparation {
         final String endModule = "=============================================================================";
         
         final List<String> moduleWhiteList =
-        		Arrays.asList("Bags", "FiniteSets", "Functions", "Integers", "Json", "Naturals",
+        		Arrays.asList("Bags", "FiniteSets", "Functions", "Integers", "Json", "Naturals", "Randomization",
         				"NaturalsInduction", "RealTime", "Sequences", "SequencesExt", "TLC", "TLCExt");
         ArrayList<String> moduleNameList = Utils.filterArrayWhiteList(moduleWhiteList, ft.getModuleNames());
         

@@ -164,7 +164,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String strFormulaSize = "for " + formulaSize + " Formula, " + numSymActs + " FlSymAction";
 		
 		// define the setContains predicate
-		final String containsRelation = this.setSortElementsMap
+		final String rawContainsRelation = this.setSortElementsMap
 				.values()
 				.stream()
 				.map(m -> {
@@ -179,6 +179,7 @@ public class FormulaSynthWorker implements Runnable {
 							.collect(Collectors.joining(" + "));
 				})
 				.collect(Collectors.joining(" + "));
+		final String containsRelation = rawContainsRelation.isEmpty() ? "none->none" : rawContainsRelation;
 		final String setContainsPredicate = "pred setContains[s : Atom, e : Atom] {\n"
 				+ "	let containsRel = (" + containsRelation + ") |\n"
 				+ "		(s->e) in containsRel\n"
@@ -209,7 +210,8 @@ public class FormulaSynthWorker implements Runnable {
 				}
 			}
 		}
-		final String lteRelation = String.join(" + ", numericSortLte);
+		final String rawLteRelation = String.join(" + ", numericSortLte);
+		final String lteRelation = rawLteRelation.isEmpty() ? "none->none" : rawLteRelation;
 		final String ltePredicate = "pred lte[lhs : Atom, rhs : Atom] {\n"
 				+ "	let containsRel = (" + lteRelation + ") |\n"
 				+ "		(lhs->rhs) in containsRel\n"
@@ -262,7 +264,8 @@ public class FormulaSynthWorker implements Runnable {
 				+ "";
 		
 		// determine the max length of the traces
-		final Set<AlloyTrace> allTraces = Utils.union(posTraces.stream().collect(Collectors.toSet()), Utils.setOf(negTrace));
+		List<AlloyTrace> allTraces = new ArrayList<>(posTraces);
+		allTraces.add(negTrace);
 		final int maxTraceLen = allTraces.stream()
 				.mapToInt(t -> t.lastIdx())
 				.max()
