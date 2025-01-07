@@ -346,7 +346,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String strIndicesNext = strIndicesNextMulti.isEmpty() ? "none->none" : strIndicesNextMulti;
 		final String strInternalActs = this.internalActions
 				.stream()
-				.map(act -> "	no (Fluent.initFl + Fluent.termFl).baseName & " + act)
+				.map(act -> "	no FlSymAction.baseName & " + act)
 				.collect(Collectors.joining("\n"));
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"

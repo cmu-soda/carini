@@ -68,7 +68,8 @@ public class FormulaSeparation {
 		this.useIntermediateProp = !propFile.equals("none");
 		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
     	
-    	// the actions that internal to "component"
+    	// the actions that internal to "component". it is fine to include formulas over actions that
+		// are internal to "rest" so we don't mark those as "internal".
     	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort)
@@ -201,20 +202,10 @@ public class FormulaSeparation {
     			
     			// generate positive traces until the formula becomes an invariant
     			final int ptNum = cumNumPosTraces + 1;
-    			final long threeMinuteTimeout = 5L; // use a 5m timeout for pos traces
+    			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
     	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", threeMinuteTimeout);
+    			AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout);
     			isInvariant = !newPosTrace.hasError();
-    			
-    			// if the formula is an invariant, also make sure it's globally an invariant. this additional check is only needed
-    			// in the case that the cfg's alphabet has an action that doesn't appear in rest's alphabet.
-    			// TODO only perform this check in that case
-    			if (isInvariant) {
-        			final long oneMinuteTimeout = 1L; // use a 1m timeout for this final check
-        	    	final String tlaSysHV = writeHistVarsSpec(tlaSys, cfgSys, formula, false);
-        			newPosTrace = genCexTraceForCandSepInvariant(tlaSysHV, cfgPosTraces, "PT", ptNum, "PosTrace", oneMinuteTimeout);
-        			isInvariant = !newPosTrace.hasError();
-    			}
     			
     			if (isInvariant) {
     				invariants.add(formula);
