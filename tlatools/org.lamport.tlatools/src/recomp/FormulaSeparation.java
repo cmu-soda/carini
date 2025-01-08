@@ -145,6 +145,10 @@ public class FormulaSeparation {
     	Set<AlloyTrace> allPosTracesSeen = new HashSet<>();
     	allPosTracesSeen.add(initPosTrace);
     	
+    	// track the number of duplicate traces in each round. this will help us increment
+    	// <maxNumPosTraces> appropriately.
+    	int numDuplicateTracesPerRound = 0;
+    	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
     	
@@ -174,8 +178,9 @@ public class FormulaSeparation {
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
 
-    		// halve the max num pos traces in every round to "reset" them
-    		maxNumPosTraces = Math.max(maxNumPosTraces/2, INIT_MAX_POS_TRACES);
+    		// reduce the max num pos traces in every round to "reset" them
+    		maxNumPosTraces = Math.max((maxNumPosTraces+numDuplicateTracesPerRound)/2, INIT_MAX_POS_TRACES);
+    		numDuplicateTracesPerRound = 0; // reset this variable each round
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
@@ -220,6 +225,7 @@ public class FormulaSeparation {
     				// if we've seen this trace at least once then increment <maxNumPosTraces>
     				if (allPosTracesSeen.contains(newPosTrace)) {
     					++maxNumPosTraces;
+    					++numDuplicateTracesPerRound;
     					System.out.println("(trace has been seen before)");
     				}
     				
