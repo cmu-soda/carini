@@ -380,8 +380,10 @@ public class FormulaSynthWorker implements Runnable {
 		
 		// meta comment that encodes the number of fluents that already exist. this is useful
 		// for the formula synthesizer to rename each new fluent so it has a name that hasn't
-		// already been chosen yet.
+		// already been chosen yet. we also include the worker id so each fluent in the batch
+		// gets a unique name.
 		final String curNumFluentsComment = "//" + this.curNumFluents;
+		final String workerIdComment = "//" + this.id;
 		
 		// declare the quantifier variables
 		final String qvarDelc = "one sig " + String.join(", ", this.qvars) + " extends Var {} {}";
@@ -446,6 +448,7 @@ public class FormulaSynthWorker implements Runnable {
 				.collect(Collectors.toList());
 		
 		final String alloyFormulaInfer = curNumFluentsComment + "\n"
+				+ workerIdComment + "\n"
 				+ baseAlloyFormulaInfer
 				+ strFormulaSize + "\n"
 				+ "\n" + paramIndicesDecl + "\n"

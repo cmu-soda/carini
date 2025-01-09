@@ -159,10 +159,6 @@ public class FormulaSeparation {
     		System.out.println("-------");
     		PerfTimer timer = new PerfTimer();
     		
-    		// cache the formula synthesized for each set of positive traces. the cache is per round, so the negative
-    		// trace will be the same for all sets of positive traces stored as keys.
-    		Map<Set<AlloyTrace>, Formula> formulaCache = new HashMap<>();
-    		
     		// the env var types we consider for this round. it always starts as the full set, but then we eliminate
     		// any env var type that returns UNSAT. note that envVarTypes gets modified (as an out-param) in the
     		// synthesizeFormula() method.
@@ -192,47 +188,82 @@ public class FormulaSeparation {
 				}
 				System.out.println("max # pos traces: " + maxNumPosTraces);
 				
-				// synthesize a new formula
+				// synthesize new formulas
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Formula formula = synthesizeFormula(negTrace, currentPosTraces, numFluents, envVarTypes, formulaCache);
-    			System.out.println("Synthesized: " + formula);
+    			final Set<Formula> formulas = synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
-    			if (formula.isUNSAT()) {
-    				invariants.add(formula);
+    			if (formulas.stream().allMatch(f -> f.isUNSAT())) {
+    				invariants.add(Utils.chooseOne(formulas));
     				return Formula.conjunction(invariants).getFormula();
     			}
     			
-    			// generate positive traces until the formula becomes an invariant
-    			final int ptNum = cumNumPosTraces + 1;
+    			// generate positive traces to try and make the next set of formulas we synthesize invariants
     			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
-    	    	final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-    			AlloyTrace newPosTrace = genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout);
-    			isInvariant = !newPosTrace.hasError();
+    			int ptNum = cumNumPosTraces;
+    			Map<Formula, AlloyTrace> formulaResults = new HashMap<>();
+				for (final Formula formula : formulas) {
+					++ptNum;
+					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
+					final AlloyTrace newPosTrace =
+							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout);
+					formulaResults.put(formula, newPosTrace);
+				}
+    			isInvariant = formulaResults
+    					.values()
+    					.stream()
+    					.anyMatch(t -> !t.hasError());
     			
     			if (isInvariant) {
-    				invariants.add(formula);
-    				System.out.println("The formula is an invariant! Moving to the next round.");
+    				final Set<Formula> newInvariants = formulaResults
+    						.entrySet()
+    						.stream()
+    						.filter(e -> !e.getValue().hasError())
+    						.map(e -> e.getKey())
+    						.collect(Collectors.toSet());
+    				invariants.addAll(newInvariants);
+    				System.out.println("Found " + newInvariants.size() + " new invariant(s) this round:");
+        			for (final Formula formula : newInvariants) {
+            			System.out.println(formula);
+        			}
     			}
     			else {
+    				final Set<AlloyTrace> newPosTraces = formulaResults.values().stream().collect(Collectors.toSet());
         			System.out.println();
-        			System.out.println("new pos trace:");
-    				System.out.println(newPosTrace.fullSigString());
-					Utils.assertTrue(!currentPosTraces.contains(newPosTrace), "Synthesized a formula that doesn't respect a pos trace!");
+        			System.out.println("new pos trace(s):");
+        			for (final AlloyTrace t : newPosTraces) {
+        				System.out.println(t.fullSigString());
+        				// if we've seen this trace at least once then increment <maxNumPosTraces>
+        				if (allPosTracesSeen.contains(t)) {
+        					++maxNumPosTraces;
+        					++numDuplicateTracesPerRound;
+        				}
+    					Utils.assertTrue(!currentPosTraces.contains(t), "Synthesized a formula that doesn't respect a pos trace!");
+        			}
     				
-    				// if we've seen this trace at least once then increment <maxNumPosTraces>
-    				if (allPosTracesSeen.contains(newPosTrace)) {
-    					++maxNumPosTraces;
-    					++numDuplicateTracesPerRound;
-    					System.out.println("(trace has been seen before)");
+    				// notify the user that we've seen this trace at least once
+        			final boolean tracesSeenBefore = newPosTraces
+        					.stream()
+        					.anyMatch(t -> allPosTracesSeen.contains(t));
+    				if (tracesSeenBefore) {
+    					System.out.println("(at least one trace has been seen before)");
     				}
     				
-    				// add the new pos trace to the set of current pos traces
-    				++cumNumPosTraces;
-    				currentPosTraces.add(newPosTrace);
-					allPosTracesSeen.add(newPosTrace);
+    				// keep track of all pos traces seen
+    				cumNumPosTraces += ptNum;
+					allPosTracesSeen.addAll(newPosTraces);
+					
+					// add the new pos trace to the set of current pos traces. we put the new pos traces that HAVE been
+					// seen before at the end to ensure that they will not be removed in the next formula synthesis batch.
+					final Set<AlloyTrace> newPosTracesSeenBefore = newPosTraces
+							.stream()
+							.filter(t -> allPosTracesSeen.contains(t))
+							.collect(Collectors.toSet());
+					final Set<AlloyTrace> newPosTracesNotSeenBefore = Utils.setMinus(newPosTraces, newPosTracesSeenBefore);
+    				currentPosTraces.addAll(newPosTracesNotSeenBefore);
+    				currentPosTraces.addAll(newPosTracesSeenBefore);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
@@ -533,24 +564,12 @@ public class FormulaSeparation {
 		return new AlloyTrace(trace, name, ext);
 	}
 	
-	private Formula synthesizeFormula(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
-			Set<Map<String,String>> envVarTypes, Map<Set<AlloyTrace>, Formula> formulaCache) {
-		
-		// check for a cache hit
-		final Set<AlloyTrace> posTracesSet = posTraces.stream().collect(Collectors.toSet());
-		if (formulaCache.containsKey(posTracesSet)) {
-			System.out.println("Cache hit, using cached formula");
-			return formulaCache.get(posTracesSet);
-		}
-		
+	private Set<Formula> synthesizeFormulas(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
+			Set<Map<String,String>> envVarTypes) {
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
-		final Formula formula = formSynth.synthesizeFormula(envVarTypes, negTrace, posTraces,
+		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces,
 				tlcComp, internalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
-		
-		// cache and return the results
-		formulaCache.put(posTracesSet, formula);
-		return formula;
 	}
 	
 	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {

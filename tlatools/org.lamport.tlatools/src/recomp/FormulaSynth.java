@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 import tlc2.TLC;
 
@@ -21,7 +22,7 @@ public class FormulaSynth {
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	
-	private String globalFormula;
+	private Set<String> synthesizedFormulas;
 	private int winningWorkerId;
 	private double winningTimeElapsedInSeconds;
 	private int numWorkersDone;
@@ -46,15 +47,16 @@ public class FormulaSynth {
 		try {
 			this.lock.lock();
 			++this.numWorkersDone;
-			if (!formula.contains("UNSAT") && !formula.trim().isEmpty() && this.globalFormula.contains("UNSAT")) {
-				this.globalFormula = formula;
+			if (!formula.contains("UNSAT") && !formula.trim().isEmpty()) {
+				this.synthesizedFormulas.add(formula);
 				this.winningWorkerId = workerId;
 				this.winningTimeElapsedInSeconds = timeElapsedInSeconds;
 			}
 			else {
+				// the thread may have crashed, rather than returned UNSAT. we treat both cases the same for now.
 				this.unsatEnvVarTypes.add(envVarType);
 			}
-			// no matter what, notify the master that this thread is done
+			// notify the master that this thread is done
 			this.aWorkerIsDone.signalAll();
 		}
 		finally {
@@ -67,7 +69,7 @@ public class FormulaSynth {
 	 * formula "wins".
 	 * @return
 	 */
-	public Formula synthesizeFormula(Set<Map<String,String>> envVarTypes,
+	public Set<Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
@@ -84,8 +86,16 @@ public class FormulaSynth {
 					qvars, legalEnvVarCombos, curNumFluents);
 			this.workers.add(worker);
 		}
+		
+		// randomly shuffle the workers then reduce the number to make formula synthesis faster
+		final int origNumWorkers = this.workers.size();
+		final int numWorkers = Math.min(origNumWorkers, 2*MAX_NUM_THREADS);
 		Collections.shuffle(this.workers, this.seed);
-		System.out.println("Total # synth jobs: " + this.workers.size());
+		while (this.workers.size() > numWorkers) {
+			this.workers.remove(this.workers.size()-1);
+		}
+		System.out.println("Total # workers: " + origNumWorkers);
+		System.out.println("# workers using: " + numWorkers);
 
 		try {
 			this.lock.lock();
@@ -105,24 +115,24 @@ public class FormulaSynth {
 				// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
 				// the out-param envVarTypes!
 				envVarTypes.removeAll(this.unsatEnvVarTypes);
-				
-				final Formula formula = new Formula(this.globalFormula);
-				if (!formula.isUNSAT()) {
-					System.out.println("Formula synthesis info:\n"
-							+ "  overall (multithread) time: " + timer.timeElapsedSeconds() + " seconds\n"
-							+ "  winning worker id: " + this.winningWorkerId + "\n"
-							+ "  winning worker time: " + this.winningTimeElapsedInSeconds + " seconds");
-					return formula;
-				}
 			}
 		}
 		finally {
 			this.lock.unlock();
 			this.cleanUpWorkers();
 		}
-
-		// if we reach this point it means that we could not synthesize a formula
-		return Formula.UNSAT();
+		
+		System.out.println("Formula synthesis complete in " + timer.timeElapsedSeconds() + " seconds");
+		
+		// all formulas have been synthesized
+		if (this.synthesizedFormulas.isEmpty()) {
+			// all formulas are UNSAT
+			return Set.of(Formula.UNSAT());
+		}
+		return this.synthesizedFormulas
+				.stream()
+				.map(f -> new Formula(f))
+				.collect(Collectors.toSet());
 	}
 	
 	private void cleanUpWorkers() {
@@ -143,7 +153,7 @@ public class FormulaSynth {
 	}
 	
 	private void resetMemberVars() {
-		this.globalFormula = "{\"formula\":\"UNSAT\"}";
+		this.synthesizedFormulas = new HashSet<>();
 		this.winningWorkerId = -1;
 		this.winningTimeElapsedInSeconds = 0.0;
 		this.numWorkersDone = 0;
