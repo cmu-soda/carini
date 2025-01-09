@@ -3,6 +3,7 @@ package recomp;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,7 @@ public class FormulaSynth {
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	
-	private Set<String> synthesizedFormulas;
-	private int winningWorkerId;
-	private double winningTimeElapsedInSeconds;
-	private int numWorkersDone;
-	private Set<Map<String,String>> unsatEnvVarTypes;
+	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
 	private ExecutorService threadPool;
 	private Random seed;
@@ -46,15 +43,12 @@ public class FormulaSynth {
 	public void setFormula(final String formula, int workerId, final Map<String,String> envVarType, double timeElapsedInSeconds) {
 		try {
 			this.lock.lock();
-			++this.numWorkersDone;
 			if (!formula.contains("UNSAT") && !formula.trim().isEmpty()) {
-				this.synthesizedFormulas.add(formula);
-				this.winningWorkerId = workerId;
-				this.winningTimeElapsedInSeconds = timeElapsedInSeconds;
+				this.synthesizedFormulas.put(envVarType, new Formula(formula));
 			}
 			else {
 				// the thread may have crashed, rather than returned UNSAT. we treat both cases the same for now.
-				this.unsatEnvVarTypes.add(envVarType);
+				this.synthesizedFormulas.put(envVarType, Formula.UNSAT());
 			}
 			// notify the master that this thread is done
 			this.aWorkerIsDone.signalAll();
@@ -65,12 +59,11 @@ public class FormulaSynth {
 	}
 
 	/**
-	 * Synthesize a formula using MAX_NUM_THREADS. The first formula to return a satisfying
-	 * formula "wins".
+	 * Synthesize one formula per "type" in <envVarTypes> and return all results that aren't UNSAT
 	 * @return
 	 */
-	public Set<Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
-			AlloyTrace negTrace, List<AlloyTrace> posTraces,
+	public Map<Map<String,String>, Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
+			AlloyTrace negTrace, final Map<Map<String,String>, List<AlloyTrace>> posTraces,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
 			Map<String, List<String>> actionParamTypes,
@@ -80,8 +73,9 @@ public class FormulaSynth {
 		resetMemberVars();
 		PerfTimer timer = new PerfTimer();
 		int id = 0;
-		for (final Map<String,String> m : envVarTypes) {
-			final FormulaSynthWorker worker = new FormulaSynthWorker(this, m, id++, negTrace, posTraces,
+		for (final Map<String,String> evt : envVarTypes) {
+			final List<AlloyTrace> evtPosTraces = posTraces.get(evt);
+			final FormulaSynthWorker worker = new FormulaSynthWorker(this, evt, id++, negTrace, evtPosTraces,
 					tlcComp, internalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
 					qvars, legalEnvVarCombos, curNumFluents);
 			this.workers.add(worker);
@@ -89,7 +83,7 @@ public class FormulaSynth {
 		
 		// randomly shuffle the workers then reduce the number to make formula synthesis faster
 		final int origNumWorkers = this.workers.size();
-		final int numWorkers = Math.min(origNumWorkers, 2*MAX_NUM_THREADS);
+		final int numWorkers = origNumWorkers; //Math.min(origNumWorkers, 2*MAX_NUM_THREADS);
 		Collections.shuffle(this.workers, this.seed);
 		while (this.workers.size() > numWorkers) {
 			this.workers.remove(this.workers.size()-1);
@@ -105,16 +99,11 @@ public class FormulaSynth {
 				this.threadPool.submit(worker);
 			}
 			
-			while (this.numWorkersDone < workers.size()) {
+			while (this.synthesizedFormulas.size() < workers.size()) {
 				try {
 					this.aWorkerIsDone.await();
 				}
 				catch (InterruptedException e) {}
-				
-				// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
-				// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
-				// the out-param envVarTypes!
-				envVarTypes.removeAll(this.unsatEnvVarTypes);
 			}
 		}
 		finally {
@@ -124,15 +113,18 @@ public class FormulaSynth {
 		
 		System.out.println("Formula synthesis complete in " + timer.timeElapsedSeconds() + " seconds");
 		
-		// all formulas have been synthesized
-		if (this.synthesizedFormulas.isEmpty()) {
-			// all formulas are UNSAT
-			return Set.of(Formula.UNSAT());
-		}
-		return this.synthesizedFormulas
+		// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
+		// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
+		// the out-param envVarTypes!
+		final Set<Map<String,String>> unsatEnvVarTypes = this.synthesizedFormulas
+				.entrySet()
 				.stream()
-				.map(f -> new Formula(f))
+				.filter(e -> e.getValue().isUNSAT())
+				.map(e -> e.getKey())
 				.collect(Collectors.toSet());
+		envVarTypes.removeAll(unsatEnvVarTypes);
+		
+		return this.synthesizedFormulas;
 	}
 	
 	private void cleanUpWorkers() {
@@ -153,11 +145,7 @@ public class FormulaSynth {
 	}
 	
 	private void resetMemberVars() {
-		this.synthesizedFormulas = new HashSet<>();
-		this.winningWorkerId = -1;
-		this.winningTimeElapsedInSeconds = 0.0;
-		this.numWorkersDone = 0;
-		this.unsatEnvVarTypes = new HashSet<>();
+		this.synthesizedFormulas = new HashMap<>();
 		this.workers = new ArrayList<>();
 	}
 }

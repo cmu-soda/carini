@@ -826,7 +826,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)\n"
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
 			+ "	minsome children // smallest formula possible\n"
-			+ "	minsome FlSymAction // heuristic to synthesize the least complicated fluents as possible\n"
+			+ "	minsome initFl + termFl + mutInitFl + falsifyFl // heuristic to synthesize the least complicated fluents as possible\n"
 			+ "	softno mutInitFl + falsifyFl // prefer initFl and termFl over mutInitFl and falsifyFl\n"
 			+ "}\n";
 }

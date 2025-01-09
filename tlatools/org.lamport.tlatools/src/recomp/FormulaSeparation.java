@@ -2,6 +2,7 @@ package recomp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -132,22 +133,27 @@ public class FormulaSeparation {
 		final Set<Map<String,String>> allEnvVarTypes = createAllEnvVarTypes(allTypes);
 		Utils.assertTrue(!allEnvVarTypes.isEmpty(), "internal error: envVarTypes is empty!");
     	
+		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
+		// formula synthesis task. we initialize the map with <initPosTrace> for every env var type. these are the
+    	// "current" pos traces that we will learn from (perform formula synth on).
     	final AlloyTrace initPosTrace = createInitPosTrace();
+		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
+				.stream()
+				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
     	
-    	// the max num pos traces we'll allow during formula synthesis
-    	int maxNumPosTraces = INIT_MAX_POS_TRACES;
+    	// keep track of the max num pos traces (per env var type) that we'll allow during formula synthesis
+		Map<Map<String,String>, Integer> maxNumPosTraces = allEnvVarTypes
+				.stream()
+				.collect(Collectors.toMap(evt -> evt, evt -> INIT_MAX_POS_TRACES));
     	
-    	// the current pos traces that we will learn from (perform formula synth on)
-    	List<AlloyTrace> currentPosTraces = new ArrayList<>();
-    	currentPosTraces.add(initPosTrace);
+    	// keep track of the number of duplicate traces in each round (per env var type). this will help us increment
+    	// <maxNumPosTraces> appropriately.
+		Map<Map<String,String>, Integer> numDuplicateTracesPerRound = allEnvVarTypes
+				.stream()
+				.collect(Collectors.toMap(evt -> evt, evt -> 0));
     	
     	// collect all pos traces we've ever seen. this will help us increase <maxNumPosTraces>
-    	Set<AlloyTrace> allPosTracesSeen = new HashSet<>();
-    	allPosTracesSeen.add(initPosTrace);
-    	
-    	// track the number of duplicate traces in each round. this will help us increment
-    	// <maxNumPosTraces> appropriately.
-    	int numDuplicateTracesPerRound = 0;
+    	Set<AlloyTrace> allPosTracesSeen = Utils.setOf(initPosTrace);
     	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
@@ -175,49 +181,64 @@ public class FormulaSeparation {
     		System.out.println(negTrace.fullSigString());
 
     		// reduce the max num pos traces in every round to "reset" them
-    		maxNumPosTraces = Math.max((maxNumPosTraces+numDuplicateTracesPerRound)/2, INIT_MAX_POS_TRACES);
-    		numDuplicateTracesPerRound = 0; // reset this variable each round
+    		for (final Map<String,String> evt : envVarTypes) {
+    			final int max = maxNumPosTraces.get(evt);
+    			final int numDuplicates = numDuplicateTracesPerRound.get(evt);
+    			final int updatedMax = Math.max((max+numDuplicates)/2, INIT_MAX_POS_TRACES);
+    			maxNumPosTraces.put(evt, updatedMax);
+    			numDuplicateTracesPerRound.put(evt, 0); // reset this variable each round
+    		}
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
-    		boolean isInvariant = false;
-    		while (!formulaSeparates && !isInvariant) {
+    		boolean foundInvariant = false;
+    		while (!formulaSeparates && !foundInvariant) {
 				// trim <currentPosTraces> to be at most <maxNumPosTraces>
-				while (currentPosTraces.size() > maxNumPosTraces) {
-					currentPosTraces.remove(0);
-				}
-				System.out.println("max # pos traces: " + maxNumPosTraces);
+        		for (final Map<String,String> evt : envVarTypes) {
+        			final int evtMaxNumPosTraces = maxNumPosTraces.get(evt);
+        			List<AlloyTrace> evtCurrentPosTraces = currentPosTraces.get(evt);
+    				while (evtCurrentPosTraces.size() > evtMaxNumPosTraces) {
+    					evtCurrentPosTraces.remove(0);
+    				}
+    				//System.out.println("max # pos traces: " + evtMaxNumPosTraces);
+        		}
 				
 				// synthesize new formulas
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Set<Formula> formulas = synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Set<Formula> newSynthFormulas = evtToFormulaMap
+    					.values()
+    					.stream()
+    					.collect(Collectors.toSet());
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
-    			if (formulas.stream().allMatch(f -> f.isUNSAT())) {
-    				invariants.add(Utils.chooseOne(formulas));
+    			if (newSynthFormulas.stream().allMatch(f -> f.isUNSAT())) {
+    				invariants.add(Utils.chooseOne(newSynthFormulas));
     				return Formula.conjunction(invariants).getFormula();
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
     			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
     			int ptNum = cumNumPosTraces;
-    			Map<Formula, AlloyTrace> formulaResults = new HashMap<>();
-				for (final Formula formula : formulas) {
+    			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
+				for (final Formula formula : newSynthFormulas) {
 					++ptNum;
 					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
 					final AlloyTrace newPosTrace =
 							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout);
-					formulaResults.put(formula, newPosTrace);
+					newSynthFormulaResults.put(formula, newPosTrace);
 				}
-    			isInvariant = formulaResults
+				foundInvariant = newSynthFormulaResults
     					.values()
     					.stream()
     					.anyMatch(t -> !t.hasError());
     			
-    			if (isInvariant) {
-    				final Set<Formula> newInvariants = formulaResults
+    			// if an invariant is found, move onto the next round. otherwise, prepare to perform formula synthesis
+    			// with the new pos traces.
+    			if (foundInvariant) {
+    				final Set<Formula> newInvariants = newSynthFormulaResults
     						.entrySet()
     						.stream()
     						.filter(e -> !e.getValue().hasError())
@@ -230,21 +251,33 @@ public class FormulaSeparation {
         			}
     			}
     			else {
-    				final Set<AlloyTrace> newPosTraces = formulaResults.values().stream().collect(Collectors.toSet());
+            		for (final Map<String,String> evt : envVarTypes) {
+            			final Formula newSynthFormula = evtToFormulaMap.get(evt);
+            			final AlloyTrace newPosTrace = newSynthFormulaResults.get(newSynthFormula);
+        				if (allPosTracesSeen.contains(newPosTrace)) {
+        					final int origMax = maxNumPosTraces.get(evt);
+        					final int origNumDuplicate = numDuplicateTracesPerRound.get(evt);
+        					maxNumPosTraces.put(evt, origMax+1);
+        					numDuplicateTracesPerRound.put(evt, origNumDuplicate+1);
+        				}
+    					Utils.assertTrue(!currentPosTraces.get(evt).contains(newPosTrace), "Synthesized a formula that doesn't respect a pos trace!");
+            		}
+            		
+            		// gather the set of all new pos traces
+            		final Set<AlloyTrace> allNewPosTraces = newSynthFormulaResults
+							.values()
+							.stream()
+							.collect(Collectors.toSet());
+            		
+            		// print the cumulative set of new pos traces for the user
         			System.out.println();
         			System.out.println("new pos trace(s):");
-        			for (final AlloyTrace t : newPosTraces) {
-        				System.out.println(t.fullSigString());
-        				// if we've seen this trace at least once then increment <maxNumPosTraces>
-        				if (allPosTracesSeen.contains(t)) {
-        					++maxNumPosTraces;
-        					++numDuplicateTracesPerRound;
-        				}
-    					Utils.assertTrue(!currentPosTraces.contains(t), "Synthesized a formula that doesn't respect a pos trace!");
-        			}
+        			allNewPosTraces
+							.stream()
+							.forEach(t -> System.out.println(t.fullSigString()));
     				
     				// notify the user that we've seen this trace at least once
-        			final boolean tracesSeenBefore = newPosTraces
+        			final boolean tracesSeenBefore = allNewPosTraces
         					.stream()
         					.anyMatch(t -> allPosTracesSeen.contains(t));
     				if (tracesSeenBefore) {
@@ -253,17 +286,47 @@ public class FormulaSeparation {
     				
     				// keep track of all pos traces seen
     				cumNumPosTraces += ptNum;
-					allPosTracesSeen.addAll(newPosTraces);
+					allPosTracesSeen.addAll(allNewPosTraces);
 					
-					// add the new pos trace to the set of current pos traces. we put the new pos traces that HAVE been
-					// seen before at the end to ensure that they will not be removed in the next formula synthesis batch.
-					final Set<AlloyTrace> newPosTracesSeenBefore = newPosTraces
-							.stream()
-							.filter(t -> allPosTracesSeen.contains(t))
-							.collect(Collectors.toSet());
-					final Set<AlloyTrace> newPosTracesNotSeenBefore = Utils.setMinus(newPosTraces, newPosTracesSeenBefore);
-    				currentPosTraces.addAll(newPosTracesNotSeenBefore);
-    				currentPosTraces.addAll(newPosTracesSeenBefore);
+					// add the new pos trace to the set of current pos traces. if there is extra room at the end of
+					// the pos trace list (i.e. the list is less than <maxNumPosTraces> per evt), then fill it with
+					// pos traces found from other evt's. we make sure that we put the evt's own pos traces at the
+					// end of the list so they remain in the list longer.
+            		for (final Map<String,String> evt : envVarTypes) {
+            			final int npt = currentPosTraces.get(evt).size() + 1;
+            			final int max = maxNumPosTraces.get(evt);
+            			final Formula evtFormula = evtToFormulaMap.get(evt);
+            			final AlloyTrace newPosTrace = newSynthFormulaResults.get(evtFormula);
+            			List<AlloyTrace> evtPosTraces = currentPosTraces.get(evt);
+            			
+            			// sanity check
+            			Utils.assertTrue(!evtFormula.isUNSAT(), "UNSAT formula found in active env var types!");
+            			
+            			// add pos traces from other evt's to fill up to the max for this evt
+            			if (npt < max) {
+                			final Set<AlloyTrace> currentPosTraceSet = evtPosTraces.stream().collect(Collectors.toSet());
+                			final Set<AlloyTrace> newPosTraceSet = Utils.setOf(newPosTrace);
+                			final Set<AlloyTrace> evtPosTraceSet = Utils.union(currentPosTraceSet, newPosTraceSet);
+                			List<AlloyTrace> additionalPosTraces = Utils.setMinus(allPosTracesSeen, evtPosTraceSet)
+                					.stream()
+                					.collect(Collectors.toList());
+                			Collections.shuffle(additionalPosTraces);
+                			
+                			// trim <additionalPosTraces> to just the number of pos traces that will fit
+                			final int numAdditionalTraces = Math.min(max - npt, additionalPosTraces.size());
+                			while (additionalPosTraces.size() > numAdditionalTraces) {
+                				additionalPosTraces.remove(additionalPosTraces.size()-1);
+                			}
+                			
+                			// add the additional pos traces first so the trace <newPosTrace> will last longer
+                			// in <evtPosTraces> (i.e. the traces in <additionalPosTraces> will be evicted from
+                			// <evtPosTraces> earlier).
+                			evtPosTraces.addAll(additionalPosTraces);
+            			}
+            			
+            			// add the new pos trace
+            			evtPosTraces.add(newPosTrace);
+            		}
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
@@ -564,8 +627,8 @@ public class FormulaSeparation {
 		return new AlloyTrace(trace, name, ext);
 	}
 	
-	private Set<Formula> synthesizeFormulas(final AlloyTrace negTrace, final List<AlloyTrace> posTraces, final int curNumFluents,
-			Set<Map<String,String>> envVarTypes) {
+	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace, final Map<Map<String,String>, List<AlloyTrace>> posTraces,
+			final int curNumFluents, Set<Map<String,String>> envVarTypes) {
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
 		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces,
 				tlcComp, internalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
@@ -875,7 +938,7 @@ public class FormulaSeparation {
 			final String set = sanitizeTokensForAlloy(toks);
 			final Set<String> setElems = toks
 					.stream()
-					.map(t -> sanitizeTokensForAlloy(List.of(t)))
+					.map(t -> sanitizeTokensForAlloy(Utils.listOf(t)))
 					.collect(Collectors.toSet());
 			setElements.put(set, setElems);
 		}
