@@ -244,8 +244,9 @@ public class FormulaSeparation {
 					// TODO hide this print behind a verbose flag
 					final boolean isInvariant = !newPosTrace.hasError();
 					System.out.println("Synthesized formula is invariant: " + isInvariant);
-					System.out.println("The formula is:\n" + formula);
+					System.out.println(formula);
 				}
+				System.out.println();
 				foundInvariant = newSynthFormulaResults
     					.values()
     					.stream()

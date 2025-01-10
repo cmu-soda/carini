@@ -23,11 +23,13 @@ public class FormulaSynth {
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	private static final int MAX_NUM_WORKERS = 15;
+	private static final long SHUTDOWN_MULTIPLIER = 3;
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
 	private ExecutorService threadPool;
 	private Random seed;
+	private boolean synthComplete;
 
 	private final Lock lock = new ReentrantLock();
 	private final Condition aWorkerIsDone = lock.newCondition();
@@ -44,12 +46,15 @@ public class FormulaSynth {
 	public void setFormula(final String formula, int workerId, final Map<String,String> envVarType, double timeElapsedInSeconds) {
 		try {
 			this.lock.lock();
-			if (!formula.contains("UNSAT") && !formula.trim().isEmpty()) {
-				this.synthesizedFormulas.put(envVarType, new Formula(formula));
-			}
-			else {
-				// the thread may have crashed, rather than returned UNSAT. we treat both cases the same for now.
-				this.synthesizedFormulas.put(envVarType, Formula.UNSAT());
+			if (!this.synthComplete) {
+				// only modify <synthesizedFormulas> if it's before the shutdown time
+				if (!formula.contains("UNSAT") && !formula.trim().isEmpty()) {
+					this.synthesizedFormulas.put(envVarType, new Formula(formula));
+				}
+				else {
+					// the thread may have crashed, rather than returned UNSAT. we treat both cases the same for now.
+					this.synthesizedFormulas.put(envVarType, Formula.UNSAT());
+				}
 			}
 			// notify the master that this thread is done
 			this.aWorkerIsDone.signalAll();
@@ -92,6 +97,7 @@ public class FormulaSynth {
 		System.out.println("Total # workers: " + origNumWorkers);
 		System.out.println("# workers using: " + numWorkers);
 
+		boolean inShutdownCountdown = false;
 		try {
 			this.lock.lock();
 			
@@ -100,14 +106,51 @@ public class FormulaSynth {
 				this.threadPool.submit(worker);
 			}
 			
+			long shutdownTime = Long.MAX_VALUE;
 			while (this.synthesizedFormulas.size() < workers.size()) {
 				try {
 					this.aWorkerIsDone.await();
 				}
 				catch (InterruptedException e) {}
+				
+				// we have our first worker done, so start a countdown until we kill the rest of the workers
+				if (!inShutdownCountdown) {
+					inShutdownCountdown = true;
+					final long shutdownLength = SHUTDOWN_MULTIPLIER * timer.timeElapsed();
+					shutdownTime = System.currentTimeMillis() + shutdownLength;
+					// set a timer to shutdown all threads if the shutdown time is exceeded
+					new Thread() {
+					    public void run() {
+					        try {
+								sleep(shutdownLength);
+							} catch (InterruptedException e) {}
+					        try {
+						        lock.lock();
+								aWorkerIsDone.signalAll();
+					        }
+					        finally {
+					        	lock.unlock();
+					        }
+					    }
+					}.start();
+					
+					// let the user know how much time is left
+					final double maxTimeLeft = shutdownLength / 1000.0;
+					System.out.println("First worker finished, shutdown count is " + maxTimeLeft + "s");
+				}
+
+				// shutdown count is reached! breaking will automatically kill all workers
+				if (System.currentTimeMillis() >= shutdownTime) {
+					final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
+					if (numIncompleteWorkers > 0) {
+						System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
+					}
+					break;
+				}
 			}
 		}
 		finally {
+			this.synthComplete = true;
 			this.lock.unlock();
 			this.cleanUpWorkers();
 		}
@@ -136,5 +179,6 @@ public class FormulaSynth {
 	private void resetMemberVars() {
 		this.synthesizedFormulas = new HashMap<>();
 		this.workers = new ArrayList<>();
+		this.synthComplete = false;
 	}
 }
