@@ -22,6 +22,7 @@ public class FormulaSynth {
 	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
+	private static final int MAX_NUM_WORKERS = 15;
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
@@ -83,7 +84,7 @@ public class FormulaSynth {
 		
 		// randomly shuffle the workers then reduce the number to make formula synthesis faster
 		final int origNumWorkers = this.workers.size();
-		final int numWorkers = origNumWorkers; //Math.min(origNumWorkers, 2*MAX_NUM_THREADS);
+		final int numWorkers = Math.min(origNumWorkers, MAX_NUM_WORKERS);
 		Collections.shuffle(this.workers, this.seed);
 		while (this.workers.size() > numWorkers) {
 			this.workers.remove(this.workers.size()-1);
@@ -112,18 +113,6 @@ public class FormulaSynth {
 		}
 		
 		System.out.println("Formula synthesis complete in " + timer.timeElapsedSeconds() + " seconds");
-		
-		// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
-		// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
-		// the out-param envVarTypes!
-		final Set<Map<String,String>> unsatEnvVarTypes = this.synthesizedFormulas
-				.entrySet()
-				.stream()
-				.filter(e -> e.getValue().isUNSAT())
-				.map(e -> e.getKey())
-				.collect(Collectors.toSet());
-		envVarTypes.removeAll(unsatEnvVarTypes);
-		
 		return this.synthesizedFormulas;
 	}
 	

@@ -185,6 +185,33 @@ public class FormulaSynthWorker implements Runnable {
 				+ "		(s->e) in containsRel\n"
 				+ "}";
 		
+		// predicate that encodes which sorts contain elements of other sorts. this is useful for VarSetContains.
+		Map<String,String> isElemOfSetMap = new HashMap<>();
+		for (final String elem : this.sortElementsMap.keySet()) {
+			for (final String theSet : this.setSortElementsMap.keySet()) {
+				final Set<String> elemElems = this.sortElementsMap.get(elem);
+				final Set<String> theSetElems = this.setSortElementsMap.get(theSet)
+						.values()
+						.stream()
+						.reduce((Set<String>)new HashSet<String>(),
+								(acc,s) -> Utils.union(acc, s),
+								(s1,s2) -> Utils.union(s1,s2));
+				if (theSetElems.containsAll(elemElems)) {
+					isElemOfSetMap.put(elem, theSet);
+				}
+			}
+		}
+		final String rawIsElemOfSetRelation = isElemOfSetMap
+				.entrySet()
+				.stream()
+				.map(e -> e.getKey() + "->" + e.getValue())
+				.collect(Collectors.joining(" + "));
+		final String isElemOfSetRelation = rawIsElemOfSetRelation.isEmpty() ? "none->none" : rawIsElemOfSetRelation;
+		final String isElemOfSetPred = "pred isElemOfSet[e : Sort, s : Sort] {\n"
+				+ "	let elemOfRel = (" + isElemOfSetRelation + ") |\n"
+				+ "		(e->s) in elemOfRel\n"
+				+ "}";
+		
 		// add all atoms, i.e. the values in each constant
 		final Set<String> allAtoms = this.sortElementsMap.values()
 				.stream()
@@ -223,11 +250,9 @@ public class FormulaSynthWorker implements Runnable {
 				.map(sort -> {
 					final Set<String> elems = this.sortElementsMap.get(sort);
 					final String atoms = String.join(" + ", elems);
-					final String setSort = this.setSortElementsMap.containsKey(sort) ? "True" : "False";
 					final String numericSort = elems.contains("NUM0") ? "True" : "False"; // numeric sorts will always contain 0
 					final String decl = "one sig " + sort + " extends Sort {} {\n"
 							+ "	atoms = " + atoms + "\n"
-							+ "	setSort = " + setSort + "\n"
 							+ "	numericSort = " + numericSort + "\n"
 							+ "}";
 					return decl;
@@ -454,6 +479,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ "\n" + paramIndicesDecl + "\n"
 				+ "\n" + paramIndicesConstraints + "\n\n"
 				+ "\n" + setContainsPredicate + "\n\n"
+				+ "\n" + isElemOfSetPred + "\n\n"
 				+ "\n" + ltePredicate + "\n\n"
 				+ "\n" + atomsDecl + "\n"
 				+ "\n" + strSortDecls + "\n"
@@ -540,7 +566,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "abstract sig Sort {\n"
 			+ "	atoms : some Atom,\n"
-			+ "	setSort : Bool,\n"
 			+ "	numericSort : Bool\n"
 			+ "}\n"
 			+ "\n"
@@ -671,14 +696,12 @@ public class FormulaSynthWorker implements Runnable {
 			+ "}\n"
 			+ "\n"
 			+ "sig VarSetContains extends Formula {\n"
-			+ "    sort : Sort,\n"
 			+ "    elem : Var,\n"
 			+ "    theSet : Var\n"
 			+ "} {\n"
 			+ "	no children\n"
 			+ "	elem != theSet\n"
-			//+ "	elem.envVarTypes != theSet.envVarTypes\n" // may be useful, unclear if it overconstrains
-			+ "	sort.setSort = True // the sort type must contain sets\n"
+			+ "	isElemOfSet[elem.envVarTypes, theSet.envVarTypes]\n"
 			+ "}\n"
 			+ "\n"
 			+ "sig VarLTE extends Formula {\n"

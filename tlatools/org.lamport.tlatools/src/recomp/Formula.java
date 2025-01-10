@@ -136,6 +136,7 @@ public class Formula {
 		return this.fluents.keySet()
 				.stream()
 				.map(f -> f.replace("Fluent", ""))
+				.map(f -> f.replaceAll("_.*$", ""))
 				.mapToInt(f -> Integer.parseInt(f))
 				.max()
 				.getAsInt();
