@@ -208,11 +208,6 @@ public class FormulaSeparation {
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
     			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
-    			final Set<Formula> newSynthFormulas = evtToFormulaMap
-    					.values()
-    					.stream()
-    					.filter(f -> !f.isUNSAT())
-    					.collect(Collectors.toSet());
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -224,6 +219,14 @@ public class FormulaSeparation {
     					.map(e -> e.getKey())
     					.collect(Collectors.toSet());
     			envVarTypes.removeAll(unsatEnvVarTypes);
+    			
+    			// keep track of all sat synth formulas
+    			final Set<Map<String,String>> satEvts = Utils.setMinus(evtToFormulaMap.keySet(), unsatEnvVarTypes);
+    			final Set<Formula> newSynthFormulas = evtToFormulaMap
+    					.values()
+    					.stream()
+    					.filter(f -> !f.isUNSAT())
+    					.collect(Collectors.toSet());
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
     			if (newSynthFormulas.isEmpty()) {
@@ -269,7 +272,7 @@ public class FormulaSeparation {
         			}
     			}
     			else {
-            		for (final Map<String,String> evt : evtToFormulaMap.keySet()) {
+            		for (final Map<String,String> evt : satEvts) {
             			final Formula newSynthFormula = evtToFormulaMap.get(evt);
             			final AlloyTrace newPosTrace = newSynthFormulaResults.get(newSynthFormula);
         				if (allPosTracesSeen.contains(newPosTrace)) {
@@ -310,7 +313,7 @@ public class FormulaSeparation {
 					// the pos trace list (i.e. the list is less than <maxNumPosTraces> per evt), then fill it with
 					// pos traces found from other evt's. we make sure that we put the evt's own pos traces at the
 					// end of the list so they remain in the list longer.
-            		for (final Map<String,String> evt : evtToFormulaMap.keySet()) {
+            		for (final Map<String,String> evt : satEvts) {
             			final int npt = currentPosTraces.get(evt).size() + 1;
             			final int max = maxNumPosTraces.get(evt);
             			final Formula evtFormula = evtToFormulaMap.get(evt);
