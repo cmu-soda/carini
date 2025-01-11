@@ -22,8 +22,8 @@ public class FormulaSynth {
 	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
-	private static final int MAX_NUM_WORKERS = 15;
-	private static final long SHUTDOWN_MULTIPLIER = 3;
+	private static final int MAX_NUM_WORKERS = 1000; //15;
+	private static final long SHUTDOWN_MULTIPLIER = 10; //3;
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;

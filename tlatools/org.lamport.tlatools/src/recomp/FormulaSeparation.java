@@ -211,6 +211,7 @@ public class FormulaSeparation {
     			final Set<Formula> newSynthFormulas = evtToFormulaMap
     					.values()
     					.stream()
+    					.filter(f -> !f.isUNSAT())
     					.collect(Collectors.toSet());
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
@@ -225,8 +226,8 @@ public class FormulaSeparation {
     			envVarTypes.removeAll(unsatEnvVarTypes);
     			
     			// if the latest constraints are unsatisfiable then stop and report this to the user
-    			if (newSynthFormulas.stream().allMatch(f -> f.isUNSAT())) {
-    				invariants.add(Utils.chooseOne(newSynthFormulas));
+    			if (newSynthFormulas.isEmpty()) {
+    				invariants.add(Formula.UNSAT());
     				return Formula.conjunction(invariants).getFormula();
     			}
     			
