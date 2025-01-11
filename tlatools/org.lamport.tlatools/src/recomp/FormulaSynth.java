@@ -17,13 +17,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import tlc2.TLC;
+import tlc2.Utils;
 
 public class FormulaSynth {
 	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
-	private static final int MAX_NUM_WORKERS = 1000; //15;
-	private static final long SHUTDOWN_MULTIPLIER = 10; //3;
+	private static final int MAX_NUM_WORKERS = 15;
+	private static final long SHUTDOWN_MULTIPLIER = 10;
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
@@ -68,7 +69,7 @@ public class FormulaSynth {
 	 * Synthesize one formula per "type" in <envVarTypes> and return all results that aren't UNSAT
 	 * @return
 	 */
-	public Map<Map<String,String>, Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
+	public Utils.Pair<Map<Map<String,String>,Formula>, Map<String,String>> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
 			AlloyTrace negTrace, final Map<Map<String,String>, List<AlloyTrace>> posTraces,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
@@ -97,7 +98,11 @@ public class FormulaSynth {
 		System.out.println("Total # workers: " + origNumWorkers);
 		System.out.println("# workers using: " + numWorkers);
 
+		// book keeping vars
 		boolean inShutdownCountdown = false;
+		Set<Map<String,String>> finishedEvts = new HashSet<>();
+		Map<String,String> winningEvt = null;
+		
 		try {
 			this.lock.lock();
 			
@@ -112,13 +117,36 @@ public class FormulaSynth {
 					this.aWorkerIsDone.await();
 				}
 				catch (InterruptedException e) {}
+
+				// shutdown count is reached! breaking will automatically kill all workers
+				if (System.currentTimeMillis() >= shutdownTime) {
+					final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
+					if (numIncompleteWorkers > 0) {
+						System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
+					}
+					break;
+				}
 				
-				// we have our first worker done, so start a countdown until we kill the rest of the workers
+				// figure out which env var type finished
+				final Set<Map<String, String>> newEvtsSet = this.synthesizedFormulas
+						.keySet()
+						.stream()
+						.filter(k -> !finishedEvts.contains(k))
+						.collect(Collectors.toSet());
+				Utils.assertTrue(newEvtsSet.size() == 1, "Expected 1 new evt during formula synth, found: " + newEvtsSet.size());
+				final Map<String, String> newEvt = Utils.chooseOne(newEvtsSet);
+				finishedEvts.add(newEvt);
+				
+				// in the case we have our first worker done, start a countdown until we kill the rest of the workers
 				if (!inShutdownCountdown) {
+					// record the winning env var type
+					Utils.assertNull(winningEvt, "Found multiple winners during formula synth");
+					winningEvt = newEvt;
+					
+					// set a timer to shutdown all threads if the shutdown time is exceeded
 					inShutdownCountdown = true;
 					final long shutdownLength = SHUTDOWN_MULTIPLIER * timer.timeElapsed();
 					shutdownTime = System.currentTimeMillis() + shutdownLength;
-					// set a timer to shutdown all threads if the shutdown time is exceeded
 					new Thread() {
 					    public void run() {
 					        try {
@@ -138,15 +166,6 @@ public class FormulaSynth {
 					final double maxTimeLeft = shutdownLength / 1000.0;
 					System.out.println("First worker finished, shutdown count is " + maxTimeLeft + "s");
 				}
-
-				// shutdown count is reached! breaking will automatically kill all workers
-				if (System.currentTimeMillis() >= shutdownTime) {
-					final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
-					if (numIncompleteWorkers > 0) {
-						System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
-					}
-					break;
-				}
 			}
 		}
 		finally {
@@ -156,7 +175,7 @@ public class FormulaSynth {
 		}
 		
 		System.out.println("Formula synthesis complete in " + timer.timeElapsedSeconds() + " seconds");
-		return this.synthesizedFormulas;
+		return new Utils.Pair<>(synthesizedFormulas, winningEvt);
 	}
 	
 	private void cleanUpWorkers() {

@@ -220,9 +220,11 @@ public class Utils {
     	return s.iterator().next();
     }
     
-    public static <T> Set<T> setOf(T elem) {
+    public static <T> Set<T> setOf(T... elems) {
     	Set<T> s = new HashSet<>();
-    	s.add(elem);
+    	for (T e : elems) {
+        	s.add(e);
+    	}
     	return s;
     }
     
