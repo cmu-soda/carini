@@ -254,6 +254,8 @@ public class FormulaSeparation {
 					System.out.println(formula);
 				}
 				System.out.println();
+				
+				// update whether an invariant has been found
 				foundInvariant = newSynthFormulaResults
     					.values()
     					.stream()
@@ -274,65 +276,40 @@ public class FormulaSeparation {
             			System.out.println(formula);
         			}
     			}
+    			// no new invariants have been found during formula synth
     			else {
-            		for (final Map<String,String> evt : satEvts) {
-            			final Formula newSynthFormula = evtToFormulaMap.get(evt);
-            			final AlloyTrace newPosTrace = newSynthFormulaResults.get(newSynthFormula);
-        				if (allPosTracesSeen.contains(newPosTrace)) {
-        					final int origMax = maxNumPosTraces.get(evt);
-        					final int origNumDuplicate = numDuplicateTracesPerRound.get(evt);
-        					maxNumPosTraces.put(evt, origMax+1);
-        					numDuplicateTracesPerRound.put(evt, origNumDuplicate+1);
-        				}
-    					Utils.assertTrue(!currentPosTraces.get(evt).contains(newPosTrace), "Synthesized a formula that doesn't respect a pos trace!");
-            		}
-            		
             		// gather the set of all new pos traces
             		final Set<AlloyTrace> allNewPosTraces = newSynthFormulaResults
 							.values()
 							.stream()
 							.collect(Collectors.toSet());
-            		
-            		// print the cumulative set of new pos traces for the user
-        			System.out.println();
-        			System.out.println("new pos trace(s):");
-        			allNewPosTraces
-							.stream()
-							.forEach(t -> System.out.println(t.fullSigString()));
-    				
-    				// notify the user that we've seen this trace at least once
-        			final boolean tracesSeenBefore = allNewPosTraces
-        					.stream()
-        					.anyMatch(t -> allPosTracesSeen.contains(t));
-    				if (tracesSeenBefore) {
-    					System.out.println("(at least one trace has been seen before)");
-    				}
-    				
-    				// keep track of all pos traces seen
-    				cumNumPosTraces += ptNum;
-					allPosTracesSeen.addAll(allNewPosTraces);
 					
 					// add the new pos trace to the set of current pos traces. if there is extra room at the end of
 					// the pos trace list (i.e. the list is less than <maxNumPosTraces> per evt), then fill it with
 					// pos traces found from other evt's. we make sure that we put the evt's own pos traces at the
 					// end of the list so they remain in the list longer.
-            		for (final Map<String,String> evt : satEvts) {
+            		for (final Map<String,String> evt : envVarTypes) {
             			// we add the env var types's pos trace as well as the winning pos trace to each evt
-            			final Formula evtFormula = evtToFormulaMap.get(evt);
             			final Formula winningFormula = evtToFormulaMap.get(winningEvt);
-            			final AlloyTrace evtPosTrace = newSynthFormulaResults.get(evtFormula);
             			final AlloyTrace winningPosTrace = newSynthFormulaResults.get(winningFormula);
-            			final Set<AlloyTrace> newPosTraces = Utils.setOf(evtPosTrace, winningPosTrace);
+            			Set<AlloyTrace> newPosTraces = Utils.setOf(winningPosTrace);
+            			if (satEvts.contains(evt)) {
+                			final Formula evtFormula = evtToFormulaMap.get(evt);
+                			final AlloyTrace evtPosTrace = newSynthFormulaResults.get(evtFormula);
+                			newPosTraces.add(evtPosTrace);
+            			}
             			
             			final int npt = currentPosTraces.get(evt).size() + newPosTraces.size();
             			final int max = maxNumPosTraces.get(evt);
             			List<AlloyTrace> evtPosTraces = currentPosTraces.get(evt);
             			
-            			// add pos traces from other evt's to fill up to the max for this evt
+            			// add pos traces from other evt's to fill up to the max for this evt. this helps avoid the
+            			// "cold start" problem for persisting for too long.
             			if (npt < max) {
                 			final Set<AlloyTrace> currentPosTraceSet = evtPosTraces.stream().collect(Collectors.toSet());
                 			final Set<AlloyTrace> curAndNewPosTraces = Utils.union(currentPosTraceSet, newPosTraces);
-                			List<AlloyTrace> additionalPosTraces = Utils.setMinus(allPosTracesSeen, curAndNewPosTraces)
+                			List<AlloyTrace> additionalPosTraces =
+                					Utils.setMinus(Utils.union(allPosTracesSeen, allNewPosTraces), curAndNewPosTraces)
                 					.stream()
                 					.collect(Collectors.toList());
                 			Collections.shuffle(additionalPosTraces);
@@ -350,20 +327,39 @@ public class FormulaSeparation {
                 			evtPosTraces.addAll(additionalPosTraces);
             			}
             			
-            			// add the new pos trace
+            			// add the new pos traces
             			evtPosTraces.addAll(newPosTraces);
             		}
             		
-            		// also add the winning pos trace to all env var types that weren't run
-            		currentPosTraces
-            				.entrySet()
-            				.stream()
-            				.filter(e -> !evtToFormulaMap.containsKey(e.getKey()))
-            				.forEach(e -> {
-                    			final Formula winningFormula = evtToFormulaMap.get(winningEvt);
-                    			final AlloyTrace winningPosTrace = newSynthFormulaResults.get(winningFormula);
-                    			e.getValue().add(winningPosTrace);
-            				});
+            		// increment the max num pos traces (for each sat env var type), if needed
+            		for (final Map<String,String> evt : satEvts) {
+            			final Formula newSynthFormula = evtToFormulaMap.get(evt);
+            			final AlloyTrace newPosTrace = newSynthFormulaResults.get(newSynthFormula);
+        				if (allPosTracesSeen.contains(newPosTrace)) {
+        					final int origMax = maxNumPosTraces.get(evt);
+        					final int origNumDuplicate = numDuplicateTracesPerRound.get(evt);
+        					maxNumPosTraces.put(evt, origMax+1);
+        					numDuplicateTracesPerRound.put(evt, origNumDuplicate+1);
+        				}
+            		}
+            		
+            		// print the cumulative set of new pos traces for the user
+        			System.out.println("new pos trace(s):");
+        			allNewPosTraces
+							.stream()
+							.forEach(t -> System.out.println(t.fullSigString()));
+    				
+    				// notify the user that we've seen this trace at least once
+        			final boolean tracesSeenBefore = allNewPosTraces
+        					.stream()
+        					.anyMatch(t -> allPosTracesSeen.contains(t));
+    				if (tracesSeenBefore) {
+    					System.out.println("(at least one trace has been seen before)");
+    				}
+    				
+    				// keep track of all pos traces seen
+    				cumNumPosTraces += ptNum;
+					allPosTracesSeen.addAll(allNewPosTraces);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
