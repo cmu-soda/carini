@@ -21,10 +21,10 @@ import tlc2.Utils;
 
 public class FormulaSynth {
 	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
-	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");;
+	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	private static final int MAX_NUM_WORKERS = 15;
-	private static final long SHUTDOWN_MULTIPLIER = 10;
+	private static final long SHUTDOWN_MULTIPLIER = 5;
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
@@ -116,10 +116,12 @@ public class FormulaSynth {
 				try {
 					this.aWorkerIsDone.await();
 				}
-				catch (InterruptedException e) {}
+				catch (InterruptedException e) {
+					throw new RuntimeException("Aborting formula synth due to interruption!");
+				}
 
 				// shutdown count is reached! breaking will automatically kill all workers
-				if (System.currentTimeMillis() >= shutdownTime) {
+				if (synthComplete || System.currentTimeMillis() >= shutdownTime) {
 					final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
 					if (numIncompleteWorkers > 0) {
 						System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
@@ -154,6 +156,7 @@ public class FormulaSynth {
 							} catch (InterruptedException e) {}
 					        try {
 						        lock.lock();
+								synthComplete = true;
 								aWorkerIsDone.signalAll();
 					        }
 					        finally {
