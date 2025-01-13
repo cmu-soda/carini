@@ -852,5 +852,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	minsome children // smallest formula possible\n"
 			+ "	minsome initFl + termFl + mutInitFl + falsifyFl // heuristic to synthesize the least complicated fluents as possible\n"
 			+ "	softno mutInitFl + falsifyFl // prefer initFl and termFl over mutInitFl and falsifyFl\n"
+			+ "	minsome Fluent.vars // minimize the # of params for each fluent\n"
 			+ "}\n";
 }
