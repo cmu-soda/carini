@@ -124,6 +124,10 @@ public class Formula {
 		return getFluentVars().size();
 	}
 	
+	public boolean containsQuantifiedType(final String qtype) {
+		return this.formula.contains("\\in " + qtype + " :");
+	}
+	
 	/**
 	 * Determines the number of fluents by the number encoded into each fluent
 	 * name. This effectively tells us how many fluents have been created in the

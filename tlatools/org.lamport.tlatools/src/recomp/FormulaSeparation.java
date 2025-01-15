@@ -189,10 +189,12 @@ public class FormulaSeparation {
     			//numDuplicateTracesPerRound.put(evt, 0); // reset this variable each round
 
 				// trim <currentPosTraces> to be at most <maxNumPosTraces>
-    			List<AlloyTrace> evtCurrentPosTraces = currentPosTraces.get(evt);
-				while (evtCurrentPosTraces.size() > max) {
-					evtCurrentPosTraces.remove(0);
-				}
+    			List<AlloyTrace> posTraces = currentPosTraces.get(evt);
+    			List<AlloyTrace> updatedPosTraces = posTraces
+    					.stream()
+    					.limit(max)
+    					.collect(Collectors.toList());
+    			currentPosTraces.put(evt, updatedPosTraces);
 				//System.out.println("max # pos traces: " + evtMaxNumPosTraces);
     		}
 
@@ -218,7 +220,6 @@ public class FormulaSeparation {
     			envVarTypes.removeAll(unsatEnvVarTypes);
     			
     			// keep track of all sat synth formulas
-    			final Set<Map<String,String>> satEvts = Utils.setMinus(evtToFormulaMap.keySet(), unsatEnvVarTypes);
     			final Set<Formula> newSynthFormulas = evtToFormulaMap
     					.values()
     					.stream()
@@ -272,14 +273,22 @@ public class FormulaSeparation {
     			}
     			// no new invariants have been found during formula synth
     			else {
-            		// gather the set of all new pos traces
-            		final Set<AlloyTrace> allNewPosTraces = newSynthFormulaResults
-							.values()
-							.stream()
-							.collect(Collectors.toSet());
-
+            		// update the set of pos traces per env var type
             		for (final Map<String,String> evt : envVarTypes) {
-            			Set<AlloyTrace> newPosTraces = Utils.union(allNewPosTraces,
+            			final Set<String> evtQuantTypes = evt
+            					.values()
+            					.stream()
+            					.collect(Collectors.toSet());
+            			// get the only the traces that correspond to formulas whose quantified vars have at least one
+            			// type that is in this evt
+            			final Set<AlloyTrace> intersectingTypeTraces = newSynthFormulaResults
+            					.entrySet()
+            					.stream()
+            					.filter(e -> evtQuantTypes.stream().anyMatch(q -> e.getKey().containsQuantifiedType(q)))
+            					.map(e -> e.getValue())
+            					.collect(Collectors.toSet());
+            			
+            			Set<AlloyTrace> newPosTraces = Utils.union(intersectingTypeTraces,
             					currentPosTraces.get(evt).stream().collect(Collectors.toSet()));
             			final Set<AlloyTrace> redundantTraces = newPosTraces
             					.stream()
@@ -290,10 +299,12 @@ public class FormulaSeparation {
             			newPosTraces.removeAll(redundantTraces);
             			currentPosTraces.put(evt, newPosTraces.stream().collect(Collectors.toList()));
             		}
-            		final int numPosTraces = Utils.chooseOne(currentPosTraces.values().stream().collect(Collectors.toSet())).size();
-            		System.out.println("num pos traces: " + numPosTraces);
             		
             		// print the cumulative set of new pos traces for the user
+            		final Set<AlloyTrace> allNewPosTraces = newSynthFormulaResults
+							.values()
+							.stream()
+							.collect(Collectors.toSet());
         			System.out.println("new pos trace(s):");
         			allNewPosTraces
 							.stream()
