@@ -288,6 +288,13 @@ public class FormulaSeparation {
             					.map(e -> e.getValue())
             					.collect(Collectors.toSet());
             			
+            			// sanity check: we must add the evt's corresponding trace to its set of pos traces
+            			if (evtToFormulaMap.containsKey(evt)) {
+                			final Formula evtFormula = evtToFormulaMap.get(evt);
+                			final AlloyTrace evtTrace = newSynthFormulaResults.get(evtFormula);
+                			Utils.assertTrue(intersectingTypeTraces.contains(evtTrace), "");
+            			}
+            			
             			Set<AlloyTrace> newPosTraces = Utils.union(intersectingTypeTraces,
             					currentPosTraces.get(evt).stream().collect(Collectors.toSet()));
             			final Set<AlloyTrace> redundantTraces = newPosTraces
