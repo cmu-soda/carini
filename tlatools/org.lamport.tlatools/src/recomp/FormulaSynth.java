@@ -69,7 +69,7 @@ public class FormulaSynth {
 	 * Synthesize one formula per "type" in <envVarTypes> and return all results that aren't UNSAT
 	 * @return
 	 */
-	public Utils.Pair<Map<Map<String,String>,Formula>, Map<String,String>> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
+	public Map<Map<String,String>, Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
 			AlloyTrace negTrace, final Map<Map<String,String>, List<AlloyTrace>> posTraces,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
@@ -101,7 +101,6 @@ public class FormulaSynth {
 		// book keeping vars
 		boolean inShutdownCountdown = false;
 		Set<Map<String,String>> finishedEvts = new HashSet<>();
-		Map<String,String> winningEvt = null;
 		
 		try {
 			this.lock.lock();
@@ -129,22 +128,8 @@ public class FormulaSynth {
 					break;
 				}
 				
-				// figure out which env var type finished
-				final Set<Map<String, String>> newEvtsSet = this.synthesizedFormulas
-						.keySet()
-						.stream()
-						.filter(k -> !finishedEvts.contains(k))
-						.collect(Collectors.toSet());
-				Utils.assertTrue(newEvtsSet.size() == 1, "Expected 1 new evt during formula synth, found: " + newEvtsSet.size());
-				final Map<String, String> newEvt = Utils.chooseOne(newEvtsSet);
-				finishedEvts.add(newEvt);
-				
 				// in the case we have our first worker done, start a countdown until we kill the rest of the workers
 				if (!inShutdownCountdown) {
-					// record the winning env var type
-					Utils.assertNull(winningEvt, "Found multiple winners during formula synth");
-					winningEvt = newEvt;
-					
 					// set a timer to shutdown all threads if the shutdown time is exceeded
 					inShutdownCountdown = true;
 					final long shutdownLength = SHUTDOWN_MULTIPLIER * timer.timeElapsed();
@@ -178,7 +163,7 @@ public class FormulaSynth {
 		}
 		
 		System.out.println("Formula synthesis complete in " + timer.timeElapsedSeconds() + " seconds");
-		return new Utils.Pair<>(synthesizedFormulas, winningEvt);
+		return this.synthesizedFormulas;
 	}
 	
 	private void cleanUpWorkers() {

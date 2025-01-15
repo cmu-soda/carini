@@ -204,10 +204,7 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Utils.Pair<Map<Map<String,String>,Formula>, Map<String,String>> formulaSynthResult =
-    					synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = formulaSynthResult.first;
-    			final Map<String,String> winningEvt = formulaSynthResult.second;
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -613,7 +610,7 @@ public class FormulaSeparation {
 		return new AlloyTrace(trace, name, ext);
 	}
 	
-	private Utils.Pair<Map<Map<String,String>,Formula>, Map<String,String>> synthesizeFormulas(final AlloyTrace negTrace,
+	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,
 			final Map<Map<String,String>, List<AlloyTrace>> posTraces, final int curNumFluents, Set<Map<String,String>> envVarTypes) {
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
 		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces,
