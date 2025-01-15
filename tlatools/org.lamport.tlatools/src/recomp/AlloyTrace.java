@@ -1,8 +1,11 @@
 package recomp;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import tlc2.Utils;
 
 public class AlloyTrace {
 	private final boolean hasError;
@@ -12,6 +15,7 @@ public class AlloyTrace {
 	private final String alloyLastIdx;
 	private final String path;
 	private final List<String> trace;
+	private final Set<Utils.Pair<String,String>> traceSet;
 	private final int size;
 	
 	public AlloyTrace() {
@@ -22,6 +26,7 @@ public class AlloyTrace {
 		this.alloyLastIdx = null;
 		this.path = null;
 		this.trace = null;
+		this.traceSet = null;
 		this.size = 0;
 	}
 	
@@ -36,6 +41,14 @@ public class AlloyTrace {
 				})
 				.collect(Collectors.joining(" + "));
 		final String pathParens = "(" + path + ")";
+		
+		this.traceSet = IntStream.range(0, trace.size())
+				.mapToObj(i -> {
+					final String time = "T" + i;
+					final String act = trace.get(i);
+					return new Utils.Pair<>(time,act);
+				})
+				.collect(Collectors.toSet());
 		
 		this.hasError = true;
 		this.name = name;
@@ -85,6 +98,10 @@ public class AlloyTrace {
 			+ "	lastIdx = " + this.alloyLastIdx + "\n"
 			+ "	path = " + this.path + "\n"
 			+ "}";*/
+	}
+	
+	public boolean contains(final AlloyTrace other) {
+		return this.traceSet.containsAll(other.traceSet);
 	}
 	
 	@Override
