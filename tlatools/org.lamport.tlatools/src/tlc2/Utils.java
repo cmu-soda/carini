@@ -509,6 +509,10 @@ public class Utils {
 	    }
     	return lines;
     }
+    
+    public static void deleteFile(String file) {
+		new File(file).delete();
+    }
 	
     public static String asJson(Map<String,String> jsonStrs, Map<String,List<String>> jsonLists) {
     	final String strs = asJsonStrs(jsonStrs);
