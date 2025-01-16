@@ -92,6 +92,14 @@ public class AlloyTrace {
 		return this.size == 0;
 	}
 	
+	public AlloyTrace split() {
+		final List<String> splitTrace = this.trace
+				.stream()
+				.limit(this.size/2)
+				.collect(Collectors.toList());
+		return new AlloyTrace(splitTrace, this.name, this.ext);
+	}
+	
 	public String fullSigString() {
 		return this.name + " (" + this.ext + "): " + this.path;
 		/*return "one sig " + this.name + " extends " + this.ext + " {} {\n"

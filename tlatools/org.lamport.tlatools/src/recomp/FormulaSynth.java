@@ -24,7 +24,7 @@ public class FormulaSynth {
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	private static final int MAX_NUM_WORKERS = 15;
-	private static final long SHUTDOWN_MULTIPLIER = 5;
+	private static final long SHUTDOWN_MULTIPLIER = 5L;
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
@@ -47,6 +47,7 @@ public class FormulaSynth {
 	public void setFormula(final String formula, int workerId, final Map<String,String> envVarType, double timeElapsedInSeconds) {
 		try {
 			this.lock.lock();
+			// only modify <synthesizedFormulas> if it's before the shutdown time
 			if (!this.synthComplete) {
 				// only modify <synthesizedFormulas> if it's before the shutdown time
 				if (!formula.contains("UNSAT") && !formula.trim().isEmpty()) {
@@ -100,8 +101,6 @@ public class FormulaSynth {
 
 		// book keeping vars
 		boolean inShutdownCountdown = false;
-		Set<Map<String,String>> finishedEvts = new HashSet<>();
-		
 		try {
 			this.lock.lock();
 			

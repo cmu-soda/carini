@@ -371,7 +371,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String strIndicesNext = strIndicesNextMulti.isEmpty() ? "none->none" : strIndicesNextMulti;
 		final String strInternalActs = this.internalActions
 				.stream()
-				.map(act -> "	no FlSymAction.baseName & " + act)
+				.map(act -> "	" + act + "not in FlSymAction.baseName")
 				.collect(Collectors.joining("\n"));
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"
@@ -738,7 +738,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	// the following two facts make sure that the formulas create a tree (i.e. DAG w/o 'diamond' structures)\n"
 			+ "	no Root.(~children) // the root has no parents\n"
 			+ "	all f : (Formula - Root) | one f.(~children) // all non-root formulas have exactly one parent\n"
-			+ "	all f : Formula | f in Root.*children // not strictly needed, but seems to make things faster\n"
+			+ "	all f : Formula | f in Root.*children // all Formulas must be part of the overall formula\n"
+			+ "	Fluent.(initFl+termFl+mutInitFl+falsifyFl) = FlSymAction // all FlSymActions must be in fluents\n"
 			+ "\n"
 			+ "	// no free vars, all vars must be used in the matrix\n"
 			+ "	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.(lhs+rhs) + VarSetContains.(elem+theSet) + VarLTE.(lhs+rhs) |\n"
