@@ -92,10 +92,10 @@ public class AlloyTrace {
 		return this.size == 0;
 	}
 	
-	public AlloyTrace split() {
+	public AlloyTrace cutToLen(int len) {
 		final List<String> splitTrace = this.trace
 				.stream()
-				.limit(this.size/2)
+				.limit(len)
 				.collect(Collectors.toList());
 		return new AlloyTrace(splitTrace, this.name, this.ext);
 	}

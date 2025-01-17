@@ -154,6 +154,10 @@ public class FormulaSeparation {
     	
     	// collect all pos traces we've ever seen. this will help us increase <maxNumPosTraces>
     	Set<AlloyTrace> allPosTracesSeen = Utils.setOf(initPosTrace);
+		
+		// incrementally increase the length of the neg trace that we consider
+    	// NOTE: it may be a good idea to consider resetting this var every round
+		int partialNegTraceLen = 1;
     	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
@@ -203,10 +207,13 @@ public class FormulaSeparation {
     		boolean foundInvariant = false;
     		while (!formulaSeparates && !foundInvariant) {
 				// synthesize new formulas
+    			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
+    			System.out.println("Using the following partial neg trace for formula synth:");
+        		System.out.println(partialNegTrace.fullSigString());
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(negTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -226,10 +233,23 @@ public class FormulaSeparation {
     					.filter(f -> !f.isUNSAT())
     					.collect(Collectors.toSet());
     			
-    			// if the latest constraints are unsatisfiable then stop and report this to the user
+    			// if all results are UNSAT then we must take action
+    			// NOTE: this does not actually imply that the formula is UNSAT, because we may only run formula synth
+    			// with a subset of the env var types. we use this as a hueristic though.
     			if (newSynthFormulas.isEmpty()) {
-    				invariants.add(Formula.UNSAT());
-    				return Formula.conjunction(invariants).getFormula();
+    				// in this case, the overall constraints are unsatisfiable so we stop and report this to the user
+    				if (partialNegTraceLen >= negTrace.size()) {
+        				invariants.add(Formula.UNSAT());
+        				return Formula.conjunction(invariants).getFormula();
+    				}
+    				// otherwise, we increase the size of the partial neg trace
+    				else {
+    					++partialNegTraceLen;
+    					envVarTypes = new HashSet<>(allEnvVarTypes);
+    					System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
+    					System.out.println();
+    					continue;
+    				}
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
@@ -401,8 +421,9 @@ public class FormulaSeparation {
 		// Call out to TLC to find a cex trace
 		try {
 			// TODO should use a temporary file for <cexTraceOutputFile>
+			// TODO run multiple instances of TLC and choose the shortest trace
 			final String[] cmd = {"sh", "-c",
-					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers 12 -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
+					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers auto -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			

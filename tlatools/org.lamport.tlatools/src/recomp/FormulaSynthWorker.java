@@ -90,6 +90,17 @@ public class FormulaSynthWorker implements Runnable {
 	public void run() {
 		// TODO change name from "formula" to "json"
 		PerfTimer timer = new PerfTimer();
+		
+		// check to make sure that no pos trace contains the neg trace, in which case the formula is
+		// trivially UNSAT.
+		final boolean isTriviallyUNSAT = this.posTraces
+				.stream()
+				.anyMatch(p -> p.contains(this.negTrace));
+		if (isTriviallyUNSAT) {
+			this.formulaSynth.setFormula("UNSAT", this.id, this.envVarTypes, timer.timeElapsedSeconds());
+		}
+		
+		// call out to AlloyMax to synthesize a formula for us
 		final String formula = synthesizeFormulaWithVarTypes(this.negTrace, this.posTraces);
 		this.formulaSynth.setFormula(formula, this.id, this.envVarTypes, timer.timeElapsedSeconds());
 	}
