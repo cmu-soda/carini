@@ -99,10 +99,11 @@ public class FormulaSynthWorker implements Runnable {
 		if (isTriviallyUNSAT) {
 			this.formulaSynth.setFormula("UNSAT", this.id, this.envVarTypes, timer.timeElapsedSeconds());
 		}
-		
-		// call out to AlloyMax to synthesize a formula for us
-		final String formula = synthesizeFormulaWithVarTypes(this.negTrace, this.posTraces);
-		this.formulaSynth.setFormula(formula, this.id, this.envVarTypes, timer.timeElapsedSeconds());
+		else {
+			// call out to AlloyMax to synthesize a formula for us
+			final String formula = synthesizeFormulaWithVarTypes(this.negTrace, this.posTraces);
+			this.formulaSynth.setFormula(formula, this.id, this.envVarTypes, timer.timeElapsedSeconds());
+		}
 	}
 	
 	public void kill() {
@@ -382,7 +383,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String strIndicesNext = strIndicesNextMulti.isEmpty() ? "none->none" : strIndicesNextMulti;
 		final String strInternalActs = this.internalActions
 				.stream()
-				.map(act -> "	" + act + "not in FlSymAction.baseName")
+				.map(act -> "	" + act + " not in FlSymAction.baseName")
 				.collect(Collectors.joining("\n"));
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"
