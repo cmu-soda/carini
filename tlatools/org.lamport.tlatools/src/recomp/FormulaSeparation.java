@@ -1,5 +1,6 @@
 package recomp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -154,10 +155,6 @@ public class FormulaSeparation {
     	
     	// collect all pos traces we've ever seen. this will help us increase <maxNumPosTraces>
     	Set<AlloyTrace> allPosTracesSeen = Utils.setOf(initPosTrace);
-		
-		// incrementally increase the length of the neg trace that we consider
-    	// NOTE: it may be a good idea to consider resetting this var every round
-		int partialNegTraceLen = 1;
     	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
@@ -174,6 +171,11 @@ public class FormulaSeparation {
     		// synthesizeFormula() method.
     		Set<Map<String,String>> envVarTypes = new HashSet<>(allEnvVarTypes);
     		
+    		// reset the pos traces
+    		currentPosTraces = allEnvVarTypes
+    				.stream()
+    				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
+    		
     		// generate a negative trace for this round; we will generate a formula (assumption) that eliminates
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
@@ -183,6 +185,16 @@ public class FormulaSeparation {
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
+    		
+    		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
+    		// increase it as needed.
+    		int partialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		if (partialNegTraceLen == -1 && !formulaSeparates) {
+        		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
+    			System.out.println("The property is violated with the following trace:");
+    			System.out.println(negTrace.fullSigString());
+    			return "UNSAT";
+    		}
 
     		// reduce the list of pos traces in every round to "reset" them
     		for (final Map<String,String> evt : envVarTypes) {
@@ -233,23 +245,22 @@ public class FormulaSeparation {
     					.filter(f -> !f.isUNSAT())
     					.collect(Collectors.toSet());
     			
-    			// if all results are UNSAT then we must take action
+    			// if all results are UNSAT then we increase the size of the partial neg trace
     			// NOTE: this does not actually imply that the formula is UNSAT, because we may only run formula synth
-    			// with a subset of the env var types. we use this as a hueristic though.
-    			if (newSynthFormulas.isEmpty()) {
+    			// with a subset of the env var types. we use this as a heuristic though.
+    			if (newSynthFormulas.isEmpty() && partialNegTraceLen < negTrace.size()) {
+                    ++partialNegTraceLen;
+                    envVarTypes = new HashSet<>(allEnvVarTypes);
+                    System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
+                    System.out.println();
+                    continue;
+    			}
+    			
+    			// if all results are UNSAT then we report this to the user
+    			if (envVarTypes.isEmpty()) {
     				// in this case, the overall constraints are unsatisfiable so we stop and report this to the user
-    				if (partialNegTraceLen >= negTrace.size()) {
-        				invariants.add(Formula.UNSAT());
-        				return Formula.conjunction(invariants).getFormula();
-    				}
-    				// otherwise, we increase the size of the partial neg trace
-    				else {
-    					++partialNegTraceLen;
-    					envVarTypes = new HashSet<>(allEnvVarTypes);
-    					System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
-    					System.out.println();
-    					continue;
-    				}
+    				invariants.add(Formula.UNSAT());
+    				return Formula.conjunction(invariants).getFormula();
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
@@ -637,6 +648,169 @@ public class FormulaSeparation {
     	return Utils.chooseOne(cexs);
 	}
 	
+	private int calculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
+		for (int i = 1; i < trace.size(); ++i) {
+			final AlloyTrace partialTrace = trace.cutToLen(i);
+			if (!isTraceInSpec(partialTrace,tla,cfg)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg) {
+		final String tlaName = tla.replaceAll("\\.tla", "");
+		final String cfgName = cfg.replaceAll("\\.cfg", "");
+		final String tlaFile = tlaName + ".tla";
+		final String cfgFile = cfgName + ".cfg";
+		
+		// create a formula that says: at each time step i, we must take action i in <trace> (the given AlloyTrace)
+		final String cexIdxVar = "cexTraceIdx";
+		final String errVar = "err";
+		final String traceConstraint = IntStream.range(0, trace.size())
+				.mapToObj(i -> {
+					final String act = trace.tlaTrace().get(i);
+					final String errVarChange = i < trace.size()-1 ? errVar+"' = "+errVar : errVar+"' = TRUE";
+					return "/\\ " + cexIdxVar + " = " + i + " => " + act + " /\\ " + errVarChange;
+				})
+				.collect(Collectors.joining("\n"));
+		
+		// use the original TLA+ file to construct the reproducer spec
+		TLC tlc = new TLC();
+		tlc.initialize(tlaFile, cfgFile);
+
+    	final FastTool ft = (FastTool) tlc.tool;
+		final String moduleName = tlc.getModelName();
+		final ModuleNode mn = ft.getModule(moduleName);
+		final List<OpDefNode> moduleNodes = Utils.toArrayList(mn.getOpDefs())
+				.stream()
+				// only retain module for the .tla file
+				.filter(d -> moduleName.equals(d.getOriginallyDefinedInModuleNode().getName().toString()))
+				.filter(d -> !d.getName().toString().equals("vars")) // remove the vars decl; we insert this manually
+				.collect(Collectors.toList());
+		
+		List<String> strModuleNodes = moduleNodes
+				.stream()
+				.map(d -> {
+					final String dname = d.getName().toString();
+					if (tlc.actionsInSpec().contains(dname)) {
+						d.addConjunct(cexIdxVar + "' = " + cexIdxVar + " + 1");
+					}
+					else if (dname.equals("Init")) {
+						d.addConjunct(cexIdxVar + " = 0");
+						d.addConjunct(errVar + " = FALSE");
+					}
+					return d;
+				 })
+				.map(d -> d.toTLA())
+				.collect(Collectors.toList());
+		
+		// add the trace constraint and the new spec decl to the list of muldes
+		final String tcfName = "TraceConstraint";
+		final String tcfSpecName = "TraceConstraintSpec";
+		final String traceConstraintDecl = tcfName + " ==\n" + traceConstraint;
+		final String specVarDecl = tcfSpecName + " == Init /\\ [][Next /\\ " + tcfName + "]_vars";
+		strModuleNodes.add(traceConstraintDecl);
+		strModuleNodes.add(specVarDecl);
+		
+		// gather all the consts
+		final Set<String> sortConsts = this.sortElementsMap.values()
+				.stream()
+				.reduce((Set<String>)new HashSet<String>(),
+						(acc,l) -> Utils.union(acc, l.stream().collect(Collectors.toSet())),
+						(l1,l2) -> Utils.union(l1,l2));
+		final Set<String> allConsts = Utils.union(sortConsts, tlc.constantsInSpec().stream().collect(Collectors.toSet()));
+		
+		// construct the spec
+		final String specName = "CexTrace";
+		final String specBody = String.join("\n\n", strModuleNodes);
+		
+        final String specDecl = "--------------------------- MODULE " + specName + " ---------------------------";
+        final String endModule = "=============================================================================";
+        
+        final List<String> moduleWhiteList =
+        		Arrays.asList("Bags", "FiniteSets", "Functions", "Integers", "Json", "Naturals", "Randomization",
+        				"NaturalsInduction", "RealTime", "Sequences", "SequencesExt", "TLC", "TLCExt");
+        ArrayList<String> moduleNameList = Utils.filterArrayWhiteList(moduleWhiteList, ft.getModuleNames());
+        // ensure that the naturals are included so we can increment the cexIdxVar
+        if (!moduleNameList.contains("Naturals")) {
+        	moduleNameList.add("Naturals");
+        }
+        // ensure that TLC is included for the definition of @@
+        if (!moduleNameList.contains("TLC")) {
+        	moduleNameList.add("TLC");
+        }
+		
+		final String noErrsInv = "NoErr";
+		final String invariantDecl = noErrsInv + " == " + errVar + " = FALSE";
+        
+        final Set<String> stateVars = Utils.union(tlc.stateVarsInSpec(), Utils.setOf(cexIdxVar,errVar));
+
+        final String moduleList = String.join(", ", moduleNameList);
+        final String constantsDecl = "CONSTANTS " + String.join(", ", allConsts);
+        final String varList = String.join(", ", stateVars);
+        final String modulesDecl = moduleList.isEmpty() ? "" : "EXTENDS " + moduleList;
+        final String varsDecl = "VARIABLES " + varList;
+        final String varsListDecl = "vars == <<" + varList + ">>";
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append(specDecl).append("\n");
+        builder.append(modulesDecl).append("\n");
+        builder.append("\n");
+        builder.append(constantsDecl).append("\n");
+        builder.append("\n");
+        builder.append(varsDecl).append("\n");
+        builder.append("\n");
+        builder.append(varsListDecl).append("\n");
+        builder.append("\n");
+        builder.append(invariantDecl);
+        builder.append("\n\n");
+        builder.append(specBody);
+        builder.append("\n");
+        builder.append(endModule).append("\n");
+
+        final String traceInSpecTla = specName + ".tla";
+        Utils.writeFile(traceInSpecTla, builder.toString());
+        
+        // create the config file for the TLA+ reproducer
+        StringBuilder cfgBuilder = new StringBuilder();
+        final List<String> cfgLines = Utils.fileContents(cfgFile)
+        		.stream()
+        		.filter(l -> !l.contains("SPECIFICATION"))
+        		.filter(l -> !l.contains("INVARIANT"))
+        		.collect(Collectors.toList());
+        final String cfgContent = String.join("\n", cfgLines) + "\nSPECIFICATION " + tcfSpecName + "\nINVARIANT " + noErrsInv + "\n";
+        cfgBuilder.append(cfgContent);
+        cfgBuilder.append("CONSTANTS\n");
+        sortConsts.stream()
+        		.filter(c -> !Utils.isIntegerString(c))
+        		.forEach(c -> {
+                	final String constAssg = c + "=" + c + "\n";
+                	cfgBuilder.append(constAssg);
+        		});
+        final String traceInSpecCfg = specName + ".cfg";
+        Utils.writeFile(traceInSpecCfg, cfgBuilder.toString());
+
+        // run the spec and see if there is an error. the trace appears in the spec iff there is an error
+        final String[] cmd = {"java", "-jar", TLC_JAR_PATH, "-cleanup", "-deadlock", "-workers", "auto", "-config", traceInSpecCfg, traceInSpecTla};
+		try {
+			Process proc = Runtime.getRuntime().exec(cmd);
+			final int retCode = proc.waitFor();
+			
+			// ret code 0 is no err and 12 is an error trace
+			Utils.assertTrue(retCode == 0 || retCode == 12, "While generating testing if a trace is in a spec, unexpected ret code from TLC: " + retCode);
+			final boolean error = retCode == 12;
+			return error;
+		}
+		catch (IOException | InterruptedException e) {
+			Utils.assertTrue(false, "Error while testing whether a trace is in a spec");
+		}
+		
+		// unreachable code to satisfy the compiler
+		Utils.assertTrue(false, "Should not reach here!");
+		return false;
+	}
+	
 	private AlloyTrace createAlloyTrace(final List<String> word, final String name, final String ext) {
 		// use the alphabet for the component
 		final Set<String> alphabet = this.tlcComp.actionsInSpec();
@@ -654,7 +828,21 @@ public class FormulaSeparation {
 							.collect(Collectors.joining());
 				})
 				.collect(Collectors.toList());
-		return new AlloyTrace(trace, name, ext);
+		final List<String> tlaTrace = word
+				.stream()
+				.filter(act -> {
+					final String abstractAct = act.replaceAll("\\..*$", "");
+					return alphabet.contains(abstractAct);
+				})
+				.map(a -> {
+					final List<String> actParts = Utils.toArrayList(a.split("\\."));
+					Utils.assertTrue(actParts.size() >= 1, "eror splitting an action!");
+					final String act = actParts.get(0);
+					final List<String> params = actParts.subList(1, actParts.size());
+					return params.size() == 0 ? act : act + "(" + String.join(",", params) + ")";
+				})
+				.collect(Collectors.toList());
+		return new AlloyTrace(trace, tlaTrace, name, ext);
 	}
 	
 	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,

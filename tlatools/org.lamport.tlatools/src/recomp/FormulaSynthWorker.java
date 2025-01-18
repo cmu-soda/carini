@@ -385,9 +385,11 @@ public class FormulaSynthWorker implements Runnable {
 				.stream()
 				.map(act -> "	" + act + " not in FlSymAction.baseName")
 				.collect(Collectors.joining("\n"));
+		final String finalBaseActionForNegTrace = negTrace.finalBaseAction();
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"
 				+ "	IdxOrder/next = " + strIndicesNext + "\n"
+				+ "	" + finalBaseActionForNegTrace + " in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula\n"
 				+ strInternalActs + "\n"
 				+ "}";
 		

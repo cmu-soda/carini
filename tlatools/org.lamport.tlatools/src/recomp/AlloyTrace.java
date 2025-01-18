@@ -15,6 +15,7 @@ public class AlloyTrace {
 	private final String alloyLastIdx;
 	private final String path;
 	private final List<String> trace;
+	private final List<String> tlaTrace;
 	private final Set<Utils.Pair<String,String>> traceSet;
 	private final int size;
 	
@@ -26,11 +27,12 @@ public class AlloyTrace {
 		this.alloyLastIdx = null;
 		this.path = null;
 		this.trace = null;
+		this.tlaTrace = null;
 		this.traceSet = null;
 		this.size = 0;
 	}
 	
-	public AlloyTrace(final List<String> trace, final String name, final String ext) {
+	public AlloyTrace(final List<String> trace, final List<String> tlaTrace, final String name, final String ext) {
 		final int lastIdx = trace.size() - 1;
 		final String alloyLastIdx = "T" + lastIdx;
 		final String path = IntStream.range(0, trace.size())
@@ -57,6 +59,7 @@ public class AlloyTrace {
 		this.alloyLastIdx = alloyLastIdx;
 		this.path = pathParens;
 		this.trace = trace;
+		this.tlaTrace = tlaTrace;
 		this.size = trace.size();
 	}
 	
@@ -84,6 +87,15 @@ public class AlloyTrace {
 		return this.trace;
 	}
 	
+	public List<String> tlaTrace() {
+		return this.tlaTrace;
+	}
+	
+	public String finalBaseAction() {
+		final String finalAction = this.tlaTrace.get(this.tlaTrace.size()-1);
+		return finalAction.replaceAll("\\(.*$", "");
+	}
+	
 	public int size() {
 		return this.size;
 	}
@@ -93,11 +105,15 @@ public class AlloyTrace {
 	}
 	
 	public AlloyTrace cutToLen(int len) {
-		final List<String> splitTrace = this.trace
+		final List<String> cutTrace = this.trace
 				.stream()
 				.limit(len)
 				.collect(Collectors.toList());
-		return new AlloyTrace(splitTrace, this.name, this.ext);
+		final List<String> cutTlaTrace = this.tlaTrace
+				.stream()
+				.limit(len)
+				.collect(Collectors.toList());
+		return new AlloyTrace(cutTrace, cutTlaTrace, this.name, this.ext);
 	}
 	
 	public String fullSigString() {
