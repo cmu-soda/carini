@@ -23,6 +23,8 @@ vars == <<currentTerm, state, log, committed, config>>
 \*
 \* Helper operators.
 \*
+MinTerm(Q) == CHOOSE t \in FinNat : (\A n \in Q : t <= currentTerm[n]) /\ (\E n \in Q : t = currentTerm[n])
+
 Empty(s) == Len(s) = 0
 
 \* Is log entry e = <<index, term>> in the log of node 'i'.
@@ -125,7 +127,8 @@ BecomeLeader(i, voteQuorum, newTerm) ==
     /\ UNCHANGED <<log, config, committed>>   
             
 \* Primary 'i' commits its latest log entry.
-CommitEntry(i, commitQuorum, ind, curTerm) ==
+CommitEntry(i, commitQuorum, ind, curTerm, minQTerm) ==
+    /\ minQTerm = MinTerm(commitQuorum)
     /\ curTerm = currentTerm[i]
     /\ ind = Len(log[i])
     \* Must have some entries to commit.
@@ -170,7 +173,7 @@ Next ==
     \/ \E s, t \in Server : GetEntries(s, t)
     \/ \E s, t \in Server : RollbackEntries(s, t)
     \/ \E s \in Server : \E Q \in Quorums : \E newTerm \in FinNat : BecomeLeader(s, Q, newTerm)
-    \/ \E s \in Server :  \E Q \in Quorums : \E ind \in FinNat : \E curTerm \in FinNat : CommitEntry(s, Q, ind, curTerm)
+    \/ \E s \in Server :  \E Q \in Quorums : \E ind \in FinNat : \E curTerm \in FinNat : \E minQTerm \in FinNat : CommitEntry(s, Q, ind, curTerm, minQTerm)
     \/ \E s,t \in Server : UpdateTerms(s, t)
 
 Spec == Init /\ [][Next]_vars

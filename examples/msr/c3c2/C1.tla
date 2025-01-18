@@ -25,7 +25,7 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ (i \in voteQuorum)
 /\ UNCHANGED <<committed>>
 
-CommitEntry(i,commitQuorum,ind,curTerm) ==
+CommitEntry(i,commitQuorum,ind,curTerm,minQTerm) ==
 /\ ind > 0
 /\ ~((\E c \in committed : c.entry = <<ind,curTerm>>))
 /\ committed' = (committed \cup {[entry |-> <<ind,curTerm>>,term |-> curTerm]})
@@ -35,7 +35,7 @@ Init ==
 
 Next ==
 \/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,Q,ind,curTerm)))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : (\E minQTerm \in FinNat : CommitEntry(s,Q,ind,curTerm,minQTerm))))))
 
 Spec == (Init /\ [][Next]_vars)
 

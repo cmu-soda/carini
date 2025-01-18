@@ -55,7 +55,7 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
 /\ UNCHANGED <<log>>
 
-CommitEntry(i,commitQuorum,ind,curTerm) ==
+CommitEntry(i,commitQuorum,ind,curTerm,minQTerm) ==
 /\ ind = Len(log[i])
 /\ ind > 0
 /\ log[i][ind] = curTerm
@@ -72,7 +72,7 @@ Next ==
 \/ (\E s,t \in Server : GetEntries(s,t))
 \/ (\E s,t \in Server : RollbackEntries(s,t))
 \/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,Q,ind,curTerm)))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : (\E minQTerm \in FinNat : CommitEntry(s,Q,ind,curTerm,minQTerm))))))
 
 Spec == (Init /\ [][Next]_vars)
 =============================================================================
