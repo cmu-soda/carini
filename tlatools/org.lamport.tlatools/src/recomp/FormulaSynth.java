@@ -128,7 +128,11 @@ public class FormulaSynth {
 				}
 				
 				// in the case we have our first worker done, start a countdown until we kill the rest of the workers
-				if (!inShutdownCountdown) {
+				final boolean allUNSAT = this.synthesizedFormulas
+						.values()
+						.stream()
+						.allMatch(f -> f.isUNSAT());
+				if (!inShutdownCountdown && !allUNSAT) {
 					// set a timer to shutdown all threads if the shutdown time is exceeded
 					inShutdownCountdown = true;
 					final long shutdownLength = SHUTDOWN_MULTIPLIER * timer.timeElapsed();

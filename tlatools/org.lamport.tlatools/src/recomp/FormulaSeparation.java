@@ -48,6 +48,7 @@ public class FormulaSeparation {
 	private final int maxNumVarsPerType;
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
+	private final Set<Map<String,String>> allPermutations;
 	private final Random seed;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
@@ -79,6 +80,9 @@ public class FormulaSeparation {
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort) -> Set(elements/atoms in each set in the sort)
     	setSortElementsMap = createSetSortElementsMap(tlcSys);
+    	
+    	// calculate all permutations of the sort elements
+    	allPermutations = calcAllPermutations();
 		
 		// obtain a map of: action -> List(param type)
     	FastTool ft = (FastTool) tlcSys.tool;
@@ -176,6 +180,9 @@ public class FormulaSeparation {
     				.stream()
     				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
     		
+    		// reset the target pos traces
+    		List<AlloyTrace> targetPosTraces = new ArrayList<>();
+    		
     		// generate a negative trace for this round; we will generate a formula (assumption) that eliminates
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
@@ -188,7 +195,8 @@ public class FormulaSeparation {
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.
-    		int partialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		final int minPartialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		int partialNegTraceLen = minPartialNegTraceLen;
     		if (partialNegTraceLen == -1 && !formulaSeparates) {
         		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
     			System.out.println("The property is violated with the following trace:");
@@ -218,14 +226,72 @@ public class FormulaSeparation {
 			// keep generating positive traces until the formula turns into an invariant
     		boolean foundInvariant = false;
     		while (!formulaSeparates && !foundInvariant) {
-				// synthesize new formulas
+    			// compute the partial neg trace
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     			System.out.println("Using the following partial neg trace for formula synth:");
         		System.out.println(partialNegTrace.fullSigString());
+        		
+        		// calculate valid pos traces. only execute this block once, as it only will have an
+        		// effect on the first go
+        		/*
+        		final int minLenForValidPosTrace = 2;
+        		if (partialNegTrace.size() > minLenForValidPosTrace && partialNegTraceLen == minPartialNegTraceLen && targetPosTraces.isEmpty()) {
+            		final AlloyTrace realTrace = negTrace.cutToLen(partialNegTraceLen-1);
+            		ExtendTraceVisitor<String> etv = new ExtendTraceVisitor<>(realTrace);
+            		final Set<String> rawExtensions = etv.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState());
+            		final Set<String> reducedExtensions = actionPermutationReduction(rawExtensions);
+            		final Set<String> extensions = reducedExtensions
+            				.stream()
+            				.map(a -> {
+            					return Utils.toArrayList(a.split("\\."))
+            							.stream()
+            							.map(p -> Utils.toArrayList(p.replaceAll("[{}]", "").split(","))) // conc act -> list of conc params
+            							.map(l -> sanitizeTokensForAlloy(l)) // sanitize each param so it can be encoded in an Alloy file
+            							.collect(Collectors.joining("."));
+            				})
+            				.map(a -> a.replace(".", ""))
+            				.collect(Collectors.toSet());
+            		
+            		for (final String ext : extensions) {
+            			final String name = "PT" + (++cumNumPosTraces);
+            			final AlloyTrace tpt = extendAlloyTrace(realTrace,ext,name,"PosTrace");
+            			targetPosTraces.add(tpt);
+            		}
+            		
+            		/*currentPosTraces
+            				.values()
+            				.stream()
+            				.forEach(l -> l.addAll(targetPosTraces));*/ /*
+            		allPosTracesSeen.addAll(targetPosTraces);
+            		System.out.println("# raw exts: " + rawExtensions.size());
+            		System.out.println("# exts: " + extensions.size());
+        		}
+        		System.out.println("partialNegTrace.size(): " + partialNegTrace.size());
+        		System.out.println("# target pos traces: " + targetPosTraces.size());
+        		targetPosTraces
+        				.stream()
+        				.forEach(t -> System.out.println(t.fullSigString()));*/
+        		
+				// synthesize new formulas
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, List<AlloyTrace>> synthPosTraces = currentPosTraces
+    					.entrySet()
+    					.stream()
+    					.map(e -> {
+    						final int maxNumTargetPosTraces = 6;
+    						List<AlloyTrace> targetPosTraceSelection = new ArrayList<>(targetPosTraces);
+    						Collections.shuffle(targetPosTraceSelection);
+    						targetPosTraceSelection = targetPosTraceSelection
+    								.stream()
+    								.limit(maxNumTargetPosTraces)
+    								.collect(Collectors.toList());
+    						final List<AlloyTrace> posTraces = Utils.append(e.getValue(), targetPosTraceSelection);
+    						return new Utils.Pair<>(e.getKey(), posTraces);
+    					})
+    					.collect(Collectors.toMap(e -> e.first, e -> e.second));
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, synthPosTraces, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -278,6 +344,10 @@ public class FormulaSeparation {
 					final boolean isInvariant = !newPosTrace.hasError();
 					System.out.println("Synthesized formula is invariant: " + isInvariant);
 					System.out.println(formula);
+					
+					if (isInvariant) {
+						break;
+					}
 				}
 				System.out.println();
 				
@@ -397,7 +467,7 @@ public class FormulaSeparation {
         	final List<String> initTrace = visitor.findAnInitTrace(tlcRest.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState())
 					.stream()
 					.collect(Collectors.toList());
-		        	Utils.assertTrue(initTrace.size() >= initTraceLen, "requested init trace of length " + initTraceLen + " but got length " + initTrace.size());
+		    Utils.assertTrue(initTrace.size() >= initTraceLen, "requested init trace of length " + initTraceLen + " but got length " + initTrace.size());
         	initPosTrace = createAlloyTrace(initTrace, "PT1", "PosTrace");
         	++initTraceLen;
     	}
@@ -842,7 +912,13 @@ public class FormulaSeparation {
 					return params.size() == 0 ? act : act + "(" + String.join(",", params) + ")";
 				})
 				.collect(Collectors.toList());
-		return new AlloyTrace(trace, tlaTrace, name, ext);
+		return new AlloyTrace(trace, tlaTrace, word, name, ext);
+	}
+	
+	private AlloyTrace extendAlloyTrace(final AlloyTrace trace, final String extAct, final String name, final String ext) {
+		List<String> newTrace = new ArrayList<>(trace.trace());
+		newTrace.add(extAct);
+		return new AlloyTrace(newTrace, null, null, name, ext);
 	}
 	
 	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,
@@ -968,6 +1044,119 @@ public class FormulaSeparation {
 	
 	
 	/* Helper methods */
+	
+	private static Set<List<String>> linePermutations(Set<List<String>> set, List<String> line) {
+		if (line.isEmpty()) {
+			return set;
+		}
+		final String elem = line.remove(0);
+		final Set<List<String>> partial = linePermutations(set, line);
+		Set<List<String>> combined = new HashSet<>();
+		for (List<String> l : partial) {
+			for (int i = 0; i <= l.size(); ++i) {
+				List<String> combList = new ArrayList<>(l);
+				combList.add(i, elem);
+				combined.add(combList);
+			}
+		}
+		return combined;
+	}
+	
+	private static Set<Map<String,String>> setPermutations(final Set<String> set) {
+		final Set<List<String>> linePerms =
+				linePermutations(Utils.setOf(new ArrayList<>()), set.stream().collect(Collectors.toList()));
+		final List<String> canonOrder = set.stream().collect(Collectors.toList());
+		Utils.assertTrue(linePerms.stream().allMatch(l -> l.size()==canonOrder.size()), "Invalid size of a line perm");
+		
+		Set<Map<String,String>> permutations = new HashSet<>();
+		for (final List<String> linePerm : linePerms) {
+			Map<String,String> mapPerm = new HashMap<>();
+			for (int i = 0; i < linePerm.size(); ++i) {
+				final String key = canonOrder.get(i);
+				final String val = linePerm.get(i);
+				mapPerm.put(key,val);
+			}
+			permutations.add(mapPerm);
+		}
+		return permutations;
+	}
+	
+	/**
+	 * Returns a map where the key is the sort name and the value is the set of all
+	 * permutations of the sort elements.
+	 * @return
+	 */
+	private Map<String, Set<Map<String,String>>> permutationsPerSort() {
+		return sortElementsMap
+				.entrySet()
+				.stream()
+				.map(e -> new Utils.Pair<>(e.getKey(), setPermutations(e.getValue())))
+				.collect(Collectors.toMap(p -> p.first, p -> p.second));
+	}
+	
+	/**
+	 * Returns a set of all permutations across all sorts.
+	 * @return
+	 */
+	private Set<Map<String,String>> calcAllPermutations() {
+		Set<Map<String,String>> allPerms = new HashSet<>();
+		allPerms.add(new HashMap<>());
+
+		final Map<String, Set<Map<String,String>>> permsPerSort = permutationsPerSort();
+		for (final Set<Map<String,String>> sortPerms : permsPerSort.values()) {
+			Set<Map<String,String>> sortCombPerms = new HashSet<>();
+			for (final Map<String,String> sortPerm : sortPerms) {
+				for (Map<String,String> partialPerm : allPerms) {
+					Map<String,String> combPerm = new HashMap<>(partialPerm);
+					combPerm.putAll(sortPerm);
+					sortCombPerms.add(combPerm);
+				}
+			}
+			allPerms = sortCombPerms;
+		}
+		return allPerms;
+	}
+	
+	/**
+	 * The assumption is that the act has each param sanitized and separated by dots.
+	 * We return permutations in the same format.
+	 * @param act
+	 * @return
+	 */
+	private Set<String> actionPermutations(final String act) {
+		final List<String> parts = Utils.toArrayList(act.split("\\."));
+		Utils.assertTrue(!parts.isEmpty(), "expected a nonempty list, but got: " + parts);
+		final String base = parts.get(0);
+		final List<String> params = parts.subList(1, parts.size());
+		return this.allPermutations
+				.stream()
+				.map(perm -> {
+					return params
+							.stream()
+							// TODO delete this
+							//.map(param -> sanitizeTokensForAlloy(Utils.listOf(param)))
+							.map(param -> perm.get(param))
+							.collect(Collectors.toList());
+				})
+				// pl = permuted list (of params)
+				.map(pl -> base + "." + String.join(".", pl))
+				.collect(Collectors.toSet());
+	}
+	
+	//private Set<AlloyTrace> tracePermutations(final AlloyTrace trace) {
+	//}
+	
+	private Set<String> actionPermutationReduction(final Set<String> set) {
+		Set<String> reduced = new HashSet<>();
+		Set<String> permutationsFound = new HashSet<>();
+		for (final String elem : set) {
+			if (!permutationsFound.contains(elem)) {
+				reduced.add(elem);
+				permutationsFound.addAll(actionPermutations(elem));
+			}
+		}
+		return reduced;
+	}
 	
 	private Set<Map<String,String>> createAllEnvVarTypes(final Set<String> allTypes) {
 		return createAllEnvVarTypes(allTypes, new HashMap<>(), new HashMap<>());

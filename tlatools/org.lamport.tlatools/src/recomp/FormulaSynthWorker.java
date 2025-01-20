@@ -692,8 +692,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    let allFluents = initFl+termFl+mutInitFl+falsifyFl |\n"
 			+ "        (x1->y1 in allFluents.actToFlParamsMap and x2->y2 in allFluents.actToFlParamsMap) implies (x1->y1 = x2->y2 or (not x1=x2 and not y1=y2))\n"
 			+ "\n"
-			+ "    no falsifyFl.actToFlParamsMap // falsify fluents don't take params\n"
-			+ "\n"
 			//+ "    (True in initially) implies (some initFl) // optimization, also makes the fluent easier to read\n"
 			+ "    initially = False // speed optimization, also makes the fluent easier to read\n"
 			+ "}\n"
