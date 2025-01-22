@@ -1,5 +1,6 @@
 package recomp;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -188,7 +190,7 @@ public class FormulaSeparation {
     		final Formula invariant = Formula.conjunction(invariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
 			// the default timeout is 5m, but can be changed via env var
-        	final AlloyTrace negTrace = genCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
+        	final AlloyTrace negTrace = genNegCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
@@ -477,20 +479,6 @@ public class FormulaSeparation {
     	return initPosTrace;
 	}
 	
-	/**
-	 * This method creates a cex traces for the given spec (or an empty trace if no error is detected). This method is implemented in
-	 * several steps:
-	 * (1) Call out to TLC to find a cex trace
-	 * (2) Parse the output of TLC to create a formula that helps reproduce the error
-	 * (3) Using the formula from (2), create a new TLA+ spec that efficiently reproduces the error
-	 * (4) Load the new TLA+ spec as a TLC object (i.e. in Java code) and get an action-based trace, which we turn into an AlloyTrace
-	 * @param tla
-	 * @param cfg
-	 * @param trName
-	 * @param trNum
-	 * @param ext
-	 * @return
-	 */
 	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
@@ -512,6 +500,9 @@ public class FormulaSeparation {
 			if (proc.isAlive()) {
 				proc.destroyForcibly();
 				Utils.deleteFile(cexTraceOutputFile);
+				// clean up the states dir
+				final String[] rmStatesCmd = {"sh", "-c", "rm -rf states/"};
+				Runtime.getRuntime().exec(rmStatesCmd);
 				return new AlloyTrace();
 			}
 
@@ -531,12 +522,162 @@ public class FormulaSeparation {
 			Utils.assertTrue(false, "Exception while generating a cex!");
 		}
 		
+		// get the cex trace file, starting where the trace is
+		return createAlloyTraceFromTlcOutput(Utils.fileContents(cexTraceOutputFile), tlaFile, cfgFile, trName, trNum, ext);
+    }
+	
+	/**
+	 * This method is similar to the previous (genNegCexTraceForCandSepInvariant) except it is specialized for generating
+	 * neg traces. This method will run TLC in -continue mode and allow it to run for an extra 20% (of the time it took to
+	 * reach the first cex trace). This may generate several cex traces, in which case we perform some examination to choose
+	 * the "best" cex trace.
+	 * @param tla
+	 * @param cfg
+	 * @param trName
+	 * @param trNum
+	 * @param ext
+	 * @return
+	 */
+	public AlloyTrace genNegCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
+		final String tlaName = tla.replaceAll("\\.tla", "");
+		final String cfgName = cfg.replaceAll("\\.cfg", "");
+		final String tlaFile = tlaName + ".tla";
+		final String cfgFile = cfgName + ".cfg";
 		
-		// Step (2)
+		// Call out to TLC to find a cex trace
+		List<String> tlcOutputLines = new ArrayList<>();
+		try {
+			// TODO should use a temporary file for <cexTraceOutputFile>
+			PerfTimer timer = new PerfTimer();
+			final String[] cmd = {"java", "-jar", TLC_JAR_PATH, "-cleanup", "-deadlock", "-continue", "-workers", "auto", "-config", cfgFile, tlaFile};
+			Process proc = Runtime.getRuntime().exec(cmd);
+			
+			// start a new thread for capturing the otput of TLC. the thread will wait until an error occurs;
+			// if it does, it will wait an additional period of time to find as many more errors errors as possible.
+			new Thread() {
+			    public void run() {
+			    	BufferedReader inputReader = proc.inputReader();
+			    	String line = null;
+			    	boolean noViolations = true;
+			        try {
+						while ((line = inputReader.readLine()) != null) {
+							tlcOutputLines.add(line);
+							// when we encounter the first instance of an error, start a countdown of until we
+							// forcibly shutdown the process.
+							if (noViolations && line.contains("Error")) {
+								noViolations = false;
+								new Thread() {
+								    public void run() {
+								        try {
+								        	final long timeout = timer.timeElapsed() / 5L; // an extra 20%
+											sleep(timeout);
+											if (proc.isAlive()) {
+												proc.destroyForcibly();
+											}
+										} catch (InterruptedException e) {}
+								    }
+								}.start();
+							}
+						}
+					} catch (IOException e) {}
+			    }
+			}.start();
+
+			proc.waitFor(timeout, TimeUnit.MINUTES);
+			
+			// clean up the states dir
+			final String[] rmStatesCmd = {"sh", "-c", "rm -rf states/"};
+			Runtime.getRuntime().exec(rmStatesCmd);
+			
+			// kill TLC if it's still running
+			if (proc.isAlive()) {
+				proc.destroyForcibly();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Utils.assertTrue(false, "Exception while generating a cex!");
+		}
+		
+		
+		// Parse the output of TLC to create a formula that helps reproduce the error
+		
+		// if there is no error then we're done
+		final boolean noError = tlcOutputLines
+				.stream()
+				.allMatch(l -> !l.contains("Error"));
+		if (noError) {
+			return new AlloyTrace();
+		}
+		
+		final List<String> tlcErrorTraces = Utils.toArrayList(
+				String.join("\n", tlcOutputLines).split(Pattern.quote("Error: The behavior up to this point is:")));
+		final Set<AlloyTrace> alloyTraces = tlcErrorTraces
+				.stream()
+				.filter(t -> t.contains("State 1: <Initial predicate>"))
+				.map(t -> {
+					final List<String> lines = Utils.toArrayList(t.split("\n"));
+					return createAlloyTraceFromTlcOutput(lines, tlaFile, cfgFile, trName, trNum, ext);
+				})
+				.collect(Collectors.toSet());
+		Utils.assertTrue(!alloyTraces.isEmpty(), "alloyTraces is empty!");
+		
+		// only keep the min traces
+		final int minLen = alloyTraces
+				.stream()
+				.reduce(Integer.MAX_VALUE,
+						(n,t) -> Math.min(n,t.size()),
+						(n1,n2) -> Math.min(n1,n2));
+		final Set<AlloyTrace> minTraces = alloyTraces
+				.stream()
+				.filter(t -> t.size() == minLen)
+				.collect(Collectors.toSet());
+		Utils.assertTrue(!minTraces.isEmpty(), "minTraces is empty!");
+		
+		// only keep the min traces with the highest partial trace len
+		final Map<AlloyTrace,Integer> partialTraceLenMap = minTraces
+				.stream()
+				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t,tlaRest,cfgRest)));
+		final int maxPartialTraceLen = minTraces
+				.stream()
+				.reduce(0,
+						(n,t) -> Math.max(n, partialTraceLenMap.get(t)),
+						(n1,n2) -> Math.max(n1,n2));
+		final Set<AlloyTrace> maxPartialTraces = minTraces
+				.stream()
+				.filter(t -> partialTraceLenMap.get(t).equals(maxPartialTraceLen))
+				.collect(Collectors.toSet());
+		Utils.assertTrue(!maxPartialTraces.isEmpty(), "maxPartialTraces is empty!");
+
+		System.out.println("total # neg traces: " + tlcErrorTraces.stream().filter(t -> t.contains("Error")).count());
+		System.out.println("# (unique) neg traces: " + alloyTraces.size());
+		System.out.println("# (unique) min len neg traces: " + minTraces.size());
+		System.out.println("# (unique) max partial neg traces: " + maxPartialTraces.size());
+		
+		// any one of the remaining traces will do
+		return Utils.chooseOne(maxPartialTraces);
+	}
+	
+	/**
+	 * This method converts a TLC cex trace (in text format) to an AlloyTrace. This method is implemented in several steps:
+	 * (1) Parse the output of TLC to create a formula that helps reproduce the error
+	 * (2) Using the formula from (1), create a new TLA+ spec that efficiently reproduces the error
+	 * (3) Load the new TLA+ spec as a TLC object (i.e. in Java code) and get an action-based trace, which we turn into an AlloyTrace
+	 * @param tlcOutputLines
+	 * @param tlaFile
+	 * @param cfgFile
+	 * @param trName
+	 * @param trNum
+	 * @param ext
+	 * @return
+	 */
+	private AlloyTrace createAlloyTraceFromTlcOutput(final List<String> tlcOutputLines, final String tlaFile, final String cfgFile,
+			final String trName, int trNum, final String ext) {
+		// Step (1)
 		// Parse the output of TLC to create a formula that helps reproduce the error
 		
 		// get the cex trace file, starting where the trace is
-		final String cexTraceTxt = Utils.fileContents(cexTraceOutputFile)
+		final String cexTraceTxt = tlcOutputLines
 				.stream()
 				.dropWhile(l -> !l.equals("State 1: <Initial predicate>"))
 				.collect(Collectors.joining("\n"));
@@ -566,8 +707,8 @@ public class FormulaSeparation {
 		final String tcfNamePrimed = tcfName + "'";
 		
 		
-		// Step (3)
-		// Using the formula from (2), create a new TLA+ spec that efficiently reproduces the error
+		// Step (2)
+		// Using the formula from (1), create a new TLA+ spec that efficiently reproduces the error
 		
 		// use the original TLA+ file to construct the reproducer spec
 		TLC tlc = new TLC();
@@ -693,7 +834,7 @@ public class FormulaSeparation {
         Utils.writeFile(cexTraceCfg, cfgBuilder.toString());
 		
         
-        // Step (4)
+        // Step (3)
         // Load the new TLA+ spec as a TLC object (i.e. in Java code) and get an action-based trace, which we turn into an AlloyTrace
     	TLC tlcCexReproducer = new TLC();
     	tlcCexReproducer.modelCheck(cexTraceTla, cexTraceCfg);
@@ -703,19 +844,15 @@ public class FormulaSeparation {
 		// if candSep isn't an invariant, return a trace that should be covered by the formula
     	final int numTraces = 1; // only generate one trace at a time
     	final Set<List<String>> errTraces = MultiTraceCex.INSTANCE.findErrorTraces(lts, numTraces, this.tlcComp.actionsInSpec());
-    	Set<AlloyTrace> cexs = new HashSet<>();
-    	for (final List<String> errTrace : errTraces) {
-    		final String name = trName + (trNum++);
-    		cexs.add(createAlloyTrace(errTrace, name, ext));
-    	}
-		Utils.assertTrue(cexs.size() == 1, "expected one trace but there were " + cexs.size());
+		Utils.assertTrue(errTraces.size() == 1, "expected one err trace but there were " + errTraces.size());
+		final List<String> errTrace = Utils.chooseOne(errTraces);
+		final String name = trName + (trNum++);
 		
 		// delete all the files we created so we don't generate too much clutter
-		Utils.deleteFile(cexTraceOutputFile);
 		Utils.deleteFile(cexTraceTla);
 		Utils.deleteFile(cexTraceCfg);
 		
-    	return Utils.chooseOne(cexs);
+		return createAlloyTrace(errTrace, name, ext);
 	}
 	
 	private int calculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
