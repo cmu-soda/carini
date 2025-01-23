@@ -229,8 +229,22 @@ public class FormulaSeparation {
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
+    		int numFormulaSynthBatches = 0;
     		boolean foundInvariant = false;
     		while (!formulaSeparates && !foundInvariant) {
+    			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
+    			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
+    			final int maxNumFormulaSynthBatches = 6;
+    			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
+                    ++partialNegTraceLen;
+                    envVarTypes = new HashSet<>(allEnvVarTypes);
+                    System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
+                    		+ "), increasing the size of the partial neg trace");
+                    System.out.println();
+    				numFormulaSynthBatches = 0;
+                    continue;
+    			}
+    			
     			// compute the partial neg trace
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     			System.out.println("Using the following partial neg trace for formula synth:");
@@ -240,6 +254,7 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
+    			++numFormulaSynthBatches;
     			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
@@ -268,6 +283,7 @@ public class FormulaSeparation {
                     envVarTypes = new HashSet<>(allEnvVarTypes);
                     System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
                     System.out.println();
+    				numFormulaSynthBatches = 0;
                     continue;
     			}
     			

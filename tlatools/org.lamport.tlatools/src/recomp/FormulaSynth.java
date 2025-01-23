@@ -24,7 +24,8 @@ public class FormulaSynth {
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
 	private static final int MAX_NUM_WORKERS = 15;
-	private static final long SHUTDOWN_MULTIPLIER = 5L;
+	private static final long SHUTDOWN_MULTIPLIER = 3L;
+	private static final long MIN_SHUTDOWN_TIME = 1000L * 30L; // 30 seconds
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
@@ -135,7 +136,7 @@ public class FormulaSynth {
 				if (!inShutdownCountdown && !allUNSAT) {
 					// set a timer to shutdown all threads if the shutdown time is exceeded
 					inShutdownCountdown = true;
-					final long shutdownLength = SHUTDOWN_MULTIPLIER * timer.timeElapsed();
+					final long shutdownLength = Math.max(SHUTDOWN_MULTIPLIER * timer.timeElapsed(), MIN_SHUTDOWN_TIME);
 					shutdownTime = System.currentTimeMillis() + shutdownLength;
 					new Thread() {
 					    public void run() {

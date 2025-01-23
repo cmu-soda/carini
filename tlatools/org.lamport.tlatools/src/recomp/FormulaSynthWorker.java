@@ -863,7 +863,8 @@ public class FormulaSynthWorker implements Runnable {
 			//+ "	minsome Formula.children - Implies // smallest formula possible, but don't count Implies\n"
 			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
 			+ "	minsome initFl + termFl + mutInitFl + falsifyFl // heuristic to synthesize the least complicated fluents as possible\n"
-			+ "	softno mutInitFl + falsifyFl // prefer initFl and termFl over mutInitFl and falsifyFl\n"
+			//+ "	softno mutInitFl + falsifyFl // prefer initFl and termFl over mutInitFl and falsifyFl\n"
+			+ "	softno mutInitFl // prefer initFl and termFl ( and falsifyFl) over mutInitFl\n" // TODO which is better?
 			+ "	minsome Fluent.vars // minimize the # of params for each fluent\n"
 			+ "}\n";
 }
