@@ -26,7 +26,7 @@ public class FormulaSynth {
 	private static final int MAX_NUM_WORKERS = 15;
 	private static final long SHUTDOWN_MULTIPLIER = 5L;
 	
-	private Map<Map<String,String>, Formula> synthesizedFormulas;
+	private Map<Map<String,String>, Utils.Pair<Formula,AlloyTrace>> synthesizedFormulas;
 	private List<FormulaSynthWorker> workers;
 	private ExecutorService threadPool;
 	private Random seed;
@@ -44,21 +44,49 @@ public class FormulaSynth {
 	 * Manually synchronized
 	 * @param formula
 	 */
-	public void setFormula(final String formula, int workerId, final Map<String,String> envVarType, double timeElapsedInSeconds) {
+	public void setFormula(final Formula formula, final Map<String,String> envVarType) {
 		try {
 			this.lock.lock();
 			// only modify <synthesizedFormulas> if it's before the shutdown time
 			if (!this.synthComplete) {
-				// only modify <synthesizedFormulas> if it's before the shutdown time
-				if (!formula.contains("UNSAT") && !formula.trim().isEmpty()) {
-					this.synthesizedFormulas.put(envVarType, new Formula(formula));
-				}
-				else {
-					// the thread may have crashed, rather than returned UNSAT. we treat both cases the same for now.
-					this.synthesizedFormulas.put(envVarType, Formula.UNSAT());
-				}
+				this.synthesizedFormulas.put(envVarType, new Utils.Pair<>(formula,null));
 			}
-			// notify the master that this thread is done
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+	
+	/**
+	 * Manually synchronized
+	 * @param trace
+	 * @param workerId
+	 * @param envVarType
+	 */
+	public void setTrace(final AlloyTrace trace, final Map<String,String> envVarType) {
+		try {
+			this.lock.lock();
+			// only modify <synthesizedFormulas> if it's before the shutdown time
+			if (!this.synthComplete) {
+				Utils.assertTrue(this.synthesizedFormulas.containsKey(envVarType), "Missing key for: " + envVarType);
+				this.synthesizedFormulas.get(envVarType).second = trace;
+			}
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+	
+	/**
+	 * When a worker finishes it uses this method to wake up the master thread.
+	 */
+	public void workerDone(final Map<String,String> envVarType) {
+		try {
+			this.lock.lock();
+			// if for some weird reason there is no entry for this env var type, then we'll call it UNSAT
+			if (!this.synthesizedFormulas.containsKey(envVarType)) {
+				this.synthesizedFormulas.put(envVarType, new Utils.Pair<>(Formula.UNSAT(),null));
+			}
 			this.aWorkerIsDone.signalAll();
 		}
 		finally {
@@ -70,22 +98,23 @@ public class FormulaSynth {
 	 * Synthesize one formula per "type" in <envVarTypes> and return all results that aren't UNSAT
 	 * @return
 	 */
-	public Map<Map<String,String>, Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
+	public Map<Map<String,String>, Utils.Pair<Formula,AlloyTrace>> synthesizeFormulas(FormulaSeparation formulaSep,
+			Set<Map<String,String>> envVarTypes,
 			AlloyTrace negTrace, final Map<Map<String,String>, List<AlloyTrace>> posTraces,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents) {
+			int curNumFluents, int cumNumPosTraces, String tlaRest, String cfgRest, String cfgPosTraces) {
 		
 		resetMemberVars();
 		PerfTimer timer = new PerfTimer();
 		int id = 0;
 		for (final Map<String,String> evt : envVarTypes) {
 			final List<AlloyTrace> evtPosTraces = posTraces.get(evt);
-			final FormulaSynthWorker worker = new FormulaSynthWorker(this, evt, id++, negTrace, evtPosTraces,
+			final FormulaSynthWorker worker = new FormulaSynthWorker(this, formulaSep, evt, id++, negTrace, evtPosTraces,
 					tlcComp, internalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
-					qvars, legalEnvVarCombos, curNumFluents);
+					qvars, legalEnvVarCombos, curNumFluents, cumNumPosTraces, tlaRest, cfgRest, cfgPosTraces);
 			this.workers.add(worker);
 		}
 		
@@ -127,11 +156,22 @@ public class FormulaSynth {
 					break;
 				}
 				
+				// if we found an invariant, then return! breaking will automatically kill all workers
+				final boolean foundInvariant = this.synthesizedFormulas
+						.values()
+						.stream()
+						.anyMatch(p -> p.second != null && !p.second.hasError());
+				if (foundInvariant) {
+					final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
+					System.out.println("Found an invariant! Killling the " + numIncompleteWorkers + " remaining formula synth workers");
+					break;
+				}
+				
 				// in the case we have our first worker done, start a countdown until we kill the rest of the workers
 				final boolean allUNSAT = this.synthesizedFormulas
 						.values()
 						.stream()
-						.allMatch(f -> f.isUNSAT());
+						.allMatch(f -> f.first.isUNSAT());
 				if (!inShutdownCountdown && !allUNSAT) {
 					// set a timer to shutdown all threads if the shutdown time is exceeded
 					inShutdownCountdown = true;

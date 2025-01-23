@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -86,6 +88,8 @@ import util.UsageGenerator;
  * @author Simon Zambrovski
  */
 public class TLC {
+	
+	private static final Lock lock = new ReentrantLock();
 
 	private static TLC currentInstance = null;
 	
@@ -326,7 +330,18 @@ public class TLC {
 	}
     
     public void initialize(final String tla, final String cfg) {
-    	Utils.assertNull(TLC.currentInstance, "Cannot run multiple instances of TLC at once!");
+    	try {
+    		TLC.lock.lock();
+        	this.unsynchronizedInitialize(tla, cfg);
+    	}
+    	finally {
+        	TLC.currentInstance = null;
+    		TLC.lock.unlock();
+    	}
+    }
+    
+    private void unsynchronizedInitialize(final String tla, final String cfg) {
+    	Utils.assertNull(TLC.currentInstance, "Cannot run multiple instances of TLC at once! (initialize)");
     	TLC.currentInstance = this;
     	
     	final String[] args = new String[] {"-deadlock", "-config", cfg, tla};
@@ -401,47 +416,53 @@ public class TLC {
     }
     
     public void modelCheck(final String tla, final String cfg, boolean supressTLCOutput) {
-    	if (!isInitialized) {
-    		this.initialize(tla, cfg);
-    	}
-    	
-    	if (TLC.currentInstance != null) {
-    		throw new RuntimeException("Cannot run multiple instances of TLC at once!");
-    	}
-    	TLC.currentInstance = this;
-    	
-    	PrintStream origPrintStream = System.out;
-    	if (supressTLCOutput) {
-    		System.setOut(TLC.SUPRESS_ALL_OUTPUT_PRINT_STREAM);
-    	}
-		this.ltsBuilder = new LTSBuilder();
+    	try {
+    		TLC.lock.lock();
 
-		// Setup how spec files will be resolved in the filesystem.
-		if (MODEL_PART_OF_JAR) {
-			// There was not spec file given, it instead exists in the
-			// .jar file being executed. So we need to use a special file
-			// resolver to parse it.
-			this.setResolver(new InJarFilenameToStream(ModelInJar.PATH));
-		} else {
-			// The user passed us a spec file directly. To ensure we can
-			// recover it during semantic parsing, we must include its
-			// parent directory as a library path in the file resolver.
-			//
-			// If the spec file has no parent directory, use the "standard"
-			// library paths provided by SimpleFilenameToStream.
-			final String dir = FileUtil.parseDirname(this.getMainFile());
-			if (!dir.isEmpty()) {
-				this.setResolver(new SimpleFilenameToStream(dir));
-			} else {
-				this.setResolver(new SimpleFilenameToStream());
-			}
-		}
-		
-		// Execute TLC.
-        final int errorCode = this.process();
-        
-        System.setOut(origPrintStream);
-        TLC.currentInstance = null;
+        	if (!isInitialized) {
+        		this.unsynchronizedInitialize(tla, cfg);
+        	}
+        	
+        	Utils.assertNull(TLC.currentInstance, "Cannot run multiple instances of TLC at once! (model check)");
+        	TLC.currentInstance = this;
+        	
+        	PrintStream origPrintStream = System.out;
+        	if (supressTLCOutput) {
+        		System.setOut(TLC.SUPRESS_ALL_OUTPUT_PRINT_STREAM);
+        	}
+    		this.ltsBuilder = new LTSBuilder();
+
+    		// Setup how spec files will be resolved in the filesystem.
+    		if (MODEL_PART_OF_JAR) {
+    			// There was not spec file given, it instead exists in the
+    			// .jar file being executed. So we need to use a special file
+    			// resolver to parse it.
+    			this.setResolver(new InJarFilenameToStream(ModelInJar.PATH));
+    		} else {
+    			// The user passed us a spec file directly. To ensure we can
+    			// recover it during semantic parsing, we must include its
+    			// parent directory as a library path in the file resolver.
+    			//
+    			// If the spec file has no parent directory, use the "standard"
+    			// library paths provided by SimpleFilenameToStream.
+    			final String dir = FileUtil.parseDirname(this.getMainFile());
+    			if (!dir.isEmpty()) {
+    				this.setResolver(new SimpleFilenameToStream(dir));
+    			} else {
+    				this.setResolver(new SimpleFilenameToStream());
+    			}
+    		}
+    		
+    		// Execute TLC.
+            final int errorCode = this.process();
+            
+            System.setOut(origPrintStream);
+            TLC.currentInstance = null;
+    	}
+    	finally {
+        	TLC.currentInstance = null;
+    		TLC.lock.unlock();
+    	}
     }
     
     public static boolean checkBadStates() {

@@ -11,6 +11,7 @@ public class AlloyTrace {
 	private final boolean hasError;
 	private final String name;
 	private final String ext;
+	private final int trNum;
 	private final int lastIdx;
 	private final String alloyLastIdx;
 	private final String path;
@@ -24,6 +25,7 @@ public class AlloyTrace {
 		this.hasError = false;
 		this.name = null;
 		this.ext = null;
+		this.trNum = -1;
 		this.lastIdx = -1;
 		this.alloyLastIdx = null;
 		this.path = null;
@@ -34,7 +36,8 @@ public class AlloyTrace {
 		this.size = 0;
 	}
 	
-	public AlloyTrace(final List<String> trace, final List<String> tlaTrace, final List<String> rawWord, final String name, final String ext) {
+	public AlloyTrace(final List<String> trace, final List<String> tlaTrace, final List<String> rawWord,
+			final String name, final String ext, int trNum) {
 		final int lastIdx = trace.size() - 1;
 		final String alloyLastIdx = "T" + lastIdx;
 		final String path = IntStream.range(0, trace.size())
@@ -57,6 +60,7 @@ public class AlloyTrace {
 		this.hasError = true;
 		this.name = name;
 		this.ext = ext;
+		this.trNum = trNum;
 		this.lastIdx = lastIdx;
 		this.alloyLastIdx = alloyLastIdx;
 		this.path = pathParens;
@@ -73,8 +77,13 @@ public class AlloyTrace {
 	public String name() {
 		return this.name;
 	}
+	
 	public String ext() {
 		return this.ext;
+	}
+	
+	public int trNum() {
+		return this.trNum;
 	}
 	
 	public int lastIdx() {
@@ -127,7 +136,7 @@ public class AlloyTrace {
 				.stream()
 				.limit(len)
 				.collect(Collectors.toList());
-		return new AlloyTrace(cutTrace, cutTlaTrace, cutRawWord, this.name, this.ext);
+		return new AlloyTrace(cutTrace, cutTlaTrace, cutRawWord, this.name, this.ext, this.trNum);
 	}
 	
 	public String fullSigString() {

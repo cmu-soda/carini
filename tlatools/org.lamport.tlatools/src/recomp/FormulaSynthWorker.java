@@ -25,6 +25,7 @@ public class FormulaSynthWorker implements Runnable {
 	private static final int MAX_NUM_FLUENT_ACTS = 6;
 	
 	private final FormulaSynth formulaSynth;
+	private final FormulaSeparation formulaSeparation;
 	private final Map<String,String> envVarTypes;
 	private final int id;
 	private final AlloyTrace negTrace;
@@ -38,6 +39,10 @@ public class FormulaSynthWorker implements Runnable {
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
+	private final int cumNumPosTraces;
+	private final String tlaRest;
+	private final String cfgRest;
+	private final String cfgPosTraces;
 
 	// for some reason using a lock is much faster than using the synchronized keyword
 	private final Lock lock;
@@ -45,14 +50,17 @@ public class FormulaSynthWorker implements Runnable {
 	private Process process;
 	private boolean globalTaskCompleted;
 
-	public FormulaSynthWorker(FormulaSynth formulaSynth, Map<String,String> envVarTypes, int id,
+	public FormulaSynthWorker(FormulaSynth formulaSynth, FormulaSeparation formulaSeparation,
+			Map<String,String> envVarTypes, int id,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents) {
+			int curNumFluents, int cumNumPosTraces,
+			String tlaRest, String cfgRest, String cfgPosTraces) {
 		this.formulaSynth = formulaSynth;
+		this.formulaSeparation = formulaSeparation;
 		this.envVarTypes = envVarTypes;
 		this.id = id;
 		this.negTrace = negTrace;
@@ -66,6 +74,10 @@ public class FormulaSynthWorker implements Runnable {
 		this.qvars = qvars;
 		this.legalEnvVarCombos = legalEnvVarCombos;
 		this.curNumFluents = curNumFluents;
+		this.cumNumPosTraces = cumNumPosTraces;
+		this.tlaRest = tlaRest;
+		this.cfgRest = cfgRest;
+		this.cfgPosTraces = cfgPosTraces;
 		
 		this.lock = new ReentrantLock();
 		this.process = null;
@@ -88,21 +100,44 @@ public class FormulaSynthWorker implements Runnable {
 	
 	@Override
 	public void run() {
-		// TODO change name from "formula" to "json"
-		PerfTimer timer = new PerfTimer();
-		
-		// check to make sure that no pos trace contains the neg trace, in which case the formula is
-		// trivially UNSAT.
-		final boolean isTriviallyUNSAT = this.posTraces
-				.stream()
-				.anyMatch(p -> p.contains(this.negTrace));
-		if (isTriviallyUNSAT) {
-			this.formulaSynth.setFormula("UNSAT", this.id, this.envVarTypes, timer.timeElapsedSeconds());
+		try {
+			// check to make sure that no pos trace contains the neg trace, in which case the formula is
+			// trivially UNSAT.
+			final boolean isTriviallyUNSAT = this.posTraces
+					.stream()
+					.anyMatch(p -> p.contains(this.negTrace));
+			if (isTriviallyUNSAT) {
+				this.formulaSynth.setFormula(Formula.UNSAT(), this.envVarTypes);
+			}
+			else {
+				// call out to AlloyMax to synthesize a formula for us
+				final String formulaJson = synthesizeFormulaWithVarTypes(this.negTrace, this.posTraces);
+				
+				// for UNSAT formulas
+				if (formulaJson.contains("UNSAT") || formulaJson.trim().isEmpty() || !Formula.isValidJson(formulaJson)) {
+					// the synthesizer may have crashed, rather than returned UNSAT. we treat both cases the same for now.
+					this.formulaSynth.setFormula(Formula.UNSAT(), this.envVarTypes);
+				}
+				// for synthesized formulas
+				else {
+					final Formula formula = new Formula(formulaJson);
+					this.formulaSynth.setFormula(formula, this.envVarTypes);
+
+					// we're not quite ready for this code
+					// TODO we need to make <genCexTraceForCandSepInvariant> its own process so we have the ability to kill it
+					/*
+	    			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
+					final int ptNum = cumNumPosTraces + this.id;
+					final String ext = "" + this.id;
+					final String tlaRestHV = formulaSeparation.writeHistVarsSpec(tlaRest, cfgRest, formula, false, ext);
+					final AlloyTrace newPosTrace =
+							formulaSeparation.genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout, "1");
+					this.formulaSynth.setTrace(newPosTrace, this.envVarTypes);*/
+				}
+			}
 		}
-		else {
-			// call out to AlloyMax to synthesize a formula for us
-			final String formula = synthesizeFormulaWithVarTypes(this.negTrace, this.posTraces);
-			this.formulaSynth.setFormula(formula, this.id, this.envVarTypes, timer.timeElapsedSeconds());
+		finally {
+			this.formulaSynth.workerDone(this.envVarTypes);
 		}
 	}
 	

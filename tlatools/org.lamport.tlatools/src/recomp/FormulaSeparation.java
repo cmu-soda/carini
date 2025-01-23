@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import tla2sany.semantic.ModuleNode;
 import tla2sany.semantic.OpDefNode;
 import tlc2.TLC;
 import tlc2.Utils;
+import tlc2.Utils.Pair;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
@@ -240,23 +242,35 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, Utils.Pair<Formula,AlloyTrace>> evtToFormulaResults =
+    					synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes, cumNumPosTraces, cfgPosTraces);
+    			
+    			// figure out how much to increment <cumNumPosTraces> by
+    			final int highestPosTrFromSynth = evtToFormulaResults
+    					.values()
+    					.stream()
+    					.filter(p -> p.second != null)
+    					.map(p -> p.second.trNum())
+    					.max(Comparator.naturalOrder())
+    					.orElse(-1);
+    			cumNumPosTraces = Math.max(cumNumPosTraces, highestPosTrFromSynth+1);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
     			// the out-param envVarTypes!
-    			final Set<Map<String,String>> unsatEnvVarTypes = evtToFormulaMap
+    			final Set<Map<String,String>> unsatEnvVarTypes = evtToFormulaResults
     					.entrySet()
     					.stream()
-    					.filter(e -> e.getValue().isUNSAT())
+    					.filter(e -> e.getValue().first.isUNSAT())
     					.map(e -> e.getKey())
     					.collect(Collectors.toSet());
     			envVarTypes.removeAll(unsatEnvVarTypes);
     			
     			// keep track of all sat synth formulas
-    			final Set<Formula> newSynthFormulas = evtToFormulaMap
+    			final Set<Formula> newSynthFormulas = evtToFormulaResults
     					.values()
     					.stream()
+    					.map(p -> p.first)
     					.filter(f -> !f.isUNSAT())
     					.collect(Collectors.toSet());
     			
@@ -278,42 +292,44 @@ public class FormulaSeparation {
     				return Formula.conjunction(invariants).getFormula();
     			}
     			
-    			// generate positive traces to try and make the next set of formulas we synthesize invariants
+    			// finish generating positive traces to try and make the next set of formulas we synthesize invariants
     			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
-    			int ptNum = cumNumPosTraces;
-    			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
-				for (final Formula formula : newSynthFormulas) {
-					++ptNum;
-					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
-					final AlloyTrace newPosTrace =
-							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout);
-					newSynthFormulaResults.put(formula, newPosTrace);
-					
-					// TODO hide this print behind a verbose flag
-					final boolean isInvariant = !newPosTrace.hasError();
-					System.out.println("Synthesized formula is invariant: " + isInvariant);
-					System.out.println(formula);
-					
-					if (isInvariant) {
-						break;
-					}
-				}
+    			for (Utils.Pair<Formula,AlloyTrace> evtResult : evtToFormulaResults.values()) {
+    				final Formula formula = evtResult.first;
+    				final AlloyTrace posTrace = evtResult.second;
+    				// no pos trace generated yet
+    				if (!formula.isUNSAT() && posTrace == null) {
+    					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
+    					final AlloyTrace newPosTrace =
+    							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", fiveMinuteTimeout, "auto");
+    					evtResult.second = newPosTrace;
+    					
+    					// TODO hide this print behind a verbose flag
+    					final boolean isInvariant = !newPosTrace.hasError();
+    					System.out.println("Synthesized formula is invariant: " + isInvariant);
+    					System.out.println(formula);
+    					
+    					if (isInvariant) {
+    						break;
+    					}
+    				}
+    			}
 				System.out.println();
 				
 				// update whether an invariant has been found
-				foundInvariant = newSynthFormulaResults
+				foundInvariant = evtToFormulaResults
     					.values()
     					.stream()
-    					.anyMatch(t -> !t.hasError());
+    					.anyMatch(t -> t.second != null && !t.second.hasError());
     			
     			// if an invariant is found, move onto the next round. otherwise, prepare to perform formula synthesis
     			// with the new pos traces.
     			if (foundInvariant) {
-    				final Set<Formula> newInvariants = newSynthFormulaResults
-    						.entrySet()
+    				final Set<Formula> newInvariants = evtToFormulaResults
+    						.values()
     						.stream()
-    						.filter(e -> !e.getValue().hasError())
-    						.map(e -> e.getKey())
+    						.filter(p -> p.second != null && !p.second.hasError())
+    						.map(p -> p.first)
     						.collect(Collectors.toSet());
     				invariants.addAll(newInvariants);
     				System.out.println("Found " + newInvariants.size() + " new invariant(s) this round:");
@@ -331,17 +347,17 @@ public class FormulaSeparation {
             					.collect(Collectors.toSet());
             			// get the only the traces that correspond to formulas whose quantified vars have at least one
             			// type that is in this evt
-            			final Set<AlloyTrace> intersectingTypeTraces = newSynthFormulaResults
-            					.entrySet()
+            			final Set<AlloyTrace> intersectingTypeTraces = evtToFormulaResults
+            					.values()
             					.stream()
-            					.filter(e -> evtQuantTypes.stream().anyMatch(q -> e.getKey().containsQuantifiedType(q)))
-            					.map(e -> e.getValue())
+            					.filter(p -> evtQuantTypes.stream().anyMatch(q -> p.first.containsQuantifiedType(q)))
+            					.map(p -> p.second)
             					.collect(Collectors.toSet());
             			
             			// sanity check: we must add the evt's corresponding trace to its set of pos traces
-            			if (evtToFormulaMap.containsKey(evt)) {
-                			final Formula evtFormula = evtToFormulaMap.get(evt);
-                			final AlloyTrace evtTrace = newSynthFormulaResults.get(evtFormula);
+            			if (evtToFormulaResults.containsKey(evt)) {
+                			final Formula evtFormula = evtToFormulaResults.get(evt).first;
+                			final AlloyTrace evtTrace = evtToFormulaResults.get(evt).second;
                 			Utils.assertTrue(intersectingTypeTraces.contains(evtTrace), "");
             			}
             			
@@ -358,9 +374,11 @@ public class FormulaSeparation {
             		}
             		
             		// print the cumulative set of new pos traces for the user
-            		final Set<AlloyTrace> allNewPosTraces = newSynthFormulaResults
+            		final Set<AlloyTrace> allNewPosTraces = evtToFormulaResults
 							.values()
 							.stream()
+							.filter(p -> p.second != null)
+							.map(p -> p.second)
 							.collect(Collectors.toSet());
         			System.out.println("new pos trace(s):");
         			allNewPosTraces
@@ -376,7 +394,6 @@ public class FormulaSeparation {
     				}
     				
     				// keep track of all pos traces seen
-    				cumNumPosTraces += ptNum;
 					allPosTracesSeen.addAll(allNewPosTraces);
     			}
     		}
@@ -417,7 +434,7 @@ public class FormulaSeparation {
 					.stream()
 					.collect(Collectors.toList());
 		    Utils.assertTrue(initTrace.size() >= initTraceLen, "requested init trace of length " + initTraceLen + " but got length " + initTrace.size());
-        	initPosTrace = createAlloyTrace(initTrace, "PT1", "PosTrace");
+        	initPosTrace = createAlloyTrace(initTrace, "PT1", "PosTrace", 1);
         	++initTraceLen;
     	}
     	
@@ -426,7 +443,8 @@ public class FormulaSeparation {
     	return initPosTrace;
 	}
 	
-	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
+	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext,
+			long timeout, final String numWorkers) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
@@ -439,7 +457,7 @@ public class FormulaSeparation {
 			// TODO should use a temporary file for <cexTraceOutputFile>
 			// TODO run multiple instances of TLC and choose the shortest trace
 			final String[] cmd = {"sh", "-c",
-					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers auto -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
+					"java -jar " + TLC_JAR_PATH + " -cleanup -deadlock -workers " + numWorkers + " -config " + cfgFile + " " + tlaFile + " > " + cexTraceOutputFile};
 			Process proc = Runtime.getRuntime().exec(cmd);
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			
@@ -635,7 +653,7 @@ public class FormulaSeparation {
 				.map(a -> {
 					List<String> rawWordTrace = new ArrayList<>(trace.rawWord());
 					rawWordTrace.set(targetLen, a);
-					return createAlloyTrace(rawWordTrace, trace.name(), trace.ext());
+					return createAlloyTrace(rawWordTrace, trace.name(), trace.ext(), trace.trNum());
 				})
 				.collect(Collectors.toSet());
 		System.out.println("# cand neg traces: " + candidateNegTraces.size());
@@ -868,13 +886,13 @@ public class FormulaSeparation {
     	final Set<List<String>> errTraces = MultiTraceCex.INSTANCE.findErrorTraces(lts, numTraces, this.tlcComp.actionsInSpec());
 		Utils.assertTrue(errTraces.size() == 1, "expected one err trace but there were " + errTraces.size());
 		final List<String> errTrace = Utils.chooseOne(errTraces);
-		final String name = trName + (trNum++);
+		final String name = trName + trNum;
 		
 		// delete all the files we created so we don't generate too much clutter
 		Utils.deleteFile(cexTraceTla);
 		Utils.deleteFile(cexTraceCfg);
 		
-		return createAlloyTrace(errTrace, name, ext);
+		return createAlloyTrace(errTrace, name, ext, trNum);
 	}
 	
 	private int cachedCalculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
@@ -1070,7 +1088,7 @@ public class FormulaSeparation {
 		return false;
 	}
 	
-	private AlloyTrace createAlloyTrace(final List<String> word, final String name, final String ext) {
+	private AlloyTrace createAlloyTrace(final List<String> word, final String name, final String ext, int trNum) {
 		// use the alphabet for the component
 		final Set<String> alphabet = this.tlcComp.actionsInSpec();
 		final List<String> trace = word
@@ -1101,29 +1119,24 @@ public class FormulaSeparation {
 					return params.size() == 0 ? act : act + "(" + String.join(",", params) + ")";
 				})
 				.collect(Collectors.toList());
-		return new AlloyTrace(trace, tlaTrace, word, name, ext);
+		return new AlloyTrace(trace, tlaTrace, word, name, ext, trNum);
 	}
 	
-	private AlloyTrace extendAlloyTrace(final AlloyTrace trace, final String extAct, final String name, final String ext) {
-		List<String> newTrace = new ArrayList<>(trace.trace());
-		newTrace.add(extAct);
-		return new AlloyTrace(newTrace, null, null, name, ext);
-	}
-	
-	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,
-			final Map<Map<String,String>, List<AlloyTrace>> posTraces, final int curNumFluents, Set<Map<String,String>> envVarTypes) {
+	private Map<Map<String,String>, Pair<Formula,AlloyTrace>> synthesizeFormulas(final AlloyTrace negTrace,
+			final Map<Map<String,String>, List<AlloyTrace>> posTraces, final int curNumFluents, Set<Map<String,String>> envVarTypes,
+			int cumNumPosTraces, String cfgPosTraces) {
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
-		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces,
+		return formSynth.synthesizeFormulas(this, envVarTypes, negTrace, posTraces,
 				tlcComp, internalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
-				qvars, legalEnvVarCombos, curNumFluents);
+				qvars, legalEnvVarCombos, curNumFluents, cumNumPosTraces, tlaRest, cfgRest, cfgPosTraces);
 	}
 	
-	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {
+	public String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {
 		final String noExt = "";
 		return writeHistVarsSpec(tla, cfg, candSep, candSepInActions, noExt);
 	}
 	
-	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions, final String ext) {
+	public String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions, final String ext) {
     	final String tlaCompBaseName = tla.replaceAll("\\.tla", "");
     	final String specName = tlaCompBaseName + "_hist" + ext;
     	

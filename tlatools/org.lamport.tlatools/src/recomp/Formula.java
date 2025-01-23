@@ -26,6 +26,16 @@ public class Formula {
 		return new Formula("TRUE", false);
 	}
 	
+	public static boolean isValidJson(final String json) {
+		try {
+			new JSONParser(new JSONLexer(json)).parse();
+			return true;
+		}
+		catch (gov.nasa.jpf.JPFException e) {
+			return false;
+		}
+	}
+	
 	public static Formula conjunction(final List<Formula> formulas) {
 		if (formulas.isEmpty()) {
 			return TRUE();
