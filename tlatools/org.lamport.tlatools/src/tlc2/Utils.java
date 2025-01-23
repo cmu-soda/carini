@@ -241,6 +241,23 @@ public class Utils {
     	}
     	return union(restPowerSetWithE, powerSet(rest));
     }
+    
+    public static <T> Set<List<T>> cartesianProductOfTraces(List<Set<T>> sets) {
+    	Set<List<T>> prod = new HashSet<>();
+    	prod.add(new ArrayList<>());
+		for (Set<T> set : sets) {
+			Set<List<T>> newProd = new HashSet<>();
+			for (T elem : set) {
+				for (List<T> trace : prod) {
+					List<T> newTrace = new ArrayList<>(trace);
+					newTrace.add(elem);
+					newProd.add(newTrace);
+				}
+			}
+			prod = newProd;
+		}
+		return prod;
+    }
 	
     
     public static ArrayList<Pair<String,String>> extractKeyValuePairsFromState(String tlaState) {

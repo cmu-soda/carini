@@ -73,6 +73,9 @@ public class AlloyTrace {
 	public String name() {
 		return this.name;
 	}
+	public String ext() {
+		return this.ext;
+	}
 	
 	public int lastIdx() {
 		return this.lastIdx;

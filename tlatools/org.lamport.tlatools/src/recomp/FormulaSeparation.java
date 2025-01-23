@@ -44,6 +44,7 @@ public class FormulaSeparation {
 	private final TLC tlcSys;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
+	private final Map<String, Set<String>> rawSortElementsMap;
 	private final Map<String, Map<String, Set<String>>> setSortElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
@@ -52,6 +53,8 @@ public class FormulaSeparation {
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final Set<Map<String,String>> allPermutations;
 	private final Random seed;
+	
+	private Map<Utils.Pair<AlloyTrace, String>, Boolean> traceInSpecCache;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
 			final String tlaSys, final String cfgSys, final String propFile, long rseed) {
@@ -78,7 +81,8 @@ public class FormulaSeparation {
     	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort)
-    	sortElementsMap = createSortElementsMap(tlcSys);
+    	sortElementsMap = createSortElementsMap(tlcSys, true); // sanitized tokens
+    	rawSortElementsMap = createSortElementsMap(tlcSys, false); // unsanitiszed tokens
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort) -> Set(elements/atoms in each set in the sort)
     	setSortElementsMap = createSetSortElementsMap(tlcSys);
@@ -112,6 +116,8 @@ public class FormulaSeparation {
 				.collect(Collectors.toSet());
 		
 		seed = new Random(rseed);
+		
+		traceInSpecCache = new HashMap<>();
 	}
 	
 	public String synthesizeSepInvariant() {
@@ -232,47 +238,6 @@ public class FormulaSeparation {
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     			System.out.println("Using the following partial neg trace for formula synth:");
         		System.out.println(partialNegTrace.fullSigString());
-        		
-        		// calculate valid pos traces. only execute this block once, as it only will have an
-        		// effect on the first go
-        		/*
-        		final int minLenForValidPosTrace = 2;
-        		if (partialNegTrace.size() > minLenForValidPosTrace && partialNegTraceLen == minPartialNegTraceLen && targetPosTraces.isEmpty()) {
-            		final AlloyTrace realTrace = negTrace.cutToLen(partialNegTraceLen-1);
-            		ExtendTraceVisitor<String> etv = new ExtendTraceVisitor<>(realTrace);
-            		final Set<String> rawExtensions = etv.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutWithoutAnErrorState());
-            		final Set<String> reducedExtensions = actionPermutationReduction(rawExtensions);
-            		final Set<String> extensions = reducedExtensions
-            				.stream()
-            				.map(a -> {
-            					return Utils.toArrayList(a.split("\\."))
-            							.stream()
-            							.map(p -> Utils.toArrayList(p.replaceAll("[{}]", "").split(","))) // conc act -> list of conc params
-            							.map(l -> sanitizeTokensForAlloy(l)) // sanitize each param so it can be encoded in an Alloy file
-            							.collect(Collectors.joining("."));
-            				})
-            				.map(a -> a.replace(".", ""))
-            				.collect(Collectors.toSet());
-            		
-            		for (final String ext : extensions) {
-            			final String name = "PT" + (++cumNumPosTraces);
-            			final AlloyTrace tpt = extendAlloyTrace(realTrace,ext,name,"PosTrace");
-            			targetPosTraces.add(tpt);
-            		}
-            		
-            		/*currentPosTraces
-            				.values()
-            				.stream()
-            				.forEach(l -> l.addAll(targetPosTraces));*/ /*
-            		allPosTracesSeen.addAll(targetPosTraces);
-            		System.out.println("# raw exts: " + rawExtensions.size());
-            		System.out.println("# exts: " + extensions.size());
-        		}
-        		System.out.println("partialNegTrace.size(): " + partialNegTrace.size());
-        		System.out.println("# target pos traces: " + targetPosTraces.size());
-        		targetPosTraces
-        				.stream()
-        				.forEach(t -> System.out.println(t.fullSigString()));*/
         		
 				// synthesize new formulas
     			final int numFluents = this.useIntermediateProp ?
@@ -631,6 +596,9 @@ public class FormulaSeparation {
 		final Set<AlloyTrace> minTraces = alloyTraces
 				.stream()
 				.filter(t -> t.size() == minLen)
+				// maximize the potential partial trace len. unfortunately, this is a slightly
+				// expensive operation. TODO is this helping?
+				.map(t -> maximizeNegTraceForPartialLength(t, tla, cfg))
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!minTraces.isEmpty(), "minTraces is empty!");
 		
@@ -648,14 +616,85 @@ public class FormulaSeparation {
 				.filter(t -> partialTraceLenMap.get(t).equals(maxPartialTraceLen))
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!maxPartialTraces.isEmpty(), "maxPartialTraces is empty!");
-
-		System.out.println("total # neg traces: " + tlcErrorTraces.stream().filter(t -> t.contains("Error")).count());
-		System.out.println("# (unique) neg traces: " + alloyTraces.size());
-		System.out.println("# (unique) min len neg traces: " + minTraces.size());
-		System.out.println("# (unique) max partial neg traces: " + maxPartialTraces.size());
+		
+		System.out.println("total # neg traces: " + alloyTraces.size());
 		
 		// any one of the remaining traces will do
 		return Utils.chooseOne(maxPartialTraces);
+	}
+	
+	/**
+	 * Returns null if the partial lenght of the trace can't be incremented
+	 * @param trace
+	 * @return
+	 */
+	private AlloyTrace incrementPartialLength(final AlloyTrace trace, final String tla, final String cfg) {
+		final int partialTraceLen = calculatePartialTraceLen(trace, tlaRest, cfgRest);
+		Utils.assertTrue(partialTraceLen <= trace.size(), "Unexpected partial trace len");
+		if (partialTraceLen == trace.size()) {
+			return null;
+		}
+		
+		final int targetLen = partialTraceLen-1;
+		final String rawTargetAction = trace.rawWord().get(targetLen);
+		final String targetActionBase = rawTargetAction.replaceAll("\\..*$", "");
+		
+		List<Set<String>> concreteActionOptions = this.actionParamTypes
+				.get(targetActionBase)
+				.stream()
+				.map(ptype -> this.rawSortElementsMap.get(ptype)) // each param type -> set of concrete params
+				.collect(Collectors.toList());
+		concreteActionOptions.add(0, Utils.setOf(targetActionBase));
+		
+		final Set<AlloyTrace> candidateNegTraces = Utils.cartesianProductOfTraces(concreteActionOptions)
+				.stream()
+				.map(l -> String.join(".", l)) // list of base action + concrete params -> raw word action
+				.map(a -> {
+					List<String> rawWordTrace = new ArrayList<>(trace.rawWord());
+					rawWordTrace.set(targetLen, a);
+					return createAlloyTrace(rawWordTrace, trace.name(), trace.ext());
+				})
+				.collect(Collectors.toSet());
+		System.out.println("# cand neg traces: " + candidateNegTraces.size());
+		
+		// the candidates can be used as the new neg trace if 1) they reproduce the error and 2) increase
+		// the partial trace len.
+		final Map<AlloyTrace, Integer> newNegTracePartialTraceLen = candidateNegTraces
+				.stream()
+				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t, tlaRest, cfgRest)));
+		final Set<AlloyTrace> newNegTraces = candidateNegTraces
+				.stream()
+				.filter(t -> newNegTracePartialTraceLen.get(t) > partialTraceLen) // 2) increases the partial trace len
+				.filter(t -> isTraceInSpec(t, tla, cfg, true)) // 1) this trace reproduces the error
+				.collect(Collectors.toSet());
+		System.out.println("# new neg traces: " + newNegTraces.size());
+		
+		// no new neg trace candidates qualify
+		if (newNegTraces.isEmpty()) {
+			return null;
+		}
+		
+		// at least one neg trace candidate qualifies. choose the one with the largest partial trace len
+		final int maxPartialTraceLen = newNegTraces
+				.stream()
+				.reduce(0,
+						(n,t) -> Math.max(n, newNegTracePartialTraceLen.get(t)),
+						(n1,n2) -> Math.max(n1,n2));
+		final Set<AlloyTrace> maxPartialTraces = newNegTraces
+				.stream()
+				.filter(t -> newNegTracePartialTraceLen.get(t).equals(maxPartialTraceLen))
+				.collect(Collectors.toSet());
+		Utils.assertTrue(!maxPartialTraces.isEmpty(), "maxPartialTraces is empty!");
+		return Utils.chooseOne(maxPartialTraces);
+	}
+	
+	private AlloyTrace maximizeNegTraceForPartialLength(final AlloyTrace trace, final String tla, final String cfg) {
+		AlloyTrace maximizedTrace = trace;
+		AlloyTrace newTrace = trace;
+		while ((newTrace = incrementPartialLength(newTrace,tla,cfg)) != null) {
+			maximizedTrace = newTrace;
+		}
+		return maximizedTrace;
 	}
 	
 	/**
@@ -858,6 +897,29 @@ public class FormulaSeparation {
 	private int calculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
 		for (int i = 1; i < trace.size(); ++i) {
 			final AlloyTrace partialTrace = trace.cutToLen(i);
+			
+			// calculate <isTraceInSpec>
+			boolean isTraceInSpec = false;
+			final Utils.Pair<AlloyTrace,String> cacheKey = new Utils.Pair<>(partialTrace,tla);
+			if (traceInSpecCache.containsKey(cacheKey)) {
+				isTraceInSpec = traceInSpecCache.get(cacheKey);
+			}
+			else {
+				isTraceInSpec = isTraceInSpec(partialTrace,tla,cfg);
+				traceInSpecCache.put(cacheKey, isTraceInSpec);
+			}
+			
+			// use <isTraceInSpec>
+			if (!isTraceInSpec) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private int noCacheCalculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
+		for (int i = 1; i < trace.size(); ++i) {
+			final AlloyTrace partialTrace = trace.cutToLen(i);
 			if (!isTraceInSpec(partialTrace,tla,cfg)) {
 				return i;
 			}
@@ -866,6 +928,10 @@ public class FormulaSeparation {
 	}
 	
 	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg) {
+		return isTraceInSpec(trace, tla, cfg, false);
+	}
+	
+	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg, boolean origInvariants) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
@@ -874,13 +940,15 @@ public class FormulaSeparation {
 		// create a formula that says: at each time step i, we must take action i in <trace> (the given AlloyTrace)
 		final String cexIdxVar = "cexTraceIdx";
 		final String errVar = "err";
-		final String traceConstraint = IntStream.range(0, trace.size())
+		final String inTraceConstraint = IntStream.range(0, trace.size())
 				.mapToObj(i -> {
 					final String act = trace.tlaTrace().get(i);
 					final String errVarChange = i < trace.size()-1 ? errVar+"' = "+errVar : errVar+"' = TRUE";
 					return "/\\ " + cexIdxVar + " = " + i + " => " + act + " /\\ " + errVarChange;
 				})
 				.collect(Collectors.joining("\n"));
+		final String outTraceConstraint = "/\\ " + cexIdxVar + " >= " + trace.size() + " => FALSE";
+		final String traceConstraint = inTraceConstraint + "\n" + outTraceConstraint;
 		
 		// use the original TLA+ file to construct the reproducer spec
 		TLC tlc = new TLC();
@@ -984,9 +1052,10 @@ public class FormulaSeparation {
         final List<String> cfgLines = Utils.fileContents(cfgFile)
         		.stream()
         		.filter(l -> !l.contains("SPECIFICATION"))
-        		.filter(l -> !l.contains("INVARIANT"))
+        		.filter(l -> !l.contains("INVARIANT") || origInvariants) // if using the orig invariants, don't filter them out
         		.collect(Collectors.toList());
-        final String cfgContent = String.join("\n", cfgLines) + "\nSPECIFICATION " + tcfSpecName + "\nINVARIANT " + noErrsInv + "\n";
+        final String invInCfg = origInvariants ? "" : "INVARIANT " + noErrsInv + "\n";
+        final String cfgContent = String.join("\n", cfgLines) + "\nSPECIFICATION " + tcfSpecName + "\n" + invInCfg;
         cfgBuilder.append(cfgContent);
         cfgBuilder.append("CONSTANTS\n");
         sortConsts.stream()
@@ -1335,14 +1404,14 @@ public class FormulaSeparation {
 		return cumEnvVarTypes;
 	}
 	
-	private static Map<String, Set<String>> createSortElementsMap(TLC tlc) {
+	private static Map<String, Set<String>> createSortElementsMap(TLC tlc, boolean sanitize) {
 		// create a map of sort -> elements (elements = atoms)
 		Map<String, Set<String>> sortElements = new HashMap<>();
 		for (final List<String> constList : tlc.tool.getModelConfig().getConstantsAsList()) {
 			if (constList.size() == 2) {
 				// constList is a CONSTANT assignment
 				final String sort = constList.get(0);
-				final Set<String> elems = parseElements(constList.get(1));
+				final Set<String> elems = parseElements(constList.get(1), sanitize);
 				sortElements.put(sort, elems);
 			}
 		}
@@ -1354,7 +1423,7 @@ public class FormulaSeparation {
 	 * @param rawElems
 	 * @return
 	 */
-	private static Set<String> parseElements(final String rawSet) {
+	private static Set<String> parseElements(final String rawSet, boolean sanitize) {
 		final String trimmedRawSet = rawSet.trim(); // to be extra defensive
 		final char rawSetFirstChar = trimmedRawSet.charAt(0);
 		final char rawSetLastChar = trimmedRawSet.charAt(trimmedRawSet.length()-1);
@@ -1370,7 +1439,7 @@ public class FormulaSeparation {
 		final List<List<String>> tokenGroups = createTokenGroups(tokens);
 		return tokenGroups
 				.stream()
-				.map(g -> sanitizeTokensForAlloy(g))
+				.map(g -> sanitize ? sanitizeTokensForAlloy(g) : recreateRawToken(g))
 				.collect(Collectors.toSet());
 	}
 	
@@ -1426,6 +1495,23 @@ public class FormulaSeparation {
 			final String elem = toks.get(0).trim();
 			// precede numbers with "NUM" to get the Alloy file to compile
 			return elem.matches("[0-9]+") ? "NUM"+elem : elem;
+		}
+	}
+	
+	private static String recreateRawToken(final List<String> toks) {
+		if (toks.isEmpty()) {
+			return "";
+		}
+		final boolean isSet = toks.size() > 1;
+		if (isSet) {
+			final String toksStr = toks
+					.stream()
+					.map(t -> t.trim())
+					.collect(Collectors.joining(","));
+			return "{" + toksStr + "}";
+		} else {
+			final String elem = toks.get(0).trim();
+			return elem;
 		}
 	}
 
