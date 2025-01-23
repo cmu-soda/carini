@@ -188,9 +188,6 @@ public class FormulaSeparation {
     				.stream()
     				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
     		
-    		// reset the target pos traces
-    		List<AlloyTrace> targetPosTraces = new ArrayList<>();
-    		
     		// generate a negative trace for this round; we will generate a formula (assumption) that eliminates
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
@@ -243,22 +240,7 @@ public class FormulaSeparation {
     			final int numFluents = this.useIntermediateProp ?
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
-    			final Map<Map<String,String>, List<AlloyTrace>> synthPosTraces = currentPosTraces
-    					.entrySet()
-    					.stream()
-    					.map(e -> {
-    						final int maxNumTargetPosTraces = 6;
-    						List<AlloyTrace> targetPosTraceSelection = new ArrayList<>(targetPosTraces);
-    						Collections.shuffle(targetPosTraceSelection);
-    						targetPosTraceSelection = targetPosTraceSelection
-    								.stream()
-    								.limit(maxNumTargetPosTraces)
-    								.collect(Collectors.toList());
-    						final List<AlloyTrace> posTraces = Utils.append(e.getValue(), targetPosTraceSelection);
-    						return new Utils.Pair<>(e.getKey(), posTraces);
-    					})
-    					.collect(Collectors.toMap(e -> e.first, e -> e.second));
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, synthPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -508,6 +490,7 @@ public class FormulaSeparation {
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
 		final String cfgFile = cfgName + ".cfg";
+		final String detectError = "Error: The behavior up to this point is:";
 		
 		// Call out to TLC to find a cex trace
 		List<String> tlcOutputLines = new ArrayList<>();
@@ -529,12 +512,12 @@ public class FormulaSeparation {
 							tlcOutputLines.add(line);
 							// when we encounter the first instance of an error, start a countdown of until we
 							// forcibly shutdown the process.
-							if (noViolations && line.contains("Error")) {
+							if (noViolations && line.contains(detectError)) {
 								noViolations = false;
 								new Thread() {
 								    public void run() {
 								        try {
-								        	final long timeout = timer.timeElapsed() / 5L; // an extra 20%
+								        	final long timeout = timer.timeElapsed(); // an extra 100%
 											sleep(timeout);
 											if (proc.isAlive()) {
 												proc.destroyForcibly();
@@ -570,13 +553,13 @@ public class FormulaSeparation {
 		// if there is no error then we're done
 		final boolean noError = tlcOutputLines
 				.stream()
-				.allMatch(l -> !l.contains("Error"));
+				.allMatch(l -> !l.contains(detectError));
 		if (noError) {
 			return new AlloyTrace();
 		}
 		
 		final List<String> tlcErrorTraces = Utils.toArrayList(
-				String.join("\n", tlcOutputLines).split(Pattern.quote("Error: The behavior up to this point is:")));
+				String.join("\n", tlcOutputLines).split(Pattern.quote(detectError)));
 		final Set<AlloyTrace> alloyTraces = tlcErrorTraces
 				.stream()
 				.filter(t -> t.contains("State 1: <Initial predicate>"))
@@ -598,7 +581,7 @@ public class FormulaSeparation {
 				.filter(t -> t.size() == minLen)
 				// maximize the potential partial trace len. unfortunately, this is a slightly
 				// expensive operation. TODO is this helping?
-				.map(t -> maximizeNegTraceForPartialLength(t, tla, cfg))
+				//.map(t -> maximizeNegTraceForPartialLength(t, tla, cfg))
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!minTraces.isEmpty(), "minTraces is empty!");
 		
@@ -894,7 +877,7 @@ public class FormulaSeparation {
 		return createAlloyTrace(errTrace, name, ext);
 	}
 	
-	private int calculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
+	private int cachedCalculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
 		for (int i = 1; i < trace.size(); ++i) {
 			final AlloyTrace partialTrace = trace.cutToLen(i);
 			
@@ -917,7 +900,7 @@ public class FormulaSeparation {
 		return -1;
 	}
 	
-	private int noCacheCalculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
+	private int calculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
 		for (int i = 1; i < trace.size(); ++i) {
 			final AlloyTrace partialTrace = trace.cutToLen(i);
 			if (!isTraceInSpec(partialTrace,tla,cfg)) {
@@ -1136,8 +1119,13 @@ public class FormulaSeparation {
 	}
 	
 	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {
+		final String noExt = "";
+		return writeHistVarsSpec(tla, cfg, candSep, candSepInActions, noExt);
+	}
+	
+	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions, final String ext) {
     	final String tlaCompBaseName = tla.replaceAll("\\.tla", "");
-    	final String specName = tlaCompBaseName + "_hist";
+    	final String specName = tlaCompBaseName + "_hist" + ext;
     	
 		TLC tlc = new TLC();
 		tlc.initialize(tla, cfg);
