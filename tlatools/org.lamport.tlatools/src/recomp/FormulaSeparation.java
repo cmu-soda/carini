@@ -172,7 +172,6 @@ public class FormulaSeparation {
     	boolean formulaSeparates = false;
     	
     	int round = 1;
-    	int cumNumPosTraces = 1; // cumulative number of pos traces seen so far
     	while (!formulaSeparates) {
     		System.out.println("Round " + round);
     		System.out.println("-------");
@@ -184,6 +183,7 @@ public class FormulaSeparation {
     		Set<Map<String,String>> envVarTypes = new HashSet<>(allEnvVarTypes);
     		
     		// reset the pos traces
+        	long cumNumPosTraces = 1;
     		currentPosTraces = allEnvVarTypes
     				.stream()
     				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
@@ -234,14 +234,17 @@ public class FormulaSeparation {
     		while (!formulaSeparates && !foundInvariant) {
     			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
     			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
-    			final int maxNumFormulaSynthBatches = 6;
+    			final int maxNumFormulaSynthBatches = 5;
     			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
-                    ++partialNegTraceLen;
-                    envVarTypes = new HashSet<>(allEnvVarTypes);
                     System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
                     		+ "), increasing the size of the partial neg trace");
                     System.out.println();
+                    ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
+                    envVarTypes = new HashSet<>(allEnvVarTypes);
+            		currentPosTraces = allEnvVarTypes // reset the pos traces
+            				.stream()
+            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
                     continue;
     			}
     			
@@ -279,11 +282,11 @@ public class FormulaSeparation {
     			// NOTE: this does not actually imply that the formula is UNSAT, because we may only run formula synth
     			// with a subset of the env var types. we use this as a heuristic though.
     			if (newSynthFormulas.isEmpty() && partialNegTraceLen < negTrace.size()) {
-                    ++partialNegTraceLen;
-                    envVarTypes = new HashSet<>(allEnvVarTypes);
                     System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
                     System.out.println();
+                    ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
+                    envVarTypes = new HashSet<>(allEnvVarTypes);
                     continue;
     			}
     			
@@ -296,13 +299,11 @@ public class FormulaSeparation {
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
     			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
-    			int ptNum = cumNumPosTraces;
     			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
 				for (final Formula formula : newSynthFormulas) {
-					++ptNum;
 					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
 					final AlloyTrace newPosTrace =
-							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ptNum, "PosTrace", fiveMinuteTimeout);
+							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", fiveMinuteTimeout);
 					newSynthFormulaResults.put(formula, newPosTrace);
 					
 					// TODO hide this print behind a verbose flag
@@ -392,7 +393,6 @@ public class FormulaSeparation {
     				}
     				
     				// keep track of all pos traces seen
-    				cumNumPosTraces += ptNum;
 					allPosTracesSeen.addAll(allNewPosTraces);
     			}
     		}
@@ -442,7 +442,7 @@ public class FormulaSeparation {
     	return initPosTrace;
 	}
 	
-	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
+	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, long trNum, final String ext, long timeout) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
@@ -710,7 +710,7 @@ public class FormulaSeparation {
 	 * @return
 	 */
 	private AlloyTrace createAlloyTraceFromTlcOutput(final List<String> tlcOutputLines, final String tlaFile, final String cfgFile,
-			final String trName, int trNum, final String ext) {
+			final String trName, long trNum, final String ext) {
 		// Step (1)
 		// Parse the output of TLC to create a formula that helps reproduce the error
 		
