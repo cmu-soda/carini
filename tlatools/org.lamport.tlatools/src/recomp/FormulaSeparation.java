@@ -200,8 +200,7 @@ public class FormulaSeparation {
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.
-    		final int minPartialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
-    		int partialNegTraceLen = minPartialNegTraceLen;
+    		int partialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
     		if (partialNegTraceLen == -1 && !formulaSeparates) {
         		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
     			System.out.println("The property is violated with the following trace:");
@@ -258,6 +257,7 @@ public class FormulaSeparation {
     					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
     					invariant.getNumFluents();
     			++numFormulaSynthBatches;
+    			System.out.println("Formula synth batch: " + numFormulaSynthBatches);
     			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
@@ -383,14 +383,6 @@ public class FormulaSeparation {
         			allNewPosTraces
 							.stream()
 							.forEach(t -> System.out.println(t.fullSigString()));
-    				
-    				// notify the user that we've seen this trace at least once
-        			final boolean tracesSeenBefore = allNewPosTraces
-        					.stream()
-        					.anyMatch(t -> allPosTracesSeen.contains(t));
-    				if (tracesSeenBefore) {
-    					System.out.println("(at least one trace has been seen before)");
-    				}
     				
     				// keep track of all pos traces seen
 					allPosTracesSeen.addAll(allNewPosTraces);
