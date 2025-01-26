@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmu.isr.ts.LTS;
+import cmu.isr.ts.lts.SafetyUtils;
 import cmu.isr.ts.lts.ltsa.FSPWriter;
 import lts.SymbolTable;
 import recomp.AlloyTrace;
@@ -51,6 +52,15 @@ public class Main {
     		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,tla,cfg,"none",0L)
     				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
     		System.out.println(trace.fullSigString());
+    	}
+    	else if (args.length == 3 && args[0].endsWith("--safe")) {
+    		final String tla = args[1];
+    		final String cfg = args[2];
+    		TLC tlcCexReproducer = new TLC();
+        	tlcCexReproducer.modelCheck(tla, cfg);
+        	final LTS<Integer, String> lts = tlcCexReproducer.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
+        	final boolean isSafe = SafetyUtils.INSTANCE.ltsIsSafe(lts);
+        	System.out.println("Is safe: " + isSafe);
     	}
     	else {
     		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <tlaSys> <cfgSys> <propFile> [<randomSeed>]");

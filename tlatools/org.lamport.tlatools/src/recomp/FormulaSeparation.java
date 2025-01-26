@@ -233,7 +233,7 @@ public class FormulaSeparation {
     		while (!formulaSeparates && !foundInvariant) {
     			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
     			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
-    			final int maxNumFormulaSynthBatches = 5;
+    			final int maxNumFormulaSynthBatches = 6;
     			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
                     System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
                     		+ "), increasing the size of the partial neg trace");
