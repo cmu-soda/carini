@@ -193,7 +193,11 @@ public class FormulaSeparation {
     		final Formula invariant = Formula.conjunction(invariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
 			// the default timeout is 5m, but can be changed via env var
-        	final AlloyTrace negTrace = genNegCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
+        	Set<AlloyTrace> negTraceSet = genNegCexTracesForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
+    		System.out.println("total # (min) neg traces: " + negTraceSet.size());
+    		Utils.writeFile("traces.log", negTraceSet.stream().map(t -> t.fullSigString()).collect(Collectors.joining("\n")));
+        	
+        	AlloyTrace negTrace = nextBestNegTrace(negTraceSet, null);
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
@@ -229,21 +233,27 @@ public class FormulaSeparation {
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
     		int numFormulaSynthBatches = 0;
+			int maxNumFormulaSynthBatches = 5;
     		boolean foundInvariant = false;
     		while (!formulaSeparates && !foundInvariant) {
     			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
     			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
-    			final int maxNumFormulaSynthBatches = 6;
-    			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
+    			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && negTraceSet.size() > 1) {
                     System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
-                    		+ "), increasing the size of the partial neg trace");
-                    System.out.println();
-                    ++partialNegTraceLen;
+                    		+ "), choosing a new neg trace");
+                    //++partialNegTraceLen;
+                    ++maxNumFormulaSynthBatches;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
             		currentPosTraces = allEnvVarTypes // reset the pos traces
             				.stream()
             				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
+            		negTraceSet.remove(negTrace);
+            		negTrace = nextBestNegTrace(negTraceSet, negTrace);
+            		System.out.println("now attempting to eliminate the following neg trace this round:");
+            		System.out.println(negTrace.fullSigString());
+            		System.out.println("max # formula synth batches: " + maxNumFormulaSynthBatches);
+                    System.out.println();
                     continue;
     			}
     			
@@ -493,7 +503,7 @@ public class FormulaSeparation {
 	 * @param ext
 	 * @return
 	 */
-	public AlloyTrace genNegCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
+	public Set<AlloyTrace> genNegCexTracesForCandSepInvariant(final String tla, final String cfg, final String trName, int trNum, final String ext, long timeout) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
@@ -563,7 +573,7 @@ public class FormulaSeparation {
 				.stream()
 				.allMatch(l -> !l.contains(detectError));
 		if (noError) {
-			return new AlloyTrace();
+			return Utils.setOf(new AlloyTrace());
 		}
 		
 		final List<String> tlcErrorTraces = Utils.toArrayList(
@@ -593,22 +603,36 @@ public class FormulaSeparation {
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!minTraces.isEmpty(), "minTraces is empty!");
 		
+		return minTraces;
+	}
+	
+	private AlloyTrace nextBestNegTrace(final Set<AlloyTrace> traces, final AlloyTrace prev) {
+		if (traces.size() == 1) {
+			return Utils.chooseOne(traces);
+		}
+		
+		final Set<AlloyTrace> idealNextTraceSet = prev == null ? new HashSet<>() :
+			traces
+				.stream()
+				.filter(t -> !prev.containsBaseActionSeq(t))
+				.collect(Collectors.toSet());
+		final Set<AlloyTrace> candidateNextTraceSet = idealNextTraceSet.isEmpty() ? traces : idealNextTraceSet;
+		Utils.assertTrue(!candidateNextTraceSet.isEmpty(), "Received empty trace set!");
+		
 		// only keep the min traces with the highest partial trace len
-		final Map<AlloyTrace,Integer> partialTraceLenMap = minTraces
+		final Map<AlloyTrace,Integer> partialTraceLenMap = candidateNextTraceSet
 				.stream()
 				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t,tlaRest,cfgRest)));
-		final int maxPartialTraceLen = minTraces
+		final int maxPartialTraceLen = candidateNextTraceSet
 				.stream()
 				.reduce(0,
 						(n,t) -> Math.max(n, partialTraceLenMap.get(t)),
 						(n1,n2) -> Math.max(n1,n2));
-		final Set<AlloyTrace> maxPartialTraces = minTraces
+		final Set<AlloyTrace> maxPartialTraces = candidateNextTraceSet
 				.stream()
 				.filter(t -> partialTraceLenMap.get(t).equals(maxPartialTraceLen))
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!maxPartialTraces.isEmpty(), "maxPartialTraces is empty!");
-		
-		System.out.println("total # neg traces: " + alloyTraces.size());
 		
 		// any one of the remaining traces will do
 		return Utils.chooseOne(maxPartialTraces);

@@ -142,6 +142,20 @@ public class AlloyTrace {
 		return this.traceSet.containsAll(other.traceSet);
 	}
 	
+	public Set<Utils.Pair<String,String>> baseActionTraceSet() {
+		return this.traceSet
+				.stream()
+				.map(p -> {
+					final String baseAction = p.second.replaceAll("\\..*$", "");
+					return new Utils.Pair<>(p.first, baseAction);
+				})
+				.collect(Collectors.toSet());
+	}
+	
+	public boolean containsBaseActionSeq(final AlloyTrace other) {
+		return this.baseActionTraceSet().containsAll(other.baseActionTraceSet());
+	}
+	
 	@Override
 	public String toString() {
 		return "one sig " + this.name + " extends " + this.ext + " {} {}";
