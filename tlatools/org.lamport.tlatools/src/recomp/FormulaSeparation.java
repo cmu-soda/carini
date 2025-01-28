@@ -200,7 +200,8 @@ public class FormulaSeparation {
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.
-    		int partialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		int minPartialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		int partialNegTraceLen = minPartialNegTraceLen;
     		if (partialNegTraceLen == -1 && !formulaSeparates) {
         		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
     			System.out.println("The property is violated with the following trace:");
@@ -233,7 +234,7 @@ public class FormulaSeparation {
     		while (!formulaSeparates && !foundInvariant) {
     			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
     			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
-    			final int maxNumFormulaSynthBatches = 6;
+    			int maxNumFormulaSynthBatches = 3;
     			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
                     System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
                     		+ "), increasing the size of the partial neg trace");
@@ -241,9 +242,9 @@ public class FormulaSeparation {
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
-            		currentPosTraces = allEnvVarTypes // reset the pos traces
+            		/*currentPosTraces = allEnvVarTypes // reset the pos traces
             				.stream()
-            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
+            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));*/
                     continue;
     			}
     			
@@ -251,6 +252,7 @@ public class FormulaSeparation {
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     			System.out.println("Using the following partial neg trace for formula synth:");
         		System.out.println(partialNegTrace.fullSigString());
+    			System.out.println("Using min partial neg trace len: " + minPartialNegTraceLen);
         		
 				// synthesize new formulas
     			final int numFluents = this.useIntermediateProp ?
@@ -258,7 +260,8 @@ public class FormulaSeparation {
     					invariant.getNumFluents();
     			++numFormulaSynthBatches;
     			System.out.println("Formula synth batch: " + numFormulaSynthBatches);
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, Formula> evtToFormulaMap =
+    					synthesizeFormulas(partialNegTrace, currentPosTraces, minPartialNegTraceLen, numFluents, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -285,6 +288,7 @@ public class FormulaSeparation {
                     System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
                     System.out.println();
                     ++partialNegTraceLen;
+                    ++minPartialNegTraceLen; // we can provably increment this safely
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
                     continue;
@@ -1119,9 +1123,10 @@ public class FormulaSeparation {
 	}
 	
 	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,
-			final Map<Map<String,String>, List<AlloyTrace>> posTraces, final int curNumFluents, Set<Map<String,String>> envVarTypes) {
+			final Map<Map<String,String>, List<AlloyTrace>> posTraces, int minPartialNegTraceLen, final int curNumFluents,
+			Set<Map<String,String>> envVarTypes) {
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
-		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces,
+		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces, minPartialNegTraceLen,
 				tlcComp, internalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
 	}

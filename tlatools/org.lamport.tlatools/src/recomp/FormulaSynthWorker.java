@@ -29,6 +29,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final int id;
 	private final AlloyTrace negTrace;
 	private final List<AlloyTrace> posTraces;
+	private final int minPartialNegTraceLen;
 	private final TLC tlcComp;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
@@ -46,7 +47,7 @@ public class FormulaSynthWorker implements Runnable {
 	private boolean globalTaskCompleted;
 
 	public FormulaSynthWorker(FormulaSynth formulaSynth, Map<String,String> envVarTypes, int id,
-			AlloyTrace negTrace, List<AlloyTrace> posTraces,
+			AlloyTrace negTrace, List<AlloyTrace> posTraces, int minPartialNegTraceLen,
 			TLC tlcComp, Set<String> internalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
@@ -57,6 +58,7 @@ public class FormulaSynthWorker implements Runnable {
 		this.id = id;
 		this.negTrace = negTrace;
 		this.posTraces = posTraces;
+		this.minPartialNegTraceLen = minPartialNegTraceLen;
 		this.tlcComp = tlcComp;
 		this.internalActions = internalActions;
 		this.sortElementsMap = sortElementsMap;
@@ -174,6 +176,17 @@ public class FormulaSynthWorker implements Runnable {
 		final int formulaSize = MAX_FORMULA_SIZE + 1; // +1 because of the formula root
 		final int numSymActs = MAX_NUM_FLUENT_ACTS;
 		final String strFormulaSize = "for " + formulaSize + " Formula, " + numSymActs + " FlSymAction";
+		
+		// constraint which actions the neg trace shouldn't satisfy
+		final String strIdx = "T" + (this.minPartialNegTraceLen-1);
+		final String negTargetIdxRange = "fun negTargetIdxRange[t : Trace] : set Idx {\n"
+				+ "	let below = " + strIdx + ".^(~IdxOrder/next) |\n"
+				+ "		indices[t] - below\n"
+				+ "}";
+		final String negTraceConstraint = "fact {\n"
+				+ "	all nt : NegTrace | EmptyEnv->negTargetIdxRange[nt]->Root not in nt.satisfies\n"
+				+ "}";
+		
 		
 		// define the setContains predicate
 		final String rawContainsRelation = this.setSortElementsMap
@@ -389,7 +402,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"
 				+ "	IdxOrder/next = " + strIndicesNext + "\n"
-				+ "	" + finalBaseActionForNegTrace + " in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula\n"
+				//+ "	" + finalBaseActionForNegTrace + " in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula\n"
 				+ strInternalActs + "\n"
 				+ "}";
 		
@@ -490,6 +503,8 @@ public class FormulaSynthWorker implements Runnable {
 				+ workerIdComment + "\n"
 				+ baseAlloyFormulaInfer
 				+ strFormulaSize + "\n"
+				+ "\n" + negTargetIdxRange + "\n"
+				+ "\n" + negTraceConstraint + "\n\n"
 				+ "\n" + paramIndicesDecl + "\n"
 				+ "\n" + paramIndicesConstraints + "\n\n"
 				+ "\n" + setContainsPredicate + "\n\n"
@@ -868,11 +883,24 @@ public class FormulaSynthWorker implements Runnable {
 			+ "}\n"
 			+ "\n"
 			+ "\n"
+			/*+ "fun maxUnsatIdx[t : Trace] : Idx {\n"
+			+ "	let unsatTriples = EmptyEnv->indices[t]->Root - t.satisfies |\n"
+			+ "	let unsatIdxs = EmptyEnv.unsatTriples.Root |\n"
+			+ "		(IdxOrder/max)[unsatIdxs]\n"
+			+ "}\n"
+			+ "\n"
+			+ "fun weightedMaxUnsatIdx[t : Trace] : set Idx {\n"
+			+ "	let mxIdx = maxUnsatIdx[t] |\n"
+			+ "		mxIdx.*(~IdxOrder/next)\n"
+			+ "}\n"
+			+ "\n"
+			+ "\n"*/
 			+ "/* main */\n"
 			+ "run {\n"
 			+ "	// find a formula that separates \"good\" traces from \"bad\" ones\n"
 			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies\n"
-			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)\n"
+			//+ "	all nt : NegTrace | EmptyEnv->indices[nt]->Root not in nt.satisfies\n"
+			//+ "	maxsome weightedMaxUnsatIdx[NegTrace] // prefer eliminating actions at higher indices\n"
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
 			//+ "	minsome Formula.children - Implies // smallest formula possible, but don't count Implies\n"
 			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
