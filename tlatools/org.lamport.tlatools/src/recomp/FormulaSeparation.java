@@ -233,6 +233,7 @@ public class FormulaSeparation {
     		while (!formulaSeparates && !foundInvariant) {
     			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
     			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
+    			/*
     			final int maxNumFormulaSynthBatches = 6;
     			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
                     System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
@@ -245,7 +246,7 @@ public class FormulaSeparation {
             				.stream()
             				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
                     continue;
-    			}
+    			}*/
     			
     			// compute the partial neg trace
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
@@ -587,9 +588,6 @@ public class FormulaSeparation {
 		final Set<AlloyTrace> minTraces = alloyTraces
 				.stream()
 				.filter(t -> t.size() == minLen)
-				// maximize the potential partial trace len. unfortunately, this is a slightly
-				// expensive operation. TODO is this helping?
-				//.map(t -> maximizeNegTraceForPartialLength(t, tla, cfg))
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!minTraces.isEmpty(), "minTraces is empty!");
 		
@@ -612,80 +610,6 @@ public class FormulaSeparation {
 		
 		// any one of the remaining traces will do
 		return Utils.chooseOne(maxPartialTraces);
-	}
-	
-	/**
-	 * Returns null if the partial lenght of the trace can't be incremented
-	 * @param trace
-	 * @return
-	 */
-	private AlloyTrace incrementPartialLength(final AlloyTrace trace, final String tla, final String cfg) {
-		final int partialTraceLen = calculatePartialTraceLen(trace, tlaRest, cfgRest);
-		Utils.assertTrue(partialTraceLen <= trace.size(), "Unexpected partial trace len");
-		if (partialTraceLen == trace.size()) {
-			return null;
-		}
-		
-		final int targetLen = partialTraceLen-1;
-		final String rawTargetAction = trace.rawWord().get(targetLen);
-		final String targetActionBase = rawTargetAction.replaceAll("\\..*$", "");
-		
-		List<Set<String>> concreteActionOptions = this.actionParamTypes
-				.get(targetActionBase)
-				.stream()
-				.map(ptype -> this.rawSortElementsMap.get(ptype)) // each param type -> set of concrete params
-				.collect(Collectors.toList());
-		concreteActionOptions.add(0, Utils.setOf(targetActionBase));
-		
-		final Set<AlloyTrace> candidateNegTraces = Utils.cartesianProductOfTraces(concreteActionOptions)
-				.stream()
-				.map(l -> String.join(".", l)) // list of base action + concrete params -> raw word action
-				.map(a -> {
-					List<String> rawWordTrace = new ArrayList<>(trace.rawWord());
-					rawWordTrace.set(targetLen, a);
-					return createAlloyTrace(rawWordTrace, trace.name(), trace.ext());
-				})
-				.collect(Collectors.toSet());
-		System.out.println("# cand neg traces: " + candidateNegTraces.size());
-		
-		// the candidates can be used as the new neg trace if 1) they reproduce the error and 2) increase
-		// the partial trace len.
-		final Map<AlloyTrace, Integer> newNegTracePartialTraceLen = candidateNegTraces
-				.stream()
-				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t, tlaRest, cfgRest)));
-		final Set<AlloyTrace> newNegTraces = candidateNegTraces
-				.stream()
-				.filter(t -> newNegTracePartialTraceLen.get(t) > partialTraceLen) // 2) increases the partial trace len
-				.filter(t -> isTraceInSpec(t, tla, cfg, true)) // 1) this trace reproduces the error
-				.collect(Collectors.toSet());
-		System.out.println("# new neg traces: " + newNegTraces.size());
-		
-		// no new neg trace candidates qualify
-		if (newNegTraces.isEmpty()) {
-			return null;
-		}
-		
-		// at least one neg trace candidate qualifies. choose the one with the largest partial trace len
-		final int maxPartialTraceLen = newNegTraces
-				.stream()
-				.reduce(0,
-						(n,t) -> Math.max(n, newNegTracePartialTraceLen.get(t)),
-						(n1,n2) -> Math.max(n1,n2));
-		final Set<AlloyTrace> maxPartialTraces = newNegTraces
-				.stream()
-				.filter(t -> newNegTracePartialTraceLen.get(t).equals(maxPartialTraceLen))
-				.collect(Collectors.toSet());
-		Utils.assertTrue(!maxPartialTraces.isEmpty(), "maxPartialTraces is empty!");
-		return Utils.chooseOne(maxPartialTraces);
-	}
-	
-	private AlloyTrace maximizeNegTraceForPartialLength(final AlloyTrace trace, final String tla, final String cfg) {
-		AlloyTrace maximizedTrace = trace;
-		AlloyTrace newTrace = trace;
-		while ((newTrace = incrementPartialLength(newTrace,tla,cfg)) != null) {
-			maximizedTrace = newTrace;
-		}
-		return maximizedTrace;
 	}
 	
 	/**
@@ -919,10 +843,6 @@ public class FormulaSeparation {
 	}
 	
 	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg) {
-		return isTraceInSpec(trace, tla, cfg, false);
-	}
-	
-	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg, boolean origInvariants) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
@@ -959,8 +879,13 @@ public class FormulaSeparation {
 				.stream()
 				.map(d -> {
 					final String dname = d.getName().toString();
+					final boolean isInternalAct = !this.tlcComp.actionsInSpec().contains(dname);
 					if (tlc.actionsInSpec().contains(dname)) {
-						d.addConjunct(cexIdxVar + "' = " + cexIdxVar + " + 1");
+						if (isInternalAct) {
+							d.addConjunct(cexIdxVar + "' = " + cexIdxVar);
+						} else {
+							d.addConjunct(cexIdxVar + "' = " + cexIdxVar + " + 1");
+						}
 					}
 					else if (dname.equals("Init")) {
 						d.addConjunct(cexIdxVar + " = 0");
@@ -975,8 +900,10 @@ public class FormulaSeparation {
 		final String tcfName = "TraceConstraint";
 		final String tcfSpecName = "TraceConstraintSpec";
 		final String traceConstraintDecl = tcfName + " ==\n" + traceConstraint;
-		final String specVarDecl = tcfSpecName + " == Init /\\ [][Next /\\ " + tcfName + "]_vars";
+		final String internalActionDecl = "InternalAction == UNCHANGED<<cexTraceIdx,err>>";
+		final String specVarDecl = tcfSpecName + " == Init /\\ [][Next /\\ (" + tcfName + " \\/ InternalAction)]_vars";
 		strModuleNodes.add(traceConstraintDecl);
+		strModuleNodes.add(internalActionDecl);
 		strModuleNodes.add(specVarDecl);
 		
 		// gather all the consts
@@ -1043,10 +970,9 @@ public class FormulaSeparation {
         final List<String> cfgLines = Utils.fileContents(cfgFile)
         		.stream()
         		.filter(l -> !l.contains("SPECIFICATION"))
-        		.filter(l -> !l.contains("INVARIANT") || origInvariants) // if using the orig invariants, don't filter them out
+        		.filter(l -> !l.contains("INVARIANT"))
         		.collect(Collectors.toList());
-        final String invInCfg = origInvariants ? "" : "INVARIANT " + noErrsInv + "\n";
-        final String cfgContent = String.join("\n", cfgLines) + "\nSPECIFICATION " + tcfSpecName + "\n" + invInCfg;
+        final String cfgContent = String.join("\n", cfgLines) + "\nSPECIFICATION " + tcfSpecName + "\nINVARIANT " + noErrsInv + "\n";
         cfgBuilder.append(cfgContent);
         cfgBuilder.append("CONSTANTS\n");
         sortConsts.stream()
