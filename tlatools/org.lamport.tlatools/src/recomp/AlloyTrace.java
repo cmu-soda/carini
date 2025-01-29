@@ -115,6 +115,10 @@ public class AlloyTrace {
 	}
 	
 	public AlloyTrace cutToLen(int len) {
+		return cutToLen(len, this.name, this.ext);
+	}
+	
+	public AlloyTrace cutToLen(int len, final String newName, final String newExt) {
 		final List<String> cutTrace = this.trace
 				.stream()
 				.limit(len)
@@ -127,7 +131,7 @@ public class AlloyTrace {
 				.stream()
 				.limit(len)
 				.collect(Collectors.toList());
-		return new AlloyTrace(cutTrace, cutTlaTrace, cutRawWord, this.name, this.ext);
+		return new AlloyTrace(cutTrace, cutTlaTrace, cutRawWord, newName, newExt);
 	}
 	
 	public String fullSigString() {

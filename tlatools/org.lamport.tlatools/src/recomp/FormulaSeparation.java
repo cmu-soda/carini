@@ -26,7 +26,6 @@ import tlc2.Utils;
 import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
-	private static final int INIT_MAX_POS_TRACES = 6;
 	private static final String TLC_JAR_PATH = System.getProperty("user.home") + "/bin/tla2tools.jar";
 	private static final long NEG_TRACE_TIMEOUT = System.getenv("FSYNTH_NEG_TRACE_TIMEOUT") != null ?
 			Long.parseLong(System.getenv("FSYNTH_NEG_TRACE_TIMEOUT")) : 5L;
@@ -146,27 +145,9 @@ public class FormulaSeparation {
 		final Set<Map<String,String>> allEnvVarTypes = createAllEnvVarTypes(allTypes);
 		Utils.assertTrue(!allEnvVarTypes.isEmpty(), "internal error: envVarTypes is empty!");
     	
-		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
-		// formula synthesis task. we initialize the map with <initPosTrace> for every env var type. these are the
-    	// "current" pos traces that we will learn from (perform formula synth on).
-    	final AlloyTrace initPosTrace = createInitPosTrace();
-		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
-				.stream()
-				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
-    	
-    	// keep track of the max num pos traces (per env var type) that we'll allow during formula synthesis
-		Map<Map<String,String>, Integer> maxNumPosTraces = allEnvVarTypes
-				.stream()
-				.collect(Collectors.toMap(evt -> evt, evt -> INIT_MAX_POS_TRACES));
-    	
-    	// keep track of the number of duplicate traces in each round (per env var type). this will help us increment
-    	// <maxNumPosTraces> appropriately.
-		Map<Map<String,String>, Integer> numDuplicateTracesPerRound = allEnvVarTypes
-				.stream()
-				.collect(Collectors.toMap(evt -> evt, evt -> 0));
-    	
-    	// collect all pos traces we've ever seen. this will help us increase <maxNumPosTraces>
-    	Set<AlloyTrace> allPosTracesSeen = Utils.setOf(initPosTrace);
+		// a minimal length "default" init pos trace we can use, in the case that the dynamically generated one
+		// (below) has 0 length (i.e. is not a real trace).
+    	final AlloyTrace defaultInitPosTrace = createInitPosTrace();
     	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
@@ -182,12 +163,6 @@ public class FormulaSeparation {
     		// synthesizeFormula() method.
     		Set<Map<String,String>> envVarTypes = new HashSet<>(allEnvVarTypes);
     		
-    		// reset the pos traces
-        	long cumNumPosTraces = 1;
-    		currentPosTraces = allEnvVarTypes
-    				.stream()
-    				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
-    		
     		// generate a negative trace for this round; we will generate a formula (assumption) that eliminates
     		// the negative trace
     		final Formula invariant = Formula.conjunction(invariants);
@@ -200,54 +175,32 @@ public class FormulaSeparation {
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.
-    		int partialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		final int minPartialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		int partialNegTraceLen = minPartialNegTraceLen;
     		if (partialNegTraceLen == -1 && !formulaSeparates) {
         		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
     			System.out.println("The property is violated with the following trace:");
     			System.out.println(negTrace.fullSigString());
     			return "UNSAT";
     		}
-
-    		// reduce the list of pos traces in every round to "reset" them
-    		for (final Map<String,String> evt : envVarTypes) {
-    			final int max = maxNumPosTraces.get(evt);
-    			//final int numDuplicates = numDuplicateTracesPerRound.get(evt);
-    			//final int updatedMax = Math.max((max+numDuplicates)/2, INIT_MAX_POS_TRACES);
-    			//maxNumPosTraces.put(evt, updatedMax);
-    			//numDuplicateTracesPerRound.put(evt, 0); // reset this variable each round
-
-				// trim <currentPosTraces> to be at most <maxNumPosTraces>
-    			List<AlloyTrace> posTraces = currentPosTraces.get(evt);
-    			List<AlloyTrace> updatedPosTraces = posTraces
-    					.stream()
-    					.limit(max)
-    					.collect(Collectors.toList());
-    			currentPosTraces.put(evt, updatedPosTraces);
-				//System.out.println("max # pos traces: " + evtMaxNumPosTraces);
-    		}
+    		
+    		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
+    		// formula synthesis task. these are the "current" pos traces that we will learn from (perform formula synth on).
+        	long cumNumPosTraces = 1;
+        	final AlloyTrace initPosTrace = minPartialNegTraceLen > 1 ? // 'dynamically' generate the init trace
+        			negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace") // ideally, it's all the correct actions up to the bad one
+        			: defaultInitPosTrace; // if there's no good actions in the trace, then use the default init trace
+    		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
+    				.stream()
+    				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
+        	System.out.println("Init pos trace:");
+        	System.out.println(initPosTrace.fullSigString());
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
     		int numFormulaSynthBatches = 0;
     		boolean foundInvariant = false;
     		while (!formulaSeparates && !foundInvariant) {
-    			// if we try <maxNumFormulaSynthBatches> times to synthesize formulas but we don't get any invariants
-    			// then it's possible that we're just using too small of a partial neg trace len, so we increase it.
-    			/*
-    			final int maxNumFormulaSynthBatches = 6;
-    			if (numFormulaSynthBatches >= maxNumFormulaSynthBatches && partialNegTraceLen < negTrace.size()) {
-                    System.out.println("Reached the maximum number of formula synth batches (" + numFormulaSynthBatches
-                    		+ "), increasing the size of the partial neg trace");
-                    System.out.println();
-                    ++partialNegTraceLen;
-    				numFormulaSynthBatches = 0;
-                    envVarTypes = new HashSet<>(allEnvVarTypes);
-            		currentPosTraces = allEnvVarTypes // reset the pos traces
-            				.stream()
-            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
-                    continue;
-    			}*/
-    			
     			// compute the partial neg trace
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     			System.out.println("Using the following partial neg trace for formula synth:");
@@ -384,9 +337,6 @@ public class FormulaSeparation {
         			allNewPosTraces
 							.stream()
 							.forEach(t -> System.out.println(t.fullSigString()));
-    				
-    				// keep track of all pos traces seen
-					allPosTracesSeen.addAll(allNewPosTraces);
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
@@ -526,7 +476,7 @@ public class FormulaSeparation {
 								new Thread() {
 								    public void run() {
 								        try {
-								        	final long timeout = timer.timeElapsed(); // an extra 100%
+								        	final long timeout = timer.timeElapsed() / 2L; // an extra 50%
 											sleep(timeout);
 											if (proc.isAlive()) {
 												proc.destroyForcibly();
