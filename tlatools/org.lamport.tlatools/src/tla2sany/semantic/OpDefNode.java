@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import recomp.FlAction;
 import recomp.Fluent;
 import recomp.Formula;
 import tla2sany.explorer.ExploreNode;
@@ -647,133 +648,80 @@ public class OpDefNode extends OpDefOrDeclNode
 	  // the fluents that are updated in this action
 	  final List<String> fluentsUpdated = formula.getFluents()
 			  .stream()
-			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act) ||
-					  fluent.mutInitBaseNames.contains(act) || fluent.falsifyBaseNames.contains(act))
+			  .filter(fluent -> fluent.hasActionBaseName(act))
 			  .map(fluent -> fluent.name)
 			  .collect(Collectors.toList());
 	  
 	  // the TLA+ conjuncts that update each fluent
 	  final List<String> fluentUpdateConjuncts = formula.getFluents()
 			  .stream()
-			  .filter(fluent -> fluent.initBaseNames.contains(act) || fluent.termBaseNames.contains(act) ||
-					  fluent.mutInitBaseNames.contains(act) || fluent.falsifyBaseNames.contains(act))
+			  .filter(fluent -> fluent.hasActionBaseName(act))
 			  .map(fluent -> {
-				  final Set<List<Integer>> initParamMaps = fluent.init
-				  		.stream()
-				  		.filter(p -> act.equals(p.first))
-				  		.map(p -> p.second)
-				  		.collect(Collectors.toSet());
-				  final Set<List<Integer>> termParamMaps = fluent.term
-					  		.stream()
-					  		.filter(p -> act.equals(p.first))
-					  		.map(p -> p.second)
-					  		.collect(Collectors.toSet());
-				  final Set<List<Integer>> mutInitParamMaps = fluent.mutInit
-					  		.stream()
-					  		.filter(p -> act.equals(p.first))
-					  		.map(p -> p.second)
-					  		.collect(Collectors.toSet());
-				  final Set<List<Integer>> falsifyParamMaps = fluent.falsify
-					  		.stream()
-					  		.filter(p -> act.equals(p.first))
-					  		.map(p -> p.second)
-					  		.collect(Collectors.toSet());
-
-				  // get the action-params for each action in fluent (in the correct
-				  // order). for example, for a param map that looks like: [3,0,1]
-				  // and if the params to the action are: (var0,var1,var2,var3)
-				  // then we access the fluent as: fluentName[var3,var0,var1]
-				  final Set<List<String>> initVarTuples = initParamMaps
+				  final Set<FlAction> flActionSet = fluent
+						  .flActions
 						  .stream()
-						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
+						  .filter(a -> a.baseName.equals(act))
 						  .collect(Collectors.toSet());
-				  final Set<List<String>> termVarTuples = termParamMaps
-						  .stream()
-						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
-						  .collect(Collectors.toSet());
-				  final Set<List<String>> mutInitVarTuples = mutInitParamMaps
-						  .stream()
-						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
-						  .collect(Collectors.toSet());
-				  final Set<List<String>> falsifyVarTuples = falsifyParamMaps
-						  .stream()
-						  .map(pm -> pm.stream().map(i -> actParams.get(i)).collect(Collectors.toList()))
-						  .collect(Collectors.toSet());
+				  Utils.assertTrue(flActionSet.size() == 1, "Expected flActionSet of size 1, got: " + flActionSet);
 				  
-				  // several sanity checks to make sure the fluents don't cause a logical error in the _hist spec
-				  // essentially, the four sets are mutually exclusive. this constraint is encoded in the alloy file so these assertions
-				  // should never be violated.
-				  Utils.assertTrue(!(initVarTuples.isEmpty() && termVarTuples.isEmpty() && mutInitVarTuples.isEmpty() && falsifyVarTuples.isEmpty()),
-						  "Synthesized a formula without any fluents!");
-				  Utils.assertTrue(initVarTuples.isEmpty() || termVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(initVarTuples.isEmpty() || mutInitVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(initVarTuples.isEmpty() || falsifyVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(termVarTuples.isEmpty() || mutInitVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(termVarTuples.isEmpty() || falsifyVarTuples.isEmpty(), "Found overlapping init/term fluents");
-				  Utils.assertTrue(mutInitVarTuples.isEmpty() || falsifyVarTuples.isEmpty(), "Found overlapping init/term fluents");
+				  final FlAction flAction = Utils.chooseOne(flActionSet);
 				  
-				  // the update corresponding to each fluent
-				  if (!initVarTuples.isEmpty()) {
-					  final Set<String> initFluentUpdates = initVarTuples
-							  .stream()
-							  .map(t -> "![" + String.join("][",t) + "] = TRUE")
-							  .collect(Collectors.toSet());
-					  final String allFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", initFluentUpdates) + "]";
-					  return List.of(allFluentConj);
-				  }
-				  if (!termVarTuples.isEmpty()) {
-					  final Set<String> termFluentUpdates = termVarTuples
-							  .stream()
-							  .map(t -> "![" + String.join("][",t) + "] = FALSE")
-							  .collect(Collectors.toSet());
-					  final String allFluentConj = fluent.name + "' = [" + fluent.name + " EXCEPT " + String.join(", ", termFluentUpdates) + "]";
-					  return List.of(allFluentConj);
-				  }
-				  if (!mutInitVarTuples.isEmpty()) {
-					  // the fluent function, but with every value set to FALSE
-					  StringBuilder allFalseBuilder = new StringBuilder();
-					  final List<String> paramTypes = fluent.paramTypes;
-					  for (int i = 0; i < paramTypes.size(); ++i) {
-						  final String paramType = paramTypes.get(i);
-						  final String qvName = "x" + i;
-						  allFalseBuilder.append("[").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
-					  }
-					  allFalseBuilder.append("FALSE");
-					  for (int i = 0; i < paramTypes.size(); ++i) {
-						  allFalseBuilder.append("]");
-					  }
-					  final String allFalse = allFalseBuilder.toString();
-					  
-					  // update only the desired cell to TRUE
-					  final Set<String> mutInitFluentUpdates = mutInitVarTuples
-							  .stream()
-							  .map(t -> "![" + String.join("][",t) + "] = TRUE")
-							  .collect(Collectors.toSet());
-					  final String allFluentConj = fluent.name + "' = [" + allFalse + " EXCEPT " + String.join(", ", mutInitFluentUpdates) + "]";
-					  return List.of(allFluentConj);
-				  }
-				  if (!falsifyVarTuples.isEmpty()) {
-					  // reset every value to FALSE in the fluent function
-					  StringBuilder allFalseBuilder = new StringBuilder();
-					  final List<String> paramTypes = fluent.paramTypes;
-					  for (int i = 0; i < paramTypes.size(); ++i) {
-						  final String paramType = paramTypes.get(i);
-						  final String qvName = "x" + i;
-						  allFalseBuilder.append("[").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
-					  }
-					  allFalseBuilder.append("FALSE");
-					  for (int i = 0; i < paramTypes.size(); ++i) {
-						  allFalseBuilder.append("]");
-					  }
-					  final String allFalse = allFalseBuilder.toString();
-					  
-					  // update all cells to FALSE
-					  final String allFluentConj = fluent.name + "' = " + allFalse;
-					  return List.of(allFluentConj);
-				  }
+				  // get the action-params for each action in fluent (in the correct order). for example, for a param
+				  // map that looks like: [3,0,1] and if the params to the action are: (var0,var1,var2,var3), then we
+				  // access the fluent as: fluentName[var3,var0,var1]
+				  final List<String> varTuple = flAction.paramMap
+						  .stream()
+						  .map(i -> actParams.get(i))
+						  .collect(Collectors.toList());
 				  
-				  Utils.assertTrue(false, "This path is impossible");
-				  return null;
+				  // create the base data structure we will update
+				  StringBuilder mutexStructureBuilder = new StringBuilder();
+				  final List<String> paramTypes = fluent.paramTypes;
+				  for (int i = 0; i < paramTypes.size(); ++i) {
+					  final String paramType = paramTypes.get(i);
+					  final String qvName = "x" + i;
+					  mutexStructureBuilder.append("[").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
+				  }
+				  final String mutexStructureValue = flAction.value.contains("TRUE") ? "FALSE" : "TRUE"; // the mutex value is the opposite
+				  mutexStructureBuilder.append(mutexStructureValue);
+				  for (int i = 0; i < paramTypes.size(); ++i) {
+					  mutexStructureBuilder.append("]");
+				  }
+				  final String mutexStructure = mutexStructureBuilder.toString();
+				  final String currentStructure = fluent.name;
+				  final String baseStructure = flAction.isMutexFl ? mutexStructure : currentStructure;
+				  
+				  // create the cells we want to update
+				  final String updateCells = varTuple
+						  .stream()
+						  .map(v -> "[" + v + "]")
+						  .collect(Collectors.joining());
+				  
+				  // create the update value
+				  StringBuilder valueBuilder = new StringBuilder();
+				  // the update types are the ones that are not being updated, i.e. the 2nd half of the <paramTypes> list
+				  final List<String> updateTypes = fluent.paramTypes.subList(varTuple.size(), fluent.paramTypes.size());
+				  for (int i = 0; i < updateTypes.size(); ++i) {
+					  final String updateType = updateTypes.get(i);
+					  final String qvName = "x" + i;
+					  valueBuilder.append("[").append(qvName).append(" \\in ").append(updateType).append(" |-> ");
+				  }
+				  valueBuilder.append(flAction.value);
+				  for (int i = 0; i < updateTypes.size(); ++i) {
+					  valueBuilder.append("]");
+				  }
+				  final String value = valueBuilder.toString();
+				  
+				  // create the update string
+				  if (varTuple.isEmpty()) {
+					  // this is a "falisfy" or a "truify" fluent
+					  final String allFluentConj = fluent.name + "' = " + value;
+					  return List.of(allFluentConj);
+				  }
+				  else {
+					  final String allFluentConj = fluent.name + "' = [" + baseStructure + " EXCEPT !" + updateCells + " = " + value + "]";
+					  return List.of(allFluentConj);
+				  }
 			  })
 			  .reduce((List<String>)new ArrayList<String>(),
 					  (acc,l) -> Utils.append(acc, l),

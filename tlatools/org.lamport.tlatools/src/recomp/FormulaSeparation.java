@@ -492,14 +492,14 @@ public class FormulaSeparation {
 
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			
-			// clean up the states dir
-			final String[] rmStatesCmd = {"sh", "-c", "rm -rf states/"};
-			Runtime.getRuntime().exec(rmStatesCmd);
-			
 			// kill TLC if it's still running
 			if (proc.isAlive()) {
 				proc.destroyForcibly();
 			}
+			
+			// clean up the states dir
+			final String[] rmStatesCmd = {"sh", "-c", "rm -rf states/"};
+			Runtime.getRuntime().exec(rmStatesCmd);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -941,7 +941,8 @@ public class FormulaSeparation {
 			final int retCode = proc.waitFor();
 			
 			// ret code 0 is no err and 12 is an error trace
-			Utils.assertTrue(retCode == 0 || retCode == 12, "While generating testing if a trace is in a spec, unexpected ret code from TLC: " + retCode);
+			Utils.assertTrue(retCode == 0 || retCode == 12, "Trace is in a spec, unexpected ret code from TLC: " + retCode +
+					" (" + traceInSpecTla + ", " + traceInSpecCfg + ")");
 			final boolean error = retCode == 12;
 			return error;
 		}
