@@ -255,16 +255,14 @@ public class FormulaSeparation {
     			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
     			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
 				for (final Formula formula : newSynthFormulas) {
+					// TODO hide this print behind a verbose flag
+					System.out.println(formula);
 					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
 					final AlloyTrace newPosTrace =
 							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", fiveMinuteTimeout);
 					newSynthFormulaResults.put(formula, newPosTrace);
 					
-					// TODO hide this print behind a verbose flag
 					final boolean isInvariant = !newPosTrace.hasError();
-					System.out.println("Synthesized formula is invariant: " + isInvariant);
-					System.out.println(formula);
-					
 					if (isInvariant) {
 						break;
 					}
@@ -452,60 +450,9 @@ public class FormulaSeparation {
 		final String detectError = "Error: The behavior up to this point is:";
 		
 		// Call out to TLC to find a cex trace
-		List<String> tlcOutputLines = new ArrayList<>();
-		try {
-			// TODO should use a temporary file for <cexTraceOutputFile>
-			PerfTimer timer = new PerfTimer();
-			final String[] cmd = {"java", "-jar", TLC_JAR_PATH, "-cleanup", "-deadlock", "-continue", "-workers", "auto", "-config", cfgFile, tlaFile};
-			Process proc = Runtime.getRuntime().exec(cmd);
-			
-			// start a new thread for capturing the otput of TLC. the thread will wait until an error occurs;
-			// if it does, it will wait an additional period of time to find as many more errors errors as possible.
-			new Thread() {
-			    public void run() {
-			    	BufferedReader inputReader = proc.inputReader();
-			    	String line = null;
-			    	boolean noViolations = true;
-			        try {
-						while ((line = inputReader.readLine()) != null) {
-							tlcOutputLines.add(line);
-							// when we encounter the first instance of an error, start a countdown of until we
-							// forcibly shutdown the process.
-							if (noViolations && line.contains(detectError)) {
-								noViolations = false;
-								new Thread() {
-								    public void run() {
-								        try {
-								        	final long timeout = timer.timeElapsed() / 2L; // an extra 50%
-											sleep(timeout);
-											if (proc.isAlive()) {
-												proc.destroyForcibly();
-											}
-										} catch (InterruptedException e) {}
-								    }
-								}.start();
-							}
-						}
-					} catch (IOException e) {}
-			    }
-			}.start();
-
-			proc.waitFor(timeout, TimeUnit.MINUTES);
-			
-			// kill TLC if it's still running
-			if (proc.isAlive()) {
-				proc.destroyForcibly();
-			}
-			
-			// clean up the states dir
-			final String[] rmStatesCmd = {"sh", "-c", "rm -rf states/"};
-			Runtime.getRuntime().exec(rmStatesCmd);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			Utils.assertTrue(false, "Exception while generating a cex!");
-		}
-		
+		PerfTimer tlcTimer = new PerfTimer();
+		final List<String> tlcOutputLines = new NegTraceGen().generate(tlaFile, cfgFile, detectError, timeout, TLC_JAR_PATH);
+		System.out.println("TLC neg trace generation time: " + tlcTimer.timeElapsedSeconds() + " seconds");
 		
 		// Parse the output of TLC to create a formula that helps reproduce the error
 		
@@ -535,16 +482,22 @@ public class FormulaSeparation {
 				.reduce(Integer.MAX_VALUE,
 						(n,t) -> Math.min(n,t.size()),
 						(n1,n2) -> Math.min(n1,n2));
+		System.out.println("# neg traces: " + alloyTraces.size());
+		final int maxNumMinTraces = 100; // TODO
 		final Set<AlloyTrace> minTraces = alloyTraces
 				.stream()
 				.filter(t -> t.size() == minLen)
+				.limit(maxNumMinTraces)
 				.collect(Collectors.toSet());
+		System.out.println("# min neg traces: " + minTraces.size());
 		Utils.assertTrue(!minTraces.isEmpty(), "minTraces is empty!");
 		
 		// only keep the min traces with the highest partial trace len
+		PerfTimer partialTraceLenTimer = new PerfTimer();
 		final Map<AlloyTrace,Integer> partialTraceLenMap = minTraces
 				.stream()
 				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t,tlaRest,cfgRest)));
+		System.out.println("partial neg trace generation time: " + partialTraceLenTimer.timeElapsedSeconds() + " seconds");
 		final int maxPartialTraceLen = minTraces
 				.stream()
 				.reduce(0,
@@ -555,8 +508,6 @@ public class FormulaSeparation {
 				.filter(t -> partialTraceLenMap.get(t).equals(maxPartialTraceLen))
 				.collect(Collectors.toSet());
 		Utils.assertTrue(!maxPartialTraces.isEmpty(), "maxPartialTraces is empty!");
-		
-		System.out.println("total # neg traces: " + alloyTraces.size());
 		
 		// any one of the remaining traces will do
 		return Utils.chooseOne(maxPartialTraces);
@@ -935,10 +886,18 @@ public class FormulaSeparation {
         Utils.writeFile(traceInSpecCfg, cfgBuilder.toString());
 
         // run the spec and see if there is an error. the trace appears in the spec iff there is an error
-        final String[] cmd = {"java", "-jar", TLC_JAR_PATH, "-cleanup", "-deadlock", "-workers", "auto", "-config", traceInSpecCfg, traceInSpecTla};
+        // use iterative deepening 
+        final String[] cmd = {"java", "-jar", TLC_JAR_PATH, "-cleanup", "-deadlock", "-dfid", "100", "-config", traceInSpecCfg, traceInSpecTla};
 		try {
 			Process proc = Runtime.getRuntime().exec(cmd);
-			final int retCode = proc.waitFor();
+			final long timeout = 10L;
+			proc.waitFor(timeout, TimeUnit.SECONDS);
+			if (proc.isAlive()) {
+				// if TLC is still going then it hasn't found an error yet
+				proc.destroyForcibly();
+				return false;
+			}
+			final int retCode = proc.exitValue();
 			
 			// ret code 0 is no err and 12 is an error trace
 			Utils.assertTrue(retCode == 0 || retCode == 12, "Trace is in a spec, unexpected ret code from TLC: " + retCode +
