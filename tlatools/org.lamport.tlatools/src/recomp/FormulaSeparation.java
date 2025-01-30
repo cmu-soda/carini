@@ -388,7 +388,7 @@ public class FormulaSeparation {
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
 		final String cfgFile = cfgName + ".cfg";
-		final String cexTraceOutputFile = "cextrace" + trNum + ".txt";
+		final String cexTraceOutputFile = "cextrace.txt";
 		
 		// Step (1)
 		// Call out to TLC to find a cex trace
@@ -403,7 +403,6 @@ public class FormulaSeparation {
 			// reached the timeout but TLC is still running--no error detected
 			if (proc.isAlive()) {
 				proc.destroyForcibly();
-				Utils.deleteFile(cexTraceOutputFile);
 				// clean up the states dir
 				final String[] rmStatesCmd = {"sh", "-c", "rm -rf states/"};
 				Runtime.getRuntime().exec(rmStatesCmd);
@@ -413,7 +412,6 @@ public class FormulaSeparation {
 			// no error detected according to the ret code
 			final int retCode = proc.exitValue();
 			if (retCode == 0) {
-				Utils.deleteFile(cexTraceOutputFile);
 				return new AlloyTrace();
 			}
 			// ret code 12 is an error trace
@@ -629,7 +627,7 @@ public class FormulaSeparation {
 		final Set<String> allConsts = Utils.union(sortConsts, tlc.constantsInSpec().stream().collect(Collectors.toSet()));
 		
 		// construct the spec
-		final String specName = "CexTrace" + trNum;
+		final String specName = "CexTrace";
 		final String specBody = String.join("\n\n", strModuleNodes);
 		
         final String specDecl = "--------------------------- MODULE " + specName + " ---------------------------";
@@ -701,11 +699,7 @@ public class FormulaSeparation {
     	final Set<List<String>> errTraces = MultiTraceCex.INSTANCE.findErrorTraces(lts, numTraces, this.tlcComp.actionsInSpec());
 		Utils.assertTrue(errTraces.size() == 1, "expected one err trace but there were " + errTraces.size());
 		final List<String> errTrace = Utils.chooseOne(errTraces);
-		final String name = trName + (trNum++);
-		
-		// delete all the files we created so we don't generate too much clutter
-		Utils.deleteFile(cexTraceTla);
-		Utils.deleteFile(cexTraceCfg);
+		final String name = trName + trNum;
 		
 		return createAlloyTrace(errTrace, name, ext);
 	}

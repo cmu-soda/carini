@@ -639,7 +639,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    actToFlParamsMap.ParamIdx in baseName.paramIdxs\n"
 			+ "\n"
 			+ "    // range(actToFlParamsMap) must be a sequence of P0, P1, ... (i.e. no gaps between param numbers)\n"
-			+ "    P0 in ParamIdx.actToFlParamsMap\n"
+			+ "    (no actToFlParamsMap) or (P0 in ParamIdx.actToFlParamsMap)\n"
 			+ "    (ParamIdx.actToFlParamsMap).*(~ParamIdxOrder/next) = ParamIdx.actToFlParamsMap\n"
 			+ "\n"
 			+ "    // actToFlParamsMap is injective (really, the inverse of actToFlParamsMap is a function)\n"
