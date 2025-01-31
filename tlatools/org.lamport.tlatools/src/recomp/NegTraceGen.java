@@ -44,7 +44,7 @@ public class NegTraceGen {
 								new Thread() {
 								    public void run() {
 								        try {
-								        	final long timeout = timer.timeElapsed() / 2L; // an extra 50%
+								        	final long timeout = timer.timeElapsed(); // an extra 100%
 											sleep(timeout);
 											if (proc.isAlive()) {
 												proc.destroyForcibly();

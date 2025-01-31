@@ -118,10 +118,12 @@ public class FormulaSynth {
 				catch (InterruptedException e) {
 					throw new RuntimeException("Aborting formula synth due to interruption!");
 				}
+				
+				// calculate the number of workers that are still running
+				final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
 
 				// shutdown count is reached! breaking will automatically kill all workers
 				if (synthComplete || System.currentTimeMillis() >= shutdownTime) {
-					final int numIncompleteWorkers = workers.size() - synthesizedFormulas.size();
 					if (numIncompleteWorkers > 0) {
 						System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
 					}
@@ -157,6 +159,14 @@ public class FormulaSynth {
 					// let the user know how much time is left
 					final double maxTimeLeft = shutdownLength / 1000.0;
 					System.out.println("First worker finished, shutdown count is " + maxTimeLeft + "s");
+				}
+				
+				// if more than half of the workers have come back as UNSAT, then we will assume that all workers
+				// will come back UNSAT. this is a speed optimization.
+				if (allUNSAT && numIncompleteWorkers < numWorkers/2.0) {
+					System.out.println("No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth");
+					System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
+					break;
 				}
 			}
 		}

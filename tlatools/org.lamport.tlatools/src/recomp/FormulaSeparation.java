@@ -41,6 +41,7 @@ public class FormulaSeparation {
 	private final TLC tlcComp;
 	private final TLC tlcRest;
 	private final TLC tlcSys;
+	private final Set<String> globalActions;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
 	private final Map<String, Set<String>> rawSortElementsMap;
@@ -74,6 +75,9 @@ public class FormulaSeparation {
     	// the property file that's used for "intermediate" (i.e. fluent) properties
 		this.useIntermediateProp = !propFile.equals("none");
 		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
+		
+		// the actions that are in the shared alphabet between comp and rest.
+    	globalActions = Utils.intersection(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
     	
     	// the actions that internal to "component". it is fine to include formulas over actions that
 		// are internal to "rest" so we don't mark those as "internal".
@@ -136,8 +140,10 @@ public class FormulaSeparation {
 		// split inference into several jobs, where each job assigns possible types to variables
 		// note: the variable orderings matter because of the legal environments we chose (see legalEnvVarCombos)
 		// so we need to consider the order of vars, not just how many of each type
-		final Set<String> allTypes = this.actionParamTypes.values()
+		final Set<String> allTypes = this.actionParamTypes.entrySet()
 				.stream()
+				.filter(e -> this.globalActions.contains(e.getKey())) // only consider types from global actions
+				.map(e -> e.getValue())
 				.map(l -> l.stream().collect(Collectors.toSet()))
 				.reduce((Set<String>)new HashSet<String>(),
 						(acc,s) -> Utils.union(acc, s),
@@ -241,6 +247,9 @@ public class FormulaSeparation {
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
+                    currentPosTraces = allEnvVarTypes
+            				.stream()
+            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
                     continue;
     			}
     			
