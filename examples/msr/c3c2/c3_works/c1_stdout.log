@@ -1,0 +1,3 @@
+global actions: [BecomeLeader, CommitEntry]
+allTypes: [Server, Quorums, FinNat]
+Building the LTS for the initial trace (T1.tla)
