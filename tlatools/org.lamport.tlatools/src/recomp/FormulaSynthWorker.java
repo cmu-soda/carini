@@ -771,10 +771,9 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "\n"
-			+ "	// speed optimization: require lhs to not have have an Implies node\n"
-			+ "	// we declare this here (instead of in Implies) because referring to 'children'\n"
-			+ "	// results in an error (due to weird scoping).\n"
-			+ "	all f : Implies | (f.left).*children not in Implies\n"
+			+ "	// require lhs to not have have an Implies node\n"
+			+ " // this is an overconstraint for improving speed\n"
+			+ "	all f : Implies | no (f.left.*children) & Implies\n"
 			+ "\n"
 			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n" // makes the query far more efficient
 			+ "	some Implies // non-degenerate formulas\n"
