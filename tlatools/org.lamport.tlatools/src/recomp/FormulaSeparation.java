@@ -224,6 +224,9 @@ public class FormulaSeparation {
         		final String extAct = Utils.chooseOne(okNegPrefixExtensions);
         		initPosTraceBuilder = extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
         	}
+        	else if (!okNegPrefix.isEmpty()) {
+        		initPosTraceBuilder = okNegPrefix;
+        	}
         	final AlloyTrace initPosTrace = initPosTraceBuilder;
         	
     		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
