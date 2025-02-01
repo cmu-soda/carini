@@ -178,6 +178,7 @@ public class FormulaSeparation {
     		formulaSeparates = !negTrace.hasError();
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
+    		System.out.println();
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.

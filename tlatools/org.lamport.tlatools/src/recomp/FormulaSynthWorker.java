@@ -22,7 +22,7 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_NUM_FLUENT_ACTS = 6;
+	private static final int MAX_NUM_FLUENT_ACTS = 5;
 	
 	private final FormulaSynth formulaSynth;
 	private final Map<String,String> envVarTypes;
@@ -649,9 +649,9 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    // this is an overconstraint for improving speed\n"
 			+ "    all k1,k2,v : ParamIdx | (k1->v in flToActParamsMap and k2->v in flToActParamsMap) implies (k1 = k2)\n"
 			+ "\n"
-			+ "    // restrict mutex fl's to be True-valued\n"
-			+ "    // this is an overconstraint for improving speed\n"
-			+ "    (mutexFl = True) implies (value = True)\n"
+			+ "    // these are overconstraints for improving speed\n"
+			+ "    (mutexFl = True) implies (value = True) // restrict mutex fl's to be True-valued\n"
+			+ "    (no flToActParamsMap) implies (value = False) // allow falsify, but not trueify\n"
 			// If there's multiple fluent actions in a single fluent, this following constraint could prevent us from finding
 			// legitimate solutions.
 			//+ "\n"
@@ -870,8 +870,9 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	 { a : FlSymAction | a.mutexFl = True }\n"
 			+ "}\n"
 			+ "\n"
+			+ "	// as of now, we do not consider falsify fluents to be partial ones (so we don't softno falsify fluents)\n"
 			+ "fun partialFluents : set FlSymAction {\n"
-			+ "	 { a : FlSymAction | some f : Fluent | a in f.flActions and a.flToActParamsMap.ParamIdx != f.vars.Var }\n"
+			+ "	 { a : FlSymAction | some f : Fluent | a in f.flActions and a.flToActParamsMap.ParamIdx != f.vars.Var and some a.flToActParamsMap }\n"
 			+ "}\n"
 			+ "\n"
 			+ "\n"
