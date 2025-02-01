@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -190,13 +191,44 @@ public class FormulaSeparation {
     			System.out.println(negTrace.fullSigString());
     			return "UNSAT";
     		}
-    		
+        	
+        	// 'dynamically' generate the init trace
+        	AlloyTrace initPosTraceBuilder = defaultInitPosTrace;
+        	final String badAction = negTrace.rawWord().get(partialNegTraceLen-1);
+        	final String badBaseAction = badAction.replaceAll("\\..*$", "");
+        	final AlloyTrace okNegPrefix = negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
+        	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix)
+        			.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState());
+        	final Set<String> okNegPrefixExtensionsSameBaseAction = okNegPrefixExtensions
+        			.stream()
+        			.filter(a -> a.indexOf(badBaseAction) == 0) // the base action must be the start of the string
+        			.collect(Collectors.toSet());
+        	// ideally extend the trace with an action with the same base name as the bad action
+        	if (!okNegPrefixExtensionsSameBaseAction.isEmpty()) {
+            	// choose best action as the one with the lowest edit distance from the bad action
+        		// this is a lazy way of doing so (really should use a comparator)
+        		final int minEditDist = okNegPrefixExtensionsSameBaseAction
+        				.stream()
+        				.map(a -> editDistance(a, badAction))
+        				.min(Comparator.naturalOrder())
+        				.get();
+        		final String extAct = okNegPrefixExtensionsSameBaseAction
+        				.stream()
+        				.filter(a -> editDistance(a, badAction) == minEditDist)
+        				.collect(Collectors.toList())
+        				.get(0);
+        		initPosTraceBuilder = extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
+        	}
+        	// next best is to extend the trace with any next action
+        	else if (!okNegPrefixExtensions.isEmpty()) {
+        		final String extAct = Utils.chooseOne(okNegPrefixExtensions);
+        		initPosTraceBuilder = extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
+        	}
+        	final AlloyTrace initPosTrace = initPosTraceBuilder;
+        	
     		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
     		// formula synthesis task. these are the "current" pos traces that we will learn from (perform formula synth on).
         	long cumNumPosTraces = 1;
-        	final AlloyTrace initPosTrace = minPartialNegTraceLen > 1 ? // 'dynamically' generate the init trace
-        			negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace") // ideally, it's all the correct actions up to the bad one
-        			: defaultInitPosTrace; // if there's no good actions in the trace, then use the default init trace
     		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
     				.stream()
     				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
@@ -953,9 +985,9 @@ public class FormulaSeparation {
 	}
 	
 	private AlloyTrace extendAlloyTrace(final AlloyTrace trace, final String extAct, final String name, final String ext) {
-		List<String> newTrace = new ArrayList<>(trace.trace());
-		newTrace.add(extAct);
-		return new AlloyTrace(newTrace, null, null, name, ext);
+		List<String> newWord = new ArrayList<>(trace.rawWord());
+		newWord.add(extAct);
+		return createAlloyTrace(newWord, name, ext);
 	}
 	
 	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,
@@ -1411,5 +1443,38 @@ public class FormulaSeparation {
 		
 		return setElements;
 	}
+	
+	// thank you: https://www.baeldung.com/java-levenshtein-distance
+	private static int editDistance(String x, String y) {
+	    int[][] dp = new int[x.length() + 1][y.length() + 1];
+
+	    for (int i = 0; i <= x.length(); i++) {
+	        for (int j = 0; j <= y.length(); j++) {
+	            if (i == 0) {
+	                dp[i][j] = j;
+	            }
+	            else if (j == 0) {
+	                dp[i][j] = i;
+	            }
+	            else {
+	                dp[i][j] = edMin(dp[i - 1][j - 1] 
+	                 + edCostOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)), 
+	                  dp[i - 1][j] + 1, 
+	                  dp[i][j - 1] + 1);
+	            }
+	        }
+	    }
+
+	    return dp[x.length()][y.length()];
+	}
+
+	private static int edCostOfSubstitution(char a, char b) {
+        return a == b ? 0 : 1;
+    }
+
+	private static int edMin(int... numbers) {
+        return Arrays.stream(numbers)
+          .min().orElse(Integer.MAX_VALUE);
+    }
 }
 
