@@ -274,7 +274,11 @@ public class FormulaSeparation {
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
     			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
     			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
-				for (final Formula formula : newSynthFormulas) {
+    			final List<Formula> sortedNewSynthFormulas = newSynthFormulas
+    					.stream()
+    					.sorted()
+    					.collect(Collectors.toList());
+				for (final Formula formula : sortedNewSynthFormulas) {
 					// TODO hide this print behind a verbose flag
 					System.out.println(formula);
 					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);

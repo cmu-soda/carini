@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 import gov.nasa.jpf.util.json.JSONLexer;
 import gov.nasa.jpf.util.json.JSONObject;
 import gov.nasa.jpf.util.json.JSONParser;
+import tlc2.Utils;
 
-public class Formula {
+public class Formula implements Comparable {
 	private final String formula;
 	private final List<String> conjuncts;
 	private final boolean isUNSAT;
@@ -165,5 +166,12 @@ public class Formula {
 				.stream()
 				.map(fl -> fl.toString())
 				.collect(Collectors.joining("\n"));
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+		Utils.assertTrue(o instanceof Formula, "Comparing a formula to a different object: " + o.getClass());
+		final Formula other = (Formula) o;
+		return this.formula.length() - other.formula.length();
 	}
 }
