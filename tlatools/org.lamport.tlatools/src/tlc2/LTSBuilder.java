@@ -126,7 +126,7 @@ public class LTSBuilder {
     }
 
     public LTS<Integer, String> toIncompleteDetAutWithoutAnErrorState() {
-    	Utils.exitAssert(this.badTransitions.size() == 0, "Called toNFAWithoutAnErrorState() on an unsafe LTS!");
+    	Utils.assertTrue(this.badTransitions.size() == 0, "Called toNFAWithoutAnErrorState() on an unsafe LTS!");
     	CompactNFA<String> compactNFA = AutomatonBuilders.newNFA(Alphabets.fromCollection(this.allActions)).create();
     	
     	if (!this.badInitState) {

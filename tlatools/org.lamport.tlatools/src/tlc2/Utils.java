@@ -141,31 +141,24 @@ public class Utils {
 	
 	/* Because assert() doesn't seem to work */
 	
-	public static void exitAssert(final boolean condition, final String msg) {
-		if (!condition) {
-			System.err.println("\nexitAssert failed with message: " + msg);
-			System.exit(1);
-		}
-	}
-	
 	public static void assertTrue(final boolean condition, final String msg) {
 		if (!condition) {
 			System.err.println("\n\n!!! assertTrue failed with message: " + msg + "\n\n");
-			throw new RuntimeException(msg);
+			System.exit(1);
 		}
 	}
 	
 	public static void assertNull(final Object obj, final String msg) {
 		if (obj != null) {
 			System.err.println("\n\n!!! assertNull failed with message: " + msg + "\n\n");
-			throw new RuntimeException("Null assertion failed with message: " + msg);
+			System.exit(1);
 		}
 	}
 	
 	public static void assertNotNull(final Object obj, final String msg) {
 		if (obj == null) {
 			System.err.println("\n\n!!! assertNotNull failed with message: " + msg + "\n\n");
-			throw new RuntimeException("Not-null assertion failed with message: " + msg);
+			System.exit(1);
 		}
 	}
 	
