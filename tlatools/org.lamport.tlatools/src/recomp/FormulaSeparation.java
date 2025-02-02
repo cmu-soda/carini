@@ -197,7 +197,7 @@ public class FormulaSeparation {
         	final String badAction = negTrace.rawWord().get(partialNegTraceLen-1);
         	final String badBaseAction = badAction.replaceAll("\\..*$", "");
         	final AlloyTrace okNegPrefix = negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
-        	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix)
+        	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix, globalActions)
         			.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState());
         	final Set<String> okNegPrefixExtensionsSameBaseAction = okNegPrefixExtensions
         			.stream()
