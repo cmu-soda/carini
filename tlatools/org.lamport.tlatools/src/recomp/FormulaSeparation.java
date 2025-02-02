@@ -154,7 +154,7 @@ public class FormulaSeparation {
     	
 		// a minimal length "default" init pos trace we can use, in the case that the dynamically generated one
 		// (below) has 0 length (i.e. is not a real trace).
-    	final AlloyTrace defaultInitPosTrace = createInitPosTrace();
+    	final AlloyTrace defaultInitPosTrace = createDefaultInitPosTrace();
     	
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
@@ -193,48 +193,17 @@ public class FormulaSeparation {
     		}
         	
         	// 'dynamically' generate the init trace
-        	AlloyTrace initPosTraceBuilder = defaultInitPosTrace;
-        	final String badAction = negTrace.rawWord().get(partialNegTraceLen-1);
-        	final String badBaseAction = badAction.replaceAll("\\..*$", "");
-        	final AlloyTrace okNegPrefix = negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
-        	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix, globalActions)
-        			.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState());
-        	final Set<String> okNegPrefixExtensionsSameBaseAction = okNegPrefixExtensions
-        			.stream()
-        			.filter(a -> a.indexOf(badBaseAction) == 0) // the base action must be the start of the string
-        			.collect(Collectors.toSet());
-        	// ideally extend the trace with an action with the same base name as the bad action
-        	if (!okNegPrefixExtensionsSameBaseAction.isEmpty()) {
-            	// choose best action as the one with the lowest edit distance from the bad action
-        		// this is a lazy way of doing so (really should use a comparator)
-        		final int minEditDist = okNegPrefixExtensionsSameBaseAction
-        				.stream()
-        				.map(a -> editDistance(a, badAction))
-        				.min(Comparator.naturalOrder())
-        				.get();
-        		final String extAct = okNegPrefixExtensionsSameBaseAction
-        				.stream()
-        				.filter(a -> editDistance(a, badAction) == minEditDist)
-        				.collect(Collectors.toList())
-        				.get(0);
-        		initPosTraceBuilder = extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
-        	}
-        	// next best is to extend the trace with any next action
-        	else if (!okNegPrefixExtensions.isEmpty()) {
-        		final String extAct = Utils.chooseOne(okNegPrefixExtensions);
-        		initPosTraceBuilder = extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
-        	}
-        	else if (!okNegPrefix.isEmpty()) {
-        		initPosTraceBuilder = okNegPrefix;
-        	}
-        	final AlloyTrace initPosTrace = initPosTraceBuilder;
+        	String badAction = negTrace.rawWord().get(partialNegTraceLen-1);
+        	AlloyTrace okNegPrefix = negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
+        	AlloyTrace initPosTrace = createInitPosTrace(badAction, okNegPrefix, defaultInitPosTrace);
         	
     		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
     		// formula synthesis task. these are the "current" pos traces that we will learn from (perform formula synth on).
         	long cumNumPosTraces = 1;
+        	final AlloyTrace ipt = initPosTrace;
     		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
     				.stream()
-    				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
+    				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(ipt)));
         	System.out.println("Init pos trace:");
         	System.out.println(initPosTrace.fullSigString());
 
@@ -278,14 +247,20 @@ public class FormulaSeparation {
     			// NOTE: this does not actually imply that the formula is UNSAT, because we may only run formula synth
     			// with a subset of the env var types. we use this as a heuristic though.
     			if (newSynthFormulas.isEmpty() && partialNegTraceLen < negTrace.size()) {
-                    System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
-                    System.out.println();
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
+                	badAction = negTrace.rawWord().get(partialNegTraceLen-1);
+                	okNegPrefix = initPosTrace;
+                	initPosTrace = createInitPosTrace(badAction, okNegPrefix, defaultInitPosTrace);
+                	final AlloyTrace iptUnsat = initPosTrace;
                     currentPosTraces = allEnvVarTypes
             				.stream()
-            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(initPosTrace)));
+            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(iptUnsat)));
+                    System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
+                	System.out.println("New init pos trace:");
+                	System.out.println(initPosTrace.fullSigString());
+                    System.out.println();
                     continue;
     			}
     			
@@ -398,7 +373,7 @@ public class FormulaSeparation {
     	return Formula.conjunction(invariants).getFormula();
 	}
 	
-	private AlloyTrace createInitPosTrace() {
+	private AlloyTrace createDefaultInitPosTrace() {
 		// create an LTS for "rest" which we will use to perform a DFS for finding the init trace
     	System.out.println("Building the LTS for the initial trace (" + tlaRest + ")");
     	PerfTimer timer = new PerfTimer();
@@ -426,6 +401,41 @@ public class FormulaSeparation {
     	System.out.println("Created the initial trace in " + timer.timeElapsedSeconds() + "s");
     	System.out.println();
     	return initPosTrace;
+	}
+	
+	private AlloyTrace createInitPosTrace(final String badAction, final AlloyTrace okNegPrefix, final AlloyTrace defaultInitPosTrace) {
+    	final String badBaseAction = badAction.replaceAll("\\..*$", "");
+    	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix, globalActions)
+    			.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState());
+    	final Set<String> okNegPrefixExtensionsSameBaseAction = okNegPrefixExtensions
+    			.stream()
+    			.filter(a -> a.indexOf(badBaseAction) == 0) // the base action must be the start of the string
+    			.collect(Collectors.toSet());
+    	// ideally extend the trace with an action with the same base name as the bad action
+    	if (!okNegPrefixExtensionsSameBaseAction.isEmpty()) {
+        	// choose best action as the one with the lowest edit distance from the bad action
+    		// this is a lazy way of doing so (really should use a comparator)
+    		final int minEditDist = okNegPrefixExtensionsSameBaseAction
+    				.stream()
+    				.map(a -> editDistance(a, badAction))
+    				.min(Comparator.naturalOrder())
+    				.get();
+    		final String extAct = okNegPrefixExtensionsSameBaseAction
+    				.stream()
+    				.filter(a -> editDistance(a, badAction) == minEditDist)
+    				.collect(Collectors.toList())
+    				.get(0);
+    		return extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
+    	}
+    	// next best is to extend the trace with any next action
+    	else if (!okNegPrefixExtensions.isEmpty()) {
+    		final String extAct = Utils.chooseOne(okNegPrefixExtensions);
+    		return extendAlloyTrace(okNegPrefix, extAct, "PT1", "PosTrace");
+    	}
+    	else if (!okNegPrefix.isEmpty()) {
+    		return okNegPrefix;
+    	}
+    	return defaultInitPosTrace;
 	}
 	
 	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, long trNum, final String ext, long timeout) {
