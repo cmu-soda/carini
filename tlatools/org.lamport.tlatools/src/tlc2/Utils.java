@@ -144,6 +144,7 @@ public class Utils {
 	public static void assertTrue(final boolean condition, final String msg) {
 		if (!condition) {
 			System.err.println("\n\n!!! assertTrue failed with message: " + msg + "\n\n");
+			Thread.dumpStack();
 			System.exit(1);
 		}
 	}
@@ -151,6 +152,7 @@ public class Utils {
 	public static void assertNull(final Object obj, final String msg) {
 		if (obj != null) {
 			System.err.println("\n\n!!! assertNull failed with message: " + msg + "\n\n");
+			Thread.dumpStack();
 			System.exit(1);
 		}
 	}
@@ -158,6 +160,7 @@ public class Utils {
 	public static void assertNotNull(final Object obj, final String msg) {
 		if (obj == null) {
 			System.err.println("\n\n!!! assertNotNull failed with message: " + msg + "\n\n");
+			Thread.dumpStack();
 			System.exit(1);
 		}
 	}

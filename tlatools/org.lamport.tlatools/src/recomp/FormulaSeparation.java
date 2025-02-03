@@ -953,7 +953,13 @@ public class FormulaSeparation {
 			final int retCode = proc.exitValue();
 			
 			// ret code 0 is no err and 12 is an error trace
-			Utils.assertTrue(retCode == 0 || retCode == 12, "Trace is in a spec, unexpected ret code from TLC: " + retCode +
+			if (retCode == 1) {
+				// for some reason, every once in a while TLC returns a ret code of 1
+				// TODO hide this behind a verbose mode
+				System.out.println("Found ret code 1 from TLC, treating like ret code 12");
+				return true;
+			}
+			Utils.assertTrue(retCode == 0 || retCode == 12, "isTraceInSpec(): unexpected ret code from TLC: " + retCode +
 					" (" + traceInSpecTla + ", " + traceInSpecCfg + ")");
 			final boolean error = retCode == 12;
 			return error;

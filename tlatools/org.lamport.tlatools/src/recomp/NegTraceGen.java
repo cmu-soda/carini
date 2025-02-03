@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import tlc2.Utils;
 
 public class NegTraceGen {
+	private final long MAX_ADDITIONAL_TIMEOUT = 1000L * 60L * 5L; // 5 min
 	private final Lock lock = new ReentrantLock();
 
 	public List<String> generate(final String tla, final String cfg, final String detectError, long timeout, final String tlcJarPath) {
@@ -44,7 +45,7 @@ public class NegTraceGen {
 								new Thread() {
 								    public void run() {
 								        try {
-								        	final long timeout = timer.timeElapsed(); // an extra 100%
+								        	final long timeout = Math.min(MAX_ADDITIONAL_TIMEOUT, timer.timeElapsed()); // an extra 100%
 											sleep(timeout);
 											if (proc.isAlive()) {
 												proc.destroyForcibly();
