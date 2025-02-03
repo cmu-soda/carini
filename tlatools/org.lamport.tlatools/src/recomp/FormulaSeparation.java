@@ -177,6 +177,11 @@ public class FormulaSeparation {
 			// the default timeout is 5m, but can be changed via env var
         	final AlloyTrace negTrace = genNegCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
     		formulaSeparates = !negTrace.hasError();
+    		if (formulaSeparates) {
+        		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
+    			System.out.println();
+    			break;
+    		}
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace.fullSigString());
     		System.out.println();
