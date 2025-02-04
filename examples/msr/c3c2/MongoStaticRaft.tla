@@ -20,6 +20,8 @@ VARIABLE committed
 
 vars == <<currentTerm, state, log, committed, config>>
 
+StateConstraint == \A s \in Server : Len(log[s]) < 4
+
 \*
 \* Helper operators.
 \*

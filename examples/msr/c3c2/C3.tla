@@ -13,6 +13,8 @@ Nil == "nil"
 
 vars == <<log>>
 
+StateConstraint == \A s \in Server : Len(log[s]) < 4
+
 Empty(s) == Len(s) = 0
 
 InLog(e,i) ==
