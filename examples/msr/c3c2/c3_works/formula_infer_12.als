@@ -1,4 +1,4 @@
-//24
+//28
 //12
 open util/boolean
 open util/ordering[Idx] as IdxOrder
@@ -190,10 +190,9 @@ fact {
 	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)
 	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)
 
-	// speed optimization: require lhs to not have have an Implies node
-	// we declare this here (instead of in Implies) because referring to 'children'
-	// results in an error (due to weird scoping).
-	all f : Implies | (f.left).*children not in Implies
+	// require lhs to not have have an Implies node
+ // this is an overconstraint for improving speed
+	all f : Implies | no (f.left.*children) & Implies
 
 	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form
 	some Implies // non-degenerate formulas
@@ -357,80 +356,62 @@ one sig GetEntries extends BaseName {} {
 	paramIdxs = P0 + P1
 	paramTypes = P0->Server + P1->Server
 }
-one sig GetEntriesn1n1 extends Act {} {
-	params = (P0->n1 + P1->n1)
-}
 one sig GetEntriesn2n1 extends Act {} {
 	params = (P0->n2 + P1->n1)
 }
 one sig GetEntriesn3n2 extends Act {} {
 	params = (P0->n3 + P1->n2)
 }
-one sig GetEntriesn1n2 extends Act {} {
-	params = (P0->n1 + P1->n2)
+one sig GetEntriesn3n1 extends Act {} {
+	params = (P0->n3 + P1->n1)
 }
 
 one sig BecomeLeader extends BaseName {} {
 	paramIdxs = P0 + P1 + P2
 	paramTypes = P0->Server + P1->Quorums + P2->FinNat
 }
-one sig BecomeLeadern1_n1n2n3_NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM1)
+one sig BecomeLeadern1_n1n2n3_NUM3 extends Act {} {
+	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM3)
 }
-one sig BecomeLeadern2_n2n3_NUM1 extends Act {} {
-	params = (P0->n2 + P1->_n2n3_ + P2->NUM1)
+one sig BecomeLeadern1_n1n3_NUM2 extends Act {} {
+	params = (P0->n1 + P1->_n1n3_ + P2->NUM2)
 }
-one sig BecomeLeadern2_n1n2_NUM2 extends Act {} {
-	params = (P0->n2 + P1->_n1n2_ + P2->NUM2)
+one sig BecomeLeadern2_n1n2_NUM3 extends Act {} {
+	params = (P0->n2 + P1->_n1n2_ + P2->NUM3)
 }
 one sig BecomeLeadern1_n1n2_NUM1 extends Act {} {
 	params = (P0->n1 + P1->_n1n2_ + P2->NUM1)
-}
-one sig BecomeLeadern2_n1n2_NUM1 extends Act {} {
-	params = (P0->n2 + P1->_n1n2_ + P2->NUM1)
 }
 
 one sig CommitEntry extends BaseName {} {
 	paramIdxs = P0 + P1 + P2 + P3 + P4
 	paramTypes = P0->Server + P1->Quorums + P2->FinNat + P3->FinNat + P4->FinNat
 }
-one sig CommitEntryn2_n2n3_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n2 + P1->_n2n3_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn1_n1n2_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn2_n1n2_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n2 + P1->_n1n2_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn1_n1n2_NUM2NUM1NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM2 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn1_n1n2n3_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn1_n1n2n3_NUM1NUM2NUM2 extends Act {} {
-	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM1 + P3->NUM2 + P4->NUM2)
+one sig CommitEntryn1_n1n3_NUM2NUM2NUM2 extends Act {} {
+	params = (P0->n1 + P1->_n1n3_ + P2->NUM2 + P3->NUM2 + P4->NUM2)
 }
 
 one sig ClientRequest extends BaseName {} {
 	paramIdxs = P0 + P1
 	paramTypes = P0->Server + P1->FinNat
 }
+one sig ClientRequestn1NUM2 extends Act {} {
+	params = (P0->n1 + P1->NUM2)
+}
+one sig ClientRequestn1NUM3 extends Act {} {
+	params = (P0->n1 + P1->NUM3)
+}
 one sig ClientRequestn1NUM1 extends Act {} {
 	params = (P0->n1 + P1->NUM1)
 }
-one sig ClientRequestn2NUM2 extends Act {} {
-	params = (P0->n2 + P1->NUM2)
-}
 
 
-one sig T0, T1, T2, T3, T4, T5, T6 extends Idx {}
+one sig T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10 extends Idx {}
 
 fact {
 	IdxOrder/first = T0
-	IdxOrder/next = T0->T1 + T1->T2 + T2->T3 + T3->T4 + T4->T5 + T5->T6
-	CommitEntry in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula
+	IdxOrder/next = T0->T1 + T1->T2 + T2->T3 + T3->T4 + T4->T5 + T5->T6 + T6->T7 + T7->T8 + T8->T9 + T9->T10
+	BecomeLeader in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula
 
 }
 
@@ -509,23 +490,10 @@ one sig var2to_n1n2_var0ton1var1to_n2n3_ extends Env {} {}
 
 
 fact PartialInstance {
-	lastIdx = (EmptyTrace->T0) + (PT16->T1) + (PT1->T5) + (PT39->T3) + (PT17->T1) + (PT28->T2) + (PT53->T1) + (PT19->T2) + (PT13->T1) + (PT44->T3) + (PT49->T2) + (PT55->T1) + (PT37->T1) + (PT47->T2) + (PT31->T2) + (NT1->T6)
+	lastIdx = (EmptyTrace->T0) + (PT1->T10) + (NT1->T10)
 
-	path = (PT16 -> (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2n3_NUM1NUM1NUM1)) +
-		(PT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn1n2 + T5->GetEntriesn3n2)) +
-		(PT39 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->GetEntriesn1n1)) +
-		(PT17 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1)) +
-		(PT28 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
-		(PT53 -> (T0->GetEntriesn1n1 + T1->GetEntriesn2n1)) +
-		(PT19 -> (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
-		(PT13 -> (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
-		(PT44 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2)) +
-		(PT49 -> (T0->GetEntriesn2n1 + T1->BecomeLeadern2_n2n3_NUM1 + T2->CommitEntryn2_n2n3_NUM1NUM1NUM1)) +
-		(PT55 -> (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1)) +
-		(PT37 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2n3_NUM1NUM1NUM1)) +
-		(PT47 -> (T0->GetEntriesn2n1 + T1->BecomeLeadern2_n1n2_NUM1 + T2->CommitEntryn2_n1n2_NUM1NUM1NUM1)) +
-		(PT31 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
-		(NT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn1n2 + T5->GetEntriesn3n2 + T6->CommitEntryn1_n1n2n3_NUM1NUM2NUM2))
+	path = (PT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn3n2 + T6->GetEntriesn3n1 + T7->CommitEntryn1_n1n3_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM3 + T10->GetEntriesn2n1)) +
+		(NT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn3n2 + T6->GetEntriesn3n1 + T7->CommitEntryn1_n1n3_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1 + T10->BecomeLeadern2_n1n2_NUM3))
 
 	maps = var0ton3var1to_n1n2n3_var2to_n2n3_->(var0->n3 + var1->_n1n2n3_ + var2->_n2n3_) +
 		var0ton3var2to_n1n2n3_var1to_n2n3_->(var0->n3 + var2->_n1n2n3_ + var1->_n2n3_) +
@@ -591,23 +559,17 @@ fact PartialInstance {
 		var1to_n1n2_var0ton1->(var1->_n1n2_ + var0->n1) +
 		var2to_n1n2_var0ton1var1to_n2n3_->(var2->_n1n2_ + var0->n1 + var1->_n2n3_)
 
-	baseName = ClientRequestn1NUM1->ClientRequest +
-		BecomeLeadern1_n1n2n3_NUM1->BecomeLeader +
-		CommitEntryn2_n2n3_NUM1NUM1NUM1->CommitEntry +
-		CommitEntryn1_n1n2n3_NUM1NUM2NUM2->CommitEntry +
-		BecomeLeadern1_n1n2_NUM1->BecomeLeader +
-		BecomeLeadern2_n1n2_NUM2->BecomeLeader +
-		BecomeLeadern2_n1n2_NUM1->BecomeLeader +
-		CommitEntryn2_n1n2_NUM1NUM1NUM1->CommitEntry +
-		BecomeLeadern2_n2n3_NUM1->BecomeLeader +
-		CommitEntryn1_n1n2_NUM1NUM1NUM1->CommitEntry +
-		CommitEntryn1_n1n2n3_NUM1NUM1NUM1->CommitEntry +
+	baseName = BecomeLeadern1_n1n2_NUM1->BecomeLeader +
+		BecomeLeadern2_n1n2_NUM3->BecomeLeader +
+		ClientRequestn1NUM1->ClientRequest +
+		ClientRequestn1NUM2->ClientRequest +
+		CommitEntryn1_n1n3_NUM2NUM2NUM2->CommitEntry +
+		BecomeLeadern1_n1n3_NUM2->BecomeLeader +
 		GetEntriesn2n1->GetEntries +
-		GetEntriesn1n2->GetEntries +
-		ClientRequestn2NUM2->ClientRequest +
-		GetEntriesn1n1->GetEntries +
-		CommitEntryn1_n1n2_NUM2NUM1NUM1->CommitEntry +
-		GetEntriesn3n2->GetEntries
+		BecomeLeadern1_n1n2n3_NUM3->BecomeLeader +
+		GetEntriesn3n2->GetEntries +
+		ClientRequestn1NUM3->ClientRequest +
+		GetEntriesn3n1->GetEntries
 }
 
 
@@ -619,17 +581,4 @@ fact {
 
 one sig NT1 extends NegTrace {} {}
 
-one sig PT16 extends PosTrace {} {}
 one sig PT1 extends PosTrace {} {}
-one sig PT39 extends PosTrace {} {}
-one sig PT17 extends PosTrace {} {}
-one sig PT28 extends PosTrace {} {}
-one sig PT53 extends PosTrace {} {}
-one sig PT19 extends PosTrace {} {}
-one sig PT13 extends PosTrace {} {}
-one sig PT44 extends PosTrace {} {}
-one sig PT49 extends PosTrace {} {}
-one sig PT55 extends PosTrace {} {}
-one sig PT37 extends PosTrace {} {}
-one sig PT47 extends PosTrace {} {}
-one sig PT31 extends PosTrace {} {}

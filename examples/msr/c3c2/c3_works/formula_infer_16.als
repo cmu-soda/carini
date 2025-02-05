@@ -1,4 +1,4 @@
-//26
+//28
 //16
 open util/boolean
 open util/ordering[Idx] as IdxOrder
@@ -190,10 +190,9 @@ fact {
 	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)
 	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)
 
-	// speed optimization: require lhs to not have have an Implies node
-	// we declare this here (instead of in Implies) because referring to 'children'
-	// results in an error (due to weird scoping).
-	all f : Implies | (f.left).*children not in Implies
+	// require lhs to not have have an Implies node
+ // this is an overconstraint for improving speed
+	all f : Implies | no (f.left.*children) & Implies
 
 	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form
 	some Implies // non-degenerate formulas
@@ -357,25 +356,28 @@ one sig GetEntries extends BaseName {} {
 	paramIdxs = P0 + P1
 	paramTypes = P0->Server + P1->Server
 }
-one sig GetEntriesn1n1 extends Act {} {
-	params = (P0->n1 + P1->n1)
+one sig GetEntriesn2n1 extends Act {} {
+	params = (P0->n2 + P1->n1)
 }
 one sig GetEntriesn3n2 extends Act {} {
 	params = (P0->n3 + P1->n2)
 }
-one sig GetEntriesn1n2 extends Act {} {
-	params = (P0->n1 + P1->n2)
+one sig GetEntriesn3n1 extends Act {} {
+	params = (P0->n3 + P1->n1)
 }
 
 one sig BecomeLeader extends BaseName {} {
 	paramIdxs = P0 + P1 + P2
 	paramTypes = P0->Server + P1->Quorums + P2->FinNat
 }
+one sig BecomeLeadern1_n1n2n3_NUM3 extends Act {} {
+	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM3)
+}
+one sig BecomeLeadern2_n2n3_NUM2 extends Act {} {
+	params = (P0->n2 + P1->_n2n3_ + P2->NUM2)
+}
 one sig BecomeLeadern1_n1n3_NUM2 extends Act {} {
 	params = (P0->n1 + P1->_n1n3_ + P2->NUM2)
-}
-one sig BecomeLeadern2_n1n2_NUM2 extends Act {} {
-	params = (P0->n2 + P1->_n1n2_ + P2->NUM2)
 }
 one sig BecomeLeadern1_n1n2_NUM1 extends Act {} {
 	params = (P0->n1 + P1->_n1n2_ + P2->NUM1)
@@ -388,7 +390,27 @@ one sig CommitEntry extends BaseName {} {
 	paramIdxs = P0 + P1 + P2 + P3 + P4
 	paramTypes = P0->Server + P1->Quorums + P2->FinNat + P3->FinNat + P4->FinNat
 }
-
+one sig CommitEntryn2_n2n3_NUM2NUM2NUM2 extends Act {} {
+	params = (P0->n2 + P1->_n2n3_ + P2->NUM2 + P3->NUM2 + P4->NUM2)
+}
+one sig CommitEntryn2_n2n3_NUM1NUM2NUM2 extends Act {} {
+	params = (P0->n2 + P1->_n2n3_ + P2->NUM1 + P3->NUM2 + P4->NUM2)
+}
+one sig CommitEntryn1_n1n2_NUM1NUM2NUM2 extends Act {} {
+	params = (P0->n1 + P1->_n1n2_ + P2->NUM1 + P3->NUM2 + P4->NUM2)
+}
+one sig CommitEntryn1_n1n2_NUM1NUM1NUM1 extends Act {} {
+	params = (P0->n1 + P1->_n1n2_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
+}
+one sig CommitEntryn1_n1n2_NUM2NUM2NUM2 extends Act {} {
+	params = (P0->n1 + P1->_n1n2_ + P2->NUM2 + P3->NUM2 + P4->NUM2)
+}
+one sig CommitEntryn1_n1n3_NUM2NUM2NUM2 extends Act {} {
+	params = (P0->n1 + P1->_n1n3_ + P2->NUM2 + P3->NUM2 + P4->NUM2)
+}
+one sig CommitEntryn1_n1n2_NUM2NUM1NUM1 extends Act {} {
+	params = (P0->n1 + P1->_n1n2_ + P2->NUM2 + P3->NUM1 + P4->NUM1)
+}
 
 one sig ClientRequest extends BaseName {} {
 	paramIdxs = P0 + P1
@@ -396,6 +418,9 @@ one sig ClientRequest extends BaseName {} {
 }
 one sig ClientRequestn1NUM2 extends Act {} {
 	params = (P0->n1 + P1->NUM2)
+}
+one sig ClientRequestn1NUM3 extends Act {} {
+	params = (P0->n1 + P1->NUM3)
 }
 one sig ClientRequestn1NUM1 extends Act {} {
 	params = (P0->n1 + P1->NUM1)
@@ -405,174 +430,231 @@ one sig ClientRequestn2NUM2 extends Act {} {
 }
 
 
-one sig T0, T1, T2, T3, T4, T5, T6, T7 extends Idx {}
+one sig T0, T1, T2, T3, T4, T5, T6, T7, T8, T9 extends Idx {}
 
 fact {
 	IdxOrder/first = T0
-	IdxOrder/next = T0->T1 + T1->T2 + T2->T3 + T3->T4 + T4->T5 + T5->T6 + T6->T7
+	IdxOrder/next = T0->T1 + T1->T2 + T2->T3 + T3->T4 + T4->T5 + T5->T6 + T6->T7 + T7->T8 + T8->T9
 	ClientRequest in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula
 
 }
 
 
 fun envVarTypes : set(Var->Sort) {
-	var2->Quorums + var1->Server + var0->FinNat
+	var2->FinNat + var1->FinNat + var0->Quorums
 }
 
 
 one sig var2, var1, var0 extends Var {} {}
 
 
-one sig var0toNUM3 extends Env {} {}
-one sig var0toNUM3var2to_n1n2n3_var1ton1 extends Env {} {}
-one sig var2to_n1n2n3_var1ton2var0toNUM2 extends Env {} {}
-one sig var1ton3var2to_n1n2n3_var0toNUM1 extends Env {} {}
-one sig var0toNUM3var2to_n1n2_var1ton1 extends Env {} {}
-one sig var2to_n1n2_var1ton2var0toNUM2 extends Env {} {}
-one sig var1ton3var2to_n1n2_var0toNUM1 extends Env {} {}
-one sig var0toNUM1 extends Env {} {}
-one sig var0toNUM3var1ton3var2to_n1n2n3_ extends Env {} {}
-one sig var2to_n1n2_var0toNUM1var1ton1 extends Env {} {}
-one sig var0toNUM0var2to_n1n2_var1ton2 extends Env {} {}
-one sig var2to_n2n3_var1ton1var0toNUM2 extends Env {} {}
-one sig var0toNUM1var1ton2var2to_n2n3_ extends Env {} {}
-one sig var0toNUM0var1ton3var2to_n2n3_ extends Env {} {}
-one sig var1ton1var0toNUM2 extends Env {} {}
-one sig var0toNUM1var1ton2 extends Env {} {}
-one sig var0toNUM0var1ton3 extends Env {} {}
-one sig var0toNUM0var1ton1 extends Env {} {}
-one sig var2to_n1n3_var0toNUM0var1ton1 extends Env {} {}
-one sig var0toNUM3var1ton3var2to_n1n2_ extends Env {} {}
-one sig var2to_n1n2n3_var0toNUM1var1ton1 extends Env {} {}
-one sig var0toNUM0var2to_n1n2n3_var1ton2 extends Env {} {}
-one sig var0toNUM0var2to_n2n3_var1ton1 extends Env {} {}
-one sig var0toNUM3var1ton2 extends Env {} {}
-one sig var1ton3var0toNUM2 extends Env {} {}
-one sig var0toNUM3var1ton2var2to_n2n3_ extends Env {} {}
-one sig var1ton3var2to_n2n3_var0toNUM2 extends Env {} {}
-one sig var2to_n1n3_var0toNUM3var1ton1 extends Env {} {}
-one sig var2to_n1n3_var1ton2var0toNUM2 extends Env {} {}
-one sig var2to_n1n3_var1ton3var0toNUM1 extends Env {} {}
-one sig var2to_n1n3_var0toNUM3var1ton3 extends Env {} {}
-one sig var0toNUM3var2to_n1n2n3_var1ton2 extends Env {} {}
-one sig var1ton3var2to_n1n2n3_var0toNUM2 extends Env {} {}
-one sig var2to_n1n2_var1ton1var0toNUM2 extends Env {} {}
-one sig var2to_n1n2_var0toNUM1var1ton2 extends Env {} {}
-one sig var0toNUM0var1ton3var2to_n1n2_ extends Env {} {}
-one sig var0toNUM2 extends Env {} {}
-one sig var0toNUM0var2to_n1n2n3_var1ton1 extends Env {} {}
-one sig var2to_n1n3_var0toNUM1var1ton1 extends Env {} {}
-one sig var2to_n1n3_var0toNUM0var1ton2 extends Env {} {}
-one sig var0toNUM1var1ton1 extends Env {} {}
-one sig var0toNUM0var1ton2 extends Env {} {}
-one sig var0toNUM1var2to_n2n3_var1ton1 extends Env {} {}
-one sig var0toNUM0var1ton2var2to_n2n3_ extends Env {} {}
-one sig var0toNUM3var2to_n1n2_var1ton2 extends Env {} {}
-one sig var1ton3var2to_n1n2_var0toNUM2 extends Env {} {}
-one sig var2to_n1n2n3_var1ton1var0toNUM2 extends Env {} {}
-one sig var2to_n1n2n3_var0toNUM1var1ton2 extends Env {} {}
-one sig var0toNUM0var1ton3var2to_n1n2n3_ extends Env {} {}
-one sig var0toNUM3var1ton3 extends Env {} {}
-one sig var2to_n1n3_var0toNUM3var1ton2 extends Env {} {}
-one sig var2to_n1n3_var1ton3var0toNUM2 extends Env {} {}
-one sig var0toNUM3var1ton3var2to_n2n3_ extends Env {} {}
-one sig var2to_n1n3_var0toNUM1var1ton2 extends Env {} {}
-one sig var0toNUM3var2to_n2n3_var1ton1 extends Env {} {}
-one sig var1ton2var2to_n2n3_var0toNUM2 extends Env {} {}
-one sig var1ton3var0toNUM1var2to_n2n3_ extends Env {} {}
-one sig var0toNUM3var1ton1 extends Env {} {}
-one sig var1ton2var0toNUM2 extends Env {} {}
-one sig var1ton3var0toNUM1 extends Env {} {}
-one sig var2to_n1n3_var1ton1var0toNUM2 extends Env {} {}
-one sig var2to_n1n3_var0toNUM0var1ton3 extends Env {} {}
-one sig var0toNUM0var2to_n1n2_var1ton1 extends Env {} {}
-one sig var0toNUM0 extends Env {} {}
+one sig var1toNUM3var2toNUM3var0to_n2n3_ extends Env {} {}
+one sig var0to_n1n3_ extends Env {} {}
+one sig var1toNUM3var0to_n1n3_ extends Env {} {}
+one sig var0to_n1n3_var1toNUM1 extends Env {} {}
+one sig var1toNUM3var0to_n1n3_var2toNUM3 extends Env {} {}
+one sig var1toNUM3var0to_n2n3_ extends Env {} {}
+one sig var1toNUM0var2toNUM0var0to_n1n2_ extends Env {} {}
+one sig var0to_n1n3_var1toNUM0var2toNUM2 extends Env {} {}
+one sig var0to_n1n3_var2toNUM0var1toNUM2 extends Env {} {}
+one sig var0to_n1n3_var1toNUM1var2toNUM1 extends Env {} {}
+one sig var1toNUM2var0to_n2n3_var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1toNUM1var0to_n2n3_ extends Env {} {}
+one sig var1toNUM3var2toNUM1var0to_n2n3_ extends Env {} {}
+one sig var0to_n1n3_var1toNUM2var2toNUM2 extends Env {} {}
+one sig var0to_n1n3_var2toNUM3var1toNUM1 extends Env {} {}
+one sig var1toNUM3var0to_n1n3_var2toNUM1 extends Env {} {}
+one sig var1toNUM1var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM3var0to_n1n2n3_var2toNUM2 extends Env {} {}
+one sig var2toNUM3var0to_n1n2n3_var1toNUM2 extends Env {} {}
+one sig var1toNUM3var0to_n1n2_var2toNUM2 extends Env {} {}
+one sig var1toNUM3var0to_n1n2n3_ extends Env {} {}
+one sig var2toNUM3var0to_n1n2_var1toNUM2 extends Env {} {}
+one sig var0to_n1n3_var1toNUM0var2toNUM0 extends Env {} {}
+one sig var2toNUM0var1toNUM1var0to_n2n3_ extends Env {} {}
+one sig var1toNUM0var2toNUM1var0to_n2n3_ extends Env {} {}
+one sig var1toNUM1var0to_n1n2n3_var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1toNUM0var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM3var2toNUM0var0to_n1n2n3_ extends Env {} {}
+one sig var2toNUM1var0to_n1n2n3_var1toNUM2 extends Env {} {}
+one sig var0to_n1n2_var1toNUM1 extends Env {} {}
+one sig var2toNUM0var0to_n1n2_var1toNUM1 extends Env {} {}
+one sig var1toNUM0var0to_n1n2_var2toNUM1 extends Env {} {}
+one sig var0to_n1n3_var1toNUM0 extends Env {} {}
+one sig var1toNUM1var0to_n2n3_ extends Env {} {}
+one sig var1toNUM3var0to_n1n2_ extends Env {} {}
+one sig var2toNUM0var1toNUM1var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM0var2toNUM1var0to_n1n2n3_ extends Env {} {}
+one sig var0to_n1n2_var1toNUM1var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1toNUM0var0to_n1n2_ extends Env {} {}
+one sig var1toNUM3var2toNUM0var0to_n1n2_ extends Env {} {}
+one sig var0to_n1n2_var2toNUM1var1toNUM2 extends Env {} {}
+one sig var1toNUM3var0to_n1n3_var2toNUM2 extends Env {} {}
+one sig var0to_n1n3_var2toNUM3var1toNUM2 extends Env {} {}
+one sig var1toNUM2var0to_n2n3_ extends Env {} {}
+one sig var0to_n1n3_var1toNUM2 extends Env {} {}
+one sig var1toNUM1var0to_n2n3_var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1toNUM0var0to_n2n3_ extends Env {} {}
+one sig var1toNUM3var2toNUM0var0to_n2n3_ extends Env {} {}
+one sig var2toNUM1var1toNUM2var0to_n2n3_ extends Env {} {}
+one sig var0to_n1n3_var1toNUM1var2toNUM2 extends Env {} {}
+one sig var0to_n1n3_var2toNUM3var1toNUM0 extends Env {} {}
+one sig var1toNUM3var0to_n1n3_var2toNUM0 extends Env {} {}
+one sig var0to_n1n3_var2toNUM1var1toNUM2 extends Env {} {}
+one sig var1toNUM3var0to_n2n3_var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1toNUM2var0to_n2n3_ extends Env {} {}
+one sig var1toNUM3var2toNUM3var0to_n1n2n3_ extends Env {} {}
+one sig var0to_n1n2n3_var1toNUM2var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1toNUM1var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM3var2toNUM1var0to_n1n2n3_ extends Env {} {}
+one sig var0to_n1n2_var1toNUM2var2toNUM2 extends Env {} {}
+one sig var2toNUM3var0to_n1n2_var1toNUM1 extends Env {} {}
+one sig var1toNUM3var0to_n1n2_var2toNUM1 extends Env {} {}
+one sig var0to_n1n2_var1toNUM2 extends Env {} {}
+one sig var0to_n1n2_ extends Env {} {}
+one sig var1toNUM0var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM0var0to_n1n2n3_var2toNUM2 extends Env {} {}
+one sig var2toNUM0var0to_n1n2n3_var1toNUM2 extends Env {} {}
+one sig var1toNUM0var2toNUM0var0to_n2n3_ extends Env {} {}
+one sig var1toNUM1var2toNUM1var0to_n1n2n3_ extends Env {} {}
+one sig var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM0var0to_n1n2_ extends Env {} {}
+one sig var1toNUM0var0to_n2n3_var2toNUM2 extends Env {} {}
+one sig var1toNUM3var2toNUM3var0to_n1n2_ extends Env {} {}
+one sig var2toNUM0var1toNUM2var0to_n2n3_ extends Env {} {}
+one sig var0to_n1n3_var2toNUM0var1toNUM1 extends Env {} {}
+one sig var0to_n1n3_var1toNUM0var2toNUM1 extends Env {} {}
+one sig var1toNUM1var2toNUM1var0to_n2n3_ extends Env {} {}
+one sig var1toNUM0var2toNUM0var0to_n1n2n3_ extends Env {} {}
+one sig var1toNUM0var0to_n2n3_ extends Env {} {}
+one sig var1toNUM0var0to_n1n2_var2toNUM2 extends Env {} {}
+one sig var2toNUM0var0to_n1n2_var1toNUM2 extends Env {} {}
+one sig var0to_n1n2_var1toNUM1var2toNUM1 extends Env {} {}
+one sig var0to_n1n2n3_var1toNUM2 extends Env {} {}
+one sig var0to_n2n3_ extends Env {} {}
 
 
 fact PartialInstance {
-	lastIdx = (EmptyTrace->T0) + (PT2->T2) + (PT15->T3) + (PT7->T3) + (PT1->T6) + (PT3->T2) + (NT1->T7)
+	lastIdx = (EmptyTrace->T0) + (PT15->T2) + (PT22->T3) + (PT4->T2) + (PT21->T3) + (PT17->T3) + (PT2->T2) + (PT23->T3) + (PT29->T3) + (PT18->T3) + (PT3->T2) + (PT1->T9) + (PT25->T3) + (PT26->T3) + (NT1->T9)
 
-	path = (PT2 -> (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1)) +
-		(PT15 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n3_NUM2 + T3->ClientRequestn1NUM2)) +
-		(PT7 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2)) +
-		(PT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn1n2 + T5->GetEntriesn3n2 + T6->GetEntriesn1n2)) +
-		(PT3 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)) +
-		(NT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn1n2 + T5->GetEntriesn3n2 + T6->GetEntriesn1n2 + T7->ClientRequestn1NUM1))
+	path = (PT15 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1 + T2->ClientRequestn1NUM1)) +
+		(PT22 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->CommitEntryn2_n2n3_NUM1NUM2NUM2 + T3->ClientRequestn1NUM1)) +
+		(PT4 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM2NUM1NUM1)) +
+		(PT21 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->CommitEntryn1_n1n2_NUM2NUM2NUM2)) +
+		(PT17 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->CommitEntryn1_n1n2_NUM1NUM2NUM2)) +
+		(PT2 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
+		(PT23 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->ClientRequestn1NUM1 + T3->CommitEntryn2_n2n3_NUM2NUM2NUM2)) +
+		(PT29 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->ClientRequestn1NUM1 + T3->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
+		(PT18 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->ClientRequestn1NUM1 + T3->CommitEntryn2_n2n3_NUM1NUM2NUM2)) +
+		(PT3 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)) +
+		(PT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn3n2 + T6->GetEntriesn3n1 + T7->CommitEntryn1_n1n3_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM3)) +
+		(PT25 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->ClientRequestn1NUM1 + T3->BecomeLeadern1_n1n2_NUM2)) +
+		(PT26 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->ClientRequestn2NUM2 + T3->ClientRequestn1NUM1)) +
+		(NT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn3n2 + T6->GetEntriesn3n1 + T7->CommitEntryn1_n1n3_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1))
 
-	maps = var0toNUM3->(var0->NUM3) +
-		var0toNUM3var2to_n1n2n3_var1ton1->(var0->NUM3 + var2->_n1n2n3_ + var1->n1) +
-		var2to_n1n2n3_var1ton2var0toNUM2->(var2->_n1n2n3_ + var1->n2 + var0->NUM2) +
-		var1ton3var2to_n1n2n3_var0toNUM1->(var1->n3 + var2->_n1n2n3_ + var0->NUM1) +
-		var0toNUM3var2to_n1n2_var1ton1->(var0->NUM3 + var2->_n1n2_ + var1->n1) +
-		var2to_n1n2_var1ton2var0toNUM2->(var2->_n1n2_ + var1->n2 + var0->NUM2) +
-		var1ton3var2to_n1n2_var0toNUM1->(var1->n3 + var2->_n1n2_ + var0->NUM1) +
-		var0toNUM1->(var0->NUM1) +
-		var0toNUM3var1ton3var2to_n1n2n3_->(var0->NUM3 + var1->n3 + var2->_n1n2n3_) +
-		var2to_n1n2_var0toNUM1var1ton1->(var2->_n1n2_ + var0->NUM1 + var1->n1) +
-		var0toNUM0var2to_n1n2_var1ton2->(var0->NUM0 + var2->_n1n2_ + var1->n2) +
-		var2to_n2n3_var1ton1var0toNUM2->(var2->_n2n3_ + var1->n1 + var0->NUM2) +
-		var0toNUM1var1ton2var2to_n2n3_->(var0->NUM1 + var1->n2 + var2->_n2n3_) +
-		var0toNUM0var1ton3var2to_n2n3_->(var0->NUM0 + var1->n3 + var2->_n2n3_) +
-		var1ton1var0toNUM2->(var1->n1 + var0->NUM2) +
-		var0toNUM1var1ton2->(var0->NUM1 + var1->n2) +
-		var0toNUM0var1ton3->(var0->NUM0 + var1->n3) +
-		var0toNUM0var1ton1->(var0->NUM0 + var1->n1) +
-		var2to_n1n3_var0toNUM0var1ton1->(var2->_n1n3_ + var0->NUM0 + var1->n1) +
-		var0toNUM3var1ton3var2to_n1n2_->(var0->NUM3 + var1->n3 + var2->_n1n2_) +
-		var2to_n1n2n3_var0toNUM1var1ton1->(var2->_n1n2n3_ + var0->NUM1 + var1->n1) +
-		var0toNUM0var2to_n1n2n3_var1ton2->(var0->NUM0 + var2->_n1n2n3_ + var1->n2) +
-		var0toNUM0var2to_n2n3_var1ton1->(var0->NUM0 + var2->_n2n3_ + var1->n1) +
-		var0toNUM3var1ton2->(var0->NUM3 + var1->n2) +
-		var1ton3var0toNUM2->(var1->n3 + var0->NUM2) +
-		var0toNUM3var1ton2var2to_n2n3_->(var0->NUM3 + var1->n2 + var2->_n2n3_) +
-		var1ton3var2to_n2n3_var0toNUM2->(var1->n3 + var2->_n2n3_ + var0->NUM2) +
-		var2to_n1n3_var0toNUM3var1ton1->(var2->_n1n3_ + var0->NUM3 + var1->n1) +
-		var2to_n1n3_var1ton2var0toNUM2->(var2->_n1n3_ + var1->n2 + var0->NUM2) +
-		var2to_n1n3_var1ton3var0toNUM1->(var2->_n1n3_ + var1->n3 + var0->NUM1) +
-		var2to_n1n3_var0toNUM3var1ton3->(var2->_n1n3_ + var0->NUM3 + var1->n3) +
-		var0toNUM3var2to_n1n2n3_var1ton2->(var0->NUM3 + var2->_n1n2n3_ + var1->n2) +
-		var1ton3var2to_n1n2n3_var0toNUM2->(var1->n3 + var2->_n1n2n3_ + var0->NUM2) +
-		var2to_n1n2_var1ton1var0toNUM2->(var2->_n1n2_ + var1->n1 + var0->NUM2) +
-		var2to_n1n2_var0toNUM1var1ton2->(var2->_n1n2_ + var0->NUM1 + var1->n2) +
-		var0toNUM0var1ton3var2to_n1n2_->(var0->NUM0 + var1->n3 + var2->_n1n2_) +
-		var0toNUM2->(var0->NUM2) +
-		var0toNUM0var2to_n1n2n3_var1ton1->(var0->NUM0 + var2->_n1n2n3_ + var1->n1) +
-		var2to_n1n3_var0toNUM1var1ton1->(var2->_n1n3_ + var0->NUM1 + var1->n1) +
-		var2to_n1n3_var0toNUM0var1ton2->(var2->_n1n3_ + var0->NUM0 + var1->n2) +
-		var0toNUM1var1ton1->(var0->NUM1 + var1->n1) +
-		var0toNUM0var1ton2->(var0->NUM0 + var1->n2) +
-		var0toNUM1var2to_n2n3_var1ton1->(var0->NUM1 + var2->_n2n3_ + var1->n1) +
-		var0toNUM0var1ton2var2to_n2n3_->(var0->NUM0 + var1->n2 + var2->_n2n3_) +
-		var0toNUM3var2to_n1n2_var1ton2->(var0->NUM3 + var2->_n1n2_ + var1->n2) +
-		var1ton3var2to_n1n2_var0toNUM2->(var1->n3 + var2->_n1n2_ + var0->NUM2) +
-		var2to_n1n2n3_var1ton1var0toNUM2->(var2->_n1n2n3_ + var1->n1 + var0->NUM2) +
-		var2to_n1n2n3_var0toNUM1var1ton2->(var2->_n1n2n3_ + var0->NUM1 + var1->n2) +
-		var0toNUM0var1ton3var2to_n1n2n3_->(var0->NUM0 + var1->n3 + var2->_n1n2n3_) +
-		var0toNUM3var1ton3->(var0->NUM3 + var1->n3) +
-		var2to_n1n3_var0toNUM3var1ton2->(var2->_n1n3_ + var0->NUM3 + var1->n2) +
-		var2to_n1n3_var1ton3var0toNUM2->(var2->_n1n3_ + var1->n3 + var0->NUM2) +
-		var0toNUM3var1ton3var2to_n2n3_->(var0->NUM3 + var1->n3 + var2->_n2n3_) +
-		var2to_n1n3_var1ton1var0toNUM2->(var2->_n1n3_ + var1->n1 + var0->NUM2) +
-		var0toNUM3var2to_n2n3_var1ton1->(var0->NUM3 + var2->_n2n3_ + var1->n1) +
-		var1ton2var2to_n2n3_var0toNUM2->(var1->n2 + var2->_n2n3_ + var0->NUM2) +
-		var1ton3var0toNUM1var2to_n2n3_->(var1->n3 + var0->NUM1 + var2->_n2n3_) +
-		var0toNUM3var1ton1->(var0->NUM3 + var1->n1) +
-		var1ton2var0toNUM2->(var1->n2 + var0->NUM2) +
-		var1ton3var0toNUM1->(var1->n3 + var0->NUM1) +
-		var2to_n1n3_var0toNUM1var1ton2->(var2->_n1n3_ + var0->NUM1 + var1->n2) +
-		var2to_n1n3_var0toNUM0var1ton3->(var2->_n1n3_ + var0->NUM0 + var1->n3) +
-		var0toNUM0var2to_n1n2_var1ton1->(var0->NUM0 + var2->_n1n2_ + var1->n1) +
-		var0toNUM0->(var0->NUM0)
+	maps = var1toNUM3var2toNUM3var0to_n2n3_->(var1->NUM3 + var2->NUM3 + var0->_n2n3_) +
+		var0to_n1n3_->(var0->_n1n3_) +
+		var1toNUM3var0to_n1n3_->(var1->NUM3 + var0->_n1n3_) +
+		var0to_n1n3_var1toNUM1->(var0->_n1n3_ + var1->NUM1) +
+		var1toNUM3var0to_n1n3_var2toNUM3->(var1->NUM3 + var0->_n1n3_ + var2->NUM3) +
+		var1toNUM3var0to_n2n3_->(var1->NUM3 + var0->_n2n3_) +
+		var1toNUM0var2toNUM0var0to_n1n2_->(var1->NUM0 + var2->NUM0 + var0->_n1n2_) +
+		var0to_n1n3_var1toNUM0var2toNUM2->(var0->_n1n3_ + var1->NUM0 + var2->NUM2) +
+		var0to_n1n3_var2toNUM0var1toNUM2->(var0->_n1n3_ + var2->NUM0 + var1->NUM2) +
+		var0to_n1n3_var1toNUM1var2toNUM1->(var0->_n1n3_ + var1->NUM1 + var2->NUM1) +
+		var1toNUM2var0to_n2n3_var2toNUM2->(var1->NUM2 + var0->_n2n3_ + var2->NUM2) +
+		var2toNUM3var1toNUM1var0to_n2n3_->(var2->NUM3 + var1->NUM1 + var0->_n2n3_) +
+		var1toNUM3var2toNUM1var0to_n2n3_->(var1->NUM3 + var2->NUM1 + var0->_n2n3_) +
+		var0to_n1n3_var1toNUM2var2toNUM2->(var0->_n1n3_ + var1->NUM2 + var2->NUM2) +
+		var0to_n1n3_var2toNUM3var1toNUM1->(var0->_n1n3_ + var2->NUM3 + var1->NUM1) +
+		var1toNUM3var0to_n1n3_var2toNUM1->(var1->NUM3 + var0->_n1n3_ + var2->NUM1) +
+		var1toNUM1var0to_n1n2n3_->(var1->NUM1 + var0->_n1n2n3_) +
+		var1toNUM3var0to_n1n2n3_var2toNUM2->(var1->NUM3 + var0->_n1n2n3_ + var2->NUM2) +
+		var2toNUM3var0to_n1n2n3_var1toNUM2->(var2->NUM3 + var0->_n1n2n3_ + var1->NUM2) +
+		var1toNUM3var0to_n1n2_var2toNUM2->(var1->NUM3 + var0->_n1n2_ + var2->NUM2) +
+		var1toNUM3var0to_n1n2n3_->(var1->NUM3 + var0->_n1n2n3_) +
+		var2toNUM3var0to_n1n2_var1toNUM2->(var2->NUM3 + var0->_n1n2_ + var1->NUM2) +
+		var0to_n1n3_var1toNUM0var2toNUM0->(var0->_n1n3_ + var1->NUM0 + var2->NUM0) +
+		var2toNUM0var1toNUM1var0to_n2n3_->(var2->NUM0 + var1->NUM1 + var0->_n2n3_) +
+		var1toNUM0var2toNUM1var0to_n2n3_->(var1->NUM0 + var2->NUM1 + var0->_n2n3_) +
+		var1toNUM1var0to_n1n2n3_var2toNUM2->(var1->NUM1 + var0->_n1n2n3_ + var2->NUM2) +
+		var2toNUM3var1toNUM0var0to_n1n2n3_->(var2->NUM3 + var1->NUM0 + var0->_n1n2n3_) +
+		var1toNUM3var2toNUM0var0to_n1n2n3_->(var1->NUM3 + var2->NUM0 + var0->_n1n2n3_) +
+		var2toNUM1var0to_n1n2n3_var1toNUM2->(var2->NUM1 + var0->_n1n2n3_ + var1->NUM2) +
+		var0to_n1n2_var1toNUM1->(var0->_n1n2_ + var1->NUM1) +
+		var2toNUM0var0to_n1n2_var1toNUM1->(var2->NUM0 + var0->_n1n2_ + var1->NUM1) +
+		var1toNUM0var0to_n1n2_var2toNUM1->(var1->NUM0 + var0->_n1n2_ + var2->NUM1) +
+		var0to_n1n3_var1toNUM0->(var0->_n1n3_ + var1->NUM0) +
+		var1toNUM1var0to_n2n3_->(var1->NUM1 + var0->_n2n3_) +
+		var1toNUM3var0to_n1n2_->(var1->NUM3 + var0->_n1n2_) +
+		var2toNUM0var1toNUM1var0to_n1n2n3_->(var2->NUM0 + var1->NUM1 + var0->_n1n2n3_) +
+		var1toNUM0var2toNUM1var0to_n1n2n3_->(var1->NUM0 + var2->NUM1 + var0->_n1n2n3_) +
+		var0to_n1n2_var1toNUM1var2toNUM2->(var0->_n1n2_ + var1->NUM1 + var2->NUM2) +
+		var2toNUM3var1toNUM0var0to_n1n2_->(var2->NUM3 + var1->NUM0 + var0->_n1n2_) +
+		var1toNUM3var2toNUM0var0to_n1n2_->(var1->NUM3 + var2->NUM0 + var0->_n1n2_) +
+		var0to_n1n2_var2toNUM1var1toNUM2->(var0->_n1n2_ + var2->NUM1 + var1->NUM2) +
+		var1toNUM3var0to_n1n3_var2toNUM2->(var1->NUM3 + var0->_n1n3_ + var2->NUM2) +
+		var0to_n1n3_var2toNUM3var1toNUM2->(var0->_n1n3_ + var2->NUM3 + var1->NUM2) +
+		var1toNUM2var0to_n2n3_->(var1->NUM2 + var0->_n2n3_) +
+		var0to_n1n3_var1toNUM2->(var0->_n1n3_ + var1->NUM2) +
+		var1toNUM1var0to_n2n3_var2toNUM2->(var1->NUM1 + var0->_n2n3_ + var2->NUM2) +
+		var2toNUM3var1toNUM0var0to_n2n3_->(var2->NUM3 + var1->NUM0 + var0->_n2n3_) +
+		var1toNUM3var2toNUM0var0to_n2n3_->(var1->NUM3 + var2->NUM0 + var0->_n2n3_) +
+		var2toNUM1var1toNUM2var0to_n2n3_->(var2->NUM1 + var1->NUM2 + var0->_n2n3_) +
+		var0to_n1n3_var1toNUM1var2toNUM2->(var0->_n1n3_ + var1->NUM1 + var2->NUM2) +
+		var0to_n1n3_var2toNUM3var1toNUM0->(var0->_n1n3_ + var2->NUM3 + var1->NUM0) +
+		var1toNUM3var0to_n1n3_var2toNUM0->(var1->NUM3 + var0->_n1n3_ + var2->NUM0) +
+		var0to_n1n3_var2toNUM1var1toNUM2->(var0->_n1n3_ + var2->NUM1 + var1->NUM2) +
+		var1toNUM3var0to_n2n3_var2toNUM2->(var1->NUM3 + var0->_n2n3_ + var2->NUM2) +
+		var2toNUM3var1toNUM2var0to_n2n3_->(var2->NUM3 + var1->NUM2 + var0->_n2n3_) +
+		var1toNUM3var2toNUM3var0to_n1n2n3_->(var1->NUM3 + var2->NUM3 + var0->_n1n2n3_) +
+		var0to_n1n2n3_var1toNUM2var2toNUM2->(var0->_n1n2n3_ + var1->NUM2 + var2->NUM2) +
+		var2toNUM3var1toNUM1var0to_n1n2n3_->(var2->NUM3 + var1->NUM1 + var0->_n1n2n3_) +
+		var1toNUM3var2toNUM1var0to_n1n2n3_->(var1->NUM3 + var2->NUM1 + var0->_n1n2n3_) +
+		var0to_n1n2_var1toNUM2var2toNUM2->(var0->_n1n2_ + var1->NUM2 + var2->NUM2) +
+		var2toNUM3var0to_n1n2_var1toNUM1->(var2->NUM3 + var0->_n1n2_ + var1->NUM1) +
+		var1toNUM3var0to_n1n2_var2toNUM1->(var1->NUM3 + var0->_n1n2_ + var2->NUM1) +
+		var0to_n1n2_var1toNUM2->(var0->_n1n2_ + var1->NUM2) +
+		var0to_n1n2_->(var0->_n1n2_) +
+		var1toNUM0var0to_n1n2n3_->(var1->NUM0 + var0->_n1n2n3_) +
+		var1toNUM0var0to_n1n2n3_var2toNUM2->(var1->NUM0 + var0->_n1n2n3_ + var2->NUM2) +
+		var2toNUM0var0to_n1n2n3_var1toNUM2->(var2->NUM0 + var0->_n1n2n3_ + var1->NUM2) +
+		var1toNUM0var2toNUM0var0to_n2n3_->(var1->NUM0 + var2->NUM0 + var0->_n2n3_) +
+		var1toNUM1var2toNUM1var0to_n1n2n3_->(var1->NUM1 + var2->NUM1 + var0->_n1n2n3_) +
+		var0to_n1n2n3_->(var0->_n1n2n3_) +
+		var1toNUM0var0to_n1n2_->(var1->NUM0 + var0->_n1n2_) +
+		var1toNUM0var0to_n2n3_var2toNUM2->(var1->NUM0 + var0->_n2n3_ + var2->NUM2) +
+		var1toNUM3var2toNUM3var0to_n1n2_->(var1->NUM3 + var2->NUM3 + var0->_n1n2_) +
+		var2toNUM0var1toNUM2var0to_n2n3_->(var2->NUM0 + var1->NUM2 + var0->_n2n3_) +
+		var0to_n1n3_var2toNUM0var1toNUM1->(var0->_n1n3_ + var2->NUM0 + var1->NUM1) +
+		var0to_n1n3_var1toNUM0var2toNUM1->(var0->_n1n3_ + var1->NUM0 + var2->NUM1) +
+		var1toNUM1var2toNUM1var0to_n2n3_->(var1->NUM1 + var2->NUM1 + var0->_n2n3_) +
+		var1toNUM0var2toNUM0var0to_n1n2n3_->(var1->NUM0 + var2->NUM0 + var0->_n1n2n3_) +
+		var1toNUM0var0to_n2n3_->(var1->NUM0 + var0->_n2n3_) +
+		var1toNUM0var0to_n1n2_var2toNUM2->(var1->NUM0 + var0->_n1n2_ + var2->NUM2) +
+		var2toNUM0var0to_n1n2_var1toNUM2->(var2->NUM0 + var0->_n1n2_ + var1->NUM2) +
+		var0to_n1n2_var1toNUM1var2toNUM1->(var0->_n1n2_ + var1->NUM1 + var2->NUM1) +
+		var0to_n1n2n3_var1toNUM2->(var0->_n1n2n3_ + var1->NUM2) +
+		var0to_n2n3_->(var0->_n2n3_)
 
-	baseName = BecomeLeadern1_n1n2_NUM1->BecomeLeader +
-		BecomeLeadern2_n1n2_NUM2->BecomeLeader +
-		ClientRequestn1NUM1->ClientRequest +
+	baseName = ClientRequestn1NUM1->ClientRequest +
+		CommitEntryn1_n1n2_NUM2NUM2NUM2->CommitEntry +
 		ClientRequestn1NUM2->ClientRequest +
+		CommitEntryn1_n1n3_NUM2NUM2NUM2->CommitEntry +
 		BecomeLeadern1_n1n3_NUM2->BecomeLeader +
-		GetEntriesn1n2->GetEntries +
+		BecomeLeadern1_n1n2n3_NUM3->BecomeLeader +
+		ClientRequestn1NUM3->ClientRequest +
+		BecomeLeadern1_n1n2_NUM1->BecomeLeader +
+		CommitEntryn2_n2n3_NUM1NUM2NUM2->CommitEntry +
+		CommitEntryn1_n1n2_NUM1NUM2NUM2->CommitEntry +
+		BecomeLeadern2_n2n3_NUM2->BecomeLeader +
+		CommitEntryn2_n2n3_NUM2NUM2NUM2->CommitEntry +
+		CommitEntryn1_n1n2_NUM1NUM1NUM1->CommitEntry +
+		GetEntriesn2n1->GetEntries +
 		ClientRequestn2NUM2->ClientRequest +
-		GetEntriesn1n1->GetEntries +
+		CommitEntryn1_n1n2_NUM2NUM1NUM1->CommitEntry +
 		GetEntriesn3n2->GetEntries +
+		GetEntriesn3n1->GetEntries +
 		BecomeLeadern1_n1n2_NUM2->BecomeLeader
 }
 
@@ -585,8 +667,16 @@ fact {
 
 one sig NT1 extends NegTrace {} {}
 
-one sig PT2 extends PosTrace {} {}
 one sig PT15 extends PosTrace {} {}
-one sig PT7 extends PosTrace {} {}
-one sig PT1 extends PosTrace {} {}
+one sig PT22 extends PosTrace {} {}
+one sig PT4 extends PosTrace {} {}
+one sig PT21 extends PosTrace {} {}
+one sig PT17 extends PosTrace {} {}
+one sig PT2 extends PosTrace {} {}
+one sig PT23 extends PosTrace {} {}
+one sig PT29 extends PosTrace {} {}
+one sig PT18 extends PosTrace {} {}
 one sig PT3 extends PosTrace {} {}
+one sig PT1 extends PosTrace {} {}
+one sig PT25 extends PosTrace {} {}
+one sig PT26 extends PosTrace {} {}

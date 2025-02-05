@@ -13,6 +13,8 @@ Nil == "nil"
 
 vars == <<state,currentTerm,config>>
 
+StateConstraint == TRUE
+
 MinTerm(Q) == CHOOSE t \in FinNat : (\A n \in Q : t <= currentTerm[n]) /\ (\E n \in Q : t = currentTerm[n])
 
 Empty(s) == Len(s) = 0
