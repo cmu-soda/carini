@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -394,6 +395,20 @@ public class Utils {
     		}
     	}
     	throw new RuntimeException("Unable to find the last line in the TLA+ spec!");
+    }
+    
+    public static <K,V> Map<K,V> mergeMapsOrError(Map<K,V> map1, Map<K,V> map2) {
+    	// make sure the two maps agree on the value of any mutual keys
+    	final Set<K> mutualKeys = intersection(map1.keySet(), map2.keySet());
+    	for (final K key : mutualKeys) {
+    		assertTrue(map1.get(key).equals(map2.get(key)), "Attempting to merge maps with different values for key: " + key);
+    	}
+    	// merge the maps
+    	HashMap<K,V> merged = new HashMap<>(map1);
+    	for (final Map.Entry<K,V> entry : merged.entrySet()) {
+    		merged.put(entry.getKey(), entry.getValue());
+    	}
+    	return merged;
     }
     
     public static void printStringArr(ArrayList<String> arr) {

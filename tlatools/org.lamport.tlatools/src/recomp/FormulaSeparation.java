@@ -35,13 +35,10 @@ public class FormulaSeparation {
 	private final String cfgComp;
 	private final String tlaRest;
 	private final String cfgRest;
-	private final String tlaSys;
-	private final String cfgSys;
 	private final boolean useIntermediateProp;
 	private final Formula intermediateProp;
 	private final TLC tlcComp;
 	private final TLC tlcRest;
-	private final TLC tlcSys;
 	private final Set<String> globalActions;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
@@ -58,20 +55,16 @@ public class FormulaSeparation {
 	private Map<Utils.Pair<AlloyTrace, String>, Boolean> traceInSpecCache;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
-			final String tlaSys, final String cfgSys, final String propFile, long rseed) {
+			final String propFile, long rseed) {
 		this.tlaComp = tlaComp;
 		this.cfgComp = cfgComp;
 		this.tlaRest = tlaRest;
 		this.cfgRest = cfgRest;
-		this.tlaSys = tlaSys;
-		this.cfgSys = cfgSys;
 		
 		tlcComp = new TLC();
     	tlcComp.initialize(tlaComp, cfgComp);
 		tlcRest = new TLC();
     	tlcRest.initialize(tlaRest, cfgRest);
-		tlcSys = new TLC();
-    	tlcSys.initialize(tlaSys, cfgSys);
 		
     	// the property file that's used for "intermediate" (i.e. fluent) properties
 		this.useIntermediateProp = !propFile.equals("none");
@@ -85,18 +78,21 @@ public class FormulaSeparation {
     	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort)
-    	sortElementsMap = createSortElementsMap(tlcSys, true); // sanitized tokens
-    	rawSortElementsMap = createSortElementsMap(tlcSys, false); // unsanitiszed tokens
+    	sortElementsMap = Utils.mergeMapsOrError(createSortElementsMap(tlcComp, true), createSortElementsMap(tlcRest, true)); // sanitized tokens
+    	rawSortElementsMap = Utils.mergeMapsOrError(createSortElementsMap(tlcComp, false), createSortElementsMap(tlcRest, false)); // unsanitiszed tokens
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort) -> Set(elements/atoms in each set in the sort)
-    	setSortElementsMap = createSetSortElementsMap(tlcSys);
+    	setSortElementsMap = Utils.mergeMapsOrError(createSetSortElementsMap(tlcComp), createSetSortElementsMap(tlcRest));
     	
     	// calculate all permutations of the sort elements
     	allPermutations = calcAllPermutations();
 		
 		// obtain a map of: action -> List(param type)
-    	FastTool ft = (FastTool) tlcSys.tool;
-		actionParamTypes = TLC.getTransitionRelationNode(ft, tlcSys, "Next").actionParamTypes(tlcSys.actionsInSpec());
+    	FastTool ftComp = (FastTool) tlcComp.tool;
+    	FastTool ftRest = (FastTool) tlcRest.tool;
+		actionParamTypes = Utils.mergeMapsOrError(
+				TLC.getTransitionRelationNode(ftComp, tlcComp, "Next").actionParamTypes(tlcComp.actionsInSpec()),
+				TLC.getTransitionRelationNode(ftRest, tlcRest, "Next").actionParamTypes(tlcRest.actionsInSpec()));
 		maxActParamLen = actionParamTypes.values()
 				.stream()
 				.mapToInt(l -> l.size())
@@ -126,7 +122,7 @@ public class FormulaSeparation {
 	
 	public String synthesizeSepInvariant() {
     	// config for producing positive traces
-    	final String strCfgConstants = String.join("\n", tlcSys.tool.getModelConfig().getRawConstants());
+    	final String strCfgConstants = String.join("\n", tlcRest.tool.getModelConfig().getRawConstants());
     	final String cfgPosTraces = "pos_traces.cfg";
     	Utils.writeFile(cfgPosTraces, "SPECIFICATION Spec\nINVARIANT CandSep\n" + strCfgConstants);
     	
