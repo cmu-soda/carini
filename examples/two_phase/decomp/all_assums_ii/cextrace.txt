@@ -1,0 +1,34 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 10 and seed 8497876395794048336 with 12 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 76732] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/two_phase/decomp/all_assums_ii/T1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Integers.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module Integers
+Semantic processing of module T1_hist
+Starting... (2025-01-05 08:00:46)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-01-05 08:00:46.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs = {}
+/\ rmState = (r1 :> "working" @@ r2 :> "working" @@ r3 :> "working")
+/\ Fluent4 = (r1 :> FALSE @@ r2 :> FALSE @@ r3 :> FALSE)
+/\ tmState = "init"
+/\ tmPrepared = {}
+
+State 2: <SilentAbort line 64, col 1 to line 68, col 16 of module T1_hist>
+/\ msgs = {}
+/\ rmState = (r1 :> "aborted" @@ r2 :> "working" @@ r3 :> "working")
+/\ Fluent4 = (r1 :> TRUE @@ r2 :> FALSE @@ r3 :> FALSE)
+/\ tmState = "init"
+/\ tmPrepared = {}
+
+72 states generated, 40 distinct states found, 16 states left on queue.
+The depth of the complete state graph search is 5.
+Finished in 00s at (2025-01-05 08:00:46)

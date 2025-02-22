@@ -1,0 +1,1 @@
+{"formula":"/\\ \\A var0 \\in RMs : \\E var1 \\in RMs : (Fluent1[var0]) => (Fluent0[var1])","fluents":{"Fluent1":{"paramTypes":["RMs"],"initially":"FALSE","init":[{"SndAbort":[0]},{"RcvAbort":[0]}],"term":[],"mutInit":[],"falsify":[]},"Fluent0":{"paramTypes":["RMs"],"initially":"FALSE","init":[{"SndAbort":[0]}],"term":[],"mutInit":[],"falsify":[]}}}
