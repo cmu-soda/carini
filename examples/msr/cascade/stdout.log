@@ -1,0 +1,465 @@
+Building the LTS for the initial trace (T2.tla)
+Built the LTS in 0.965s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.189s
+
+Round 1
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->UpdateTermsn2n1 + T5->CommitEntryn2_n1n2_NUM1NUM2 + T6->RollbackEntriesn1n2 + T7->BecomeLeadern1_n1n3_NUM3 + T8->ClientRequestn1NUM3 + T9->GetEntriesn3n2 + T10->CommitEntryn1_n1n3_NUM1NUM3)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 68.963 seconds
+  winning worker id: 20
+  winning worker time: 68.96 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: CommitEntry: [0]
+  falsify: 
+
+new pos trace:
+PT2 (PosTrace): (T0->ClientRequestn1NUM1 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM1)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 209.758 seconds
+  winning worker id: 18
+  winning worker time: 209.755 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: UpdateTerms: [1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT3 (PosTrace): (T0->ClientRequestn1NUM0 + T1->UpdateTermsn1n1)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 156.799 seconds
+  winning worker id: 5
+  winning worker time: 156.791 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: RollbackEntries: [0]
+  falsify: 
+
+new pos trace:
+PT4 (PosTrace): (T0->RollbackEntriesn1n1)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 154.633 seconds
+  winning worker id: 20
+  winning worker time: 154.633 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: BecomeLeader: [0]
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT5 (PosTrace): (T0->BecomeLeadern1_n1n3_NUM0 + T1->BecomeLeadern2_n1n2_NUM0)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 249.018 seconds
+  winning worker id: 8
+  winning worker time: 249.017 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Server : (Fluent3[var1][var0]) => (var0 = var1)
+Fluent3:
+  initially: FALSE
+  init: RollbackEntries: [0,1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT6 (PosTrace): (T0->RollbackEntriesn2n1)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 304.101 seconds
+  winning worker id: 9
+  winning worker time: 304.086 seconds
+Synthesized: \A var0 \in Server : (Fluent4[var0]) => (Fluent3[var0])
+Fluent4:
+  initially: FALSE
+  init: ClientRequest: [0]
+  term: 
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: ClientRequest: [0]
+  falsify: 
+
+new pos trace:
+PT7 (PosTrace): (T0->ClientRequestn1NUM0 + T1->ClientRequestn2NUM0)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 282.463 seconds
+  winning worker id: 8
+  winning worker time: 282.452 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Server : (Fluent3[var0][var1]) => (var0 = var1)
+Fluent3:
+  initially: FALSE
+  init: UpdateTerms: [0,1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT8 (PosTrace): (T0->UpdateTermsn2n1)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 182.361 seconds
+  winning worker id: 20
+  winning worker time: 182.361 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: CommitEntry: [0]
+  falsify: 
+
+new pos trace:
+PT9 (PosTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM0)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 295.693 seconds
+  winning worker id: 5
+  winning worker time: 295.693 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: CommitEntry: [0]
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT10 (PosTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM0 + T3->CommitEntryn2_n1n2_NUM1NUM0)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 258.265 seconds
+  winning worker id: 20
+  winning worker time: 258.253 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: CommitEntry: [0]
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT11 (PosTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->BecomeLeadern1_n1n3_NUM0 + T3->CommitEntryn1_n1n2_NUM1NUM0)
+max # pos traces: 6
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 299.536 seconds
+  winning worker id: 5
+  winning worker time: 299.52 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: BecomeLeader: [0]
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT12 (PosTrace): (T0->BecomeLeadern1_n1n3_NUM0 + T1->BecomeLeadern2_n1n2_NUM0)
+(trace has been seen before)
+max # pos traces: 7
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 379.472 seconds
+  winning worker id: 8
+  winning worker time: 379.47 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: ClientRequest: [0]
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: GetEntries: [1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT13 (PosTrace): (T0->ClientRequestn1NUM0 + T1->ClientRequestn2NUM0 + T2->GetEntriesn3n1)
+max # pos traces: 7
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 205.346 seconds
+  winning worker id: 20
+  winning worker time: 205.342 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: RollbackEntries: [0]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT14 (PosTrace): (T0->RollbackEntriesn1n1)
+(trace has been seen before)
+max # pos traces: 8
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 431.489 seconds
+  winning worker id: 3
+  winning worker time: 431.456 seconds
+Synthesized: \A var0 \in Quorums : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: CommitEntry: [1]
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: CommitEntry: [1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT15 (PosTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->GetEntriesn3n2 + T3->CommitEntryn2_n1n2n3_NUM1NUM0 + T4->CommitEntryn1_n1n2_NUM1NUM0)
+max # pos traces: 8
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 367.205 seconds
+  winning worker id: 8
+  winning worker time: 367.188 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Server : (Fluent3[var1][var0]) => (var0 = var1)
+Fluent3:
+  initially: FALSE
+  init: RollbackEntries: [0,1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT16 (PosTrace): (T0->RollbackEntriesn2n1)
+(trace has been seen before)
+max # pos traces: 9
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 514.546 seconds
+  winning worker id: 8
+  winning worker time: 514.541 seconds
+Synthesized: \A var0 \in Server : (Fluent4[var0]) => (Fluent3[var0])
+Fluent4:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+  mutInit: GetEntries: [0]
+  falsify: 
+
+new pos trace:
+PT17 (PosTrace): (T0->ClientRequestn1NUM0 + T1->ClientRequestn2NUM0 + T2->CommitEntryn1_n1n2_NUM1NUM0 + T3->GetEntriesn3n1)
+max # pos traces: 9
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 252.439 seconds
+  winning worker id: 20
+  winning worker time: 252.431 seconds
+Synthesized: \A var0 \in Server : ~(Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: UpdateTerms: [1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT18 (PosTrace): (T0->UpdateTermsn1n1)
+max # pos traces: 9
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 437.137 seconds
+  winning worker id: 8
+  winning worker time: 437.131 seconds
+Synthesized: \A var0 \in Server : \A var1 \in Server : (Fluent3[var0][var1]) => (var1 = var0)
+Fluent3:
+  initially: FALSE
+  init: UpdateTerms: [0,1]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT19 (PosTrace): (T0->UpdateTermsn2n1)
+(trace has been seen before)
+max # pos traces: 10
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 587.372 seconds
+  winning worker id: 8
+  winning worker time: 587.368 seconds
+Synthesized: \A var0 \in Server : (Fluent4[var0]) => (Fluent3[var0])
+Fluent4:
+  initially: FALSE
+  init: UpdateTerms: [1]
+  term: 
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: UpdateTerms: [1]
+           GetEntries: [1]
+  falsify: 
+
+new pos trace:
+PT20 (PosTrace): (T0->UpdateTermsn1n1 + T1->UpdateTermsn1n2)
+max # pos traces: 10
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 345.838 seconds
+  winning worker id: 20
+  winning worker time: 345.832 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: UpdateTerms: [0]
+  term: CommitEntry: [0]
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: UpdateTerms: [0]
+  falsify: 
+
+new pos trace:
+PT21 (PosTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->UpdateTermsn1n1 + T3->CommitEntryn1_n1n2_NUM1NUM0)
+max # pos traces: 10
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 756.853 seconds
+  winning worker id: 4
+  winning worker time: 756.842 seconds
+Synthesized: \A var0 \in FinNat : (Fluent4[var0]) => (Fluent3[var0])
+Fluent4:
+  initially: FALSE
+  init: BecomeLeader: [2]
+  term: 
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: BecomeLeader: [2]
+  falsify: 
+
+new pos trace:
+PT22 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM0)
+max # pos traces: 10
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 545.657 seconds
+  winning worker id: 8
+  winning worker time: 545.652 seconds
+Synthesized: \A var0 \in Server : (Fluent4[var0]) => (Fluent3[var0])
+Fluent4:
+  initially: FALSE
+  init: BecomeLeader: [0]
+  term: 
+  mutInit: 
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: 
+  term: 
+  mutInit: BecomeLeader: [0]
+  falsify: 
+
+new pos trace:
+PT23 (PosTrace): (T0->BecomeLeadern1_n1n3_NUM0 + T1->BecomeLeadern2_n1n2_NUM0)
+(trace has been seen before)
+max # pos traces: 11
+Total # synth jobs: 27
+Formula synthesis info:
+  overall (multithread) time: 837.258 seconds
+  winning worker id: 8
+  winning worker time: 837.252 seconds
+Synthesized: \A var0 \in Server : (Fluent3[var0]) => (Fluent4[var0])
+Fluent4:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+  mutInit: ClientRequest: [0]
+  falsify: 
+Fluent3:
+  initially: FALSE
+  init: CommitEntry: [0]
+  term: 
+  mutInit: 
+  falsify: 
+
+new pos trace:
+PT24 (PosTrace): (T0->ClientRequestn1NUM0 + T1->ClientRequestn2NUM0 + T2->CommitEntryn1_n1n2_NUM1NUM0 + T3->ClientRequestn2NUM0)
+max # pos traces: 11
+Total # synth jobs: 27
+     8241.12 real     70191.98 user      3065.45 sys

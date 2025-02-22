@@ -1,9 +1,9 @@
 --------------------------- MODULE T1 ---------------------------
 EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
-VARIABLES currentTerm, log, state, config
+CONSTANTS Server, Quorums, FinNat
 
-Server == {"n1","n2"}
+VARIABLES currentTerm, log, state, config
 
 Secondary == "secondary"
 
@@ -11,11 +11,11 @@ Primary == "primary"
 
 Nil == "nil"
 
-FinNat == ..(0,5)
-
 vars == <<currentTerm,state,log,config>>
 
-Quorums(S) == { i \in SUBSET(S) : (Cardinality(i) * 2) > Cardinality(S) }
+StateConstraint == \A s \in Server : Len(log[s]) < 4
+
+MinTerm(Q) == CHOOSE t \in FinNat : (\A n \in Q : t <= currentTerm[n]) /\ (\E n \in Q : t = currentTerm[n])
 
 Empty(s) == Len(s) = 0
 
@@ -76,7 +76,7 @@ RollbackEntries(i,j) ==
 /\ UNCHANGED <<currentTerm,state,config>>
 
 BecomeLeader(i,voteQuorum,newTerm) ==
-/\ (voteQuorum \in Quorums(config[i]))
+/\ (voteQuorum \in Quorums)
 /\ newTerm = (currentTerm[i] + 1)
 /\ (i \in voteQuorum)
 /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
@@ -84,8 +84,9 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]]
 /\ UNCHANGED <<log,config>>
 
-CommitEntry(i,commitQuorum,ind,curTerm) ==
-/\ (commitQuorum \in Quorums(config[i]))
+CommitEntry(i,commitQuorum,ind,curTerm,minQTerm) ==
+/\ minQTerm = MinTerm(commitQuorum)
+/\ (commitQuorum \in Quorums)
 /\ curTerm = currentTerm[i]
 /\ ind = Len(log[i])
 /\ ind > 0
@@ -108,8 +109,8 @@ Next ==
 \/ (\E s \in Server : (\E t \in FinNat : ClientRequest(s,t)))
 \/ (\E s,t \in Server : GetEntries(s,t))
 \/ (\E s,t \in Server : RollbackEntries(s,t))
-\/ (\E s \in Server : (\E Q \in SUBSET(Server) : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
-\/ (\E s \in Server : (\E Q \in SUBSET(Server) : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,Q,ind,curTerm)))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : (\E minQTerm \in FinNat : CommitEntry(s,Q,ind,curTerm,minQTerm))))))
 \/ (\E s,t \in Server : UpdateTerms(s,t))
 
 Spec == (Init /\ [][Next]_vars)

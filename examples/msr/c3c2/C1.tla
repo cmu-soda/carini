@@ -1,6 +1,8 @@
 --------------------------- MODULE C1 ---------------------------
 EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
+CONSTANTS Server, Quorums, FinNat
+
 VARIABLES committed
 
 CONSTANTS Server, Quorums, FinNat
@@ -12,6 +14,8 @@ Primary == "primary"
 Nil == "nil"
 
 vars == <<committed>>
+
+StateConstraint == TRUE
 
 Empty(s) == Len(s) = 0
 

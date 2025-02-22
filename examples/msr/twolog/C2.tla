@@ -38,7 +38,7 @@ IsPrefix(s, t) ==
   Len(s) <= Len(t) /\ SubSeq(s, 1, Len(s)) = SubSeq(t, 1, Len(s))
 
 CanRollback(i, j) ==
-    /\ LastTerm(log[i]) < LastTerm(log[j])
+    \*/\ LastTerm(log[i]) < LastTerm(log[j])
     /\ ~IsPrefix(log[i],log[j])
 
 \* Can node 'i' currently cast a vote for node 'j' in term 'term'.

@@ -2,11 +2,11 @@
 
 rm -f ii_out.log
 
-for i in $(seq 1 3)
+for i in $(seq 1 20)
 do
     echo "trial $i"
     #java -jar ~/bin/tla2tools.jar -cleanup -deadlock -workers 10 -config C3_ii.cfg C3.tla | tee -a ii_out.log
-    java -jar ~/bin/tla2tools.jar -cleanup -deadlock -workers 10 -config C3_ii.cfg C3_endive.tla | tee -a ii_out.log
+    java -jar ~/bin/tla2tools.jar -cleanup -deadlock -workers 10 -config C3_ii.cfg C3_endive2.tla | tee -a ii_out.log
     violations=$(grep 'Error: Invariant IndInv is violated.' ii_out.log | wc -l)
     if [ ${violations} -ne 0 ]
     then

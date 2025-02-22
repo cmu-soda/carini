@@ -1,1 +1,1 @@
-{"formula":"TRUE","fluents":{}}
+{"formula":"/\\ \\A var0 \\in Server : ~(Fluent3[var0][var0])","fluents":{"Fluent3":{"paramTypes":["Server","Server"],"initially":"FALSE","init":[{"RollbackEntries":[1,0]}],"term":[],"mutInit":[],"falsify":[]}}}

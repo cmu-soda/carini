@@ -3,7 +3,7 @@
 \* Basic, static version of MongoDB Raft protocol. No reconfiguration is allowed.
 \*
 
-EXTENDS Naturals, Integers, FiniteSets, Sequences, TLC
+EXTENDS Naturals, Integers, FiniteSets, Sequences, TLC, Randomization
 
 CONSTANTS Server, Quorums, FinNat
 
@@ -18,6 +18,7 @@ VARIABLE config
 
 vars == <<currentTerm, state, log, config>>
 
+FinSeq(S) == UNION {[1..n -> S] : n \in FinNat}
 StateConstraint == \A s \in Server : Len(log[s]) < 4
 
 \*
@@ -51,7 +52,7 @@ CanVoteForOplog(i, j, term) ==
         \/ /\ LastTerm(log[j]) = LastTerm(log[i])
            /\ Len(log[j]) >= Len(log[i]) IN
     /\ currentTerm[i] < term
-    \*/\ logOk
+    /\ logOk
 
 \* Is a log entry 'e'=<<i, t>> immediately committed in term 't' with a quorum 'Q'.
 ImmediatelyCommitted(e, Q) == 
@@ -138,7 +139,7 @@ CommitEntry(i, commitQuorum, ind, curTerm) ==
     \*/\ ImmediatelyCommitted(<<ind,curTerm>>, commitQuorum)
     /\ \A s \in commitQuorum :
         /\ Len(log[s]) >= ind
-        /\ InLog(<<ind,curTerm>>, s) \* they have the entry.
+        \*/\ InLog(<<ind,curTerm>>, s) \* they have the entry.
         /\ currentTerm[s] = curTerm  \* they are in the same term as the log entry. 
     /\ UNCHANGED <<currentTerm, state, log, config>>
 
@@ -153,8 +154,12 @@ UpdateTerms(i, j) ==
 
 Init == 
     /\ currentTerm = [i \in Server |-> 0]
+    \*/\ currentTerm \in [Server -> FinNat]
     /\ state       = [i \in Server |-> Secondary]
+    \*/\ state \in [Server -> {Primary,Secondary}]
     /\ log = [i \in Server |-> <<>>]
+    \*/\ log \in [Server -> FinSeq(FinNat)]
+    \*/\ log \in RandomSubset(10000, [Server -> FinSeq(FinNat)])
     /\ \E initConfig \in SUBSET Server : 
         /\ initConfig # {} \* configs should be non-empty.
         /\ config = [i \in Server |-> initConfig]

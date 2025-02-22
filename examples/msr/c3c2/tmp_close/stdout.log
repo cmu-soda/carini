@@ -1,0 +1,5709 @@
+Building the LTS for the initial trace (T2.tla)
+Built the LTS in 1.277s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.127s
+
+Round 1
+-------
+total # neg traces: 17
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->ClientRequestn1NUM0 + T1->GetEntriesn2n1 + T2->ClientRequestn3NUM1 + T3->CommitEntryn2_n1n2_NUM1NUM0NUM1 + T4->RollbackEntriesn1n3 + T5->GetEntriesn1n3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM0)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->ClientRequestn1NUM0)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 42.477s
+Formula synthesis complete in 35.943 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : (Fluent3_19[var0]) => (~(var0 \in var1))
+  Fluent3_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent4_1[var0]) => (~(Fluent3_1[var0]))
+  Fluent4_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent3_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent4_8[var0]) => (~(Fluent3_8[var0]))
+  Fluent4_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent3_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Server : (Fluent3_20[var1]) => (~(var1 = var0))
+  Fluent3_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in FinNat : \A var2 \in Quorums : (Fluent3_25[var1]) => (~(var0 = var2))
+  Fluent3_25:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent3_9[var0]) => (Fluent4_9[var0])
+  Fluent4_9:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent3_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in FinNat : \E var2 \in Server : (var2 \in var0) => (~(Fluent3_22[var1]))
+  Fluent3_22:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in Server : (Fluent3_13[var2]) => (var0 = var1)
+  Fluent3_13:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent3_15[var0]) => (Fluent4_15[var0])
+  Fluent4_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent3_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (Fluent3_3[var1]) => (var1 \in var0)
+  Fluent3_3:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent3_16[var0]) => (~(Fluent4_16[var0]))
+  Fluent4_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent3_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: true
+\A var0 \in FinNat : (Fluent4_4[var0]) => (Fluent3_4[var0])
+  Fluent4_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent3_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent4_4[var0]) => (Fluent3_4[var0])
+  Fluent4_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent3_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Round 1 took 184.969 seconds
+
+Round 2
+-------
+total # neg traces: 19
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern2_n1n2n3_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1 + T3->BecomeLeadern2_n2n3_NUM3 + T4->ClientRequestn3NUM3 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM0 + T6->RollbackEntriesn1n3 + T7->GetEntriesn1n3 + T8->CommitEntryn1_n1n3_NUM1NUM3NUM0)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern2_n1n2n3_NUM1 + T1->ClientRequestn1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 63.036s
+Formula synthesis complete in 55.092 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (Fluent5_3[var1]) => (var1 \in var0)
+  Fluent5_3:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \A var1 \in FinNat : (var0 = var1) => (~(Fluent5_0[var0]))
+  Fluent5_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent6_16[var0]) => (Fluent5_16[var0])
+  Fluent5_16:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+  Fluent6_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent6_20[var0]) => (Fluent5_20[var0])
+  Fluent5_20:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent6_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent6_19[var0]) => (Fluent5_19[var0])
+  Fluent6_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent5_19:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent5_10[var0]) => (~(Fluent6_10[var0]))
+  Fluent6_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent5_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent5_4[var0]) => (~(Fluent6_4[var0]))
+  Fluent6_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent5_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent6_17[var0]) => (Fluent5_17[var0])
+  Fluent5_17:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+  Fluent6_17:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : (var0 \in var1) => (~(Fluent5_9[var0]))
+  Fluent5_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent6_5[var0]) => (~(Fluent5_5[var0]))
+  Fluent5_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent6_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in Server : (Fluent5_13[var2]) => (var0 = var1)
+  Fluent5_13:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: true
+\A var0 \in Server : (Fluent6_18[var0]) => (Fluent5_18[var0])
+  Fluent6_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent5_18:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : (Fluent6_18[var0]) => (Fluent5_18[var0])
+  Fluent6_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent5_18:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Round 2 took 273.776 seconds
+
+Round 3
+-------
+total # neg traces: 57
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T6->RollbackEntriesn3n2 + T7->GetEntriesn3n2 + T8->CommitEntryn2_n2n3_NUM1NUM2NUM0)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 146.796s
+Formula synthesis complete in 177.556 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_21[var0]) => (Fluent8_21[var0])
+  Fluent7_21:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_21:
+    initially: FALSE
+    init: 
+    term: CommitEntry: [1]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_25[var0]) => (~(Fluent8_25[var0]))
+  Fluent8_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent7_0[var0]) => (~(var1 = var0))
+  Fluent7_0:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_9[var0]) => (~(Fluent8_9[var0]))
+  Fluent8_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Server : (var1 = var0) => (~(Fluent7_20[var1]))
+  Fluent7_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_8[var0]) => (Fluent7_8[var0])
+  Fluent8_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_8:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent8_4[var0]) => (Fluent7_4[var0])
+  Fluent8_4:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_4:
+    initially: FALSE
+    init: 
+    term: CommitEntry: [4]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_18[var0]) => (~(Fluent7_18[var0]))
+  Fluent7_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_18:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent8_22[var0]) => (~(Fluent7_22[var0]))
+  Fluent7_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_19[var0]) => (~(Fluent8_19[var0]))
+  Fluent7_19:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_19:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_1[var0]) => (~(Fluent8_1[var0]))
+  Fluent8_1:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_1:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_11[var0]) => (Fluent8_11[var0])
+  Fluent7_11:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_11:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: RollbackEntries: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent8_24[var0]) => (~(Fluent7_24[var0]))
+  Fluent8_24:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_24:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_5[var0]) => (Fluent7_5[var0])
+  Fluent8_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_5:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_13[var0]) => (Fluent8_13[var0])
+  Fluent8_13:
+    initially: FALSE
+    init: 
+    term: CommitEntry: [1]
+    mutInit: 
+    falsify: 
+  Fluent7_13:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT7 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+PT9 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 394.383s
+Formula synthesis complete in 316.258 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent8_13[var0]) => (Fluent7_13[var0])
+  Fluent8_13:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_13:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_4[var0]) => (~(Fluent8_4[var0]))
+  Fluent8_4:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_5[var0]) => (~(Fluent8_5[var0]))
+  Fluent8_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_1[var0]) => (~(Fluent8_1[var0]))
+  Fluent8_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_1:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_21[var0]) => (Fluent8_21[var0])
+  Fluent7_21:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_21:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent8_22[var0]) => (Fluent7_22[var0])
+  Fluent7_22:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_3[var0]) => (Fluent8_3[var0])
+  Fluent7_3:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_3:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent7_6[var0]) => (Fluent8_6[var0])
+  Fluent8_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent8_7[var0]) => (Fluent7_7[var0])
+  Fluent7_7:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent8_2[var0]) => (~(Fluent7_2[var0]))
+  Fluent8_2:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_9[var0]) => (~(Fluent8_9[var0]))
+  Fluent8_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_12[var0]) => (~(Fluent8_12[var0]))
+  Fluent8_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_16[var0]) => (~(Fluent8_16[var0]))
+  Fluent8_16:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_19[var0]) => (~(Fluent8_19[var0]))
+  Fluent7_19:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_8[var0]) => (~(Fluent8_8[var0]))
+  Fluent8_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT17 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT18 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT25 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 477.426s
+Formula synthesis complete in 516.67 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent8_21[var1])) => (Fluent7_21[var1])
+  Fluent8_21:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_21:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_10[var0]) => (Fluent7_10[var0])
+  Fluent7_10:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0]
+    falsify: 
+  Fluent8_10:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_8[var0]) => (~(Fluent8_8[var0]))
+  Fluent8_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_8:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_14[var0]) => (Fluent8_14[var0])
+  Fluent7_14:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_14:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_24[var0]) => (Fluent8_24[var0])
+  Fluent8_24:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent7_24:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent8_25[var0]) => (Fluent7_25[var0])
+  Fluent7_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent8_25:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_15[var0]) => (Fluent8_15[var0])
+  Fluent8_15:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent7_15:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_2[var0]) => (Fluent8_2[var0])
+  Fluent8_2:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent7_2:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_19[var0]) => (Fluent7_19[var0])
+  Fluent7_19:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent8_19:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent8_23[var0]) => (Fluent7_23[var0])
+  Fluent7_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent8_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: CommitEntry: [1]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_12[var0]) => (Fluent7_12[var0])
+  Fluent7_12:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0]
+    falsify: 
+  Fluent8_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent8_26[var0]) => (Fluent7_26[var0])
+  Fluent8_26:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_26:
+    initially: FALSE
+    init: CommitEntry: [1]
+          BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent7_3[var1])) => (Fluent8_3[var1])
+  Fluent7_3:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_3:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent8_4[var0]) => (Fluent7_4[var0])
+  Fluent8_4:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_4:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_17[var0]) => (Fluent8_17[var0])
+  Fluent8_17:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent7_17:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT33 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern2_n1n2_NUM2)
+PT36 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+PT43 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1)
+PT35 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1)
+PT34 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT37 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2)
+PT32 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 801.516s
+Formula synthesis complete in 978.852 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : ((~(Fluent9_10[var0])) => (Fluent8_10[var0])) => (~(Fluent7_10[var0]))
+  Fluent9_10:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_10:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent9_1[var0])) => ((Fluent8_1[var0]) => (~(Fluent7_1[var0])))
+  Fluent9_1:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+  Fluent8_1:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent7_7[var0]) => (Fluent8_7[var0])
+  Fluent7_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_7:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: CommitEntry: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent8_21[var1])) => (Fluent7_21[var1])
+  Fluent8_21:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_21:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent7_3[var1])) => (Fluent8_3[var1])
+  Fluent7_3:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_3:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent7_9[var0]) => ((Fluent9_9[var0]) => (~(Fluent8_9[var0])))
+  Fluent9_9:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent8_19[var0]) => ((Fluent9_19[var0]) => (Fluent7_19[var0]))
+  Fluent7_19:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+  Fluent8_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent9_19:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent9_5[var0]) => ((Fluent8_5[var0]) => (~(Fluent7_5[var0])))
+  Fluent9_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent8_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_5:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent8_2[var0]) => (Fluent7_2[var0])
+  Fluent8_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent7_2:
+    initially: FALSE
+    init: CommitEntry: [2]
+          BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: true
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent8_22[var1][var0]) => (Fluent7_22[var1])
+  Fluent7_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent8_22:
+    initially: FALSE
+    init: CommitEntry: [3,1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+
+Found 1 new invariant(s) this round:
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent8_22[var1][var0]) => (Fluent7_22[var1])
+  Fluent7_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent8_22:
+    initially: FALSE
+    init: CommitEntry: [3,1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Round 3 took 2142.098 seconds
+
+Round 4
+-------
+total # neg traces: 122
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM1 + T3->GetEntriesn2n1 + T4->CommitEntryn2_n1n2_NUM1NUM1NUM0 + T5->BecomeLeadern1_n1n3_NUM2 + T6->ClientRequestn3NUM2 + T7->RollbackEntriesn2n3 + T8->GetEntriesn2n3 + T9->CommitEntryn2_n2n3_NUM1NUM2NUM0)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 108.879s
+Formula synthesis complete in 113.831 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent10_0[var0]) => (~(Fluent9_0[var0]))
+  Fluent9_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent10_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent10_18[var0]) => (Fluent9_18[var0])
+  Fluent10_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent9_18:
+    initially: FALSE
+    init: 
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent10_25[var0]) => (Fluent9_25[var0])
+  Fluent9_25:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent10_25:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent9_7[var0]) => (~(Fluent10_7[var0]))
+  Fluent10_7:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent9_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent9_17[var0]) => (Fluent10_17[var0])
+  Fluent10_17:
+    initially: FALSE
+    init: 
+    term: BecomeLeader: [2]
+    mutInit: 
+    falsify: 
+  Fluent9_17:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent10_24[var0]) => (~(Fluent9_24[var0]))
+  Fluent9_24:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent10_24:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent10_23[var0]) => (Fluent9_23[var0])
+  Fluent9_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent10_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent9_14[var0]) => (~(Fluent10_14[var0]))
+  Fluent9_14:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent10_14:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent9_6[var0]) => (Fluent10_6[var0])
+  Fluent10_6:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent9_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent10_10[var0]) => (~(Fluent9_10[var0]))
+  Fluent9_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent10_10:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent10_2[var0]) => (Fluent9_2[var0])
+  Fluent9_2:
+    initially: FALSE
+    init: 
+    term: BecomeLeader: [2]
+    mutInit: 
+    falsify: 
+  Fluent10_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (Fluent9_21[var1]) => (~(var1 \in var0))
+  Fluent9_21:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent9_8[var0]) => (~(Fluent10_8[var0]))
+  Fluent10_8:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent9_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent10_16[var0]) => (~(Fluent9_16[var0]))
+  Fluent9_16:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent10_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent9_12[var0]) => (~(Fluent10_12[var0]))
+  Fluent9_12:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent10_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+PT4 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 177.408s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 236.569 seconds
+Synthesized formula is invariant: true
+\A var0 \in FinNat : (Fluent10_4[var0]) => (~(Fluent9_4[var0]))
+  Fluent10_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent9_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent10_4[var0]) => (~(Fluent9_4[var0]))
+  Fluent10_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent9_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Round 4 took 734.204 seconds
+
+Round 5
+-------
+total # neg traces: 285
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM3 + T5->BecomeLeadern3_n2n3_NUM3 + T6->ClientRequestn1NUM3 + T7->RollbackEntriesn3n1 + T8->ClientRequestn3NUM3 + T9->CommitEntryn1_n1n3_NUM1NUM3NUM0)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM3)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 163.701s
+Formula synthesis complete in 154.381 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent11_5[var0]) => (~(Fluent12_5[var0]))
+  Fluent12_5:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent11_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : (var0 = var1) => (~(Fluent11_6[var1]))
+  Fluent11_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : (Fluent11_13[var1]) => (~(var1 = var0))
+  Fluent11_13:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent11_4[var0]) => (~(Fluent12_4[var0]))
+  Fluent11_4:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent12_9[var0]) => (~(Fluent11_9[var0]))
+  Fluent12_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent11_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent11_14[var0]) => (Fluent12_14[var0])
+  Fluent12_14:
+    initially: FALSE
+    init: 
+    term: CommitEntry: [4]
+    mutInit: 
+    falsify: 
+  Fluent11_14:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent11_16[var0]) => (Fluent12_16[var0])
+  Fluent11_16:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_16:
+    initially: FALSE
+    init: 
+    term: CommitEntry: [4]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent11_17[var0]) => (Fluent12_17[var0])
+  Fluent11_17:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_17:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: RollbackEntries: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent11_2[var0]) => (Fluent12_2[var0])
+  Fluent12_2:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+  Fluent11_2:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent12_23[var0]) => (Fluent11_23[var0])
+  Fluent11_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+  Fluent12_15:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent11_15:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent12_8[var0]) => (~(Fluent11_8[var0]))
+  Fluent11_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent12_24[var0]) => (~(Fluent11_24[var0]))
+  Fluent12_24:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent11_24:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent11_25[var0]) => (Fluent12_25[var0])
+  Fluent12_25:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent11_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent12_19[var0]) => (~(Fluent11_19[var0]))
+  Fluent11_19:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_19:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT2 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT11 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT3 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT12 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1)
+PT5 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM3)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 434.625s
+Formula synthesis complete in 468.322 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (var1 \in var0) => (~(Fluent11_21[var1]))
+  Fluent11_21:
+    initially: FALSE
+    init: BecomeLeader: [0]
+          CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \E var1 \in FinNat : (var1 <= var0) => (~(Fluent11_0[var0]))
+  Fluent11_0:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: true
+\A var0 \in FinNat : (Fluent11_16[var0]) => (Fluent12_16[var0])
+  Fluent11_16:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_16:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent11_16[var0]) => (Fluent12_16[var0])
+  Fluent11_16:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent12_16:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Round 5 took 1314.434 seconds
+
+Round 6
+-------
+total # neg traces: 1163
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3 + T7->RollbackEntriesn2n1 + T8->GetEntriesn2n1 + T9->CommitEntryn1_n1n2_NUM1NUM3NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 170.643s
+Formula synthesis complete in 211.425 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : (Fluent13_19[var0]) => (~(var0 \in var1))
+  Fluent13_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent13_11[var0]) => (Fluent14_11[var0])
+  Fluent13_11:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_11:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent13_22[var0]) => (Fluent14_22[var0])
+  Fluent13_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Server : (Fluent13_20[var0]) => (var0 = var1)
+  Fluent13_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent14_25[var0]) => (Fluent13_25[var0])
+  Fluent13_25:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent14_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (var1 \in var0) => (~(Fluent13_21[var1]))
+  Fluent13_21:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \E var1 \in FinNat : (Fluent13_14[var0]) => (~(var1 <= var0))
+  Fluent13_14:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent13_23[var0]) => (Fluent14_23[var0])
+  Fluent14_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent13_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \A var1 \in FinNat : (var1 = var0) => (~(Fluent13_0[var0]))
+  Fluent13_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_9[var0]) => (Fluent14_9[var0])
+  Fluent14_9:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent13_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent14_2[var0]) => (Fluent13_2[var0])
+  Fluent13_2:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+  Fluent14_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent13_26[var0]) => (Fluent14_26[var0])
+  Fluent13_26:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_26:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_1[var0]) => (~(Fluent13_1[var0]))
+  Fluent14_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_1:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent14_17[var0]) => (Fluent13_17[var0])
+  Fluent13_17:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: RollbackEntries: []
+  Fluent14_17:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_12[var0]) => (~(Fluent13_12[var0]))
+  Fluent14_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_12:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT3 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT8 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM2 + T2->BecomeLeadern1_n1n2_NUM3 + T3->ClientRequestn1NUM3)
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 219.0s
+Killing 7 incomplete formula synth workers
+Formula synthesis complete in 292.081 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_2[var0]) => (Fluent14_2[var0])
+  Fluent13_2:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_2:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent14_13[var0]) => (Fluent13_13[var0])
+  Fluent13_13:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent14_13:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_12[var0]) => (~(Fluent14_12[var0]))
+  Fluent14_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_12:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_18[var0]) => (Fluent14_18[var0])
+  Fluent13_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_18:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_9[var0]) => (~(Fluent13_9[var0]))
+  Fluent14_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_10[var0]) => (Fluent13_10[var0])
+  Fluent14_10:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_10:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_20[var0]) => (~(Fluent14_20[var0]))
+  Fluent14_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (var1 \in var0) => (~(Fluent13_3[var1]))
+  Fluent13_3:
+    initially: FALSE
+    init: ClientRequest: [0]
+          BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT19 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1)
+PT20 (PosTrace): (T0->GetEntriesn1n1)
+PT17 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT18 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)
+PT21 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT24 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->BecomeLeadern3_n1n3_NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 694.497s
+Formula synthesis complete in 849.778 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent14_6[var0])) => ((Fluent13_6[var0]) => (~(Fluent15_6[var0])))
+  Fluent13_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: CommitEntry: [1]
+    mutInit: 
+    falsify: 
+  Fluent15_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_6:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_8[var0]) => (Fluent14_8[var0])
+  Fluent13_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_18[var0]) => (~(Fluent14_18[var0]))
+  Fluent13_18:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_18:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (Fluent13_21[var1]) => (~(var1 \in var0))
+  Fluent13_21:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_4[var0]) => (Fluent14_4[var0])
+  Fluent13_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_4:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent14_26[var0]) => ((Fluent15_26[var0]) => (Fluent13_26[var0]))
+  Fluent13_26:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent14_26:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: CommitEntry: [1]
+    mutInit: 
+    falsify: 
+  Fluent15_26:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_24[var0]) => (Fluent14_24[var0])
+  Fluent13_24:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_24:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_7[var0]) => (~(Fluent14_7[var0]))
+  Fluent14_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_7:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (var1 \in var0) => (~(Fluent13_11[var1]))
+  Fluent13_11:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent14_14[var0]) => (Fluent13_14[var0])
+  Fluent13_14:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent14_14:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_1[var0]) => (Fluent14_1[var0])
+  Fluent14_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent13_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_19[var0]) => (Fluent13_19[var0])
+  Fluent13_19:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [0]
+    falsify: 
+  Fluent14_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent14_23[var0])) => ((Fluent15_23[var0]) => (~(Fluent13_23[var0])))
+  Fluent14_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent15_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: CommitEntry: [1]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_2[var0]) => (Fluent14_2[var0])
+  Fluent13_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_2:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \E var2 \in Server : (Fluent13_13[var2]) => (var0 = var1)
+  Fluent13_13:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT28 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n1)
+PT36 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2)
+PT38 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->ClientRequestn1NUM2)
+PT25 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+PT27 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1)
+PT32 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT26 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1)
+PT29 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 1259.841s
+Formula synthesis complete in 1527.254 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \E var1 \in Server : (Fluent13_16[var1]) => (~(Fluent14_16[var0]))
+  Fluent14_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_16:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent14_0[var0]) => (Fluent13_0[var0])
+  Fluent14_0:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_0:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_4[var0]) => (Fluent14_4[var0])
+  Fluent13_4:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_4:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent13_3[var1])) => (~(Fluent14_3[var1]))
+  Fluent14_3:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_3:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_18[var0]) => (~(Fluent13_18[var0]))
+  Fluent13_18:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent14_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent14_6[var0]) => ((~(Fluent15_6[var0])) => (Fluent13_6[var0]))
+  Fluent13_6:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent15_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent14_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent14_21[var1])) => (~(Fluent13_21[var1]))
+  Fluent14_21:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_21:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_7[var0]) => (Fluent14_7[var0])
+  Fluent14_7:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent13_7:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Quorums : ((~(var0 = var1)) => (Fluent13_26[var1])) => (Fluent14_26[var1])
+  Fluent13_26:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_26:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_8[var0]) => (~(Fluent14_8[var0]))
+  Fluent13_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent14_8:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_9[var0]) => (~(Fluent14_9[var0]))
+  Fluent14_9:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Quorums : ((~(Fluent14_13[var1])) => (var0 = var1)) => (Fluent13_13[var1])
+  Fluent14_13:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_13:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent14_25[var0])) => ((Fluent13_25[var0]) => (Fluent15_25[var0]))
+  Fluent13_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent15_25:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent13_15[var0]) => (Fluent14_15[var0])
+  Fluent13_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_15:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: CommitEntry: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_10[var0]) => (~(Fluent13_10[var0]))
+  Fluent14_10:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent13_10:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT48 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->BecomeLeadern1_n1n2n3_NUM3 + T3->ClientRequestn1NUM3)
+PT52 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n3_NUM2)
+PT53 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM2NUM1NUM1)
+PT40 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->BecomeLeadern3_n1n3_NUM3)
+PT41 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)
+PT45 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1)
+PT43 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->BecomeLeadern3_n1n3_NUM3)
+PT44 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3)
+Formula synth batch: 5
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 916.218s
+Killing 13 incomplete formula synth workers
+Formula synthesis complete in 1222.156 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent13_20[var0]) => (Fluent14_20[var0])
+  Fluent13_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_9[var0]) => (Fluent13_9[var0])
+  Fluent14_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+          BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+
+new pos trace(s):
+PT55 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)
+PT56 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n3_NUM2 + T2->ClientRequestn3NUM2 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3)
+Formula synth batch: 6
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 2427.45s
+Killing 9 incomplete formula synth workers
+Formula synthesis complete in 3237.026 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent14_12[var0]) => ((Fluent13_12[var0]) => (~(Fluent15_12[var0])))
+  Fluent14_12:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent15_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent13_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: true
+\A var0 \in FinNat : \A var1 \in Server : (Fluent14_4[var1][var0]) => (Fluent13_4[var1][var0])
+  Fluent13_4:
+    initially: FALSE
+    init: BecomeLeader: [0,2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_4:
+    initially: FALSE
+    init: ClientRequest: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \A var1 \in Server : (Fluent14_4[var1][var0]) => (Fluent13_4[var1][var0])
+  Fluent13_4:
+    initially: FALSE
+    init: BecomeLeader: [0,2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent14_4:
+    initially: FALSE
+    init: ClientRequest: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+Round 6 took 9557.264 seconds
+
+Round 7
+-------
+total # neg traces: 234
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n2n3_NUM0 + T2->ClientRequestn3NUM0 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM0NUM0 + T5->BecomeLeadern3_n1n3_NUM1 + T6->ClientRequestn1NUM1 + T7->RollbackEntriesn3n1 + T8->GetEntriesn3n1 + T9->CommitEntryn1_n1n3_NUM1NUM1NUM0)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern3_n1n2n3_NUM0)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 63.447s
+Formula synthesis complete in 61.922 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent16_2[var0]) => (Fluent15_2[var0])
+  Fluent15_2:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent16_2:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent16_24[var0]) => (Fluent15_24[var0])
+  Fluent15_24:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent16_24:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent16_5[var0]) => (Fluent15_5[var0])
+  Fluent16_5:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent15_5:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent15_23[var0]) => (Fluent16_23[var0])
+  Fluent16_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent15_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent15_15[var0]) => (Fluent16_15[var0])
+  Fluent16_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent15_15:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: true
+\A var0 \in FinNat : \E var1 \in FinNat : (var0 <= var1) => (~(Fluent15_0[var0]))
+  Fluent15_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \E var1 \in FinNat : (var0 <= var1) => (~(Fluent15_0[var0]))
+  Fluent15_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Round 7 took 1532.087 seconds
+
+Round 8
+-------
+total # neg traces: 126
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->BecomeLeadern3_n1n3_NUM1 + T2->ClientRequestn3NUM1 + T3->GetEntriesn2n3 + T4->CommitEntryn3_n2n3_NUM1NUM1NUM2 + T5->BecomeLeadern3_n1n3_NUM2 + T6->ClientRequestn1NUM2 + T7->RollbackEntriesn3n1 + T8->GetEntriesn3n1 + T9->CommitEntryn1_n1n3_NUM1NUM2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+Formula synthesis complete in 261.031 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->BecomeLeadern3_n1n3_NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 62.415s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 83.235 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent16_23[var2][var0]) => (var1 = var2)
+  Fluent16_23:
+    initially: FALSE
+    init: BecomeLeader: [2,1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \E var2 \in Server : ((var2 \in var0) => (Fluent16_13[var2])) => (var1 = var0)
+  Fluent16_13:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : \A var2 \in Quorums : ((var1 \in var0) => (Fluent16_11[var1])) => (var0 = var2)
+  Fluent16_11:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent17_24[var0]) => (Fluent16_24[var0])
+  Fluent17_24:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent16_24:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : \A var2 \in Server : (Fluent16_3[var2]) => ((var2 \in var0) => (var1 = var2))
+  Fluent16_3:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent16_17[var0]) => (Fluent17_17[var0])
+  Fluent16_17:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent17_17:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent17_25[var0][var1]) => (Fluent16_25[var0][var1])
+  Fluent17_25:
+    initially: FALSE
+    init: BecomeLeader: [1,2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent16_25:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1,2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent16_0[var0]) => (Fluent17_0[var0])
+  Fluent17_0:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent16_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent16_9[var0]) => (Fluent17_9[var0])
+  Fluent16_9:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent17_9:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent16_16[var0]) => (Fluent17_16[var0])
+  Fluent17_16:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent16_16:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent17_1[var0]) => (Fluent16_1[var0])
+  Fluent16_1:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0]
+    falsify: 
+  Fluent17_1:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent16_20[var0]) => (Fluent17_20[var0])
+  Fluent16_20:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent17_20:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent16_15[var0]) => (Fluent17_15[var0])
+  Fluent16_15:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent17_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+
+new pos trace(s):
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM2)
+PT3 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->BecomeLeadern3_n1n3_NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 932.832s
+Formula synthesis complete in 1178.233 seconds
+Synthesized formula is invariant: true
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent17_7[var1]) => ((Fluent16_7[var0]) => (var0 <= var1))
+  Fluent16_7:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent17_7:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent17_7[var1]) => ((Fluent16_7[var0]) => (var0 <= var1))
+  Fluent16_7:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent17_7:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Round 8 took 1822.269 seconds
+
+Round 9
+-------
+total # neg traces: 25
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn1n2 + T4->ClientRequestn2NUM2 + T5->GetEntriesn3n2 + T6->GetEntriesn1n2 + T7->ClientRequestn1NUM1 + T8->CommitEntryn2_n1n2_NUM2NUM2NUM1 + T9->BecomeLeadern3_n1n3_NUM3 + T10->ClientRequestn3NUM3 + T11->RollbackEntriesn2n3 + T12->GetEntriesn2n3 + T13->CommitEntryn2_n2n3_NUM2NUM3NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn1n2 + T4->ClientRequestn2NUM2 + T5->GetEntriesn3n2 + T6->GetEntriesn1n2 + T7->ClientRequestn1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 200.004s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 266.691 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent18_6[var0]) => (Fluent19_6[var0])
+  Fluent19_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent18_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent18_2[var0]) => (~(Fluent19_2[var0]))
+  Fluent19_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent18_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent19_24[var0]) => (Fluent18_24[var0])
+  Fluent18_24:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent19_24:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent18_1[var0]) => (~(Fluent19_1[var0]))
+  Fluent18_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (Fluent18_21[var1]) => (~(var1 \in var0))
+  Fluent18_21:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent18_16[var0]) => (~(Fluent19_16[var0]))
+  Fluent18_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent18_15[var0]) => (Fluent19_15[var0])
+  Fluent19_15:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+  Fluent18_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent18_9[var0]) => (~(Fluent19_9[var0]))
+  Fluent18_9:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in FinNat : (var1 = var0) => (~(Fluent18_26[var2]))
+  Fluent18_26:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in FinNat : \A var2 \in Quorums : (Fluent18_25[var1]) => (~(var2 = var0))
+  Fluent18_25:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent18_23[var0]) => (Fluent19_23[var0])
+  Fluent18_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent18_0[var0]) => (~(var0 <= var1))
+  Fluent18_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent19_20[var0]) => (Fluent18_20[var0])
+  Fluent18_20:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent19_4[var0]) => (~(Fluent18_4[var0]))
+  Fluent19_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent18_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT9 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1)
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn1n2 + T4->ClientRequestn2NUM2 + T5->GetEntriesn3n2 + T6->GetEntriesn1n2 + T7->ClientRequestn1NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 377.859s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 503.831 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent19_6[var0])) => ((Fluent20_6[var0]) => (Fluent18_6[var0]))
+  Fluent20_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_6:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent18_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (Fluent18_3[var1]) => (~(var1 \in var0))
+  Fluent18_3:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent18_4[var0]) => (Fluent19_4[var0])
+  Fluent19_4:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+  Fluent18_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent19_18[var0]) => (Fluent18_18[var0])
+  Fluent18_18:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [0]
+    falsify: 
+  Fluent19_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent18_9[var0]) => (Fluent19_9[var0])
+  Fluent18_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent18_22[var0]) => ((~(Fluent19_22[var0])) => (Fluent20_22[var0]))
+  Fluent18_22:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent20_22:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent18_23[var0]) => ((~(Fluent20_23[var0])) => (Fluent19_23[var0]))
+  Fluent18_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent19_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent20_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent19_17[var0]) => (Fluent18_17[var0])
+  Fluent18_17:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent19_17:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent18_2[var0]) => (Fluent19_2[var0])
+  Fluent19_2:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+  Fluent18_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent19_15[var0]) => (Fluent18_15[var0])
+  Fluent19_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent18_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \E var2 \in Server : (Fluent18_13[var2]) => (var0 = var1)
+  Fluent18_13:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent19_20[var0]) => (~(Fluent18_20[var0]))
+  Fluent18_20:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent19_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent18_12[var0]) => (~(Fluent19_12[var0]))
+  Fluent18_12:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent19_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (Fluent18_21[var1]) => (~(var1 \in var0))
+  Fluent18_21:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT17 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n1)
+PT18 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->ClientRequestn1NUM2)
+PT19 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2)
+PT16 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1)
+PT28 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->GetEntriesn1n1)
+PT20 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1)
+PT27 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1 + T3->BecomeLeadern2_n1n2_NUM2 + T4->GetEntriesn1n1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn1n2 + T4->ClientRequestn2NUM2 + T5->GetEntriesn3n2 + T6->GetEntriesn1n2 + T7->ClientRequestn1NUM1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 1137.069s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 1516.108 seconds
+Synthesized formula is invariant: true
+\A var0 \in Server : (Fluent19_1[var0]) => (~(Fluent18_1[var0]))
+  Fluent18_1:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent19_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: GetEntries: [0]
+    mutInit: 
+    falsify: 
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : (Fluent19_1[var0]) => (~(Fluent18_1[var0]))
+  Fluent18_1:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent19_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: GetEntries: [0]
+    mutInit: 
+    falsify: 
+Round 9 took 4991.671 seconds
+
+Round 10
+-------
+total # neg traces: 20
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->ClientRequestn1NUM1 + T5->GetEntriesn2n1 + T6->GetEntriesn2n1 + T7->GetEntriesn3n2 + T8->CommitEntryn2_n1n2_NUM2NUM2NUM2 + T9->BecomeLeadern3_n1n3_NUM3 + T10->ClientRequestn3NUM3 + T11->RollbackEntriesn2n3 + T12->GetEntriesn2n3 + T13->CommitEntryn2_n2n3_NUM2NUM3NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->ClientRequestn1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 169.494s
+Formula synthesis complete in 165.213 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_25[var0]) => (Fluent20_25[var0])
+  Fluent20_25:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_25:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in FinNat : \A var2 \in Server : (Fluent20_22[var1]) => (var2 \in var0)
+  Fluent20_22:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent20_5[var0]) => (~(Fluent21_5[var0]))
+  Fluent21_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_5:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in FinNat : (Fluent20_26[var2]) => (var0 = var1)
+  Fluent20_26:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent20_8[var0]) => (Fluent21_8[var0])
+  Fluent20_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_8:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : (Fluent20_9[var0]) => (var0 \in var1)
+  Fluent20_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (var1 \in var0) => (~(Fluent20_11[var1]))
+  Fluent20_11:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_4[var0]) => (Fluent20_4[var0])
+  Fluent21_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_4:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent20_0[var0]) => (var0 = var1)
+  Fluent20_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_16[var0]) => (~(Fluent20_16[var0]))
+  Fluent21_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_16:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_15[var0]) => (Fluent20_15[var0])
+  Fluent20_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_10[var0]) => (Fluent20_10[var0])
+  Fluent21_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_10:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_24[var0]) => (~(Fluent20_24[var0]))
+  Fluent20_24:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_24:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent20_23[var0]) => (Fluent21_23[var0])
+  Fluent21_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent20_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_18[var0]) => (~(Fluent20_18[var0]))
+  Fluent21_18:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->ClientRequestn1NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 364.686s
+Formula synthesis complete in 400.64 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : (Fluent21_9[var1]) => ((~(Fluent20_9[var1])) => (Fluent22_9[var0]))
+  Fluent21_9:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_9:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent22_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : \A var2 \in Quorums : (Fluent21_8[var0][var2]) => ((var1 \in var2) => (Fluent20_8[var0]))
+  Fluent20_8:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_8:
+    initially: FALSE
+    init: BecomeLeader: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Quorums : \A var2 \in Quorums : (Fluent21_12[var0]) => ((Fluent20_12[var0][var2]) => (var1 = var2))
+  Fluent21_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_12:
+    initially: FALSE
+    init: BecomeLeader: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent21_21[var0])) => ((Fluent22_21[var0]) => (Fluent20_21[var0]))
+  Fluent22_21:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_21:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent20_21:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent22_22[var0])) => ((Fluent20_22[var0]) => (Fluent21_22[var0]))
+  Fluent22_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent20_22:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : \A var2 \in FinNat : (var0 \in var1) => ((Fluent20_19[var2]) => (Fluent21_19[var2]))
+  Fluent20_19:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_19:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent20_23[var0]) => ((~(Fluent22_23[var0])) => (Fluent21_23[var0]))
+  Fluent21_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent20_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : ((Fluent21_25[var0]) => (Fluent22_25[var0])) => (~(Fluent20_25[var0]))
+  Fluent20_25:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_25:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_25:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent20_7[var0]) => (Fluent21_7[var0])
+  Fluent21_7:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent20_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent20_14[var0]) => (Fluent21_14[var0])
+  Fluent20_14:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_14:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent22_11[var0])) => ((Fluent20_11[var0]) => (Fluent21_11[var0]))
+  Fluent22_11:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent20_11:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_11:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in FinNat : (Fluent20_18[var0][var1]) => (Fluent21_18[var0][var1])
+  Fluent21_18:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [0,2]
+    falsify: 
+  Fluent20_18:
+    initially: FALSE
+    init: ClientRequest: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent20_1[var0][var2]) => (var2 = var1)
+  Fluent20_1:
+    initially: FALSE
+    init: ClientRequest: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in FinNat : (Fluent21_10[var1][var0]) => (Fluent20_10[var1])
+  Fluent21_10:
+    initially: FALSE
+    init: ClientRequest: [1,0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_10:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_16[var0]) => (Fluent20_16[var0])
+  Fluent21_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_16:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+
+new pos trace(s):
+PT26 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->ClientRequestn1NUM2)
+PT18 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1)
+PT17 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2)
+PT19 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n3_NUM2)
+PT22 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->ClientRequestn1NUM1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 805.194s
+Killing 3 incomplete formula synth workers
+Formula synthesis complete in 1073.61 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent21_23[var0]) => ((Fluent20_23[var2]) => (var2 = var1))
+  Fluent21_23:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent20_23:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Quorums : \A var2 \in FinNat : (Fluent21_19[var0][var2]) => (Fluent20_19[var0][var2][var1])
+  Fluent20_19:
+    initially: FALSE
+    init: BecomeLeader: [0,2,1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_19:
+    initially: FALSE
+    init: ClientRequest: [0,1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent20_15[var0]) => (Fluent21_15[var0])
+  Fluent20_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent21_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: true
+\A var0 \in Server : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent20_1[var2][var0]) => (var1 = var2)
+  Fluent20_1:
+    initially: FALSE
+    init: ClientRequest: [1,0]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent20_1[var2][var0]) => (var1 = var2)
+  Fluent20_1:
+    initially: FALSE
+    init: ClientRequest: [1,0]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Round 10 took 3904.755 seconds
+
+Round 11
+-------
+total # neg traces: 160
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1 + T10->BecomeLeadern3_n1n3_NUM3 + T11->ClientRequestn3NUM3 + T12->RollbackEntriesn2n3 + T13->GetEntriesn2n3 + T14->CommitEntryn2_n2n3_NUM2NUM3NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 362.934s
+Formula synthesis complete in 367.219 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_22[var0]) => (Fluent22_22[var0])
+  Fluent22_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_4[var0]) => (Fluent22_4[var0])
+  Fluent22_4:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_0[var0]) => (Fluent22_0[var0])
+  Fluent22_0:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+  Fluent21_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_12[var0]) => (~(Fluent22_12[var0]))
+  Fluent21_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_18[var0]) => (Fluent21_18[var0])
+  Fluent22_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_18:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (var1 \in var0) => (~(Fluent21_11[var1]))
+  Fluent21_11:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_15[var0]) => (Fluent22_15[var0])
+  Fluent21_15:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_15:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \A var1 \in Quorums : (Fluent21_19[var0]) => (var0 \in var1)
+  Fluent21_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_1[var0]) => (~(Fluent22_1[var0]))
+  Fluent21_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_7[var0]) => (Fluent22_7[var0])
+  Fluent21_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_7:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_16[var0]) => (~(Fluent22_16[var0]))
+  Fluent21_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \A var1 \in Server : (Fluent21_21[var1]) => (var1 \in var0)
+  Fluent21_21:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_6[var0]) => (Fluent22_6[var0])
+  Fluent22_6:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_24[var0]) => (Fluent21_24[var0])
+  Fluent21_24:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_24:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \A var1 \in FinNat : (var0 <= var1) => (~(Fluent21_14[var0]))
+  Fluent21_14:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT3 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 321.585s
+Killing 5 incomplete formula synth workers
+Formula synthesis complete in 428.787 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_2[var0]) => (Fluent21_2[var0])
+  Fluent22_2:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_2:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [1]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_1[var0]) => (Fluent22_1[var0])
+  Fluent21_1:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_9[var0]) => (~(Fluent21_9[var0]))
+  Fluent21_9:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_16[var0]) => (~(Fluent21_16[var0]))
+  Fluent21_16:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_20[var0]) => (~(Fluent22_20[var0]))
+  Fluent22_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_0[var0]) => (~(Fluent21_0[var0]))
+  Fluent22_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_0:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_4[var0]) => (~(Fluent22_4[var0]))
+  Fluent22_4:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_13[var0]) => (Fluent22_13[var0])
+  Fluent21_13:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_13:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_7[var0]) => (~(Fluent21_7[var0]))
+  Fluent21_7:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_17[var0]) => (~(Fluent21_17[var0]))
+  Fluent21_17:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_17:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT24 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT18 (PosTrace): (T0->GetEntriesn1n1)
+PT17 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT19 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 682.545s
+Formula synthesis complete in 615.497 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_11[var0]) => (Fluent22_11[var0])
+  Fluent22_11:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_11:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent22_21[var0]) => (Fluent21_21[var0])
+  Fluent22_21:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_21:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_8[var0]) => (~(Fluent21_8[var0]))
+  Fluent22_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_8:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_7[var0]) => (Fluent22_7[var0])
+  Fluent21_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_7:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_1[var0]) => (~(Fluent21_1[var0]))
+  Fluent21_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_18[var0]) => (~(Fluent21_18[var0]))
+  Fluent22_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_16[var0]) => (Fluent22_16[var0])
+  Fluent21_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent22_6[var0]) => (Fluent21_6[var0])
+  Fluent22_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_5[var0]) => (~(Fluent22_5[var0]))
+  Fluent21_5:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_2[var0]) => (Fluent22_2[var0])
+  Fluent22_2:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent21_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (Fluent21_3[var1]) => (~(var1 \in var0))
+  Fluent21_3:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_10[var0]) => (~(Fluent21_10[var0]))
+  Fluent22_10:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_4[var0]) => (Fluent21_4[var0])
+  Fluent22_4:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_23[var0]) => (Fluent22_23[var0])
+  Fluent21_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent21_25[var0]) => (Fluent22_25[var0])
+  Fluent22_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_25:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT29 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1)
+PT37 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n1)
+PT30 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->ClientRequestn1NUM2)
+PT27 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)
+PT36 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1)
+PT33 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 554.751s
+Killing 10 incomplete formula synth workers
+Formula synthesis complete in 739.767 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_9[var0]) => (Fluent22_9[var0])
+  Fluent21_9:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_9:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Server : ((~(Fluent23_12[var0])) => (Fluent22_12[var0])) => (~(Fluent21_12[var0]))
+  Fluent23_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_12:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_12:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent21_3[var1])) => (Fluent22_3[var1])
+  Fluent22_3:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_3:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : ((~(var1 = var0)) => (Fluent22_5[var1])) => (Fluent21_5[var1])
+  Fluent21_5:
+    initially: FALSE
+    init: 
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent22_5:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_20[var0]) => (~(Fluent22_20[var0]))
+  Fluent22_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT42 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT44 (PosTrace): (T0->GetEntriesn2n1 + T1->GetEntriesn1n2)
+PT46 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)
+PT43 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 5
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 1279.221s
+Killing 8 incomplete formula synth workers
+Formula synthesis complete in 1705.821 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_1[var0]) => ((Fluent23_1[var0]) => (~(Fluent22_1[var0])))
+  Fluent21_1:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_12[var0]) => ((Fluent23_12[var0]) => (~(Fluent21_12[var0])))
+  Fluent23_12:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_12:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent23_20[var0]) => ((Fluent22_20[var0]) => (~(Fluent21_20[var0])))
+  Fluent23_20:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_20:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_16[var0]) => (Fluent22_16[var0])
+  Fluent21_16:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent22_16:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Quorums : ((var0 \in var1) => (Fluent22_9[var1])) => (Fluent21_9[var1])
+  Fluent21_9:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_9:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_8[var0]) => ((Fluent22_8[var0]) => (~(Fluent23_8[var0])))
+  Fluent22_8:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_18[var0]) => ((Fluent21_18[var0]) => (~(Fluent23_18[var0])))
+  Fluent22_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_18:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT51 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->BecomeLeadern1_n1n2n3_NUM3)
+PT50 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->ClientRequestn1NUM1)
+PT47 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1 + T3->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 6
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 5741.847s
+Formula synthesis complete in 5530.469 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_24[var0]) => (Fluent22_24[var0])
+  Fluent21_24:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_24:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: CommitEntry: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_1[var0])) => ((Fluent22_1[var0]) => (~(Fluent21_1[var0])))
+  Fluent21_1:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_1:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: GetEntries: [1]
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_4[var0]) => (Fluent21_4[var0])
+  Fluent22_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: CommitEntry: [2]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent23_6[var0]) => ((~(Fluent22_6[var0])) => (Fluent21_6[var0]))
+  Fluent22_6:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent23_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (Fluent22_21[var0]) => (~(Fluent21_21[var1]))
+  Fluent22_21:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_21:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent22_22[var0]) => ((~(Fluent21_22[var0])) => (Fluent23_22[var0]))
+  Fluent23_22:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_22:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Quorums : ((~(Fluent21_13[var1])) => (var1 = var0)) => (Fluent22_13[var1])
+  Fluent21_13:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_13:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent21_0[var0]) => (Fluent22_0[var0])
+  Fluent22_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent21_0:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_2[var0]) => (Fluent21_2[var0])
+  Fluent22_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent21_2:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_7[var0]) => (Fluent21_7[var0])
+  Fluent21_7:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent22_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent21_19[var0])) => ((Fluent22_19[var0]) => (~(Fluent23_19[var0])))
+  Fluent23_19:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_19:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_19:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: GetEntries: [1]
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : ((Fluent23_23[var0]) => (Fluent21_23[var0])) => (~(Fluent22_23[var0]))
+  Fluent23_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent21_23:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_23:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_18[var0])) => ((Fluent22_18[var0]) => (Fluent21_18[var0]))
+  Fluent22_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_18:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent23_18:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : ((var1 \in var0) => (Fluent21_11[var1])) => (~(Fluent22_11[var1]))
+  Fluent22_11:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_11:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_9[var0]) => ((Fluent23_9[var0]) => (Fluent21_9[var0]))
+  Fluent21_9:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent23_9:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_9:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT55 (PosTrace): (T0->GetEntriesn2n1 + T1->GetEntriesn3n2 + T2->BecomeLeadern1_n1n2_NUM1 + T3->ClientRequestn1NUM1)
+PT54 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM2NUM1NUM1)
+PT66 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern2_n1n2_NUM1 + T2->ClientRequestn2NUM1)
+PT60 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->BecomeLeadern3_n2n3_NUM3 + T3->ClientRequestn1NUM2)
+PT67 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n2)
+PT59 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+PT57 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1)
+PT61 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->ClientRequestn1NUM1)
+PT58 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n2 + T3->BecomeLeadern1_n1n2_NUM1 + T4->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT68 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n3_NUM1 + T2->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 7
+Total # workers: 27
+# workers using: 15
+First worker finished, shutdown count is 3819.831s
+Killing 3 incomplete formula synth workers
+Formula synthesis complete in 5093.138 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : \E var1 \in Server : (var1 \in var0) => ((Fluent22_3[var0]) => (Fluent21_3[var0]))
+  Fluent22_3:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_3:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Quorums : ((var0 \in var1) => (Fluent22_9[var1])) => (Fluent21_9[var1])
+  Fluent21_9:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_9:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_8[var0])) => ((Fluent22_8[var0]) => (~(Fluent21_8[var0])))
+  Fluent22_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent23_10[var0]) => ((~(Fluent21_10[var0])) => (Fluent22_10[var0]))
+  Fluent22_10:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_10:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent23_10:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (~(Fluent21_4[var0])) => ((Fluent22_4[var0]) => (~(Fluent23_4[var0])))
+  Fluent22_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [2]
+    falsify: 
+  Fluent23_4:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent22_20[var0])) => ((Fluent23_20[var0]) => (Fluent21_20[var0]))
+  Fluent23_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_20:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_20:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT70 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->BecomeLeadern1_n1n2n3_NUM3 + T3->ClientRequestn1NUM3)
+PT69 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->ClientRequestn1NUM1)
+PT72 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+PT71 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T3->BecomeLeadern1_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 8
+Total # workers: 21
+# workers using: 15
+First worker finished, shutdown count is 12016.95s
+Formula synthesis complete in 7462.01 seconds
+Synthesized formula is invariant: false
+\A var0 \in Quorums : ((~(Fluent22_11[var0])) => (Fluent21_11[var0])) => (Fluent23_11[var0])
+  Fluent23_11:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent22_11:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_11:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_5[var0]) => ((Fluent23_5[var0]) => (~(Fluent22_5[var0])))
+  Fluent21_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+  Fluent23_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_5:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent21_9[var0]) => ((Fluent23_9[var0]) => (Fluent22_9[var0]))
+  Fluent21_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_9:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_9:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : (Fluent21_16[var0]) => (~(Fluent22_16[var1]))
+  Fluent21_16:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_16:
+    initially: FALSE
+    init: GetEntries: [0]
+          CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \E var1 \in FinNat : (var1 <= var0) => ((Fluent22_7[var0]) => (Fluent21_7[var0]))
+  Fluent21_7:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_7:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (~(Fluent23_4[var0])) => ((Fluent22_4[var0]) => (~(Fluent21_4[var0])))
+  Fluent22_4:
+    initially: FALSE
+    init: CommitEntry: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent23_10[var0]) => ((Fluent22_10[var0]) => (~(Fluent21_10[var0])))
+  Fluent22_10:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+  Fluent21_10:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_10:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent22_6[var0]) => ((~(Fluent23_6[var0])) => (Fluent21_6[var0]))
+  Fluent22_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_6:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+  Fluent23_6:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_12[var0])) => ((Fluent22_12[var0]) => (~(Fluent21_12[var0])))
+  Fluent23_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_12:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT82 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n3_NUM2)
+PT75 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n3_NUM2)
+PT76 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T3->ClientRequestn1NUM1)
+PT80 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1 + T3->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT79 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM2 + T2->BecomeLeadern1_n1n2_NUM3)
+PT78 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n2 + T3->BecomeLeadern1_n1n2_NUM1 + T4->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 9
+Total # workers: 15
+# workers using: 15
+First worker finished, shutdown count is 13164.501s
+Formula synthesis complete in 10092.448 seconds
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_6[var0])) => ((Fluent21_6[var0]) => (Fluent22_6[var0]))
+  Fluent22_6:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+  Fluent21_6:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_6:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: BecomeLeader: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_7[var0])) => ((Fluent22_7[var0]) => (~(Fluent21_7[var0])))
+  Fluent21_7:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_7:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent22_7:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_3[var0])) => ((Fluent22_3[var0]) => (~(Fluent21_3[var0])))
+  Fluent23_3:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent22_3:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent21_3:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent23_8[var0])) => ((Fluent21_8[var0]) => (~(Fluent22_8[var0])))
+  Fluent22_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_8:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+  Fluent23_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (~(Fluent23_2[var0])) => ((Fluent22_2[var0]) => (~(Fluent21_2[var0])))
+  Fluent23_2:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: ClientRequest: [1]
+    falsify: 
+  Fluent22_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_2:
+    initially: FALSE
+    init: CommitEntry: [3]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent22_4[var0])) => ((Fluent23_4[var0]) => (Fluent21_4[var0]))
+  Fluent22_4:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_4:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: BecomeLeader: [1]
+    falsify: 
+  Fluent23_4:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (Fluent22_5[var0]) => (Fluent21_5[var0])
+  Fluent21_5:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: CommitEntry: [2]
+    falsify: 
+  Fluent22_5:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (~(Fluent22_12[var0])) => ((Fluent23_12[var0]) => (~(Fluent21_12[var0])))
+  Fluent23_12:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+  Fluent21_12:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_12:
+    initially: FALSE
+    init: BecomeLeader: [0]
+    term: ClientRequest: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (~(Fluent21_1[var0])) => ((Fluent23_1[var0]) => (Fluent22_1[var0]))
+  Fluent21_1:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+  Fluent23_1:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: CommitEntry: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+
+new pos trace(s):
+PT90 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1 + T2->ClientRequestn1NUM1)
+PT91 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n3_NUM2 + T3->ClientRequestn1NUM2)
+PT84 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM2NUM1NUM1 + T3->BecomeLeadern2_n1n2_NUM2)
+PT86 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->ClientRequestn1NUM2)
+PT88 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T3->BecomeLeadern1_n1n2_NUM2 + T4->ClientRequestn1NUM2)
+PT85 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1 + T3->BecomeLeadern1_n1n2_NUM2)
+PT89 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 10
+Total # workers: 9
+# workers using: 9
+First worker finished, shutdown count is 10166.592s
+Formula synthesis complete in 8016.816 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : (~(Fluent23_4[var0])) => ((Fluent22_4[var0]) => (Fluent21_4[var0]))
+  Fluent22_4:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_4:
+    initially: FALSE
+    init: CommitEntry: [4]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_4:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: CommitEntry: []
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_6[var0]) => ((Fluent23_6[var0]) => ((Fluent24_6[var0]) => (Fluent21_6[var0])))
+  Fluent22_6:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_6:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+  Fluent24_6:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_6:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : ((var1 = var0) => (Fluent22_8[var1])) => (~(Fluent21_8[var1]))
+  Fluent22_8:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_8:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Quorums : (Fluent22_0[var0]) => ((~(Fluent23_0[var0])) => (Fluent21_0[var0]))
+  Fluent22_0:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_0:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent23_0:
+    initially: FALSE
+    init: BecomeLeader: [1]
+    term: 
+    mutInit: 
+    falsify: GetEntries: []
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : (Fluent22_5[var1]) => (~(Fluent21_5[var0]))
+  Fluent21_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_5:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: BecomeLeader: [0]
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : ((var1 = var0) => (Fluent22_2[var1])) => (~(Fluent21_2[var1]))
+  Fluent22_2:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_2:
+    initially: FALSE
+    init: GetEntries: [0]
+          ClientRequest: [0]
+    term: CommitEntry: [0]
+    mutInit: 
+    falsify: 
+
+new pos trace(s):
+PT95 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->BecomeLeadern3_n1n3_NUM1 + T3->ClientRequestn3NUM1 + T4->CommitEntryn3_n1n3_NUM1NUM1NUM1)
+PT93 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n3_NUM2 + T3->CommitEntryn1_n1n3_NUM1NUM2NUM2)
+PT98 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->BecomeLeadern3_n2n3_NUM1 + T3->CommitEntryn3_n2n3_NUM1NUM1NUM1 + T4->ClientRequestn3NUM1)
+PT94 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1 + T3->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T4->BecomeLeadern1_n1n2_NUM2)
+PT96 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 11
+Total # workers: 6
+# workers using: 6
+First worker finished, shutdown count is 6109.554s
+Formula synthesis complete in 4981.036 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \E var1 \in FinNat : ((var0 <= var1) => (Fluent22_2[var1])) => (~(Fluent21_2[var0]))
+  Fluent22_2:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent21_2:
+    initially: FALSE
+    init: ClientRequest: [1]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : (Fluent22_5[var0]) => ((Fluent23_5[var0]) => ((Fluent21_5[var0]) => (Fluent24_5[var0])))
+  Fluent21_5:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent23_5:
+    initially: FALSE
+    init: CommitEntry: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_5:
+    initially: FALSE
+    init: ClientRequest: [0]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent24_5:
+    initially: FALSE
+    init: 
+    term: 
+    mutInit: GetEntries: [1]
+    falsify: 
+
+new pos trace(s):
+PT100 (PosTrace): (T0->GetEntriesn2n1 + T1->GetEntriesn3n2 + T2->BecomeLeadern1_n1n2_NUM1 + T3->ClientRequestn1NUM1 + T4->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT99 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->BecomeLeadern1_n1n2_NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 12
+Total # workers: 2
+# workers using: 2
+First worker finished, shutdown count is 6259.155s
+Formula synthesis complete in 4753.647 seconds
+Synthesized formula is invariant: false
+\A var0 \in FinNat : \E var1 \in FinNat : ((var0 <= var1) => (Fluent21_0[var1])) => (Fluent22_0[var1])
+  Fluent22_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: ClientRequest: []
+  Fluent21_0:
+    initially: FALSE
+    init: BecomeLeader: [2]
+    term: 
+    mutInit: 
+    falsify: 
+Synthesized formula is invariant: false
+\A var0 \in Server : \E var1 \in Server : ((~(var0 = var1)) => (Fluent21_1[var1])) => (Fluent22_1[var1])
+  Fluent21_1:
+    initially: FALSE
+    init: GetEntries: [1]
+    term: 
+    mutInit: 
+    falsify: 
+  Fluent22_1:
+    initially: FALSE
+    init: GetEntries: [0]
+    term: ClientRequest: [0]
+    mutInit: CommitEntry: [0]
+    falsify: 
+
+new pos trace(s):
+PT102 (PosTrace): (T0->GetEntriesn1n1 + T1->GetEntriesn1n2 + T2->BecomeLeadern1_n1n2_NUM1 + T3->ClientRequestn1NUM1)
+PT101 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM2 + T2->BecomeLeadern1_n1n2_NUM3 + T3->ClientRequestn1NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1)
+Formula synth batch: 13
+Total # workers: 2
+# workers using: 2
+Formula synthesis complete in 3418.457 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n3_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn1NUM2 + T4->GetEntriesn2n1 + T5->GetEntriesn2n1 + T6->GetEntriesn3n2 + T7->CommitEntryn1_n1n2_NUM2NUM2NUM2 + T8->BecomeLeadern1_n1n2n3_NUM3 + T9->ClientRequestn1NUM1 + T10->BecomeLeadern3_n1n3_NUM3)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 15
+    84124.66 real    399520.37 user     50192.99 sys

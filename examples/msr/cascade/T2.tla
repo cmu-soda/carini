@@ -64,7 +64,7 @@ ImmediatelyCommitted(e, Q) ==
 
 \* Helper operator for actions that propagate the term between two nodes.
 UpdateTermsExpr(i, j) ==
-    /\ currentTerm[i] > currentTerm[j]
+    \*/\ currentTerm[i] > currentTerm[j]
     /\ currentTerm' = [currentTerm EXCEPT ![j] = currentTerm[i]]
     /\ state' = [state EXCEPT ![j] = Secondary] 
 
@@ -77,14 +77,14 @@ UpdateTermsExpr(i, j) ==
 \* Node 'i', a primary, handles a new client request and places the entry 
 \* in its log.    
 ClientRequest(i, curTerm) ==
-    /\ state[i] = Primary
-    /\ currentTerm[i] = curTerm
+    \*/\ state[i] = Primary
+    \*/\ currentTerm[i] = curTerm
     /\ log' = [log EXCEPT ![i] = Append(log[i], curTerm)]
     /\ UNCHANGED <<currentTerm, state, config>>
 
 \* Node 'i' gets a new log entry from node 'j'.
 GetEntries(i, j) ==
-    /\ state[i] = Secondary
+    \*/\ state[i] = Secondary
     \* Node j must have more entries than node i.
     /\ Len(log[j]) > Len(log[i])
        \* Ensure that the entry at the last index of node i's log must match the entry at
@@ -93,7 +93,8 @@ GetEntries(i, j) ==
     /\ LET logOk == IF Empty(log[i])
                         THEN TRUE
                         ELSE log[j][Len(log[i])] = log[i][Len(log[i])] IN
-       /\ logOk \* log consistency check
+       \*/\ logOk \* log consistency check
+       /\ TRUE
        \* If the log of node i is empty, then take the first entry from node j's log.
        \* Otherwise take the entry following the last index of node i.
        /\ LET newEntryIndex == IF Empty(log[i]) THEN 1 ELSE Len(log[i]) + 1
@@ -104,8 +105,8 @@ GetEntries(i, j) ==
 
 \*  Node 'i' rolls back against the log of node 'j'.  
 RollbackEntries(i, j) ==
-    /\ state[i] = Secondary
-    /\ CanRollback(i, j)
+    \*/\ state[i] = Secondary
+    \*/\ CanRollback(i, j)
     \* Roll back one log entry.
     /\ log' = [log EXCEPT ![i] = SubSeq(log[i], 1, Len(log[i])-1)]
     /\ UNCHANGED <<currentTerm, state, config>>
@@ -113,9 +114,9 @@ RollbackEntries(i, j) ==
 \* Node 'i' gets elected as a primary.
 BecomeLeader(i, voteQuorum, newTerm) == 
     \* Primaries make decisions based on their current configuration.
-    /\ newTerm = currentTerm[i] + 1
-    /\ i \in voteQuorum \* The new leader should vote for itself.
-    /\ \A v \in voteQuorum : CanVoteForOplog(v, i, newTerm)
+    \*/\ newTerm = currentTerm[i] + 1
+    \*/\ i \in voteQuorum \* The new leader should vote for itself.
+    \*/\ \A v \in voteQuorum : CanVoteForOplog(v, i, newTerm)
     \* Update the terms of each voter.
     /\ currentTerm' = [s \in Server |-> IF s \in voteQuorum THEN newTerm ELSE currentTerm[s]]
     /\ state' = [s \in Server |->
@@ -124,25 +125,23 @@ BecomeLeader(i, voteQuorum, newTerm) ==
                     ELSE state[s]]
     /\ UNCHANGED <<log, config>>   
             
-(*
 \* Primary 'i' commits its latest log entry.
 CommitEntry(i, commitQuorum, ind, curTerm) ==
-    /\ curTerm = currentTerm[i]
-    /\ ind = Len(log[i])
+    \*/\ curTerm = currentTerm[i]
+    \*/\ ind = Len(log[i])
     \* Must have some entries to commit.
     /\ ind > 0
     \* This node is leader.
-    /\ state[i] = Primary
+    \*/\ state[i] = Primary
     \* The entry was written by this leader.
-    /\ log[i][ind] = curTerm
+    \*/\ log[i][ind] = curTerm
     \* all nodes have this log entry and are in the term of the leader.
     \*/\ ImmediatelyCommitted(<<ind,curTerm>>, commitQuorum)
     /\ \A s \in commitQuorum :
-        /\ Len(log[s]) >= ind
+        \*/\ Len(log[s]) >= ind
         /\ InLog(<<ind,curTerm>>, s) \* they have the entry.
-        /\ currentTerm[s] = curTerm  \* they are in the same term as the log entry. 
+        \*/\ currentTerm[s] = curTerm  \* they are in the same term as the log entry. 
     /\ UNCHANGED <<currentTerm, state, log, config>>
-*)
 
 \* Action that exchanges terms between two nodes and step down the primary if
 \* needed. This can be safely specified as a separate action, rather than
@@ -166,7 +165,7 @@ Next ==
     \/ \E s, t \in Server : GetEntries(s, t)
     \/ \E s, t \in Server : RollbackEntries(s, t)
     \/ \E s \in Server : \E Q \in Quorums : \E newTerm \in FinNat : BecomeLeader(s, Q, newTerm)
-    \*\/ \E s \in Server :  \E Q \in Quorums : \E ind \in FinNat : \E curTerm \in FinNat : CommitEntry(s, Q, ind, curTerm)
+    \/ \E s \in Server :  \E Q \in Quorums : \E ind \in FinNat : \E curTerm \in FinNat : CommitEntry(s, Q, ind, curTerm)
     \/ \E s,t \in Server : UpdateTerms(s, t)
 
 Spec == Init /\ [][Next]_vars
