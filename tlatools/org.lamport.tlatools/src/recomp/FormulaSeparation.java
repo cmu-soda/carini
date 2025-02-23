@@ -526,11 +526,14 @@ public class FormulaSeparation {
 			return new AlloyTrace();
 		}
 		
+		final int maxNumTotalTraces = 500; // TODO
+		final int maxNumMinTraces = 100; // TODO
 		final List<String> tlcErrorTraces = Utils.toArrayList(
 				String.join("\n", tlcOutputLines).split(Pattern.quote(detectError)));
 		final Set<AlloyTrace> alloyTraces = tlcErrorTraces
 				.stream()
 				.filter(t -> t.contains("State 1: <Initial predicate>"))
+				.limit(maxNumTotalTraces)
 				.map(t -> {
 					final List<String> lines = Utils.toArrayList(t.split("\n"));
 					return createAlloyTraceFromTlcOutput(lines, tlaFile, cfgFile, trName, trNum, ext);
@@ -545,7 +548,6 @@ public class FormulaSeparation {
 						(n,t) -> Math.min(n,t.size()),
 						(n1,n2) -> Math.min(n1,n2));
 		System.out.println("# neg traces: " + alloyTraces.size());
-		final int maxNumMinTraces = 100; // TODO
 		final Set<AlloyTrace> minTraces = alloyTraces
 				.stream()
 				.filter(t -> t.size() == minLen)
