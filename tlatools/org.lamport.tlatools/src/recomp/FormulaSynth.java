@@ -73,7 +73,7 @@ public class FormulaSynth {
 	 */
 	public Map<Map<String,String>, Formula> synthesizeFormulas(Set<Map<String,String>> envVarTypes,
 			AlloyTrace negTrace, final Map<Map<String,String>, List<AlloyTrace>> posTraces,
-			TLC tlcComp, Set<String> internalActions,
+			TLC tlcComp, Set<String> globalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
@@ -85,7 +85,7 @@ public class FormulaSynth {
 		for (final Map<String,String> evt : envVarTypes) {
 			final List<AlloyTrace> evtPosTraces = posTraces.get(evt);
 			final FormulaSynthWorker worker = new FormulaSynthWorker(this, evt, id++, negTrace, evtPosTraces,
-					tlcComp, internalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
+					tlcComp, globalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
 					qvars, legalEnvVarCombos, curNumFluents);
 			this.workers.add(worker);
 		}

@@ -39,6 +39,7 @@ public class FormulaSeparation {
 	private final Formula intermediateProp;
 	private final TLC tlcComp;
 	private final TLC tlcRest;
+	private final Set<String> allActions;
 	private final Set<String> globalActions;
 	private final Set<String> internalActions;
 	private final Map<String, Set<String>> sortElementsMap;
@@ -51,8 +52,6 @@ public class FormulaSeparation {
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final Set<Map<String,String>> allPermutations;
 	private final Random seed;
-	
-	private Map<Utils.Pair<AlloyTrace, String>, Boolean> traceInSpecCache;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
 			final String propFile, long rseed) {
@@ -70,12 +69,14 @@ public class FormulaSeparation {
 		this.useIntermediateProp = !propFile.equals("none");
 		this.intermediateProp = this.useIntermediateProp ? new Formula( String.join("",Utils.fileContents(propFile)) ) : null;
 		
+    	// for convenience, also store the set of all actions
+    	allActions = Utils.union(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
+    	
 		// the actions that are in the shared alphabet between comp and rest.
     	globalActions = Utils.intersection(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
     	
-    	// the actions that internal to "component". it is fine to include formulas over actions that
-		// are internal to "rest" so we don't mark those as "internal".
-    	internalActions = Utils.setMinus(tlcComp.actionsInSpec(), tlcRest.actionsInSpec());
+    	// the actions that are internal to either "comp" or "rest"
+    	internalActions = Utils.setMinus(allActions, globalActions);
     	
     	// obtain a map of: sort -> Set(elements/atoms in the sort)
     	sortElementsMap = Utils.mergeMapsOrError(createSortElementsMap(tlcComp, true), createSortElementsMap(tlcRest, true)); // sanitized tokens
@@ -116,8 +117,6 @@ public class FormulaSeparation {
 				.collect(Collectors.toSet());
 		
 		seed = new Random(rseed);
-		
-		traceInSpecCache = new HashMap<>();
 	}
 	
 	public String synthesizeSepInvariant() {
@@ -179,23 +178,28 @@ public class FormulaSeparation {
     			break;
     		}
     		System.out.println("attempting to eliminate the following neg trace this round:");
-    		System.out.println(negTrace.fullSigString());
+    		System.out.println(negTrace);
     		System.out.println();
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.
-    		final int minPartialNegTraceLen = calculatePartialTraceLen(negTrace, tlaRest, cfgRest);
+    		final int minPartialNegTraceLen = calculatePartialTraceLen(negTrace);
     		int partialNegTraceLen = minPartialNegTraceLen;
     		if (partialNegTraceLen == -1 && !formulaSeparates) {
         		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
     			System.out.println("The property is violated with the following trace:");
-    			System.out.println(negTrace.fullSigString());
+    			System.out.println(negTrace);
     			return "UNSAT";
     		}
         	
         	// 'dynamically' generate the init trace
-        	String badAction = negTrace.rawWord().get(partialNegTraceLen-1);
-        	AlloyTrace okNegPrefix = negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
+    		final AlloyTrace fullPartialNegTrace = negTrace.cutToLen(partialNegTraceLen);
+    		final AlloyTrace globalPartialNegTrace = fullPartialNegTrace.restrictToAlphabet(this.globalActions);
+        	String badAction = globalPartialNegTrace.rawTrace().get(globalPartialNegTrace.size()-1);
+        	AlloyTrace okNegPrefix = fullPartialNegTrace.newName("PT1", "PosTrace"); //negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
+        	while (globalPartialNegTrace.equals(okNegPrefix.restrictToAlphabet(this.globalActions))) {
+        		okNegPrefix = okNegPrefix.cutToLen(okNegPrefix.size()-1);
+        	}
         	AlloyTrace initPosTrace = createInitPosTrace(badAction, okNegPrefix, defaultInitPosTrace);
         	
     		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
@@ -206,7 +210,7 @@ public class FormulaSeparation {
     				.stream()
     				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(ipt)));
         	System.out.println("Init pos trace:");
-        	System.out.println(initPosTrace.fullSigString());
+        	System.out.println(initPosTrace);
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
@@ -216,7 +220,7 @@ public class FormulaSeparation {
     			// compute the partial neg trace
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     			System.out.println("Using the following partial neg trace for formula synth:");
-        		System.out.println(partialNegTrace.fullSigString());
+        		System.out.println(partialNegTrace);
         		
 				// synthesize new formulas
     			final int numFluents = this.useIntermediateProp ?
@@ -251,7 +255,7 @@ public class FormulaSeparation {
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
-                	badAction = negTrace.rawWord().get(partialNegTraceLen-1);
+                	badAction = negTrace.rawTrace().get(partialNegTraceLen-1);
                 	okNegPrefix = initPosTrace;
                 	initPosTrace = createInitPosTrace(badAction, okNegPrefix, defaultInitPosTrace);
                 	final AlloyTrace iptUnsat = initPosTrace;
@@ -260,7 +264,7 @@ public class FormulaSeparation {
             				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(iptUnsat)));
                     System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
                 	System.out.println("New init pos trace:");
-                	System.out.println(initPosTrace.fullSigString());
+                	System.out.println(initPosTrace);
                     System.out.println();
                     continue;
     			}
@@ -359,7 +363,7 @@ public class FormulaSeparation {
         			System.out.println("new pos trace(s):");
         			allNewPosTraces
 							.stream()
-							.forEach(t -> System.out.println(t.fullSigString()));
+							.forEach(t -> System.out.println(t));
     			}
     		}
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
@@ -410,7 +414,7 @@ public class FormulaSeparation {
 	
 	private AlloyTrace createInitPosTrace(final String badAction, final AlloyTrace okNegPrefix, final AlloyTrace defaultInitPosTrace) {
     	final String badBaseAction = badAction.replaceAll("\\..*$", "");
-    	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix, globalActions)
+    	final Set<String> okNegPrefixExtensions = new ExtendTraceVisitor<>(okNegPrefix.restrictToAlphabet(tlcRest.actionsInSpec()), globalActions)
     			.getTraceExtensionsByOne(tlcRest.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState());
     	final Set<String> okNegPrefixExtensionsSameBaseAction = okNegPrefixExtensions
     			.stream()
@@ -554,11 +558,11 @@ public class FormulaSeparation {
 		PerfTimer partialTraceLenTimer = new PerfTimer();
 		final Map<AlloyTrace,Integer> partialTraceLenMap = minTraces
 				.stream()
-				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t,tlaRest,cfgRest)));
+				.collect(Collectors.toMap(t -> t, t -> calculatePartialTraceLen(t)));
 		System.out.println("partial neg trace generation time: " + partialTraceLenTimer.timeElapsedSeconds() + " seconds");
 		final int maxPartialTraceLen = minTraces
 				.stream()
-				.reduce(0,
+				.reduce(Integer.MIN_VALUE,
 						(n,t) -> Math.max(n, partialTraceLenMap.get(t)),
 						(n1,n2) -> Math.max(n1,n2));
 		final Set<AlloyTrace> maxPartialTraces = minTraces
@@ -756,7 +760,7 @@ public class FormulaSeparation {
 		
 		// if candSep isn't an invariant, return a trace that should be covered by the formula
     	final int numTraces = 1; // only generate one trace at a time
-    	final Set<List<String>> errTraces = MultiTraceCex.INSTANCE.findErrorTraces(lts, numTraces, this.tlcComp.actionsInSpec());
+    	final Set<List<String>> errTraces = MultiTraceCex.INSTANCE.findErrorTraces(lts, numTraces, this.allActions);
 		Utils.assertTrue(errTraces.size() == 1, "expected one err trace but there were " + errTraces.size());
 		final List<String> errTrace = Utils.chooseOne(errTraces);
 		final String name = trName + trNum;
@@ -764,34 +768,22 @@ public class FormulaSeparation {
 		return createAlloyTrace(errTrace, name, ext);
 	}
 	
-	private int cachedCalculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
-		for (int i = 1; i < trace.size(); ++i) {
+	/**
+	 * calculate the minimal partial trace len, with respect to the "rest" spec
+	 * @param trace
+	 * @param tla
+	 * @param cfg
+	 * @return
+	 */
+	private int calculatePartialTraceLen(final AlloyTrace trace) {
+		for (int i = 1; i <= trace.size(); ++i) {
 			final AlloyTrace partialTrace = trace.cutToLen(i);
-			
-			// calculate <isTraceInSpec>
-			boolean isTraceInSpec = false;
-			final Utils.Pair<AlloyTrace,String> cacheKey = new Utils.Pair<>(partialTrace,tla);
-			if (traceInSpecCache.containsKey(cacheKey)) {
-				isTraceInSpec = traceInSpecCache.get(cacheKey);
-			}
-			else {
-				isTraceInSpec = isTraceInSpec(partialTrace,tla,cfg);
-				traceInSpecCache.put(cacheKey, isTraceInSpec);
-			}
-			
-			// use <isTraceInSpec>
-			if (!isTraceInSpec) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	private int calculatePartialTraceLen(final AlloyTrace trace, final String tla, final String cfg) {
-		for (int i = 1; i < trace.size(); ++i) {
-			final AlloyTrace partialTrace = trace.cutToLen(i);
-			if (!isTraceInSpec(partialTrace,tla,cfg)) {
-				return i;
+			final AlloyTrace restrictedPartialTrace = partialTrace.restrictToAlphabet(this.tlcRest.actionsInSpec());
+			if (!restrictedPartialTrace.isEmpty()) {
+				final boolean restSpecBlocksPartialTrace = !isTraceInSpec(restrictedPartialTrace, this.tlaRest, this.cfgRest);
+				if (restSpecBlocksPartialTrace) {
+					return i;
+				}
 			}
 		}
 		return -1;
@@ -834,7 +826,7 @@ public class FormulaSeparation {
 				.stream()
 				.map(d -> {
 					final String dname = d.getName().toString();
-					final boolean isInternalAct = !this.tlcComp.actionsInSpec().contains(dname);
+					final boolean isInternalAct = this.internalActions.contains(dname);
 					if (tlc.actionsInSpec().contains(dname)) {
 						if (isInternalAct) {
 							d.addConjunct(cexIdxVar + "' = " + cexIdxVar);
@@ -974,15 +966,9 @@ public class FormulaSeparation {
 		return false;
 	}
 	
-	private AlloyTrace createAlloyTrace(final List<String> word, final String name, final String ext) {
-		// use the alphabet for the component
-		final Set<String> alphabet = this.tlcComp.actionsInSpec();
-		final List<String> trace = word
+	private AlloyTrace createAlloyTrace(final List<String> rawTrace, final String name, final String ext) {
+		final List<String> sanitizedTrace = rawTrace
 				.stream()
-				.filter(act -> {
-					final String abstractAct = act.replaceAll("\\..*$", "");
-					return alphabet.contains(abstractAct);
-				})
 				.map(a -> {
 					return Utils.toArrayList(a.split("\\."))
 							.stream()
@@ -991,34 +977,30 @@ public class FormulaSeparation {
 							.collect(Collectors.joining());
 				})
 				.collect(Collectors.toList());
-		final List<String> tlaTrace = word
-				.stream()
-				.filter(act -> {
-					final String abstractAct = act.replaceAll("\\..*$", "");
-					return alphabet.contains(abstractAct);
-				})
-				.map(a -> {
-					final List<String> actParts = Utils.toArrayList(a.split("\\."));
-					Utils.assertTrue(actParts.size() >= 1, "eror splitting an action!");
-					final String act = actParts.get(0);
-					final List<String> params = actParts.subList(1, actParts.size());
-					return params.size() == 0 ? act : act + "(" + String.join(",", params) + ")";
-				})
-				.collect(Collectors.toList());
-		return new AlloyTrace(trace, tlaTrace, word, name, ext);
+		return new AlloyTrace(rawTrace, sanitizedTrace, name, ext, this.globalActions);
 	}
 	
 	private AlloyTrace extendAlloyTrace(final AlloyTrace trace, final String extAct, final String name, final String ext) {
-		List<String> newWord = new ArrayList<>(trace.rawWord());
-		newWord.add(extAct);
-		return createAlloyTrace(newWord, name, ext);
+		List<String> newTrace = new ArrayList<>(trace.rawTrace());
+		newTrace.add(extAct);
+		return createAlloyTrace(newTrace, name, ext);
 	}
 	
 	private Map<Map<String,String>, Formula> synthesizeFormulas(final AlloyTrace negTrace,
 			final Map<Map<String,String>, List<AlloyTrace>> posTraces, final int curNumFluents, Set<Map<String,String>> envVarTypes) {
+		final AlloyTrace globalNegTrace = negTrace.restrictToAlphabet(this.globalActions);
+		final Map<Map<String,String>, List<AlloyTrace>> globalPosTraces = posTraces
+				.keySet()
+				.stream()
+				.collect(Collectors.toMap(e -> e,
+						e -> posTraces.get(e)
+								.stream()
+								.map(t -> t.restrictToAlphabet(this.globalActions))
+								.collect(Collectors.toList())
+						));
 		FormulaSynth formSynth = new FormulaSynth(this.seed);
-		return formSynth.synthesizeFormulas(envVarTypes, negTrace, posTraces,
-				tlcComp, internalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
+		return formSynth.synthesizeFormulas(envVarTypes, globalNegTrace, globalPosTraces,
+				tlcComp, globalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
 				qvars, legalEnvVarCombos, curNumFluents);
 	}
 	

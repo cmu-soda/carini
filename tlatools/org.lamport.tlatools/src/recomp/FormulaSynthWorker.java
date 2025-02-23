@@ -30,7 +30,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final AlloyTrace negTrace;
 	private final List<AlloyTrace> posTraces;
 	private final TLC tlcComp;
-	private final Set<String> internalActions;
+	private final Set<String> globalActions;
 	private final Map<String, Set<String>> sortElementsMap;
 	private final Map<String, Map<String, Set<String>>> setSortElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
@@ -47,7 +47,7 @@ public class FormulaSynthWorker implements Runnable {
 
 	public FormulaSynthWorker(FormulaSynth formulaSynth, Map<String,String> envVarTypes, int id,
 			AlloyTrace negTrace, List<AlloyTrace> posTraces,
-			TLC tlcComp, Set<String> internalActions,
+			TLC tlcComp, Set<String> globalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
@@ -58,7 +58,7 @@ public class FormulaSynthWorker implements Runnable {
 		this.negTrace = negTrace;
 		this.posTraces = posTraces;
 		this.tlcComp = tlcComp;
-		this.internalActions = internalActions;
+		this.globalActions = globalActions;
 		this.sortElementsMap = sortElementsMap;
 		this.setSortElementsMap = setSortElementsMap;
 		this.actionParamTypes = actionParamTypes;
@@ -312,7 +312,7 @@ public class FormulaSynthWorker implements Runnable {
 		// actions we need to declare in the Alloy file
 		final Set<String> allActions = allTraces
 				.stream()
-				.map(t -> t.trace().stream().collect(Collectors.toSet()))
+				.map(t -> t.sanitizedTrace().stream().collect(Collectors.toSet()))
 				.reduce((Set<String>)new HashSet<String>(),
 						(acc,s) -> Utils.union(acc, s),
 						(s1,s2) -> Utils.union(s1, s2));
@@ -320,7 +320,7 @@ public class FormulaSynthWorker implements Runnable {
 		// define each concrete action (and its base name) in the component
 		Map<String,String> actToBaseName = new HashMap<>();
 		StringBuilder concActsBuilder = new StringBuilder();
-		for (final String act : this.tlcComp.actionsInSpec()) {
+		for (final String act : this.globalActions) {
 			final List<String> paramTypes = this.actionParamTypes.get(act);
 			final String paramIdxsDef = IntStream.range(0, paramTypes.size())
 					.mapToObj(i -> "P" + i)
@@ -381,16 +381,11 @@ public class FormulaSynthWorker implements Runnable {
 				.mapToObj(i -> "T"+i + "->T"+(i+1))
 				.collect(Collectors.joining(" + "));
 		final String strIndicesNext = strIndicesNextMulti.isEmpty() ? "none->none" : strIndicesNextMulti;
-		final String strInternalActs = this.internalActions
-				.stream()
-				.map(act -> "	" + act + " not in FlSymAction.baseName")
-				.collect(Collectors.joining("\n"));
 		final String finalBaseActionForNegTrace = negTrace.finalBaseAction();
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"
 				+ "	IdxOrder/next = " + strIndicesNext + "\n"
 				+ "	" + finalBaseActionForNegTrace + " in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula\n"
-				+ strInternalActs + "\n"
 				+ "}";
 		
 		// declare facts about the variable types
@@ -446,7 +441,7 @@ public class FormulaSynthWorker implements Runnable {
 					.collect(Collectors.joining(" + "));
 		final String pathPartialInstance = "path = " +
 				allTraces.stream()
-					.map(t -> "(" + t.name() + " -> " + t.path() + ")")
+					.map(t -> "(" + t.name() + " -> " + t.alloyTrace() + ")")
 					.collect(Collectors.joining(" +\n		"));
 		final String strNonEmptyEnvsPartialInstance = "maps = " +
 				allEnvs(envVarTypes, allAtoms)
@@ -483,7 +478,7 @@ public class FormulaSynthWorker implements Runnable {
 		// pos trace delcs
 		final List<String> posTraceDecls = posTraces
 				.stream()
-				.map(t -> t.toString())
+				.map(t -> t.sigString())
 				.collect(Collectors.toList());
 		
 		final String alloyFormulaInfer = curNumFluentsComment + "\n"
@@ -506,7 +501,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ "\n" + strNonEmptyEnvsDecls + "\n\n"
 				+ "\n" + partialInstance + "\n\n"
 				+ "\n" + numQuantifiersFacts + "\n\n"
-				+ "\n" + negTrace + "\n\n"
+				+ "\n" + negTrace.sigString() + "\n\n"
 				+ String.join("\n", posTraceDecls) + "\n";
 		Utils.writeFile(fileName, alloyFormulaInfer);
 	}

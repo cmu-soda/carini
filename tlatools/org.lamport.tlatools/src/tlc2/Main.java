@@ -49,7 +49,7 @@ public class Main {
     		final long timeout = 10000L; // 10000 min
     		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",0L)
     				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
-    		System.out.println(trace.fullSigString());
+    		System.out.println(trace);
     	}
     	else if (args.length == 3 && args[0].endsWith("--safe")) {
     		final String tla = args[1];

@@ -27,7 +27,7 @@ public class FlAction {
 	
 	public String toJson() {
 		final String baseNameStr = "\"baseName\":\"" + this.baseName + "\"";
-		final String paramMapStr = "\"paramMap\":\"" + this.paramMap + "\"";
+		final String paramMapStr = "\"paramMap\":" + this.paramMap;
 		final String valueStr = "\"value\":\"" + this.value + "\"";
 		final String mutexFlStr = "\"mutexFl\":\"" + this.isMutexFlStr + "\"";
 		

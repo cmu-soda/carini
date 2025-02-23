@@ -49,7 +49,7 @@ public class ExtendTraceVisitor<S> implements TSTraversalVisitor<S, String, S, W
 			
 			// the case where we're still traversing the als trace
 			final int idx = globalActionTraceSize(trace);
-			final String nextAct = this.alsTrace.rawWord().get(idx);
+			final String nextAct = this.alsTrace.rawTrace().get(idx);
 			return act.equals(nextAct) ? TSTraversalAction.EXPLORE : TSTraversalAction.IGNORE;
 		}
 		// internal (non-global) actions

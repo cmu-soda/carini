@@ -13,12 +13,13 @@ public class AlloyTrace {
 	private final String ext;
 	private final int lastIdx;
 	private final String alloyLastIdx;
-	private final String path;
-	private final List<String> trace;
+	private final String alloyTrace;
+	private final List<String> rawTrace;
+	private final List<String> sanitizedTrace;
 	private final List<String> tlaTrace;
-	private final List<String> rawWord;
 	private final Set<Utils.Pair<String,String>> traceSet;
 	private final int size;
+	private final Set<String> globalActions; // TODO keeping a copy of the globalActions is hacky
 	
 	public AlloyTrace() {
 		this.hasError = false;
@@ -26,44 +27,59 @@ public class AlloyTrace {
 		this.ext = null;
 		this.lastIdx = -1;
 		this.alloyLastIdx = null;
-		this.path = null;
-		this.trace = null;
+		this.alloyTrace = null;
+		this.rawTrace = null;
+		this.sanitizedTrace = null;
 		this.tlaTrace = null;
-		this.rawWord = null;
 		this.traceSet = null;
 		this.size = 0;
+		this.globalActions = null;
 	}
 	
-	public AlloyTrace(final List<String> trace, final List<String> tlaTrace, final List<String> rawWord, final String name, final String ext) {
-		final int lastIdx = trace.size() - 1;
+	public AlloyTrace(final List<String> rawTrace, final List<String> sanitizedTrace, final String name, final String ext,
+			final Set<String> globalActions) {
+		final int lastIdx = sanitizedTrace.size() - 1;
 		final String alloyLastIdx = "T" + lastIdx;
-		final String path = IntStream.range(0, trace.size())
+		final String rawAlloyTrace = IntStream.range(0, sanitizedTrace.size())
 				.mapToObj(i -> {
 					final String time = "T" + i;
-					final String act = trace.get(i);
+					final String act = sanitizedTrace.get(i);
 					return time + "->" + act;
 				})
 				.collect(Collectors.joining(" + "));
-		final String pathParens = "(" + path + ")";
+		final String alloyTrace = "(" + rawAlloyTrace + ")";
 		
-		this.traceSet = IntStream.range(0, trace.size())
+		this.traceSet = IntStream.range(0, sanitizedTrace.size())
 				.mapToObj(i -> {
 					final String time = "T" + i;
-					final String act = trace.get(i);
+					final String act = sanitizedTrace.get(i);
 					return new Utils.Pair<>(time,act);
 				})
 				.collect(Collectors.toSet());
+		
+		// create a trace in TLA+ format
+		final List<String> tlaTrace = rawTrace
+				.stream()
+				.map(a -> {
+					final List<String> actParts = Utils.toArrayList(a.split("\\."));
+					Utils.assertTrue(actParts.size() >= 1, "eror splitting an action!");
+					final String act = actParts.get(0);
+					final List<String> params = actParts.subList(1, actParts.size());
+					return params.size() == 0 ? act : act + "(" + String.join(",", params) + ")";
+				})
+				.collect(Collectors.toList());
 		
 		this.hasError = true;
 		this.name = name;
 		this.ext = ext;
 		this.lastIdx = lastIdx;
 		this.alloyLastIdx = alloyLastIdx;
-		this.path = pathParens;
-		this.trace = trace;
+		this.alloyTrace = alloyTrace;
+		this.sanitizedTrace = sanitizedTrace;
 		this.tlaTrace = tlaTrace;
-		this.rawWord = rawWord;
-		this.size = trace.size();
+		this.rawTrace = rawTrace;
+		this.size = sanitizedTrace.size();
+		this.globalActions = globalActions;
 	}
 	
 	public boolean hasError() {
@@ -85,20 +101,20 @@ public class AlloyTrace {
 		return this.alloyLastIdx;
 	}
 	
-	public String path() {
-		return this.path;
+	public String alloyTrace() {
+		return this.alloyTrace;
 	}
 	
-	public List<String> trace() {
-		return this.trace;
+	public List<String> sanitizedTrace() {
+		return this.sanitizedTrace;
 	}
 	
 	public List<String> tlaTrace() {
 		return this.tlaTrace;
 	}
 	
-	public List<String> rawWord() {
-		return this.rawWord;
+	public List<String> rawTrace() {
+		return this.rawTrace;
 	}
 	
 	public String finalBaseAction() {
@@ -119,23 +135,48 @@ public class AlloyTrace {
 	}
 	
 	public AlloyTrace cutToLen(int len, final String newName, final String newExt) {
-		final List<String> cutTrace = this.trace
+		final List<String> cutRawTrace = this.rawTrace
 				.stream()
 				.limit(len)
 				.collect(Collectors.toList());
-		final List<String> cutTlaTrace = this.tlaTrace
+		final List<String> cutSanitizedTrace = this.sanitizedTrace
 				.stream()
 				.limit(len)
 				.collect(Collectors.toList());
-		final List<String> cutRawWord = this.rawWord
-				.stream()
-				.limit(len)
-				.collect(Collectors.toList());
-		return new AlloyTrace(cutTrace, cutTlaTrace, cutRawWord, newName, newExt);
+		return new AlloyTrace(cutRawTrace, cutSanitizedTrace, newName, newExt, this.globalActions);
 	}
 	
-	public String fullSigString() {
-		return this.name + " (" + this.ext + "): " + this.path;
+	public AlloyTrace newName(final String newName, final String newExt) {
+		return new AlloyTrace(this.rawTrace, this.sanitizedTrace, newName, newExt, this.globalActions);
+	}
+	
+	public AlloyTrace restrictToAlphabet(final Set<String> alphabet) {
+		// figure out which indices in the trace are a part of the alphabet
+		// we assume that the alphabet contains abstract actions
+		final Set<Integer> alphabetActIdxs = IntStream.range(0, rawTrace.size())
+				.filter(i -> {
+					final String act = rawTrace.get(i);
+					final String abstractAct = act.replaceAll("\\..*$", "");
+					return alphabet.contains(abstractAct);
+				})
+				.mapToObj(i -> Integer.valueOf(i))
+				.collect(Collectors.toSet());
+		
+		// restrict the traces
+		final List<String> restrictedRawTrace = IntStream.range(0, rawTrace.size())
+				.filter(i -> alphabetActIdxs.contains(i))
+				.mapToObj(i -> rawTrace.get(i))
+				.collect(Collectors.toList());
+		final List<String> restrictedSanitizedTrace = IntStream.range(0, sanitizedTrace.size())
+				.filter(i -> alphabetActIdxs.contains(i))
+				.mapToObj(i -> sanitizedTrace.get(i))
+				.collect(Collectors.toList());
+		
+		return new AlloyTrace(restrictedRawTrace, restrictedSanitizedTrace, name, ext, globalActions);
+	}
+	
+	public String sigString() {
+		return "one sig " + this.name + " extends " + this.ext + " {} {}";
 		/*return "one sig " + this.name + " extends " + this.ext + " {} {\n"
 			+ "	lastIdx = " + this.alloyLastIdx + "\n"
 			+ "	path = " + this.path + "\n"
@@ -148,7 +189,7 @@ public class AlloyTrace {
 	
 	@Override
 	public String toString() {
-		return "one sig " + this.name + " extends " + this.ext + " {} {}";
+		return this.name + " (" + this.ext + "): " + this.alloyTrace;
 	}
 	
 	@Override
@@ -157,21 +198,21 @@ public class AlloyTrace {
 			return false;
 		}
 		AlloyTrace other = (AlloyTrace) o;
-		if (this.trace == null && other.trace != null) {
+		if (this.sanitizedTrace == null && other.sanitizedTrace != null) {
 			return false;
 		}
-		if (this.trace != null && other.trace == null) {
+		if (this.sanitizedTrace != null && other.sanitizedTrace == null) {
 			return false;
 		}
 		// the == covers the case when this.trace and other.trace are both null
-		return (this.trace == other.trace) || (this.trace.equals(other.trace));
+		return (this.sanitizedTrace == other.sanitizedTrace) || (this.sanitizedTrace.equals(other.sanitizedTrace));
 	}
 	
 	@Override
 	public int hashCode() {
-		if (this.trace == null) {
+		if (this.sanitizedTrace == null) {
 			return 0;
 		}
-		return this.trace.hashCode();
+		return this.sanitizedTrace.hashCode();
 	}
 }
