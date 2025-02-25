@@ -31,8 +31,11 @@ public class Main {
     		final String tlaRest = args[2];
     		final String cfgRest = args[3];
     		final String propFile = args[4];
-    		final long seed = args.length > 5 ? Long.parseLong(args[5]) : System.nanoTime();
-    		final String formula = new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, seed).synthesizeSepInvariant();
+    		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
+    	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
+    		final String formula =
+    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, seed)
+    					.synthesizeSepInvariant();
     		
     		if (!formula.contains("UNSAT")) {
         		System.out.println("The following formula is a separating assumption:");
@@ -47,7 +50,7 @@ public class Main {
     		final String tla = args[1];
     		final String cfg = args[2];
     		final long timeout = 10000L; // 10000 min
-    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",0L)
+    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",false,0L)
     				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
     		System.out.println(trace);
     	}

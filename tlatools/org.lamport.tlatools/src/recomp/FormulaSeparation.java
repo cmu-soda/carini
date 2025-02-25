@@ -51,10 +51,11 @@ public class FormulaSeparation {
 	private final Set<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final Set<Map<String,String>> allPermutations;
+	private final boolean extendedNegTraceSearch;
 	private final Random seed;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
-			final String propFile, long rseed) {
+			final String propFile, boolean extNegTraceSearch, long rseed) {
 		this.tlaComp = tlaComp;
 		this.cfgComp = cfgComp;
 		this.tlaRest = tlaRest;
@@ -116,6 +117,7 @@ public class FormulaSeparation {
 						.collect(Collectors.toSet()))
 				.collect(Collectors.toSet());
 		
+		extendedNegTraceSearch = extNegTraceSearch;
 		seed = new Random(rseed);
 	}
 	
@@ -198,6 +200,7 @@ public class FormulaSeparation {
     		// if a backup invariant eliminates the neg trace then use it! the round is done in this case.
     		if (backupElimsNegTrace != null) {
     			// TODO minimize the formula here too
+    			++round;
 				invariants.add(backupElimsNegTrace);
 				backupInvariants.remove(backupElimsNegTrace);
 				invariantsToNegTracesBlocked.get(backupElimsNegTrace).add(negTrace);
@@ -597,7 +600,8 @@ public class FormulaSeparation {
 		
 		// Call out to TLC to find a cex trace
 		PerfTimer tlcTimer = new PerfTimer();
-		final List<String> tlcOutputLines = new NegTraceGen().generate(tlaFile, cfgFile, detectError, timeout, TLC_JAR_PATH);
+		final List<String> tlcOutputLines = new NegTraceGen()
+				.generate(tlaFile, cfgFile, detectError, extendedNegTraceSearch, timeout, TLC_JAR_PATH);
 		System.out.println("TLC neg trace generation time: " + tlcTimer.timeElapsedSeconds() + " seconds");
 		
 		// Parse the output of TLC to create a formula that helps reproduce the error

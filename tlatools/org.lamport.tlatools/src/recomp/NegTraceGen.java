@@ -14,12 +14,15 @@ public class NegTraceGen {
 	private final long MAX_ADDITIONAL_TIMEOUT = 1000L * 60L * 5L; // 5 min
 	private final Lock lock = new ReentrantLock();
 
-	public List<String> generate(final String tla, final String cfg, final String detectError, long timeout, final String tlcJarPath) {
+	public List<String> generate(final String tla, final String cfg, final String detectError,
+			boolean extendedNegTraceSearch, long timeout, final String tlcJarPath) {
 		try {
 			// TODO should use a temporary file for <cexTraceOutputFile>
 			List<String> tlcOutputLines = new ArrayList<>();
 			PerfTimer timer = new PerfTimer();
-			final String[] cmd = {"java", "-jar", tlcJarPath, "-cleanup", "-deadlock", "-continue", "-workers", "auto", "-config", cfg, tla};
+			final String[] regularCmd = {"java", "-jar", tlcJarPath, "-cleanup", "-deadlock", "-workers", "auto", "-config", cfg, tla};
+			final String[] extendedCmd = {"java", "-jar", tlcJarPath, "-cleanup", "-deadlock", "-continue", "-workers", "auto", "-config", cfg, tla};
+			final String[] cmd = extendedNegTraceSearch ? extendedCmd : regularCmd;
 			Process proc = Runtime.getRuntime().exec(cmd);
 			
 			// start a new thread for capturing the otput of TLC. the thread will wait until an error occurs;
