@@ -3,6 +3,7 @@ package recomp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,5 +65,19 @@ public class Fluent {
 				+ "    initially: " + this.initially + "\n"
 				+ "    flActions:\n"
 				+ "      " + flActs;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.paramTypes, this.initially, this.flActions);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Fluent)) {
+			return false;
+		}
+		final Fluent other = (Fluent)o;
+		return this.paramTypes.equals(other.paramTypes) && this.initially.equals(other.initially) && this.flActions.equals(other.flActions);
 	}
 }

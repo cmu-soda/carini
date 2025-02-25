@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class Formula implements Comparable {
 		return new Formula("UNSAT", true);
 	}
 	
-	private static Formula TRUE() {
+	public static Formula TRUE() {
 		return new Formula("TRUE", false);
 	}
 	
@@ -121,10 +122,6 @@ public class Formula implements Comparable {
 		return this.fluents.keySet();
 	}
 	
-	public int getNumFluents() {
-		return getFluentVars().size();
-	}
-	
 	public boolean containsQuantifiedType(final String qtype) {
 		return this.formula.contains("\\in " + qtype + " :");
 	}
@@ -137,14 +134,14 @@ public class Formula implements Comparable {
 	 * doesn't clash with any previous one. 
 	 * @return
 	 */
-	public int getPastNumFluents() {
+	public int getMaxFluentNum() {
 		return this.fluents.keySet()
 				.stream()
 				.map(f -> f.replace("Fluent", ""))
 				.map(f -> f.replaceAll("_.*$", ""))
 				.mapToInt(f -> Integer.parseInt(f))
 				.max()
-				.getAsInt();
+				.orElseGet(() -> 0);
 	}
 	
 	public String toJson() {
@@ -173,5 +170,19 @@ public class Formula implements Comparable {
 		Utils.assertTrue(o instanceof Formula, "Comparing a formula to a different object: " + o.getClass());
 		final Formula other = (Formula) o;
 		return this.formula.length() - other.formula.length();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.formula, this.fluents);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Formula)) {
+			return false;
+		}
+		final Formula other = (Formula)o;
+		return this.formula.equals(other.formula) && this.fluents.equals(other.fluents);
 	}
 }

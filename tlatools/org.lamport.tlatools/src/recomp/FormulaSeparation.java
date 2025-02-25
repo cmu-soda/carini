@@ -119,6 +119,7 @@ public class FormulaSeparation {
 		seed = new Random(rseed);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String synthesizeSepInvariant() {
     	// config for producing positive traces
     	final String strCfgConstants = String.join("\n", tlcRest.tool.getModelConfig().getRawConstants());
@@ -151,6 +152,10 @@ public class FormulaSeparation {
 		// (below) has 0 length (i.e. is not a real trace).
     	final AlloyTrace defaultInitPosTrace = createDefaultInitPosTrace();
     	
+    	int largestFluentNumSeen = 0;
+    	Set<AlloyTrace> allNegTraces = new HashSet<>();
+    	Map<Formula, Set<AlloyTrace>> invariantsToNegTracesBlocked = new HashMap<>();
+    	Set<Formula> backupInvariants = new HashSet<>();
     	List<Formula> invariants = new ArrayList<>();
     	boolean formulaSeparates = false;
     	
@@ -180,6 +185,29 @@ public class FormulaSeparation {
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace);
     		System.out.println();
+    		
+    		// see if a backup invariant eliminates the neg trace
+    		Formula backupElimsNegTrace = null;
+    		for (final Formula backup : backupInvariants) {
+    			final boolean backupBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, backup);
+    			if (backupBlocksNegTrace) {
+    				backupElimsNegTrace = backup;
+    				break;
+    			}
+    		}
+    		// if a backup invariant eliminates the neg trace then use it! the round is done in this case.
+    		if (backupElimsNegTrace != null) {
+    			// TODO minimize the formula here too
+				invariants.add(backupElimsNegTrace);
+				backupInvariants.remove(backupElimsNegTrace);
+				invariantsToNegTracesBlocked.get(backupElimsNegTrace).add(negTrace);
+				allNegTraces.add(negTrace);
+	    		System.out.println("The following formula (that was removed from minimization) eliminates the neg trace:");
+	    		System.out.println(backupElimsNegTrace);
+        		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
+    			System.out.println();
+    			continue;
+    		}
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
     		// increase it as needed.
@@ -223,12 +251,12 @@ public class FormulaSeparation {
         		System.out.println(partialNegTrace);
         		
 				// synthesize new formulas
-    			final int numFluents = this.useIntermediateProp ?
-    					invariant.getNumFluents() + this.intermediateProp.getPastNumFluents() + 1 :
-    					invariant.getNumFluents();
+        		largestFluentNumSeen = this.useIntermediateProp ?
+    					Math.max(largestFluentNumSeen, this.intermediateProp.getMaxFluentNum()) + 1 :
+    					largestFluentNumSeen + 1;
     			++numFormulaSynthBatches;
     			System.out.println("Formula synth batch: " + numFormulaSynthBatches);
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, numFluents, envVarTypes);
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, largestFluentNumSeen, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -313,11 +341,67 @@ public class FormulaSeparation {
     						.filter(e -> !e.getValue().hasError())
     						.map(e -> e.getKey())
     						.collect(Collectors.toSet());
-    				invariants.addAll(newInvariants);
     				System.out.println("Found " + newInvariants.size() + " new invariant(s) this round:");
         			for (final Formula formula : newInvariants) {
             			System.out.println(formula);
         			}
+        			System.out.println();
+        			
+        			// find the minimum set of invariants needed to block all neg traces seen so far
+        	    	System.out.println("Minimizing the invariants found thus far.");
+        	    	PerfTimer minTimer = new PerfTimer();
+        	    	
+        	    	// update the <invariantsToNegTracesBlocked> map for all past neg traces for the new invariants
+        	    	for (final Formula inv : newInvariants) {
+        	    		invariantsToNegTracesBlocked.put(inv, new HashSet<>());
+        	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
+        	    		for (final AlloyTrace prevNegTrace : allNegTraces) {
+        	    			final boolean invBlocksPrevNegTrace = !isTraceInCompSpecWithFormula(prevNegTrace, inv);
+        	    			if (invBlocksPrevNegTrace) {
+                	    		invariantsToNegTracesBlocked.get(inv).add(prevNegTrace);
+        	    			}
+        	    		}
+        	    	}
+        	    	
+        	    	// update the <invariantsToNegTracesBlocked> map for the newest neg trace for all previous invariants
+        	    	for (final Formula inv : invariants) {
+        	    		final boolean invBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, inv);
+    	    			if (invBlocksNegTrace) {
+            	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
+    	    			}
+        	    	}
+        			
+        	    	// update our data structures
+    				invariants.addAll(newInvariants);
+            		allNegTraces.add(negTrace);
+        	    	
+        	    	// find the min set of invariants needed
+        			List<Formula> minInvariants = new ArrayList<>();
+        			Set<AlloyTrace> minInvariantsBlockedNegTraces = new HashSet<>();
+        			while (!allNegTraces.equals(minInvariantsBlockedNegTraces)) {
+        				Utils.assertTrue(!invariants.isEmpty(), "All invariants do not cover all neg traces");
+        				// sort the invariants based on how many neg traces they block
+        				Collections.sort(invariants, new Comparator() {
+        					@Override
+        					public int compare(Object o1, Object o2) {
+        						Formula f1 = (Formula)o1;
+        						Formula f2 = (Formula)o2;
+        						return invariantsToNegTracesBlocked.get(f2).size() - invariantsToNegTracesBlocked.get(f1).size();
+        					}
+        				});
+        				// keep the invariant that blocks the most neg traces
+        				final Formula nextInv = invariants.remove(0);
+        				minInvariants.add(nextInv);
+        				minInvariantsBlockedNegTraces.addAll(invariantsToNegTracesBlocked.get(nextInv));
+        			}
+        			
+        			final Set<Formula> redundantInvariants = Utils.setMinus(
+        					invariants.stream().collect(Collectors.toSet()),
+        					minInvariants.stream().collect(Collectors.toSet()));
+        			backupInvariants.addAll(redundantInvariants);
+        			invariants = minInvariants;
+        			System.out.println("Minimization finished in " + minTimer.timeElapsedSeconds() + " seconds");
+        			System.out.println("Current partial assumption:\n" + Formula.conjunction(invariants).getFormula());
     			}
     			// no new invariants have been found during formula synth
     			else {
@@ -371,8 +455,8 @@ public class FormulaSeparation {
     		++round;
     	}
     	
-    	// re-write the "rest" _hist file with the entire invariant. this will help the user
-    	// synthesize an inductive invariant for "rest".
+    	// write the _hist files with the entire invariant (for convenience for the user)
+    	writeHistVarsSpec(tlaComp, cfgComp, Formula.conjunction(invariants), true);
     	writeHistVarsSpec(tlaRest, cfgRest, Formula.conjunction(invariants), false);
     	
     	// write out the formula to a file
@@ -782,7 +866,7 @@ public class FormulaSeparation {
 			final AlloyTrace partialTrace = trace.cutToLen(i);
 			final AlloyTrace restrictedPartialTrace = partialTrace.restrictToAlphabet(this.tlcRest.actionsInSpec());
 			if (!restrictedPartialTrace.isEmpty()) {
-				final boolean restSpecBlocksPartialTrace = !isTraceInSpec(restrictedPartialTrace, this.tlaRest, this.cfgRest);
+				final boolean restSpecBlocksPartialTrace = !isTraceInSpec(restrictedPartialTrace, this.tlaRest, this.cfgRest, this.globalActions);
 				if (restSpecBlocksPartialTrace) {
 					return i;
 				}
@@ -791,7 +875,12 @@ public class FormulaSeparation {
 		return -1;
 	}
 	
-	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg) {
+	private boolean isTraceInCompSpecWithFormula(final AlloyTrace trace, final Formula formula) {
+    	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, formula, true);
+    	return isTraceInSpec(trace, tlaCompHV, cfgComp, tlcComp.actionsInSpec());
+	}
+	
+	private boolean isTraceInSpec(final AlloyTrace trace, final String tla, final String cfg, final Set<String> globalAlphabet) {
 		final String tlaName = tla.replaceAll("\\.tla", "");
 		final String cfgName = cfg.replaceAll("\\.cfg", "");
 		final String tlaFile = tlaName + ".tla";
@@ -828,7 +917,7 @@ public class FormulaSeparation {
 				.stream()
 				.map(d -> {
 					final String dname = d.getName().toString();
-					final boolean isInternalAct = this.internalActions.contains(dname);
+					final boolean isInternalAct = !globalAlphabet.contains(dname);
 					if (tlc.actionsInSpec().contains(dname)) {
 						if (isInternalAct) {
 							d.addConjunct(cexIdxVar + "' = " + cexIdxVar);

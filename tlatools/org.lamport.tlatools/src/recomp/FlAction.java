@@ -1,6 +1,7 @@
 package recomp;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import gov.nasa.jpf.util.json.JSONObject;
@@ -38,5 +39,20 @@ public class FlAction {
 	public String toString() {
 		final String mut = this.isMutexFl ? " (mutexFl)" : "";
 		return this.baseName + this.paramMap + " = " + this.value + mut;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.baseName, this.paramMap, this.value, this.isMutexFl);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof FlAction)) {
+			return false;
+		}
+		final FlAction other = (FlAction)o;
+		return this.baseName.equals(other.baseName) && this.paramMap.equals(other.paramMap) &&
+				this.value.equals(other.value) && this.isMutexFl == other.isMutexFl;
 	}
 }
