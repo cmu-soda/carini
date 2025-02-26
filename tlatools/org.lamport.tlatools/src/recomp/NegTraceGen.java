@@ -42,8 +42,8 @@ public class NegTraceGen {
 								lock.unlock();
 							}
 							// when we encounter the first instance of an error, start a countdown of until we
-							// forcibly shutdown the process.
-							if (noViolations && line.contains(detectError)) {
+							// forcibly shutdown the process (only in extendedNegTraceSearch mode).
+							if (extendedNegTraceSearch && noViolations && line.contains(detectError)) {
 								noViolations = false;
 								new Thread() {
 								    public void run() {
@@ -64,6 +64,8 @@ public class NegTraceGen {
 			
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			
+			lock.lock();
+			
 			// kill TLC if it's still running
 			if (proc.isAlive()) {
 				proc.destroyForcibly();
@@ -71,8 +73,6 @@ public class NegTraceGen {
 			
 			// clean up the states dir
 			rmrf("states/");
-			
-			lock.lock();
 			return new ArrayList<>(tlcOutputLines);
 		}
 		catch (Exception e) {

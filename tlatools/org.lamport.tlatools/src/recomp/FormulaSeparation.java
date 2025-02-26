@@ -611,6 +611,7 @@ public class FormulaSeparation {
 				.stream()
 				.allMatch(l -> !l.contains(detectError));
 		if (noError) {
+			Utils.writeFile("no_err_tlc.log", String.join("\n", tlcOutputLines)); // for auditing. TODO delete
 			return new AlloyTrace();
 		}
 		
