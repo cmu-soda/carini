@@ -1,0 +1,10 @@
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern2_n2n3_NUM3 + T6->ClientRequestn1NUM3 + T7->RollbackEntriesn3n1 + T8->GetEntriesn3n1 + T9->CommitEntryn1_n1n3_NUM1NUM3NUM3)
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+
+Reached the maximum number of formula synth batches (5), choosing a new neg trace
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern3_n2n3_NUM3 + T6->ClientRequestn1NUM3 + T7->RollbackEntriesn3n1 + T8->GetEntriesn3n1 + T9->CommitEntryn3_n1n3_NUM1NUM3NUM3)
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+
+Reached the maximum number of formula synth batches (6), choosing a new neg trace
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM2NUM2 + T5->BecomeLeadern3_n2n3_NUM3 + T6->ClientRequestn1NUM3 + T7->RollbackEntriesn3n1 + T8->ClientRequestn3NUM3 + T9->CommitEntryn1_n1n3_NUM1NUM3NUM3)
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM2NUM2)
