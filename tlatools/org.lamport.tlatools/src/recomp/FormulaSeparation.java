@@ -123,15 +123,17 @@ public class FormulaSeparation {
 	
 	@SuppressWarnings("unchecked")
 	public String synthesizeSepInvariant() {
-    	// config for producing positive traces
-    	final String strCfgConstants = String.join("\n", tlcRest.tool.getModelConfig().getRawConstants());
-    	final String cfgPosTraces = "pos_traces.cfg";
-    	Utils.writeFile(cfgPosTraces, "SPECIFICATION Spec\nINVARIANT CandSep\n" + strCfgConstants);
-    	
     	// config for producing negative traces
     	final String cfgNegTraces = "neg_traces.cfg";
-    	final String negTracesSafety = this.useIntermediateProp ? "\nINVARIANT Safety" : "";
-    	Utils.writeFile(cfgNegTraces, String.join("\n", Utils.fileContents(cfgComp)) + negTracesSafety);
+    	final String cfgNegTracesContents = this.useIntermediateProp ?
+    			cfgContentsWithoutInvariants(cfgComp) + "\nINVARIANT Safety" :
+    			cfgContents(cfgComp);
+    	Utils.writeFile(cfgNegTraces, cfgNegTracesContents);
+    	
+    	// config for producing positive traces
+    	final String cfgPosTraces = "pos_traces.cfg";
+		final String cfgPosTracesContents = cfgContentsWithoutInvariants(cfgRest) + "\nINVARIANT CandSep";
+    	Utils.writeFile(cfgPosTraces, cfgPosTracesContents);
     	
     	//final List<String> rawComponents = Decomposition.decompAll(tla, cfg);
     	//final List<String> components = Composition.symbolicCompose(tla, cfg, "CUSTOM", "recomp_map.csv", rawComponents);
@@ -1483,6 +1485,19 @@ public class FormulaSeparation {
 			final String elem = toks.get(0).trim();
 			return elem;
 		}
+	}
+	
+	private static String cfgContents(final String cfg) {
+		return Utils.fileContents(cfg)
+				.stream()
+				.collect(Collectors.joining("\n"));
+	}
+	
+	private static String cfgContentsWithoutInvariants(final String cfg) {
+		return Utils.fileContents(cfg)
+				.stream()
+				.filter(l -> !l.contains("INVARIANT "))
+				.collect(Collectors.joining("\n"));
 	}
 
 	
