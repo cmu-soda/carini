@@ -848,7 +848,16 @@ public class FormulaSeparation {
         // Load the new TLA+ spec as a TLC object (i.e. in Java code) and get an action-based trace, which we turn into an AlloyTrace
     	TLC tlcCexReproducer = new TLC();
     	tlcCexReproducer.modelCheck(cexTraceTla, cexTraceCfg);
-    	final LTS<Integer, String> lts = tlcCexReproducer.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
+    	LTS<Integer, String> lts = tlcCexReproducer.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
+    	if (SafetyUtils.INSTANCE.ltsIsSafe(lts)) {
+    		// for some reason, this check is a bit flaky. if the LTS is safe, sleep for 1s and then try once more.
+    		try {
+				Thread.sleep(1000L);
+			} catch (InterruptedException e) {}
+        	tlcCexReproducer = new TLC();
+        	tlcCexReproducer.modelCheck(cexTraceTla, cexTraceCfg);
+        	lts = tlcCexReproducer.getLTSBuilder().toIncompleteDetAutIncludingAnErrorState();
+    	}
     	Utils.assertTrue(!SafetyUtils.INSTANCE.ltsIsSafe(lts), "Couldn't reproduce TLC error!");
 		
 		// if candSep isn't an invariant, return a trace that should be covered by the formula
