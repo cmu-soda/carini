@@ -121,7 +121,6 @@ public class FormulaSeparation {
 		seed = new Random(rseed);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String synthesizeSepInvariant() {
     	// config for producing negative traces
     	final String cfgNegTraces = "neg_traces.cfg";
@@ -209,6 +208,8 @@ public class FormulaSeparation {
 				allNegTraces.add(negTrace);
 	    		System.out.println("The following formula (that was removed from minimization) eliminates the neg trace:");
 	    		System.out.println(backupElimsNegTrace);
+    			System.out.println();
+    			System.out.println("Current partial assumption:\n" + Formula.conjunction(invariants).getFormula());
         		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
     			System.out.println();
     			continue;
@@ -256,9 +257,15 @@ public class FormulaSeparation {
         		System.out.println(partialNegTrace);
         		
 				// synthesize new formulas
-        		largestFluentNumSeen = this.useIntermediateProp ?
-    					Math.max(largestFluentNumSeen, this.intermediateProp.getMaxFluentNum()) + 1 :
-    					largestFluentNumSeen + 1;
+        		final int largestFluentNumInInvariants = invariants
+        				.stream()
+        				.reduce(0,
+        						(n,inv) -> Math.max(n, inv.getMaxFluentNum()),
+        						(n1,n2) -> Math.max(n1, n2));
+        		final int largestFluentNumInAllFormulas = this.useIntermediateProp ?
+    					Math.max(largestFluentNumInInvariants, this.intermediateProp.getMaxFluentNum()) :
+    					largestFluentNumInInvariants;
+        		largestFluentNumSeen = Math.max(largestFluentNumSeen, largestFluentNumInAllFormulas) + 1;
     			++numFormulaSynthBatches;
     			System.out.println("Formula synth batch: " + numFormulaSynthBatches);
     			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, largestFluentNumSeen, envVarTypes);
@@ -386,12 +393,21 @@ public class FormulaSeparation {
         			while (!allNegTraces.equals(minInvariantsBlockedNegTraces)) {
         				Utils.assertTrue(!invariants.isEmpty(), "All invariants do not cover all neg traces");
         				// sort the invariants based on how many neg traces they block
-        				Collections.sort(invariants, new Comparator() {
+        				Collections.sort(invariants, new Comparator<Formula>() {
         					@Override
-        					public int compare(Object o1, Object o2) {
-        						Formula f1 = (Formula)o1;
-        						Formula f2 = (Formula)o2;
-        						return invariantsToNegTracesBlocked.get(f2).size() - invariantsToNegTracesBlocked.get(f1).size();
+        					public int compare(Formula f1, Formula f2) {
+        						final Set<AlloyTrace> f1NegTracesBlocked =
+        								Utils.setMinus(invariantsToNegTracesBlocked.get(f1), minInvariantsBlockedNegTraces);
+        						final Set<AlloyTrace> f2NegTracesBlocked =
+        								Utils.setMinus(invariantsToNegTracesBlocked.get(f2), minInvariantsBlockedNegTraces);
+        						final int tracesBlockedComparison = f1NegTracesBlocked.size() - f2NegTracesBlocked.size();
+        						
+        						// if one formula blocks more traces, then choose it
+        						if (tracesBlockedComparison != 0) {
+        							return -1 * tracesBlockedComparison; // -1 for reverse order
+        						}
+        						// otherwise (of both formulas block the same number of traces) then perform syntactic comparison
+        						return -1 * f1.compareTo(f2); // -1 for reverse order
         					}
         				});
         				// keep the invariant that blocks the most neg traces
@@ -606,6 +622,9 @@ public class FormulaSeparation {
 				.generate(tlaFile, cfgFile, detectError, extendedNegTraceSearch, timeout, TLC_JAR_PATH);
 		System.out.println("TLC neg trace generation time: " + tlcTimer.timeElapsedSeconds() + " seconds");
 		
+		// make sure cextrace.txt has the most recent output for logging / auditing
+		Utils.writeFile("cextrace.txt", String.join("\n", tlcOutputLines));
+		
 		// Parse the output of TLC to create a formula that helps reproduce the error
 		
 		// if there is no error then we're done
@@ -613,7 +632,6 @@ public class FormulaSeparation {
 				.stream()
 				.allMatch(l -> !l.contains(detectError));
 		if (noError) {
-			Utils.writeFile("no_err_tlc.log", String.join("\n", tlcOutputLines)); // for auditing. TODO delete
 			return new AlloyTrace();
 		}
 		
