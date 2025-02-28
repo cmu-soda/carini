@@ -643,10 +643,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    // flToActParamsMap is injective\n"
 			+ "    // this is an overconstraint for improving speed\n"
 			+ "    all k1,k2,v : ParamIdx | (k1->v in flToActParamsMap and k2->v in flToActParamsMap) implies (k1 = k2)\n"
-			+ "\n"
-			+ "    // these are overconstraints for improving speed\n"
-			+ "    (mutexFl = True) implies (value = True) // restrict mutex fl's to be True-valued\n"
-			+ "    (no flToActParamsMap) implies (value = False) // allow falsify, but not trueify\n"
 			// If there's multiple fluent actions in a single fluent, this following constraint could prevent us from finding
 			// legitimate solutions.
 			//+ "\n"
@@ -687,8 +683,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "    // constraints for improving speed, but sacrifice expressivity\n"
 			+ "    #flActions <= 3 // at most three total fluent actions\n"
-			+ "    #({a : flActions | a.mutexFl = True}) <= 1 // at most one mutex fluent action\n"
-			+ "    #({a : flActions | no a.flToActParamsMap}) <= 1 // at most one falsify/trueify fluent action\n"
 			+ "    #({a : flActions | a.value = True}) <= 2 // at most two True-valued fluent action\n"
 			+ "    #({a : flActions | a.value = False}) <= 2 // at most two False-valued fluent action\n"
 			+ "\n"
