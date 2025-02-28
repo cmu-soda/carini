@@ -22,8 +22,8 @@ import tlc2.Utils;
 public class FormulaSynth {
 	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
-	private static final int MAX_NUM_THREADS = System.getenv(maxNumWorkersEnvVar) != null ? Integer.parseInt(System.getenv(maxNumWorkersEnvVar)) : 25;
-	private static final int MAX_NUM_WORKERS = 15;
+	private static final int MAX_NUM_THREADS = Runtime.getRuntime().availableProcessors();
+	private static final int MAX_NUM_WORKERS = MAX_NUM_THREADS;
 	private static final long SHUTDOWN_MULTIPLIER = 3L;
 	private static final long MIN_SHUTDOWN_TIME = 1000L * 30L; // 30 seconds
 	
