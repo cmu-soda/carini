@@ -209,6 +209,17 @@ public class FormulaSeparation {
 	    		System.out.println("The following formula (that was removed from minimization) eliminates the neg trace:");
 	    		System.out.println(backupElimsNegTrace);
     			System.out.println();
+    	    	
+    			// find the minimum set of invariants needed to block all neg traces seen so far
+    	    	System.out.println("Minimizing the invariants found thus far.");
+    	    	PerfTimer minTimer = new PerfTimer();
+    			final List<Formula> minInvariants = minimizeInvariants(invariants, invariantsToNegTracesBlocked, allNegTraces);
+    			final Set<Formula> redundantInvariants = Utils.setMinus(
+    					invariants.stream().collect(Collectors.toSet()),
+    					minInvariants.stream().collect(Collectors.toSet()));
+    			backupInvariants.addAll(redundantInvariants);
+    			invariants = minInvariants;
+    			System.out.println("Minimization finished in " + minTimer.timeElapsedSeconds() + " seconds");
     			System.out.println("Current partial assumption:\n" + Formula.conjunction(invariants).getFormula());
         		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
     			System.out.println();
@@ -386,36 +397,7 @@ public class FormulaSeparation {
         	    	// update our data structures
     				invariants.addAll(newInvariants);
             		allNegTraces.add(negTrace);
-        	    	
-        	    	// find the min set of invariants needed
-        			List<Formula> minInvariants = new ArrayList<>();
-        			Set<AlloyTrace> minInvariantsBlockedNegTraces = new HashSet<>();
-        			while (!allNegTraces.equals(minInvariantsBlockedNegTraces)) {
-        				Utils.assertTrue(!invariants.isEmpty(), "All invariants do not cover all neg traces");
-        				// sort the invariants based on how many neg traces they block
-        				Collections.sort(invariants, new Comparator<Formula>() {
-        					@Override
-        					public int compare(Formula f1, Formula f2) {
-        						final Set<AlloyTrace> f1NegTracesBlocked =
-        								Utils.setMinus(invariantsToNegTracesBlocked.get(f1), minInvariantsBlockedNegTraces);
-        						final Set<AlloyTrace> f2NegTracesBlocked =
-        								Utils.setMinus(invariantsToNegTracesBlocked.get(f2), minInvariantsBlockedNegTraces);
-        						final int tracesBlockedComparison = f1NegTracesBlocked.size() - f2NegTracesBlocked.size();
-        						
-        						// if one formula blocks more traces, then choose it
-        						if (tracesBlockedComparison != 0) {
-        							return -1 * tracesBlockedComparison; // -1 for reverse order
-        						}
-        						// otherwise (of both formulas block the same number of traces) then perform syntactic comparison
-        						return -1 * f1.compareTo(f2); // -1 for reverse order
-        					}
-        				});
-        				// keep the invariant that blocks the most neg traces
-        				final Formula nextInv = invariants.remove(0);
-        				minInvariants.add(nextInv);
-        				minInvariantsBlockedNegTraces.addAll(invariantsToNegTracesBlocked.get(nextInv));
-        			}
-        			
+        			final List<Formula> minInvariants = minimizeInvariants(invariants, invariantsToNegTracesBlocked, allNegTraces);
         			final Set<Formula> redundantInvariants = Utils.setMinus(
         					invariants.stream().collect(Collectors.toSet()),
         					minInvariants.stream().collect(Collectors.toSet()));
@@ -550,6 +532,46 @@ public class FormulaSeparation {
     		return okNegPrefix;
     	}
     	return defaultInitPosTrace;
+	}
+	
+	/**
+	 * Minimize the list of invariants. This method will not modify <invariants>, but will modify
+	 * <invariantsToNegTracesBlocked> and <allNegTraces>.
+	 * @param invariants
+	 * @param invariantsToNegTracesBlocked
+	 * @param allNegTraces
+	 * @return
+	 */
+	public List<Formula> minimizeInvariants(final List<Formula> invariants, Map<Formula, Set<AlloyTrace>> invariantsToNegTracesBlocked,
+			Set<AlloyTrace> allNegTraces) {
+		List<Formula> minInvariants = new ArrayList<>();
+		Set<AlloyTrace> minInvariantsBlockedNegTraces = new HashSet<>();
+		while (!allNegTraces.equals(minInvariantsBlockedNegTraces)) {
+			Utils.assertTrue(!invariants.isEmpty(), "All invariants do not cover all neg traces");
+			// sort the invariants based on how many neg traces they block
+			Collections.sort(invariants, new Comparator<Formula>() {
+				@Override
+				public int compare(Formula f1, Formula f2) {
+					final Set<AlloyTrace> f1NegTracesBlocked =
+							Utils.setMinus(invariantsToNegTracesBlocked.get(f1), minInvariantsBlockedNegTraces);
+					final Set<AlloyTrace> f2NegTracesBlocked =
+							Utils.setMinus(invariantsToNegTracesBlocked.get(f2), minInvariantsBlockedNegTraces);
+					final int tracesBlockedComparison = f1NegTracesBlocked.size() - f2NegTracesBlocked.size();
+					
+					// if one formula blocks more traces, then choose it
+					if (tracesBlockedComparison != 0) {
+						return -1 * tracesBlockedComparison; // -1 for reverse order
+					}
+					// otherwise (of both formulas block the same number of traces) then perform syntactic comparison
+					return -1 * f1.compareTo(f2); // -1 for reverse order
+				}
+			});
+			// keep the invariant that blocks the most neg traces
+			final Formula nextInv = invariants.remove(0);
+			minInvariants.add(nextInv);
+			minInvariantsBlockedNegTraces.addAll(invariantsToNegTracesBlocked.get(nextInv));
+		}
+		return minInvariants;
 	}
 	
 	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, long trNum, final String ext, long timeout) {
