@@ -122,6 +122,20 @@ public class FormulaSeparation {
 	}
 	
 	public String synthesizeSepInvariant() {
+		final Set<Formula> invariants = minimalSetOfSepInvariants();
+    	
+    	// write the _hist files with the entire invariant (for convenience for the user)
+    	writeHistVarsSpec(tlaComp, cfgComp, Formula.conjunction(invariants), true);
+    	writeHistVarsSpec(tlaRest, cfgRest, Formula.conjunction(invariants), false);
+    	
+    	// write out the formula to a file
+    	final String tlaCompBaseName = this.tlaComp.replaceAll("\\.tla", "");
+    	Utils.writeFile(tlaCompBaseName + ".inv", Formula.conjunction(invariants).toJson());
+    	
+    	return Formula.conjunction(invariants).getFormula();
+	}
+	
+	public Set<Formula> minimalSetOfSepInvariants() {
     	// config for producing negative traces
     	final String cfgNegTraces = "neg_traces.cfg";
     	final String cfgNegTracesContents = this.useIntermediateProp ?
@@ -158,8 +172,8 @@ public class FormulaSeparation {
     	int largestFluentNumSeen = 0;
     	Set<AlloyTrace> allNegTraces = new HashSet<>();
     	Map<Formula, Set<AlloyTrace>> invariantsToNegTracesBlocked = new HashMap<>();
-    	Set<Formula> backupInvariants = new HashSet<>();
-    	List<Formula> invariants = new ArrayList<>();
+    	Set<Formula> allInvariants = new HashSet<>();
+    	Set<Formula> activeInvariants = new HashSet<>();
     	boolean formulaSeparates = false;
     	
     	int round = 1;
@@ -175,7 +189,7 @@ public class FormulaSeparation {
     		
     		// generate a negative trace for this round; we will generate a formula (assumption) that eliminates
     		// the negative trace
-    		final Formula invariant = Formula.conjunction(invariants);
+    		final Formula invariant = Formula.conjunction(activeInvariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
 			// the default timeout is 5m, but can be changed via env var
         	final AlloyTrace negTrace = genNegCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
@@ -189,41 +203,19 @@ public class FormulaSeparation {
     		System.out.println(negTrace);
     		System.out.println();
     		
+    		// whether or not we have found an invariant that blocks <negTrace>
+    		boolean foundInvariant = false;
+    		Set<Formula> newInvariants = null;
+    		
     		// see if a backup invariant eliminates the neg trace
-    		Formula backupElimsNegTrace = null;
-    		for (final Formula backup : backupInvariants) {
-    			final boolean backupBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, backup);
+    		final Set<Formula> backupInvariants = Utils.setMinus(allInvariants, activeInvariants);
+    		for (final Formula backupInv : backupInvariants) {
+    			final boolean backupBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, backupInv);
     			if (backupBlocksNegTrace) {
-    				backupElimsNegTrace = backup;
+    				foundInvariant = true;
+    				newInvariants = Utils.setOf(backupInv);
     				break;
     			}
-    		}
-    		// if a backup invariant eliminates the neg trace then use it! the round is done in this case.
-    		if (backupElimsNegTrace != null) {
-    			// TODO minimize the formula here too
-    			++round;
-				invariants.add(backupElimsNegTrace);
-				backupInvariants.remove(backupElimsNegTrace);
-				invariantsToNegTracesBlocked.get(backupElimsNegTrace).add(negTrace);
-				allNegTraces.add(negTrace);
-	    		System.out.println("The following formula (that was removed from minimization) eliminates the neg trace:");
-	    		System.out.println(backupElimsNegTrace);
-    			System.out.println();
-    	    	
-    			// find the minimum set of invariants needed to block all neg traces seen so far
-    	    	System.out.println("Minimizing the invariants found thus far.");
-    	    	PerfTimer minTimer = new PerfTimer();
-    			final List<Formula> minInvariants = minimizeInvariants(invariants, invariantsToNegTracesBlocked, allNegTraces);
-    			final Set<Formula> redundantInvariants = Utils.setMinus(
-    					invariants.stream().collect(Collectors.toSet()),
-    					minInvariants.stream().collect(Collectors.toSet()));
-    			backupInvariants.addAll(redundantInvariants);
-    			invariants = minInvariants;
-    			System.out.println("Minimization finished in " + minTimer.timeElapsedSeconds() + " seconds");
-    			System.out.println("Current partial assumption:\n" + Formula.conjunction(invariants).getFormula());
-        		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
-    			System.out.println();
-    			continue;
     		}
     		
     		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
@@ -234,14 +226,14 @@ public class FormulaSeparation {
         		// this means that the trace /is/ allowed by 'rest', and indicates an error in the spec
     			System.out.println("The property is violated with the following trace:");
     			System.out.println(negTrace);
-    			return "UNSAT";
+    			return Utils.setOf(Formula.UNSAT());
     		}
         	
         	// 'dynamically' generate the init trace
     		final AlloyTrace fullPartialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     		final AlloyTrace globalPartialNegTrace = fullPartialNegTrace.restrictToAlphabet(this.globalActions);
         	String badAction = globalPartialNegTrace.rawTrace().get(globalPartialNegTrace.size()-1);
-        	AlloyTrace okNegPrefix = fullPartialNegTrace.newName("PT1", "PosTrace"); //negTrace.cutToLen(minPartialNegTraceLen-1, "PT1", "PosTrace");
+        	AlloyTrace okNegPrefix = fullPartialNegTrace.newName("PT1", "PosTrace");
         	while (globalPartialNegTrace.equals(okNegPrefix.restrictToAlphabet(this.globalActions))) {
         		okNegPrefix = okNegPrefix.cutToLen(okNegPrefix.size()-1);
         	}
@@ -254,13 +246,14 @@ public class FormulaSeparation {
     		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
     				.stream()
     				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(ipt)));
-        	System.out.println("Init pos trace:");
-        	System.out.println(initPosTrace);
+    		if (!foundInvariant) {
+            	System.out.println("Init pos trace:");
+            	System.out.println(initPosTrace);
+    		}
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
     		int numFormulaSynthBatches = 0;
-    		boolean foundInvariant = false;
     		while (!formulaSeparates && !foundInvariant) {
     			// compute the partial neg trace
     			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
@@ -268,7 +261,7 @@ public class FormulaSeparation {
         		System.out.println(partialNegTrace);
         		
 				// synthesize new formulas
-        		final int largestFluentNumInInvariants = invariants
+        		final int largestFluentNumInInvariants = allInvariants
         				.stream()
         				.reduce(0,
         						(n,inv) -> Math.max(n, inv.getMaxFluentNum()),
@@ -323,8 +316,8 @@ public class FormulaSeparation {
     			// if all results are UNSAT then we report this to the user
     			if (envVarTypes.isEmpty()) {
     				// in this case, the overall constraints are unsatisfiable so we stop and report this to the user
-    				invariants.add(Formula.UNSAT());
-    				return Formula.conjunction(invariants).getFormula();
+    				allInvariants.add(Formula.UNSAT());
+    				return Utils.setOf(Formula.conjunction(allInvariants));
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
@@ -358,53 +351,12 @@ public class FormulaSeparation {
     			// if an invariant is found, move onto the next round. otherwise, prepare to perform formula synthesis
     			// with the new pos traces.
     			if (foundInvariant) {
-    				final Set<Formula> newInvariants = newSynthFormulaResults
+    				newInvariants = newSynthFormulaResults
     						.entrySet()
     						.stream()
     						.filter(e -> !e.getValue().hasError())
     						.map(e -> e.getKey())
     						.collect(Collectors.toSet());
-    				System.out.println("Found " + newInvariants.size() + " new invariant(s) this round:");
-        			for (final Formula formula : newInvariants) {
-            			System.out.println(formula);
-        			}
-        			System.out.println();
-        			
-        			// find the minimum set of invariants needed to block all neg traces seen so far
-        	    	System.out.println("Minimizing the invariants found thus far.");
-        	    	PerfTimer minTimer = new PerfTimer();
-        	    	
-        	    	// update the <invariantsToNegTracesBlocked> map for all past neg traces for the new invariants
-        	    	for (final Formula inv : newInvariants) {
-        	    		invariantsToNegTracesBlocked.put(inv, new HashSet<>());
-        	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
-        	    		for (final AlloyTrace prevNegTrace : allNegTraces) {
-        	    			final boolean invBlocksPrevNegTrace = !isTraceInCompSpecWithFormula(prevNegTrace, inv);
-        	    			if (invBlocksPrevNegTrace) {
-                	    		invariantsToNegTracesBlocked.get(inv).add(prevNegTrace);
-        	    			}
-        	    		}
-        	    	}
-        	    	
-        	    	// update the <invariantsToNegTracesBlocked> map for the newest neg trace for all previous invariants
-        	    	for (final Formula inv : invariants) {
-        	    		final boolean invBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, inv);
-    	    			if (invBlocksNegTrace) {
-            	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
-    	    			}
-        	    	}
-        			
-        	    	// update our data structures
-    				invariants.addAll(newInvariants);
-            		allNegTraces.add(negTrace);
-        			final List<Formula> minInvariants = minimizeInvariants(invariants, invariantsToNegTracesBlocked, allNegTraces);
-        			final Set<Formula> redundantInvariants = Utils.setMinus(
-        					invariants.stream().collect(Collectors.toSet()),
-        					minInvariants.stream().collect(Collectors.toSet()));
-        			backupInvariants.addAll(redundantInvariants);
-        			invariants = minInvariants;
-        			System.out.println("Minimization finished in " + minTimer.timeElapsedSeconds() + " seconds");
-        			System.out.println("Current partial assumption:\n" + Formula.conjunction(invariants).getFormula());
     			}
     			// no new invariants have been found during formula synth
     			else {
@@ -453,20 +405,58 @@ public class FormulaSeparation {
 							.forEach(t -> System.out.println(t));
     			}
     		}
+    		
+    		// post processing after finding an invariant that blocks <negTrace>
+    		Utils.assertNotNull(newInvariants, "newInvariants is null");
+    		Utils.assertTrue(newInvariants.size() == 1, "Expected 1 new invariant, but got: " + newInvariants.size());
+    		if (allInvariants.containsAll(newInvariants)) {
+    			System.out.println("The following previously found invariant blocks the negative trace:");
+    		} else {
+    			System.out.println("Found " + newInvariants.size() + " new invariant(s) this round:");
+    		}
+			for (final Formula formula : newInvariants) {
+    			System.out.println(formula);
+			}
+			System.out.println();
+			
+			// find the minimum set of invariants needed to block all neg traces seen so far
+	    	System.out.println("Minimizing the invariants found thus far.");
+	    	PerfTimer minTimer = new PerfTimer();
+	    	
+	    	// update the <invariantsToNegTracesBlocked> map for all past neg traces for the new invariants
+	    	for (final Formula inv : newInvariants) {
+	    		invariantsToNegTracesBlocked.put(inv, new HashSet<>());
+	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
+	    		for (final AlloyTrace prevNegTrace : allNegTraces) {
+	    			final boolean invBlocksPrevNegTrace = !isTraceInCompSpecWithFormula(prevNegTrace, inv);
+	    			if (invBlocksPrevNegTrace) {
+        	    		invariantsToNegTracesBlocked.get(inv).add(prevNegTrace);
+	    			}
+	    		}
+	    	}
+	    	
+	    	// update the <invariantsToNegTracesBlocked> map for the newest neg trace for all previous invariants
+	    	for (final Formula inv : allInvariants) {
+	    		final boolean invBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, inv);
+    			if (invBlocksNegTrace) {
+    	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
+    			}
+	    	}
+			
+	    	// update our data structures
+			allInvariants.addAll(newInvariants);
+    		allNegTraces.add(negTrace);
+			activeInvariants = minimizeInvariants(allInvariants, invariantsToNegTracesBlocked, allNegTraces);
+			
+			System.out.println("Minimization finished in " + minTimer.timeElapsedSeconds() + " seconds");
+			System.out.println("Current partial assumption:\n" + Formula.conjunction(activeInvariants).getFormula());
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
 			System.out.println();
     		++round;
     	}
     	
-    	// write the _hist files with the entire invariant (for convenience for the user)
-    	writeHistVarsSpec(tlaComp, cfgComp, Formula.conjunction(invariants), true);
-    	writeHistVarsSpec(tlaRest, cfgRest, Formula.conjunction(invariants), false);
-    	
-    	// write out the formula to a file
-    	final String tlaCompBaseName = this.tlaComp.replaceAll("\\.tla", "");
-    	Utils.writeFile(tlaCompBaseName + ".inv", Formula.conjunction(invariants).toJson());
-    	
-    	return Formula.conjunction(invariants).getFormula();
+    	// the active invariants are a minimized set of invariants whose conjunction is a separating assumption
+    	return activeInvariants;
 	}
 	
 	private AlloyTrace createDefaultInitPosTrace() {
@@ -535,27 +525,30 @@ public class FormulaSeparation {
 	}
 	
 	/**
-	 * Minimize the list of invariants. This method will not modify <invariants>, but will modify
-	 * <invariantsToNegTracesBlocked> and <allNegTraces>.
+	 * Returns the minimal set of invariants (from <invariantSet>) needed to block all traces in <allNegTraces>
 	 * @param invariants
 	 * @param invariantsToNegTracesBlocked
 	 * @param allNegTraces
 	 * @return
 	 */
-	public List<Formula> minimizeInvariants(final List<Formula> invariants, Map<Formula, Set<AlloyTrace>> invariantsToNegTracesBlocked,
-			Set<AlloyTrace> allNegTraces) {
+	public Set<Formula> minimizeInvariants(final Set<Formula> invariantSet, final Map<Formula, Set<AlloyTrace>> invariantsToNegTracesBlocked,
+			final Set<AlloyTrace> allNegTraces) {
+		List<Formula> invariants = invariantSet
+				.stream()
+				.collect(Collectors.toList());
 		List<Formula> minInvariants = new ArrayList<>();
-		Set<AlloyTrace> minInvariantsBlockedNegTraces = new HashSet<>();
-		while (!allNegTraces.equals(minInvariantsBlockedNegTraces)) {
+		Set<AlloyTrace> blockedNegTraces = new HashSet<>();
+		while (!allNegTraces.equals(blockedNegTraces)) {
 			Utils.assertTrue(!invariants.isEmpty(), "All invariants do not cover all neg traces");
 			// sort the invariants based on how many neg traces they block
 			Collections.sort(invariants, new Comparator<Formula>() {
 				@Override
 				public int compare(Formula f1, Formula f2) {
+					// do not include previous blocked neg traces when comparing how many each formula blocks
 					final Set<AlloyTrace> f1NegTracesBlocked =
-							Utils.setMinus(invariantsToNegTracesBlocked.get(f1), minInvariantsBlockedNegTraces);
+							Utils.setMinus(invariantsToNegTracesBlocked.get(f1), blockedNegTraces);
 					final Set<AlloyTrace> f2NegTracesBlocked =
-							Utils.setMinus(invariantsToNegTracesBlocked.get(f2), minInvariantsBlockedNegTraces);
+							Utils.setMinus(invariantsToNegTracesBlocked.get(f2), blockedNegTraces);
 					final int tracesBlockedComparison = f1NegTracesBlocked.size() - f2NegTracesBlocked.size();
 					
 					// if one formula blocks more traces, then choose it
@@ -569,9 +562,11 @@ public class FormulaSeparation {
 			// keep the invariant that blocks the most neg traces
 			final Formula nextInv = invariants.remove(0);
 			minInvariants.add(nextInv);
-			minInvariantsBlockedNegTraces.addAll(invariantsToNegTracesBlocked.get(nextInv));
+			blockedNegTraces.addAll(invariantsToNegTracesBlocked.get(nextInv));
 		}
-		return minInvariants;
+		return minInvariants
+				.stream()
+				.collect(Collectors.toSet());
 	}
 	
 	public AlloyTrace genCexTraceForCandSepInvariant(final String tla, final String cfg, final String trName, long trNum, final String ext, long timeout) {

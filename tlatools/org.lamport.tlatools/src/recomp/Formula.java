@@ -28,7 +28,7 @@ public class Formula implements Comparable {
 		return new Formula("TRUE", false);
 	}
 	
-	public static Formula conjunction(final List<Formula> formulas) {
+	public static Formula conjunction(final Collection<Formula> formulas) {
 		if (formulas.isEmpty()) {
 			return TRUE();
 		}
