@@ -22,7 +22,7 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_NUM_FLUENT_ACTS = 5;
+	private static final int MAX_NUM_FLUENT_ACTS = 4;
 	
 	private final FormulaSynth formulaSynth;
 	private final Map<String,String> envVarTypes;
@@ -682,9 +682,10 @@ public class FormulaSynthWorker implements Runnable {
 			+ "                    flIdx.flParamTypes = actIdx.(a.baseName.paramTypes)\n"
 			+ "\n"
 			+ "    // constraints for improving speed, but sacrifice expressivity\n"
-			+ "    #flActions <= 3 // at most three total fluent actions\n"
-			+ "    #({a : flActions | a.value = True}) <= 2 // at most two True-valued fluent action\n"
-			+ "    #({a : flActions | a.value = False}) <= 2 // at most two False-valued fluent action\n"
+			//+ "    #flActions <= 3 // at most three total fluent actions\n"
+			+ "    #({a : flActions | a.mutexFl = True}) <= 1 // at most one mutex fluent action\n"
+			//+ "    #({a : flActions | a.value = True}) <= 2 // at most two True-valued fluent action\n"
+			//+ "    #({a : flActions | a.value = False}) <= 2 // at most two False-valued fluent action\n"
 			+ "\n"
 			+ "    // flToActParamsMap is an injective function across all actions\n"
 			+ "    // this is an overconstraint for improving speed\n"
@@ -761,7 +762,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "\n"
 			+ "	// require lhs to not have have an Implies node\n"
-			+ " // this is an overconstraint for improving speed\n"
+			+ "	// this is an overconstraint for improving speed\n"
 			+ "	all f : Implies | no (f.left.*children) & Implies\n"
 			+ "\n"
 			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n" // makes the query far more efficient
