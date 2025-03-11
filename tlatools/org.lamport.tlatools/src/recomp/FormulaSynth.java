@@ -160,14 +160,16 @@ public class FormulaSynth {
 					final double maxTimeLeft = shutdownLength / 1000.0;
 					System.out.println("First worker finished, shutdown count is " + maxTimeLeft + "s");
 				}
-				
+
+				// disabling this "short circuit" optimization code for now.
+				/*
 				// if more than half of the workers have come back as UNSAT, then we will assume that all workers
 				// will come back UNSAT. this is a speed optimization.
 				if (allUNSAT && numIncompleteWorkers < numWorkers/2.0) {
 					System.out.println("No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth");
 					System.out.println("Killing " + numIncompleteWorkers + " incomplete formula synth workers");
 					break;
-				}
+				}*/
 			}
 		}
 		finally {
