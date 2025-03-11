@@ -202,10 +202,11 @@ public class FormulaSeparation {
     		System.out.println("attempting to eliminate the following neg trace this round:");
     		System.out.println(negTrace);
     		System.out.println();
+    		Utils.assertTrue(!allNegTraces.contains(negTrace), "The neg trace has been seen before!");
     		
     		// whether or not we have found an invariant that blocks <negTrace>
     		boolean foundInvariant = false;
-    		Set<Formula> newInvariants = null;
+    		Formula blockingInvariant = null;
     		
     		// see if a backup invariant eliminates the neg trace
     		final Set<Formula> backupInvariants = Utils.setMinus(allInvariants, activeInvariants);
@@ -213,7 +214,7 @@ public class FormulaSeparation {
     			final boolean backupBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, backupInv);
     			if (backupBlocksNegTrace) {
     				foundInvariant = true;
-    				newInvariants = Utils.setOf(backupInv);
+    				blockingInvariant = backupInv;
     				break;
     			}
     		}
@@ -316,8 +317,8 @@ public class FormulaSeparation {
     			// if all results are UNSAT then we report this to the user
     			if (envVarTypes.isEmpty()) {
     				// in this case, the overall constraints are unsatisfiable so we stop and report this to the user
-    				allInvariants.add(Formula.UNSAT());
-    				return Utils.setOf(Formula.conjunction(allInvariants));
+    				activeInvariants.add(Formula.UNSAT());
+    				return Utils.setOf(Formula.conjunction(activeInvariants));
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
@@ -337,6 +338,7 @@ public class FormulaSeparation {
 					
 					final boolean isInvariant = !newPosTrace.hasError();
 					if (isInvariant) {
+						blockingInvariant = formula;
 						break;
 					}
 				}
@@ -347,19 +349,10 @@ public class FormulaSeparation {
     					.values()
     					.stream()
     					.anyMatch(t -> !t.hasError());
-    			
-    			// if an invariant is found, move onto the next round. otherwise, prepare to perform formula synthesis
+				
+    			// if no new invariants have been found during formula synth, then prepare to perform formula synthesis
     			// with the new pos traces.
-    			if (foundInvariant) {
-    				newInvariants = newSynthFormulaResults
-    						.entrySet()
-    						.stream()
-    						.filter(e -> !e.getValue().hasError())
-    						.map(e -> e.getKey())
-    						.collect(Collectors.toSet());
-    			}
-    			// no new invariants have been found during formula synth
-    			else {
+    			if (!foundInvariant) {
             		// update the set of pos traces per env var type
             		for (final Map<String,String> evt : envVarTypes) {
             			final Set<String> evtQuantTypes = evt
@@ -407,44 +400,49 @@ public class FormulaSeparation {
     		}
     		
     		// post processing after finding an invariant that blocks <negTrace>
-    		Utils.assertNotNull(newInvariants, "newInvariants is null");
-    		Utils.assertTrue(newInvariants.size() == 1, "Expected 1 new invariant, but got: " + newInvariants.size());
-    		if (allInvariants.containsAll(newInvariants)) {
-    			System.out.println("The following previously found invariant blocks the negative trace:");
+    		
+    		// print out the blocking invariant
+    		final boolean brandNewInvariant = !allInvariants.contains(blockingInvariant);
+    		if (brandNewInvariant) {
+    			System.out.println("Found the following new invariant this round:");
     		} else {
-    			System.out.println("Found " + newInvariants.size() + " new invariant(s) this round:");
+    			System.out.println("The following previously found invariant blocks the negative trace:");
     		}
-			for (final Formula formula : newInvariants) {
-    			System.out.println(formula);
-			}
+			System.out.println(blockingInvariant);
 			System.out.println();
 			
 			// find the minimum set of invariants needed to block all neg traces seen so far
 	    	System.out.println("Minimizing the invariants found thus far.");
 	    	PerfTimer minTimer = new PerfTimer();
 	    	
-	    	// update the <invariantsToNegTracesBlocked> map for all past neg traces for the new invariants
-	    	for (final Formula inv : newInvariants) {
-	    		invariantsToNegTracesBlocked.put(inv, new HashSet<>());
-	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
+	    	// if the new invariant hasn't been seen before, then update the <invariantsToNegTracesBlocked> map for all
+	    	// past neg traces for the new invariant
+    		if (!allInvariants.contains(blockingInvariant)) {
+    			Utils.assertTrue(!invariantsToNegTracesBlocked.containsKey(blockingInvariant), "A previous invariant is in invariantsToNegTracesBlocked");
+	    		invariantsToNegTracesBlocked.put(blockingInvariant, new HashSet<>());
 	    		for (final AlloyTrace prevNegTrace : allNegTraces) {
-	    			final boolean invBlocksPrevNegTrace = !isTraceInCompSpecWithFormula(prevNegTrace, inv);
+	    			final boolean invBlocksPrevNegTrace = !isTraceInCompSpecWithFormula(prevNegTrace, blockingInvariant);
 	    			if (invBlocksPrevNegTrace) {
-        	    		invariantsToNegTracesBlocked.get(inv).add(prevNegTrace);
+        	    		invariantsToNegTracesBlocked.get(blockingInvariant).add(prevNegTrace);
 	    			}
 	    		}
-	    	}
+    		}
+    		
+    		// update <invariantsToNegTracesBlocked> to record that the new invariant blocks the current neg trace
+    		invariantsToNegTracesBlocked.get(blockingInvariant).add(negTrace);
 	    	
 	    	// update the <invariantsToNegTracesBlocked> map for the newest neg trace for all previous invariants
 	    	for (final Formula inv : allInvariants) {
-	    		final boolean invBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, inv);
-    			if (invBlocksNegTrace) {
-    	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
-    			}
+	    		if (!inv.equals(blockingInvariant)) {
+		    		final boolean invBlocksNegTrace = !isTraceInCompSpecWithFormula(negTrace, inv);
+	    			if (invBlocksNegTrace) {
+	    	    		invariantsToNegTracesBlocked.get(inv).add(negTrace);
+	    			}
+	    		}
 	    	}
 			
 	    	// update our data structures
-			allInvariants.addAll(newInvariants);
+			allInvariants.add(blockingInvariant);
     		allNegTraces.add(negTrace);
 			activeInvariants = minimizeInvariants(allInvariants, invariantsToNegTracesBlocked, allNegTraces);
 			
@@ -453,6 +451,13 @@ public class FormulaSeparation {
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
 			System.out.println();
     		++round;
+    		
+    		// sanity check: the blocking invariant must be in the minimized formula if the invariant is brand new
+    		// we don't perform this check if the formula isn't new because there may be multiple backup formulas that block
+    		// the neg trace, and hence <blockingInvariant> may not appear in the minimized formula.
+    		if (brandNewInvariant) {
+    			Utils.assertTrue(activeInvariants.contains(blockingInvariant), "The new invariant was not included in the minimized formula");
+    		}
     	}
     	
     	// the active invariants are a minimized set of invariants whose conjunction is a separating assumption
@@ -553,14 +558,15 @@ public class FormulaSeparation {
 					
 					// if one formula blocks more traces, then choose it
 					if (tracesBlockedComparison != 0) {
-						return -1 * tracesBlockedComparison; // -1 for reverse order
+						return tracesBlockedComparison;
 					}
 					// otherwise (of both formulas block the same number of traces) then perform syntactic comparison
-					return -1 * f1.compareTo(f2); // -1 for reverse order
+					return f1.compareTo(f2);
 				}
 			});
 			// keep the invariant that blocks the most neg traces
-			final Formula nextInv = invariants.remove(0);
+			final int lastIdx = invariants.size() - 1;
+			final Formula nextInv = invariants.remove(lastIdx);
 			minInvariants.add(nextInv);
 			blockedNegTraces.addAll(invariantsToNegTracesBlocked.get(nextInv));
 		}
