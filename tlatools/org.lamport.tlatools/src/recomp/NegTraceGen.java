@@ -64,14 +64,13 @@ public class NegTraceGen {
 			
 			proc.waitFor(timeout, TimeUnit.MINUTES);
 			
-			lock.lock();
-			
 			// kill TLC if it's still running
 			if (proc.isAlive()) {
 				proc.destroyForcibly();
 			}
 			
 			// clean up the states dir
+			lock.lock();
 			rmrf("states/");
 			return new ArrayList<>(tlcOutputLines);
 		}

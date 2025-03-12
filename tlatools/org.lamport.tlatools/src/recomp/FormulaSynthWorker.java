@@ -22,7 +22,7 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_NUM_FLUENT_ACTS = 4;
+	private static final int MAX_NUM_FLUENT_ACTS = 4; // TODO back to 5?
 	
 	private final FormulaSynth formulaSynth;
 	private final Map<String,String> envVarTypes;
@@ -872,7 +872,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies\n"
 			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)\n"
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
-			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
+			+ "	minsome Formula.children & (Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only terminals\n"
 			+ "	minsome flActions // heuristic to synthesize the least complicated fluents as possible\n"
 			+ "	softno mutInitFluents // fewer mutex fluents\n"
 			+ "	softno partialFluents // fewer partial fluents\n"
