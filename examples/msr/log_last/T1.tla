@@ -15,8 +15,6 @@ vars == <<committed,state,currentTerm,config>>
 
 StateConstraint == TRUE
 
-MinTerm(Q) == CHOOSE t \in FinNat : (\A n \in Q : t <= currentTerm[n]) /\ (\E n \in Q : t = currentTerm[n])
-
 Empty(s) == Len(s) = 0
 
 IsPrefix(s,t) == (Len(s) <= Len(t) /\ SubSeq(s,1,Len(s)) = SubSeq(t,1,Len(s)))
@@ -29,16 +27,16 @@ UpdateTermsExpr(i,j) ==
 /\ currentTerm[i] > currentTerm[j]
 /\ currentTerm' = [currentTerm EXCEPT![j] = currentTerm[i]]
 
-ClientRequest(i,curTerm) ==
+ClientRequest(i,curTerm,idx) ==
 /\ state[i] = Primary
 /\ currentTerm[i] = curTerm
 /\ UNCHANGED <<committed,state,config,currentTerm>>
 
-GetEntries(i,j) ==
+GetEntries(i,j,idx) ==
 /\ state[i] = Secondary
 /\ UNCHANGED <<committed,state,config,currentTerm>>
 
-RollbackEntries(i,j) ==
+RollbackEntries(i,j,idx) ==
 /\ state[i] = Secondary
 /\ UNCHANGED <<committed,state,config,currentTerm>>
 
@@ -51,8 +49,7 @@ BecomeLeader(i,voteQuorum,newTerm) ==
 /\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]]
 /\ UNCHANGED <<committed,config>>
 
-CommitEntry(i,commitQuorum,ind,curTerm,minQTerm) ==
-/\ minQTerm = MinTerm(commitQuorum)
+CommitEntry(i,commitQuorum,ind,curTerm) ==
 /\ curTerm = currentTerm[i]
 /\ (commitQuorum \in Quorums)
 /\ ind > 0
@@ -74,11 +71,11 @@ Init ==
 /\ committed = {}
 
 Next ==
-\/ (\E s \in Server : (\E t \in FinNat : ClientRequest(s,t)))
-\/ (\E s,t \in Server : GetEntries(s,t))
-\/ (\E s,t \in Server : RollbackEntries(s,t))
+\/ (\E s \in Server : (\E t,idx \in FinNat : ClientRequest(s,t,idx)))
+\/ (\E s,t \in Server : (\E idx \in FinNat : GetEntries(s,t,idx)))
+\/ (\E s,t \in Server : (\E idx \in FinNat : RollbackEntries(s,t,idx)))
 \/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : (\E minQTerm \in FinNat : CommitEntry(s,Q,ind,curTerm,minQTerm))))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,Q,ind,curTerm)))))
 \/ (\E s,t \in Server : UpdateTerms(s,t))
 
 Spec == (Init /\ [][Next]_vars)
