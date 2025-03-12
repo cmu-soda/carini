@@ -872,7 +872,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies\n"
 			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)\n"
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
-			+ "	minsome Formula.children & (Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only terminals\n"
+			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
 			+ "	minsome flActions // heuristic to synthesize the least complicated fluents as possible\n"
 			+ "	softno mutInitFluents // fewer mutex fluents\n"
 			+ "	softno partialFluents // fewer partial fluents\n"
