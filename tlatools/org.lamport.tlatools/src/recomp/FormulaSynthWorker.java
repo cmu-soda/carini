@@ -643,6 +643,9 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    // flToActParamsMap is injective\n"
 			+ "    // this is an overconstraint for improving speed\n"
 			+ "    all k1,k2,v : ParamIdx | (k1->v in flToActParamsMap and k2->v in flToActParamsMap) implies (k1 = k2)\n"
+			+ "\n"
+			+ "    // constraints for improving speed, but sacrifice expressivity\n"
+			+ "    (mutexFl = True) implies (value = True)\n"
 			// If there's multiple fluent actions in a single fluent, this following constraint could prevent us from finding
 			// legitimate solutions.
 			//+ "\n"
@@ -680,10 +683,9 @@ public class FormulaSynthWorker implements Runnable {
 			+ "            all actIdx : ParamIdx.(a.flToActParamsMap) |\n"
 			+ "                let flIdx = (a.flToActParamsMap).actIdx |\n"
 			+ "                    flIdx.flParamTypes = actIdx.(a.baseName.paramTypes)\n"
-			+ "\n"
-			+ "    // constraints for improving speed, but sacrifice expressivity\n"
+			//+ "\n"
+			//+ "    // constraints for improving speed, but sacrifice expressivity\n"
 			//+ "    #flActions <= 3 // at most three total fluent actions\n"
-			+ "    #({a : flActions | a.mutexFl = True}) <= 1 // at most one mutex fluent action\n"
 			//+ "    #({a : flActions | a.value = True}) <= 2 // at most two True-valued fluent action\n"
 			//+ "    #({a : flActions | a.value = False}) <= 2 // at most two False-valued fluent action\n"
 			+ "\n"
@@ -767,6 +769,9 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n" // makes the query far more efficient
 			+ "	some Implies // non-degenerate formulas\n"
+			+ "\n"
+			+ "	// constraints for improving speed, but sacrifice expressivity\n"
+			+ "	lone mutInitFluents // at most one mutex action per formula\n"
 			+ "}\n"
 			+ "\n"
 			+ "\n"
@@ -872,10 +877,12 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies\n"
 			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)\n"
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
-			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
-			+ "	minsome flActions // heuristic to synthesize the least complicated fluents as possible\n"
+			+ "\n"
+			+ "	// minimization constraints\n"
 			+ "	softno mutInitFluents // fewer mutex fluents\n"
 			+ "	softno partialFluents // fewer partial fluents\n"
+			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
+			+ "	minsome flActions // heuristic to synthesize the least complicated fluents as possible\n"
 			+ "	minsome Fluent.vars // minimize the # of params for each fluent\n"
 			+ "}\n";
 }
