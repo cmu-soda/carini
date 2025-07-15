@@ -1434,7 +1434,9 @@ public class FormulaSeparation {
 				// constList is a CONSTANT assignment
 				final String sort = constList.get(0);
 				final Set<String> elems = parseElements(constList.get(1), sanitize);
-				sortElements.put(sort, elems);
+				if (elems != null) {
+					sortElements.put(sort, elems);
+				}
 			}
 		}
 		return sortElements;
@@ -1449,6 +1451,10 @@ public class FormulaSeparation {
 		final String trimmedRawSet = rawSet.trim(); // to be extra defensive
 		final char rawSetFirstChar = trimmedRawSet.charAt(0);
 		final char rawSetLastChar = trimmedRawSet.charAt(trimmedRawSet.length()-1);
+        // Uncomment to allow (ignore) non-set constants
+		//if (!(rawSetFirstChar == '{' && rawSetLastChar == '}')) {
+			//return null;
+		//}
 		Utils.assertTrue(rawSetFirstChar == '{' && rawSetLastChar == '}',
 				"Sorts must be sets of elements; encountered not set value: " + rawSet);
 		
@@ -1578,6 +1584,10 @@ public class FormulaSeparation {
 		final String trimmedRawSet = rawSet.trim(); // to be extra defensive
 		final char rawSetFirstChar = trimmedRawSet.charAt(0);
 		final char rawSetLastChar = trimmedRawSet.charAt(trimmedRawSet.length()-1);
+        // Uncomment to allow (ignore) non-set constants
+		//if (!(rawSetFirstChar == '{' && rawSetLastChar == '}')) {
+			//return null;
+		//}
 		Utils.assertTrue(rawSetFirstChar == '{' && rawSetLastChar == '}',
 				"Sorts must be sets of elements; encountered not set value: " + rawSet);
 		
