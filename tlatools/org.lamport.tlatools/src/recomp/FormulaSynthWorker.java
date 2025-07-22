@@ -468,10 +468,10 @@ public class FormulaSynthWorker implements Runnable {
 					"	" + baseNamesPartialInstance + "\n" +
 					"}";
 		
-		// restrict the number of quantifiers to 3
+		// restrict the number of quantifiers to the max num we allow
 		// we also require that the first quantifier is a forall
 		final String numQuantifiersFacts = "fact {\n"
-				+ "	#(Forall + Exists) <= 3 // allow only 3 quantifiers\n"
+				+ "	#(Forall + Exists) <= " + qvars.size() + " // allow only " + qvars.size() + " quantifiers\n"
 				+ "	Root.children in Forall // the first quantifier must be a forall\n"
 				+ "}";
 		
