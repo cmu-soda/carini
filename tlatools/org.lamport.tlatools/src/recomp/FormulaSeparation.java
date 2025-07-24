@@ -293,10 +293,8 @@ public class FormulaSeparation {
     					.filter(f -> !f.isUNSAT())
     					.collect(Collectors.toSet());
     			
-    			// if all results are UNSAT then we increase the size of the partial neg trace
-    			// NOTE: this does not actually imply that the formula is UNSAT, because we may only run formula synth
-    			// with a subset of the env var types. we use this as a heuristic though.
-    			if (newSynthFormulas.isEmpty() && partialNegTraceLen < negTrace.size()) {
+    			// if all results are UNSAT and we used a partial neg trace, then we increase the size of the partial neg trace
+    			if (envVarTypes.isEmpty() && partialNegTraceLen < negTrace.size()) {
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
@@ -314,7 +312,7 @@ public class FormulaSeparation {
                     continue;
     			}
     			
-    			// if all results are UNSAT then we report this to the user
+    			// if all results are UNSAT (and in this case, we used the full length neg trace) then we report this to the user
     			if (envVarTypes.isEmpty()) {
     				// in this case, the overall constraints are unsatisfiable so we stop and report this to the user
     				activeInvariants.add(Formula.UNSAT());
