@@ -657,71 +657,67 @@ public class OpDefNode extends OpDefOrDeclNode
 			  .stream()
 			  .filter(fluent -> fluent.hasActionBaseName(act))
 			  .map(fluent -> {
-				  final Set<FlAction> flActionSet = fluent
+				  final List<FlAction> flActions = fluent
 						  .flActions
 						  .stream()
 						  .filter(a -> a.baseName.equals(act))
-						  .collect(Collectors.toSet());
-				  Utils.assertTrue(flActionSet.size() == 1, "Expected flActionSet of size 1, got: " + flActionSet);
+						  .sorted((a1,a2) -> a1.priority - a2.priority)
+						  .toList();
+				  Utils.assertTrue(!flActions.isEmpty(), "Found fluent with no actions!");
 				  
-				  final FlAction flAction = Utils.chooseOne(flActionSet);
+				  String update = "";
+				  for (int priority = 0; priority < flActions.size(); ++priority) {
+					  final FlAction flAction = flActions.get(priority);
+					  Utils.assertTrue(flAction.priority == priority, "Priority mismatch, expected " + priority + " but got " + flAction.priority);
+
+					  // get the action-params for each action in fluent (in the correct order). for example, for a param
+					  // map that looks like: [3,0,1] and if the params to the action are: (var0,var1,var2,var3), then we
+					  // access the fluent as: fluentName[var3,var0,var1]
+					  final List<String> varTuple = flAction.paramMap
+							  .stream()
+							  .map(i -> actParams.get(i))
+							  .collect(Collectors.toList());
+					  
+					  // create the cells we want to update
+					  final String updateCells = varTuple
+							  .stream()
+							  .map(v -> "[" + v + "]")
+							  .collect(Collectors.joining());
+					  
+					  // create the update value
+					  StringBuilder valueBuilder = new StringBuilder();
+					  // the update types are the ones that are not being updated, i.e. the 2nd half of the <paramTypes> list
+					  final List<String> updateTypes = fluent.paramTypes.subList(varTuple.size(), fluent.paramTypes.size());
+					  for (int i = 0; i < updateTypes.size(); ++i) {
+						  final String updateType = updateTypes.get(i);
+						  final String qvName = "x" + i;
+						  valueBuilder.append("[").append(qvName).append(" \\in ").append(updateType).append(" |-> ");
+					  }
+					  valueBuilder.append(flAction.value);
+					  for (int i = 0; i < updateTypes.size(); ++i) {
+						  valueBuilder.append("]");
+					  }
+					  final String value = valueBuilder.toString();
+					  
+					  // create the update string for flAction
+					  if (varTuple.isEmpty()) {
+						  // this is a "falisfy" or a "truify" fluent
+						  // <update> needs to be set (because priority == 0), but just to <value>
+						  Utils.assertTrue(!varTuple.isEmpty() || priority == 0, "");
+						  update = value;
+					  }
+					  else if (priority == 0) {
+						  // <update> needs to be set
+						  update = "[" + fluent.name + " EXCEPT !" + updateCells + " = " + value + "]";
+					  }
+					  else {
+						  // <update> needs to be built upon
+						  update = "[" + update + " EXCEPT !" + updateCells + " = " + value + "]";
+					  }
+				  }
 				  
-				  // get the action-params for each action in fluent (in the correct order). for example, for a param
-				  // map that looks like: [3,0,1] and if the params to the action are: (var0,var1,var2,var3), then we
-				  // access the fluent as: fluentName[var3,var0,var1]
-				  final List<String> varTuple = flAction.paramMap
-						  .stream()
-						  .map(i -> actParams.get(i))
-						  .collect(Collectors.toList());
-				  
-				  // create the base data structure we will update
-				  StringBuilder mutexStructureBuilder = new StringBuilder();
-				  final List<String> paramTypes = fluent.paramTypes;
-				  for (int i = 0; i < paramTypes.size(); ++i) {
-					  final String paramType = paramTypes.get(i);
-					  final String qvName = "x" + i;
-					  mutexStructureBuilder.append("[").append(qvName).append(" \\in ").append(paramType).append(" |-> ");
-				  }
-				  final String mutexStructureValue = flAction.value.contains("TRUE") ? "FALSE" : "TRUE"; // the mutex value is the opposite
-				  mutexStructureBuilder.append(mutexStructureValue);
-				  for (int i = 0; i < paramTypes.size(); ++i) {
-					  mutexStructureBuilder.append("]");
-				  }
-				  final String mutexStructure = mutexStructureBuilder.toString();
-				  final String currentStructure = fluent.name;
-				  final String baseStructure = flAction.isMutexFl ? mutexStructure : currentStructure;
-				  
-				  // create the cells we want to update
-				  final String updateCells = varTuple
-						  .stream()
-						  .map(v -> "[" + v + "]")
-						  .collect(Collectors.joining());
-				  
-				  // create the update value
-				  StringBuilder valueBuilder = new StringBuilder();
-				  // the update types are the ones that are not being updated, i.e. the 2nd half of the <paramTypes> list
-				  final List<String> updateTypes = fluent.paramTypes.subList(varTuple.size(), fluent.paramTypes.size());
-				  for (int i = 0; i < updateTypes.size(); ++i) {
-					  final String updateType = updateTypes.get(i);
-					  final String qvName = "x" + i;
-					  valueBuilder.append("[").append(qvName).append(" \\in ").append(updateType).append(" |-> ");
-				  }
-				  valueBuilder.append(flAction.value);
-				  for (int i = 0; i < updateTypes.size(); ++i) {
-					  valueBuilder.append("]");
-				  }
-				  final String value = valueBuilder.toString();
-				  
-				  // create the update string
-				  if (varTuple.isEmpty()) {
-					  // this is a "falisfy" or a "truify" fluent
-					  final String allFluentConj = fluent.name + "' = " + value;
-					  return List.of(allFluentConj);
-				  }
-				  else {
-					  final String allFluentConj = fluent.name + "' = [" + baseStructure + " EXCEPT !" + updateCells + " = " + value + "]";
-					  return List.of(allFluentConj);
-				  }
+				  final String fullUpdate = fluent.name + "' = " + update;
+				  return List.of(fullUpdate);
 			  })
 			  .reduce((List<String>)new ArrayList<String>(),
 					  (acc,l) -> Utils.append(acc, l),
