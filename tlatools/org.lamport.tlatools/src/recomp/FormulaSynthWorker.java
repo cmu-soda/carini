@@ -263,7 +263,20 @@ public class FormulaSynthWorker implements Runnable {
 				.map(sort -> {
 					final Set<String> elems = this.sortElementsMap.get(sort);
 					final String atoms = String.join(" + ", elems);
-					final String numericSort = elems.contains("NUM0") ? "True" : "False"; // numeric sorts will always contain 0
+					final boolean isNumericSort = elems
+							.stream()
+							.allMatch(e -> {
+								// numeric types are of the form NUM<integer>
+								if (e.length() <= 3) {
+									return false;
+								}
+								try {
+									Integer.parseInt(e.substring(3));
+									return e.substring(0,3).equals("NUM");
+								} catch (Exception ex) {}
+								return false;
+							});
+					final String numericSort = isNumericSort ? "True" : "False";
 					final String decl = "one sig " + sort + " extends Sort {} {\n"
 							+ "	atoms = " + atoms + "\n"
 							+ "	numericSort = " + numericSort + "\n"
