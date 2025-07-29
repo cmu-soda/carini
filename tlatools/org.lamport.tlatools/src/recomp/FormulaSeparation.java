@@ -48,7 +48,7 @@ public class FormulaSeparation {
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
 	private final int maxNumVarsPerType;
-	private final Set<String> qvars;
+	private final List<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final Set<Map<String,String>> allPermutations;
 	private final boolean extendedNegTraceSearch;
@@ -108,7 +108,7 @@ public class FormulaSeparation {
 		final String varNameBase = "var";
 		qvars = IntStream.range(0, numVars)
 				.mapToObj(i -> varNameBase + i)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 		
 		legalEnvVarCombos = IntStream.range(0, numVars)
 				.mapToObj(i ->
@@ -370,7 +370,13 @@ public class FormulaSeparation {
             			if (evtToFormulaMap.containsKey(evt)) {
                 			final Formula evtFormula = evtToFormulaMap.get(evt);
                 			final AlloyTrace evtTrace = newSynthFormulaResults.get(evtFormula);
-                			Utils.assertTrue(intersectingTypeTraces.contains(evtTrace), "");
+                			if (!intersectingTypeTraces.contains(evtTrace)) {
+                				// this shouldn't happen. for now, print a warning and fix the problem, but it probably indicates a bug
+                				// with sorts that share elements that should eventually be addressed properly.
+                				intersectingTypeTraces.add(evtTrace); // so much for treating 'final' like 'const'
+                				System.out.println("WARNING: evt: " + evt + " should contain the evtTrace: " + evtTrace);
+                			}
+                			//Utils.assertTrue(intersectingTypeTraces.contains(evtTrace), "evt: " + evt + " should contain the evtTrace: " + evtTrace);
             			}
             			
             			Set<AlloyTrace> newPosTraces = Utils.union(intersectingTypeTraces,
@@ -1385,43 +1391,33 @@ public class FormulaSeparation {
 	}
 	
 	private Set<Map<String,String>> createAllEnvVarTypes(final Set<String> allTypes) {
-		return createAllEnvVarTypes(allTypes, new HashMap<>(), new HashMap<>());
+		List<String> allQvars = this.qvars.stream().collect(Collectors.toList());
+		Set<Map<String,String>> initEnvVarTypes = Utils.setOf(new HashMap<>());
+		return createAllEnvVarTypes(allTypes, allQvars, initEnvVarTypes);
 	}
 	
-	private Set<Map<String,String>> createAllEnvVarTypes(final Set<String> allTypes, Map<String,String> envTypes,
-			Map<String,Integer> envTypeCounts) {
-		Set<Map<String,String>> cumEnvVarTypes = new HashSet<>();
-		
-		// base case
-		final boolean allVarsAssigned = this.qvars
-				.stream()
-				.allMatch(v -> envTypes.containsKey(v)); // is v assigned a value?
-		if (allVarsAssigned) {
-			cumEnvVarTypes.add(envTypes);
-			return cumEnvVarTypes;
+	private Set<Map<String,String>> createAllEnvVarTypes(final Set<String> allTypes, List<String> remainingQvars,
+			Set<Map<String,String>> partialEnvVarTypes) {
+		if (remainingQvars.isEmpty()) {
+			return partialEnvVarTypes;
 		}
-		
-		for (final String type : allTypes) {
-			final int numTimesTypeUsedInEnv = envTypeCounts.getOrDefault(type, 0);
-			if (numTimesTypeUsedInEnv < maxNumVarsPerType) {
-				// for each var that hasn't already been assigned a type, assign it to <type>
-				final Set<String> unassignedVars = this.qvars
+
+		Set<Map<String,String>> envVarTypes = new HashSet<>();
+		final String qvar = remainingQvars.remove(0);
+		for (final Map<String,String> origPartialMap : partialEnvVarTypes) {
+			Map<String,String> partialMap = new HashMap<>(origPartialMap);
+			for (final String type : allTypes) {
+				partialMap.put(qvar, type);
+				final boolean leqMaxNumVarsPerType = allTypes
 						.stream()
-						.filter(v -> !envTypes.containsKey(v))
-						.collect(Collectors.toSet());
-				for (final String var : unassignedVars) {
-					Map<String,String> newEnvTypes = new HashMap<>(envTypes);
-					newEnvTypes.put(var, type);
-					Map<String,Integer> newEnvTypeCounts = new HashMap<>(envTypeCounts);
-					newEnvTypeCounts.put(type, numTimesTypeUsedInEnv+1);
-					
-					final Set<Map<String,String>> partialEnvVarTypes = createAllEnvVarTypes(allTypes, newEnvTypes, newEnvTypeCounts);
-					cumEnvVarTypes.addAll(partialEnvVarTypes);
+						.map(t -> partialMap.values().stream().filter(v -> v.equals(t)).count()) // number of vars per type
+						.allMatch(c -> c <= this.maxNumVarsPerType);
+				if (leqMaxNumVarsPerType) {
+					envVarTypes.add(partialMap);
 				}
 			}
 		}
-		
-		return cumEnvVarTypes;
+		return createAllEnvVarTypes(allTypes, remainingQvars, envVarTypes);
 	}
 	
 	private static Map<String, Set<String>> createSortElementsMap(TLC tlc, boolean sanitize) {

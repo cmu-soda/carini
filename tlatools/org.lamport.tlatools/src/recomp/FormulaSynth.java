@@ -76,7 +76,7 @@ public class FormulaSynth {
 			TLC tlcComp, Set<String> globalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
 			Map<String, List<String>> actionParamTypes,
-			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
+			int maxActParamLen, List<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents) {
 		
 		resetMemberVars();

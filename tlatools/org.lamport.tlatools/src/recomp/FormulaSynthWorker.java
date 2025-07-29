@@ -36,7 +36,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final Map<String, Map<String, Set<String>>> setSortElementsMap;
 	private final Map<String, List<String>> actionParamTypes;
 	private final int maxActParamLen;
-	private final Set<String> qvars;
+	private final List<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
 
@@ -51,7 +51,7 @@ public class FormulaSynthWorker implements Runnable {
 			TLC tlcComp, Set<String> globalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
-			int maxActParamLen, Set<String> qvars, Set<Set<String>> legalEnvVarCombos,
+			int maxActParamLen, List<String> qvars, Set<Set<String>> legalEnvVarCombos,
 			int curNumFluents) {
 		this.formulaSynth = formulaSynth;
 		this.envVarTypes = envVarTypes;
@@ -541,7 +541,8 @@ public class FormulaSynthWorker implements Runnable {
 
 	private Set<Set<Utils.Pair<String,String>>> allEnvs(final Map<String,String> envVarTypes, final Set<String> atoms) {
 		// don't include the empty env
-		Set<Set<Utils.Pair<String,String>>> envs = allEnvs(envVarTypes, this.qvars, atoms, new HashSet<>());
+		final Set<String> qvarSet = this.qvars.stream().collect(Collectors.toSet());
+		Set<Set<Utils.Pair<String,String>>> envs = allEnvs(envVarTypes, qvarSet, atoms, new HashSet<>());
 		envs.remove(new HashSet<>());
 		return envs;
 	}
