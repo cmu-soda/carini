@@ -1404,16 +1404,16 @@ public class FormulaSeparation {
 
 		Set<Map<String,String>> envVarTypes = new HashSet<>();
 		final String qvar = remainingQvars.remove(0);
-		for (final Map<String,String> origPartialMap : partialEnvVarTypes) {
-			Map<String,String> partialMap = new HashMap<>(origPartialMap);
+		for (final Map<String,String> origPartialEvt : partialEnvVarTypes) {
 			for (final String type : allTypes) {
-				partialMap.put(qvar, type);
+				Map<String,String> partialEvt = new HashMap<>(origPartialEvt);
+				partialEvt.put(qvar, type);
 				final boolean leqMaxNumVarsPerType = allTypes
 						.stream()
-						.map(t -> partialMap.values().stream().filter(v -> v.equals(t)).count()) // number of vars per type
+						.map(t -> partialEvt.values().stream().filter(v -> v.equals(t)).count()) // number of vars per type
 						.allMatch(c -> c <= this.maxNumVarsPerType);
 				if (leqMaxNumVarsPerType) {
-					envVarTypes.add(partialMap);
+					envVarTypes.add(partialEvt);
 				}
 			}
 		}
