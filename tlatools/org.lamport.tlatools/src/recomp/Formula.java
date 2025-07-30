@@ -45,7 +45,7 @@ public class Formula implements Comparable {
 		final String formula = prettyConjuncts(conjuncts);
 		final boolean isUNSAT = conjuncts
 				.stream()
-				.allMatch(f -> !f.contains("UNSAT"));
+				.anyMatch(f -> f.contains("UNSAT"));
 		
 		Map<String,Fluent> fluents = new HashMap<>();
 		for (final Formula form : formulas) {

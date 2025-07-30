@@ -121,7 +121,7 @@ public class FormulaSeparation {
 		seed = new Random(rseed);
 	}
 	
-	public String synthesizeSepInvariant() {
+	public Formula synthesizeSepInvariant() {
 		final Set<Formula> invariants = minimalSetOfSepInvariants();
     	
     	// write the _hist files with the entire invariant (for convenience for the user)
@@ -132,7 +132,7 @@ public class FormulaSeparation {
     	final String tlaCompBaseName = this.tlaComp.replaceAll("\\.tla", "");
     	Utils.writeFile(tlaCompBaseName + ".inv", Formula.conjunction(invariants).toJson());
     	
-    	return Formula.conjunction(invariants).getFormula();
+    	return Formula.conjunction(invariants);
 	}
 	
 	public Set<Formula> minimalSetOfSepInvariants() {

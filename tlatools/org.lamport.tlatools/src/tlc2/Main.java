@@ -10,6 +10,7 @@ import lts.SymbolTable;
 import recomp.AlloyTrace;
 import recomp.Composition;
 import recomp.Decomposition;
+import recomp.Formula;
 import recomp.FormulaSeparation;
 import recomp.FormulaSynthWorker;
 import recomp.RecompVerify;
@@ -33,9 +34,10 @@ public class Main {
     		final String propFile = args[4];
     		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
     	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
-    		final String formula =
+    		final Formula sep =
     				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, seed)
     					.synthesizeSepInvariant();
+    		final String formula = sep.toString();
     		
     		if (!formula.contains("UNSAT")) {
         		System.out.println("The following formula is a separating assumption:");
@@ -64,7 +66,7 @@ public class Main {
         	System.out.println("Is safe: " + isSafe);
     	}
     	else {
-    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <propFile> [<randomSeed>]");
+    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <propFile> [--ext-negt]");
     	}
     	System.exit(0);
     }
