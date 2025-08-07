@@ -1002,13 +1002,24 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 			  return "{" + childrenToTLA + "}";
 		  }
 		  
-		  // indexing into functions
-		  else if (isFunctionIndex(opKey)) {
+		  // indexing into functions and records
+		  else if (isFunctionOrRecordIndex(opKey)) {
+			  // whether or not we use [] (for functions) or . (for records) depends on whether
+			  // an entry has quotes. this is pretty crazy, but see OpDefNode.java:121 for an explanation
+			  // (this only occurs within an EXCEPT).
 			  final String childrenToTLA = Utils.toArrayList(getChildren())
 					  	.stream()
 					  	.map(c -> c.toTLA(false))
-					  	.collect(Collectors.joining("]["));
-					  return "[" + childrenToTLA + "]";
+					  	.map(c -> {
+					  		// if <c> contains a quote, then it should be treated like a record
+					  		if (c.contains("\"")) {
+					  			return "." + c;
+					  		}
+					  		// otherwise, if <c> doesn't have a quote, it should be treated like a function
+					  		return "[" + c + "]";
+					  	})
+					  	.collect(Collectors.joining(""));
+			  return childrenToTLA;
 		  }
 		  
 		  // record constructor
@@ -1016,9 +1027,8 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 			  final String childrenToTLA = Utils.toArrayList(getChildren())
 					  	.stream()
 					  	.map(r -> r.toTLA(false))
-					  	.map(r -> r.replace("=", "|->")) // pairs use = by default, but we want |->
 					  	.collect(Collectors.joining(","));
-					  return "[" + childrenToTLA + "]";
+			  return "[" + childrenToTLA + "]";
 		  }
 		  
 		  // function application op
@@ -1049,9 +1059,11 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 		  // pair, I guess an equality?
 		  else if (isPair(opKey)) {
 			  Utils.assertTrue(getChildren().length == 2, "Pair op must have exactly 2 args!");
-			  final String lhs = getChildren()[0].toTLA(false).replace("\"", ""); // cheap hack for record keys
+			  final boolean isRecord = getChildren()[0].toTLA(false).matches("^\".*\"$"); // hacky way of detecting records
+			  final String assignmentOperator = isRecord ? " |-> " : " = ";
+			  final String lhs = getChildren()[0].toTLA(false).replace("\"", ""); // remove quotes for record keys
 			  final String rhs = getChildren()[1].toTLA(false);
-			  return lhs + " = " + rhs;
+			  return lhs + assignmentOperator + rhs;
 		  }
 		  
 		  // function constructor, I'll assume a constant value for now
@@ -1187,7 +1199,7 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 	  return key.equals("$SetEnumerate");
   }
   
-  private static boolean isFunctionIndex(final String key) {
+  private static boolean isFunctionOrRecordIndex(final String key) {
 	  return key.equals("$Seq");
   }
   
@@ -1372,7 +1384,7 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 	  }
 	  
 	  // function index
-	  else if (isFunctionIndex(opKey)) {
+	  else if (isFunctionOrRecordIndex(opKey)) {
 		  return true;
 	  }
 	  
@@ -1462,7 +1474,7 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 			  || isNotOp(opKey)
 			  || isTupleOp(opKey)
 			  || isSetEnumerateOp(opKey)
-			  || isFunctionIndex(opKey)
+			  || isFunctionOrRecordIndex(opKey)
 			  || isRcdConstructor(opKey)
 			  || isFcnApply(opKey)
 			  || isExcept(opKey)
