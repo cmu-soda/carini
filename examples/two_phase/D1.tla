@@ -1,5 +1,5 @@
 --------------------------- MODULE D1 ---------------------------
-EXTENDS Naturals, Sequences, Integers
+EXTENDS Naturals, Sequences, Integers, TLC
 
 CONSTANTS RMs
 
@@ -8,6 +8,8 @@ VARIABLES msgs
 vars == <<msgs>>
 
 Message == ([type : {"Prepared"},theRM : RMs] \cup [type : {"Commit","Abort"}])
+
+Symmetry == Permutations(RMs)
 
 Init ==
 /\ msgs = {}

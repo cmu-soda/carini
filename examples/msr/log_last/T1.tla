@@ -40,7 +40,7 @@ RollbackEntries(i,j,idx) ==
 /\ state[i] = Secondary
 /\ UNCHANGED <<committed,state,config,currentTerm>>
 
-BecomeLeader(i,voteQuorum,newTerm) ==
+BecomeLeader(i,voteQuorum,newTerm,idx) ==
 /\ newTerm = (currentTerm[i] + 1)
 /\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]]
 /\ (voteQuorum \in Quorums)
@@ -74,7 +74,7 @@ Next ==
 \/ (\E s \in Server : (\E t,idx \in FinNat : ClientRequest(s,t,idx)))
 \/ (\E s,t \in Server : (\E idx \in FinNat : GetEntries(s,t,idx)))
 \/ (\E s,t \in Server : (\E idx \in FinNat : RollbackEntries(s,t,idx)))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm,idx \in FinNat : BecomeLeader(s,Q,newTerm,idx))))
 \/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,Q,ind,curTerm)))))
 \/ (\E s,t \in Server : UpdateTerms(s,t))
 

@@ -1,3434 +1,1586 @@
-Building the LTS for the initial trace (learning_switch.tla)
-Built the LTS in 356.213s
+Building the LTS for the initial trace (ls_pending.tla)
+Built the LTS in 1.501s
 Creating the initial trace
 WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
-Created the initial trace in 20.251s
+Created the initial trace in 0.173s
 
 Round 1
 -------
+TLC neg trace generation time: 0.789 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.106 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn3n2n2n1n3 + T1->Forwardn3n1n1n2n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 15.342 seconds
-  winning worker id: 0
-  winning worker time: 15.33 seconds
-Synthesized: \A var0 \in Node : ~(Fluent0[var0][var0])
-Fluent0:
-  initially: FALSE
-  init: Forward: [4,1]
-  term: 
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2 + T1->Forwarde3e2e2e1e1 + T2->Forwarde3e1e1e2e1)
 
-new pos trace:
-PT2 (PosTrace): (T0->Forwardn1n1n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 18.59 seconds
-  winning worker id: 0
-  winning worker time: 18.589 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent0[var0][var1][var1]) => (var1 = var0)
-Fluent0:
-  initially: FALSE
-  init: Forward: [0,4,1]
-  term: 
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde2e2e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 3.048 seconds
+\A var0 \in Node : (Fluent2_0[var0]) => (Fluent1_0[var0])
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+  Fluent1_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
 
-new pos trace:
-PT3 (PosTrace): (T0->Forwardn2n1n2n2n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 21.693 seconds
-  winning worker id: 0
-  winning worker time: 21.692 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent0[var1][var0][var0][var1]) => (var0 = var1)
-Fluent0:
-  initially: FALSE
-  init: Forward: [4,1,2,0]
-  term: 
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 0 incomplete formula synth workers
+Formula synthesis complete in 2.8 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->Forwarde2e2e2e2e2 + T1->Forwarde2e2e2e1e1)
 
-new pos trace:
-PT4 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 32.457 seconds
-  winning worker id: 0
-  winning worker time: 32.456 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent0[var1][var0][var0]) => (var0 = var1)
-Fluent0:
-  initially: FALSE
-  init: Forward: [0,2,4]
-  term: 
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2 + T1->Forwarde3e2e2e1e1)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.837 seconds
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent4_0[var0])
+  Fluent4_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
 
-new pos trace:
-PT5 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 36.987 seconds
-  winning worker id: 0
-  winning worker time: 36.986 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent0[var0][var1][var0][var0]) => (var1 = var0)
-Fluent0:
-  initially: FALSE
-  init: Forward: [4,0,1,2]
-  term: 
+Found 1 new invariant(s) this round:
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent4_0[var0])
+  Fluent4_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
 
-new pos trace:
-PT6 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 51.357 seconds
-  winning worker id: 0
-  winning worker time: 51.356 seconds
-Synthesized: \A var0 \in Node : (Fluent0[var0]) => (Fluent1[var0])
-Fluent1:
-  initially: FALSE
-  init: Forward: [4]
-  term: 
-Fluent0:
-  initially: FALSE
-  init: Forward: [1]
-  term: 
-
-new pos trace:
-PT7 (PosTrace): (T0->Forwardn1n1n1n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 56.485 seconds
-  winning worker id: 0
-  winning worker time: 56.485 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent0[var0][var2]) => (var1 = var2)
-Fluent0:
-  initially: FALSE
-  init: Forward: [0,1]
-  term: 
-
-new pos trace:
-PT8 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n2n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 56.483 seconds
-  winning worker id: 0
-  winning worker time: 56.481 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent0[var2][var2][var0]) => (var1 = var2)
-Fluent0:
-  initially: FALSE
-  init: Forward: [2,1,0]
-  term: 
-
-new pos trace:
-PT9 (PosTrace): (T0->Forwardn1n2n1n1n3 + T1->Forwardn1n2n1n2n1 + T2->Forwardn1n1n1n1n1 + T3->Forwardn1n2n2n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 65.703 seconds
-  winning worker id: 0
-  winning worker time: 65.701 seconds
-Synthesized: \A var0 \in Node : (Fluent0[var0][var0][var0]) => (Fluent1[var0][var0])
-Fluent1:
-  initially: FALSE
-  init: Forward: [4,3]
-  term: 
-Fluent0:
-  initially: FALSE
-  init: Forward: [2,4,1]
-  term: 
-
-new pos trace:
-PT10 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 66.433 seconds
-  winning worker id: 0
-  winning worker time: 66.433 seconds
-Synthesized: \A var0 \in Node : (Fluent0[var0]) => (Fluent1[var0][var0])
-Fluent1:
-  initially: FALSE
-  init: Forward: [3,2]
-  term: 
-Fluent0:
-  initially: FALSE
-  init: Forward: [0]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 1 took 596.997 seconds
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent3_0[var0]) => (Fluent4_0[var0])
+Round 1 took 213.45 seconds
 
 Round 2
 -------
+TLC neg trace generation time: 0.848 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.726 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n2n1n1n3 + T1->Forwardn1n3n3n2n2 + T2->Forwardn1n1n2n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 41.944 seconds
-  winning worker id: 0
-  winning worker time: 41.942 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent2[var1][var0])
-Fluent2:
-  initially: FALSE
-  init: Forward: [3,0]
-  term: 
+NT1 (NegTrace): (T0->Forwarde1e3e2e1e3 + T1->Forwarde1e3e3e2e3 + T2->Forwarde1e1e2e3e1)
 
-new pos trace:
-PT11 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 51.968 seconds
-  winning worker id: 0
-  winning worker time: 51.967 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent2[var0][var1])
-Fluent2:
-  initially: FALSE
-  init: Forward: [0,2]
-  term: 
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e3e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e2e1e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 2.847 seconds
+\A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
 
-new pos trace:
-PT12 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 49.305 seconds
-  winning worker id: 0
-  winning worker time: 49.304 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent2[var0][var1])
-Fluent2:
-  initially: FALSE
-  init: Forward: [0,1]
-  term: 
+Found 1 new invariant(s) this round:
+\A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
 
-new pos trace:
-PT13 (PosTrace): (T0->Forwardn1n2n1n1n3 + T1->Forwardn1n1n1n1n1 + T2->Forwardn1n3n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 51.002 seconds
-  winning worker id: 0
-  winning worker time: 50.969 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent2[var0][var1])
-Fluent2:
-  initially: FALSE
-  init: Forward: [0,4]
-  term: 
-
-new pos trace:
-PT14 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n1n3)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 60.153 seconds
-  winning worker id: 0
-  winning worker time: 60.151 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent2[var0][var1][var0]) => (var1 = var0)
-Fluent2:
-  initially: FALSE
-  init: Forward: [2,0,1]
-  term: 
-
-new pos trace:
-PT15 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n1)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 59.828 seconds
-  winning worker id: 0
-  winning worker time: 59.828 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent2[var1][var1][var0][var0]) => (var0 = var1)
-Fluent2:
-  initially: FALSE
-  init: Forward: [3,4,2,1]
-  term: 
-
-new pos trace:
-PT16 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 83.718 seconds
-  winning worker id: 0
-  winning worker time: 83.716 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent2[var2][var1][var0]) => (var2 = var1)
-Fluent2:
-  initially: FALSE
-  init: Forward: [3,1,0]
-  term: 
-
-new pos trace:
-PT17 (PosTrace): (T0->Forwardn1n2n1n1n3 + T1->Forwardn1n1n1n1n1 + T2->Forwardn1n3n1n1n1 + T3->Forwardn1n1n1n2n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 93.794 seconds
-  winning worker id: 0
-  winning worker time: 93.793 seconds
-Synthesized: \A var0 \in Node : (Fluent2[var0][var0]) => (Fluent3[var0][var0][var0])
-Fluent3:
-  initially: FALSE
-  init: Forward: [4,2,0]
-  term: 
-Fluent2:
-  initially: FALSE
-  init: Forward: [4,0]
-  term: 
-
-new pos trace:
-PT18 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 76.304 seconds
-  winning worker id: 0
-  winning worker time: 76.303 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent2[var0][var1])
-Fluent2:
-  initially: FALSE
-  init: Forward: [0,3]
-  term: 
-
-new pos trace:
-PT19 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-(trace has been seen before)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 71.594 seconds
-  winning worker id: 0
-  winning worker time: 71.594 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent2[var1][var0])
-Fluent2:
-  initially: FALSE
-  init: Forward: [2,0]
-  term: 
-
-new pos trace:
-PT20 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 106.505 seconds
-  winning worker id: 0
-  winning worker time: 106.505 seconds
-Synthesized: \A var0 \in Node : (Fluent3[var0][var0]) => (Fluent2[var0][var0])
-Fluent3:
-  initially: FALSE
-  init: Forward: [1,0]
-  term: 
-Fluent2:
-  initially: FALSE
-  init: Forward: [1,2]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 2 took 945.091 seconds
+Minimizing the invariants found thus far.
+Minimization finished in 1.024 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+Round 2 took 301.755 seconds
 
 Round 3
 -------
+TLC neg trace generation time: 0.811 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.493 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n3n2n3 + T2->Forwardn1n1n2n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 75.052 seconds
-  winning worker id: 0
-  winning worker time: 75.051 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent4[var0][var0][var1][var1]) => (var0 = var1)
-Fluent4:
-  initially: FALSE
-  init: Forward: [1,0,2,4]
-  term: 
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde1e2e3e2e1 + T2->Forwarde1e1e2e3e1)
 
-new pos trace:
-PT21 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 113.107 seconds
-  winning worker id: 0
-  winning worker time: 113.106 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent5[var0][var1][var1]) => (Fluent4[var0][var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [0,4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [0,4,2]
-  term: 
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde1e3e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde1e2e3e2e1)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.129 seconds
+\A var0 \in Node : (Fluent7_0[var0]) => (~(Fluent8_0[var0]))
+  Fluent8_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent7_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
 
-new pos trace:
-PT22 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 152.709 seconds
-  winning worker id: 0
-  winning worker time: 152.708 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent5[var0][var0][var1][var1]) => (Fluent4[var0][var0][var1][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [1,0,4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [1,0,3,2]
-  term: 
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde1e2e3e2e1)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.12 seconds
+\A var0 \in Node : (Fluent8_0[var0]) => (Fluent9_0[var0])
+  Fluent9_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent8_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
 
-new pos trace:
-PT23 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n3)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 88.443 seconds
-  winning worker id: 0
-  winning worker time: 88.443 seconds
-Synthesized: \A var0 \in Node : (Fluent4[var0][var0]) => (Fluent5[var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [0,4]
-  term: 
+Found 1 new invariant(s) this round:
+\A var0 \in Node : (Fluent8_0[var0]) => (Fluent9_0[var0])
+  Fluent9_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent8_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
 
-new pos trace:
-PT24 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 127.375 seconds
-  winning worker id: 0
-  winning worker time: 127.374 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent5[var0][var1]) => (Fluent4[var1][var0][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [0,3]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [0,2,4]
-  term: 
-
-new pos trace:
-PT25 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 142.14 seconds
-  winning worker id: 0
-  winning worker time: 142.139 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent5[var0][var0]) => (Fluent4[var0][var1][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,3,0]
-  term: 
-
-new pos trace:
-PT26 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 136.69 seconds
-  winning worker id: 0
-  winning worker time: 136.689 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent5[var1][var0][var0]) => (Fluent4[var1][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [3,2]
-  term: 
-
-new pos trace:
-PT27 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 165.07 seconds
-  winning worker id: 0
-  winning worker time: 165.07 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent4[var0][var1]) => (Fluent5[var0][var1][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [2,3,4]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [1,2]
-  term: 
-
-new pos trace:
-PT28 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 149.261 seconds
-  winning worker id: 0
-  winning worker time: 149.26 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent4[var0][var0]) => (Fluent5[var1][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,3]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT29 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 81.116 seconds
-  winning worker id: 0
-  winning worker time: 81.116 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent4[var2][var1][var0]) => (var2 = var1)
-Fluent4:
-  initially: FALSE
-  init: Forward: [4,3,0]
-  term: 
-
-new pos trace:
-PT30 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 105.356 seconds
-  winning worker id: 0
-  winning worker time: 105.356 seconds
-Synthesized: \A var0 \in Node : (Fluent4[var0][var0]) => (Fluent5[var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT31 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-(trace has been seen before)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 154.236 seconds
-  winning worker id: 0
-  winning worker time: 154.235 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent5[var0][var1]) => (Fluent4[var0][var1][var1][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [1,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [4,1,0,3]
-  term: 
-
-new pos trace:
-PT32 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 192.0 seconds
-  winning worker id: 0
-  winning worker time: 191.998 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent4[var1][var1][var0][var0]) => (Fluent5[var1][var1][var1][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [0,1,4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [0,1,4,2]
-  term: 
-
-new pos trace:
-PT33 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n2)
-(trace has been seen before)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 235.622 seconds
-  winning worker id: 0
-  winning worker time: 235.622 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent4[var1][var0][var1]) => (Fluent5[var0][var0][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [2,1,3]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [4,1,2]
-  term: 
-
-new pos trace:
-PT34 (PosTrace): (T0->Forwardn2n1n2n2n2)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 232.621 seconds
-  winning worker id: 0
-  winning worker time: 232.62 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent5[var0][var0]) => (Fluent4[var0][var1][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,0,3]
-  term: 
-
-new pos trace:
-PT35 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)
-(trace has been seen before)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 239.191 seconds
-  winning worker id: 0
-  winning worker time: 239.19 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent5[var0][var0]) => (Fluent4[var1][var0][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,3,0]
-  term: 
-
-new pos trace:
-PT36 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n3)
-(trace has been seen before)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 552.349 seconds
-  winning worker id: 0
-  winning worker time: 552.348 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \A var2 \in Node : (Fluent5[var2][var0][var1][var0]) => (Fluent4[var2][var1][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [3,4,0,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [3,2,0]
-  term: 
-
-new pos trace:
-PT37 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n2)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 662.615 seconds
-  winning worker id: 0
-  winning worker time: 662.615 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent5[var2][var1][var0]) => (Fluent4[var2][var0][var2][var1])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,2,0]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [0,2,1,3]
-  term: 
-
-new pos trace:
-PT38 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 186.07 seconds
-  winning worker id: 0
-  winning worker time: 186.068 seconds
-Synthesized: \A var0 \in Node : (Fluent5[var0][var0]) => (Fluent4[var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,0]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT39 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1)
-(trace has been seen before)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 246.849 seconds
-  winning worker id: 0
-  winning worker time: 246.848 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent4[var1][var0][var0]) => (Fluent5[var1][var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [3,2,4]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [3,0,1]
-  term: 
-
-new pos trace:
-PT40 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1)
-(trace has been seen before)
-max # pos traces: 11
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 268.039 seconds
-  winning worker id: 0
-  winning worker time: 268.038 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent5[var0][var0][var1]) => (Fluent4[var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [1,0,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-
-new pos trace:
-PT41 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 974.354 seconds
-  winning worker id: 0
-  winning worker time: 974.352 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent5[var2][var0][var1]) => (Fluent4[var1][var2])
-Fluent5:
-  initially: FALSE
-  init: Forward: [4,0,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT42 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n3n2 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n2n1)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 873.831 seconds
-  winning worker id: 0
-  winning worker time: 873.831 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent5[var0][var0][var2][var1]) => (Fluent4[var2][var0][var0])
-Fluent5:
-  initially: FALSE
-  init: Forward: [0,1,4,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,1,4]
-  term: 
-
-new pos trace:
-PT43 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 3237.906 seconds
-  winning worker id: 0
-  winning worker time: 3237.906 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((Fluent4[var0][var0][var1]) => (var0 = var1)) => (~(Fluent5[var0][var0][var1]))
-Fluent5:
-  initially: FALSE
-  init: Forward: [1,0,2]
-  term: 
-Fluent4:
-  initially: FALSE
-  init: Forward: [2,0,3]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 3 took 9553.597 seconds
+Minimizing the invariants found thus far.
+Minimization finished in 1.762 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent8_0[var0]) => (Fluent9_0[var0])
+Round 3 took 213.955 seconds
 
 Round 4
 -------
+TLC neg trace generation time: 0.838 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.21 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n3n2n3 + T2->Forwardn1n2n2n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 51.974 seconds
-  winning worker id: 0
-  winning worker time: 51.973 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var0][var1][var1]) => (var1 = var0)
-Fluent6:
-  initially: FALSE
-  init: Forward: [1,0,4]
-  term: 
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde3e3e1e2e3 + T2->Forwarde3e1e2e1e1)
 
-new pos trace:
-PT44 (PosTrace): (T0->Forwardn2n1n2n2n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 72.467 seconds
-  winning worker id: 0
-  winning worker time: 72.466 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var0][var1][var1]) => (var0 = var1)
-Fluent6:
-  initially: FALSE
-  init: Forward: [0,1,2]
-  term: 
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
 
-new pos trace:
-PT45 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 56.135 seconds
-  winning worker id: 0
-  winning worker time: 56.134 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var0][var0][var1][var1]) => (var0 = var1)
-Fluent6:
-  initially: FALSE
-  init: Forward: [2,1,4,0]
-  term: 
-
-new pos trace:
-PT46 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 51.439 seconds
-  winning worker id: 0
-  winning worker time: 51.438 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var0][var0][var1][var0][var0]) => (var0 = var1)
-Fluent6:
-  initially: FALSE
-  init: Forward: [1,2,4,3,0]
-  term: 
-
-new pos trace:
-PT47 (PosTrace): (T0->Forwardn1n1n1n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 69.413 seconds
-  winning worker id: 0
-  winning worker time: 69.413 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \A var2 \in Node : (Fluent6[var0][var1][var2][var0]) => (var1 = var2)
-Fluent6:
-  initially: FALSE
-  init: Forward: [0,3,2,4]
-  term: 
-
-new pos trace:
-PT48 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 34.071 seconds
-  winning worker id: 0
-  winning worker time: 34.07 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent6[var1][var0])
-Fluent6:
-  initially: FALSE
-  init: Forward: [3,0]
-  term: 
-
-new pos trace:
-PT49 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 35.536 seconds
-  winning worker id: 0
-  winning worker time: 35.535 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent6[var1][var0])
-Fluent6:
-  initially: FALSE
-  init: Forward: [2,0]
-  term: 
-
-new pos trace:
-PT50 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 58.114 seconds
-  winning worker id: 0
-  winning worker time: 58.112 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var1][var0][var0]) => (var0 = var1)
-Fluent6:
-  initially: FALSE
-  init: Forward: [1,4,2]
-  term: 
-
-new pos trace:
-PT51 (PosTrace): (T0->Forwardn2n1n2n2n2)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 69.804 seconds
-  winning worker id: 0
-  winning worker time: 69.803 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var0][var1][var1][var0]) => (var1 = var0)
-Fluent6:
-  initially: FALSE
-  init: Forward: [2,0,1,4]
-  term: 
-
-new pos trace:
-PT52 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 58.264 seconds
-  winning worker id: 0
-  winning worker time: 58.264 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var1][var0][var0]) => (var0 = var1)
-Fluent6:
-  initially: FALSE
-  init: Forward: [0,2,1]
-  term: 
-
-new pos trace:
-PT53 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n1)
-(trace has been seen before)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 83.568 seconds
-  winning worker id: 0
-  winning worker time: 83.567 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent6[var1][var1][var0][var0]) => (var1 = var0)
-Fluent6:
-  initially: FALSE
-  init: Forward: [0,4,1,2]
-  term: 
-
-new pos trace:
-PT54 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n2)
-(trace has been seen before)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 82.675 seconds
-  winning worker id: 0
-  winning worker time: 82.674 seconds
-Synthesized: \A var0 \in Node : (Fluent6[var0][var0]) => (Fluent7[var0][var0])
-Fluent7:
-  initially: FALSE
-  init: Forward: [3,1]
-  term: 
-Fluent6:
-  initially: FALSE
-  init: Forward: [2,1]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 4 took 890.548 seconds
+Minimizing the invariants found thus far.
+Minimization finished in 2.667 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+/\ \A var0 \in Node : (Fluent8_0[var0]) => (Fluent9_0[var0])
+Round 4 took 6.534 seconds
 
 Round 5
 -------
+TLC neg trace generation time: 0.95 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.997 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n3n2n3 + T2->Forwardn1n3n2n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 84.169 seconds
-  winning worker id: 0
-  winning worker time: 84.169 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent8[var2][var0]) => (var2 = var1)
-Fluent8:
-  initially: FALSE
-  init: Forward: [1,0]
-  term: 
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1 + T3->Forwarde2e1e3e1e1)
 
-new pos trace:
-PT55 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n2n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 28.878 seconds
-  winning worker id: 0
-  winning worker time: 28.876 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent8[var0][var1])
-Fluent8:
-  initially: FALSE
-  init: Forward: [0,2]
-  term: 
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e2e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.806 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent10_0[var0][var0]) => (var0 = var1)
+  Fluent10_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
 
-new pos trace:
-PT56 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 128.672 seconds
-  winning worker id: 0
-  winning worker time: 128.671 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent8[var2][var0][var2]) => (var1 = var2)
-Fluent8:
-  initially: FALSE
-  init: Forward: [3,0,1]
-  term: 
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 31.602s
+Formula synthesis complete in 10.541 seconds
+\A var0 \in Node : (Fluent11_0[var0][var0]) => (Fluent12_0[var0][var0])
+  Fluent11_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent12_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
 
-new pos trace:
-PT57 (PosTrace): (T0->Forwardn1n2n1n1n3 + T1->Forwardn1n1n1n1n1 + T2->Forwardn1n2n1n2n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 152.305 seconds
-  winning worker id: 0
-  winning worker time: 152.305 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent9[var0][var0]) => (Fluent8[var1][var0][var1])
-Fluent9:
-  initially: FALSE
-  init: Forward: [1,3]
-  term: 
-Fluent8:
-  initially: FALSE
-  init: Forward: [2,1,3]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 5 took 547.239 seconds
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 33.888s
+Formula synthesis complete in 11.303 seconds
+\A var0 \in Node : (Fluent12_0[var0][var0]) => (Fluent13_0[var0][var0])
+  Fluent13_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = TRUE
+  Fluent12_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete3e1 + T1->Forwarde3e1e3e3e1 + T2->Forwarde3e1e3e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 60.171s
+Formula synthesis complete in 20.063 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent13_0[var2][var0]) => (var1 = var2)
+  Fluent13_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->NewPackete3e1 + T3->Forwarde2e1e2e2e1 + T4->Forwarde1e1e1e1e3 + T5->Forwarde1e1e1e2e1 + T6->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 86.535s
+Formula synthesis complete in 28.852 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14_0[var2][var0]) => (var1 = var2)
+  Fluent14_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete1e2 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 92.175s
+Formula synthesis complete in 30.731 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent15_0[var1][var0]) => (Fluent16_0[var1][var0])
+  Fluent15_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0] = TRUE
+  Fluent16_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e3e1 + T3->Forwarde1e1e3e2e1 + T4->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e2e1e3e1)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 103.425s
+Formula synthesis complete in 34.482 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent16_0[var1][var0]) => (Fluent17_0[var1][var0])
+  Fluent17_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE
+  Fluent16_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Node : \A var1 \in Node : (Fluent16_0[var1][var0]) => (Fluent17_0[var1][var0])
+  Fluent17_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE
+  Fluent16_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+
+Minimizing the invariants found thus far.
+Found ret code 1 from TLC, treating like ret code 12
+Minimization finished in 3.512 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent16_0[var1][var0]) => (Fluent17_0[var1][var0])
+Round 5 took 457.424 seconds
 
 Round 6
 -------
+TLC neg trace generation time: 1.005 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.945 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n2n1n1n3 + T1->Forwardn1n2n3n2n1 + T2->Forwardn1n2n2n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 73.275 seconds
-  winning worker id: 0
-  winning worker time: 73.273 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var0][var2][var1]) => (var2 = var0)
-Fluent10:
-  initially: FALSE
-  init: Forward: [1,0,2]
-  term: 
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3 + T3->Forwarde2e1e3e1e1)
 
-new pos trace:
-PT58 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n2 + T2->Forwardn2n1n1n3n1 + T3->Forwardn2n1n3n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 89.784 seconds
-  winning worker id: 0
-  winning worker time: 89.783 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var2][var0][var1]) => (var0 = var2)
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,1,3]
-  term: 
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.144 seconds
+\A var0 \in Node : (Fluent18_0[var0]) => (Fluent19_0[var0])
+  Fluent19_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent18_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
 
-new pos trace:
-PT59 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 64.223 seconds
-  winning worker id: 0
-  winning worker time: 64.223 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent10[var1][var0][var1][var0]) => (var0 = var1)
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,2,0,1]
-  term: 
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.632 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (var0 = var1)
+  Fluent19_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
 
-new pos trace:
-PT60 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n2)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 92.38 seconds
-  winning worker id: 0
-  winning worker time: 92.38 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var0][var1][var2]) => (var0 = var2)
-Fluent10:
-  initially: FALSE
-  init: Forward: [1,2,4]
-  term: 
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.173 seconds
+\A var0 \in Node : (Fluent21_0[var0][var0]) => (Fluent20_0[var0])
+  Fluent20_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+  Fluent21_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = TRUE
 
-new pos trace:
-PT61 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 164.527 seconds
-  winning worker id: 0
-  winning worker time: 164.527 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent10[var0][var1][var0][var1]) => (Fluent11[var1][var0][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,3,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [1,0,2,4]
-  term: 
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 37.419s
+Formula synthesis complete in 12.479 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent21_0[var1]) => (~(var2 = var0))
+  Fluent21_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
 
-new pos trace:
-PT62 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n2n2)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 87.542 seconds
-  winning worker id: 0
-  winning worker time: 87.542 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var0][var0][var2]) => (var2 = var1)
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,0,2]
-  term: 
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e1e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 43.545s
+Formula synthesis complete in 14.522 seconds
+\A var0 \in Node : (Fluent23_0[var0][var0]) => (Fluent22_0[var0][var0])
+  Fluent22_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent23_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = TRUE
 
-new pos trace:
-PT63 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 171.616 seconds
-  winning worker id: 0
-  winning worker time: 171.614 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var1][var0][var2]) => (var2 = var1)
-Fluent10:
-  initially: FALSE
-  init: Forward: [2,1,4]
-  term: 
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 69.675s
+Formula synthesis complete in 23.231 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent23_0[var0][var1]) => (Fluent24_0[var0])
+  Fluent24_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+  Fluent23_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
 
-new pos trace:
-PT64 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 103.931 seconds
-  winning worker id: 0
-  winning worker time: 103.931 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var2][var0][var1]) => (var1 = var2)
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,0,3]
-  term: 
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 98.064s
+Formula synthesis complete in 32.695 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent24_0[var2][var0]) => (var1 = var2)
+  Fluent24_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
 
-new pos trace:
-PT65 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 158.118 seconds
-  winning worker id: 0
-  winning worker time: 158.118 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var0][var1][var2]) => (var2 = var0)
-Fluent10:
-  initially: FALSE
-  init: Forward: [1,2,0]
-  term: 
+new pos trace(s):
+PT8 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete3e1 + T2->Forwarde3e1e3e3e2 + T3->Forwarde2e1e2e2e1 + T4->Forwarde2e1e2e3e1 + T5->Forwarde2e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 127.029s
+Formula synthesis complete in 42.349 seconds
+\A var0 \in Node : (Fluent26_0[var0][var0]) => (~(Fluent25_0[var0][var0]))
+  Fluent26_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent25_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1] = FALSE (mutexFl)
 
-new pos trace:
-PT66 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n2 + T2->Forwardn2n1n1n3n1 + T3->Forwardn2n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 254.708 seconds
-  winning worker id: 0
-  winning worker time: 254.706 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent11[var0][var1][var0][var1]) => (Fluent10[var1][var1][var0][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [2,0,1,4]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [2,0,1,4]
-  term: 
+new pos trace(s):
+PT9 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 115.977s
+Formula synthesis complete in 38.665 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent26_0[var1][var0][var0]) => (var0 = var1)
+  Fluent26_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 1] = TRUE
 
-new pos trace:
-PT67 (PosTrace): (T0->Forwardn2n1n2n2n2 + T1->Forwardn2n1n2n1n2 + T2->Forwardn2n1n1n1n2)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 238.941 seconds
-  winning worker id: 0
-  winning worker time: 238.941 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent10[var1][var0]) => (Fluent11[var1][var1][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [4,3,1]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [2,0]
-  term: 
+new pos trace(s):
+PT10 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 190.287s
+Formula synthesis complete in 63.435 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent28_0[var1][var0]) => (Fluent27_0[var1][var0])
+  Fluent28_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+  Fluent27_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
 
-new pos trace:
-PT68 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 140.494 seconds
-  winning worker id: 0
-  winning worker time: 140.493 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var1][var0][var2]) => (var2 = var0)
-Fluent10:
-  initially: FALSE
-  init: Forward: [3,1,4]
-  term: 
+new pos trace(s):
+PT11 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e3 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e3e1 + T5->Forwarde1e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 213.18s
+Formula synthesis complete in 71.067 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent29_0[var1][var0]) => (Fluent28_0[var1][var0])
+  Fluent28_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+  Fluent29_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
 
-new pos trace:
-PT69 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2)
-(trace has been seen before)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 165.646 seconds
-  winning worker id: 0
-  winning worker time: 165.646 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var0][var1][var2]) => (var0 = var2)
-Fluent10:
-  initially: FALSE
-  init: Forward: [1,2,4]
-  term: 
+Found 1 new invariant(s) this round:
+\A var0 \in Node : \A var1 \in Node : (Fluent29_0[var1][var0]) => (Fluent28_0[var1][var0])
+  Fluent28_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+  Fluent29_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
 
-new pos trace:
-PT70 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-(trace has been seen before)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 225.115 seconds
-  winning worker id: 0
-  winning worker time: 225.115 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent11[var1][var0]) => (Fluent10[var1][var1][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [2,0]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,2,0]
-  term: 
-
-new pos trace:
-PT71 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 260.203 seconds
-  winning worker id: 0
-  winning worker time: 260.201 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent10[var0][var1]) => (Fluent11[var0][var1][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,4,1]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [0,2]
-  term: 
-
-new pos trace:
-PT72 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 255.912 seconds
-  winning worker id: 0
-  winning worker time: 255.912 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent10[var0][var1]) => (Fluent11[var0][var1][var1][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,3,1,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [0,3]
-  term: 
-
-new pos trace:
-PT73 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n3n1 + T2->Forwardn2n1n3n1n1)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 288.851 seconds
-  winning worker id: 0
-  winning worker time: 288.85 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent11[var0][var0][var1][var1]) => (Fluent10[var0][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,4,2,1]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-
-new pos trace:
-PT74 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n2)
-(trace has been seen before)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 309.03 seconds
-  winning worker id: 0
-  winning worker time: 309.029 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent11[var0][var1][var0][var1]) => (Fluent10[var1][var0][var1][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,1,4,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [3,0,1,2]
-  term: 
-
-new pos trace:
-PT75 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n2n2)
-(trace has been seen before)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 217.72 seconds
-  winning worker id: 0
-  winning worker time: 217.72 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent10[var1][var0][var0][var1]) => (Fluent11[var1][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [3,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [3,4,0,1]
-  term: 
-
-new pos trace:
-PT76 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n3n1 + T2->Forwardn2n1n3n1n2)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 137.177 seconds
-  winning worker id: 0
-  winning worker time: 137.177 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \E var2 \in Node : (Fluent10[var0][var2][var1]) => (var1 = var0)
-Fluent10:
-  initially: FALSE
-  init: Forward: [0,2,1]
-  term: 
-
-new pos trace:
-PT77 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n2 + T2->Forwardn2n1n1n3n1 + T3->Forwardn2n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 253.282 seconds
-  winning worker id: 0
-  winning worker time: 253.281 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent11[var1][var0]) => (Fluent10[var0][var1][var0][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [2,1]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [3,0,1,2]
-  term: 
-
-new pos trace:
-PT78 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n3n1 + T2->Forwardn2n1n3n1n1 + T3->Forwardn2n1n1n1n1)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 265.342 seconds
-  winning worker id: 0
-  winning worker time: 265.341 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent11[var0][var1]) => (Fluent10[var1][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [1,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-
-new pos trace:
-PT79 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-(trace has been seen before)
-max # pos traces: 11
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 273.822 seconds
-  winning worker id: 0
-  winning worker time: 273.822 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent11[var0][var1][var1][var0]) => (Fluent10[var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [1,0,4,3]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [4]
-  term: 
-
-new pos trace:
-PT80 (PosTrace): (T0->Forwardn2n1n2n2n2 + T1->Forwardn2n1n2n1n2)
-max # pos traces: 11
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 309.31 seconds
-  winning worker id: 0
-  winning worker time: 309.309 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent10[var0][var0][var1][var1]) => (Fluent11[var0][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,4]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [0,4,2,1]
-  term: 
-
-new pos trace:
-PT81 (PosTrace): (T0->Forwardn2n1n2n2n2 + T1->Forwardn2n1n2n1n2 + T2->Forwardn2n1n1n1n2)
-(trace has been seen before)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 606.693 seconds
-  winning worker id: 0
-  winning worker time: 606.693 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent11[var1][var0][var1][var0]) => (Fluent10[var1][var1][var0][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [1,4,2,0]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [3,1,0,2]
-  term: 
-
-new pos trace:
-PT82 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n3n1 + T2->Forwardn2n1n3n1n1 + T3->Forwardn2n1n1n1n2)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 864.912 seconds
-  winning worker id: 0
-  winning worker time: 864.912 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var1][var0][var2]) => (Fluent11[var2][var0][var1])
-Fluent11:
-  initially: FALSE
-  init: Forward: [3,0,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-
-new pos trace:
-PT83 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n3n2 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n2n1)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1236.194 seconds
-  winning worker id: 0
-  winning worker time: 1236.193 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent11[var1][var0][var2]) => (Fluent10[var1][var2])
-Fluent11:
-  initially: FALSE
-  init: Forward: [3,1,4]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT84 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n2n1)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 216.812 seconds
-  winning worker id: 0
-  winning worker time: 216.812 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var2][var1][var0]) => (var2 = var0)
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,3,1]
-  term: 
-
-new pos trace:
-PT85 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2)
-(trace has been seen before)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 209.53 seconds
-  winning worker id: 0
-  winning worker time: 209.529 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent10[var2][var0][var1]) => (var0 = var2)
-Fluent10:
-  initially: FALSE
-  init: Forward: [4,1,2]
-  term: 
-
-new pos trace:
-PT86 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-(trace has been seen before)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 287.188 seconds
-  winning worker id: 0
-  winning worker time: 287.187 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent10[var1][var0]) => (Fluent11[var1][var0])
-Fluent11:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [2,1]
-  term: 
-
-new pos trace:
-PT87 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-(trace has been seen before)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 4843.745 seconds
-  winning worker id: 0
-  winning worker time: 4843.744 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((Fluent10[var0][var1][var0]) => (var1 = var0)) => (~(Fluent11[var0][var1]))
-Fluent11:
-  initially: FALSE
-  init: Forward: [0,2]
-  term: 
-Fluent10:
-  initially: FALSE
-  init: Forward: [0,3,2]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 6 took 13047.581 seconds
+Minimizing the invariants found thus far.
+Minimization finished in 4.254 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent29_0[var1][var0]) => (Fluent28_0[var1][var0])
+Round 6 took 641.613 seconds
 
 Round 7
 -------
+TLC neg trace generation time: 0.899 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.701 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n2n2n2 + T2->Forwardn2n1n3n1n1 + T3->Forwardn2n1n1n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 45.354 seconds
-  winning worker id: 0
-  winning worker time: 45.354 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent12[var1][var0])
-Fluent12:
-  initially: FALSE
-  init: Forward: [4,1]
-  term: 
+NT1 (NegTrace): (T0->Forwarde3e3e1e1e3 + T1->Forwarde3e3e1e2e3 + T2->Forwarde3e1e2e1e1)
 
-new pos trace:
-PT88 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n1n3)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 60.917 seconds
-  winning worker id: 0
-  winning worker time: 60.916 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var0][var0][var1][var0]) => (var1 = var0)
-Fluent12:
-  initially: FALSE
-  init: Forward: [4,3,0,1]
-  term: 
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
 
-new pos trace:
-PT89 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 58.112 seconds
-  winning worker id: 0
-  winning worker time: 58.112 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var0][var1][var1][var1]) => (var0 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [3,4,2,1]
-  term: 
-
-new pos trace:
-PT90 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 64.561 seconds
-  winning worker id: 0
-  winning worker time: 64.561 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var1][var0][var0][var0]) => (var0 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [0,1,4,2]
-  term: 
-
-new pos trace:
-PT91 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 69.638 seconds
-  winning worker id: 0
-  winning worker time: 69.636 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var0][var0][var0][var1]) => (var1 = var0)
-Fluent12:
-  initially: FALSE
-  init: Forward: [4,2,3,1]
-  term: 
-
-new pos trace:
-PT92 (PosTrace): (T0->Forwardn2n1n2n2n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 49.178 seconds
-  winning worker id: 0
-  winning worker time: 49.177 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent12[var0][var1])
-Fluent12:
-  initially: FALSE
-  init: Forward: [1,3]
-  term: 
-
-new pos trace:
-PT93 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 38.98 seconds
-  winning worker id: 0
-  winning worker time: 38.98 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent12[var1][var0])
-Fluent12:
-  initially: FALSE
-  init: Forward: [2,1]
-  term: 
-
-new pos trace:
-PT94 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 53.979 seconds
-  winning worker id: 0
-  winning worker time: 53.978 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent12[var0][var1])
-Fluent12:
-  initially: FALSE
-  init: Forward: [1,4]
-  term: 
-
-new pos trace:
-PT95 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n1n3)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 68.656 seconds
-  winning worker id: 0
-  winning worker time: 68.654 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var0][var1][var1][var0]) => (var0 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [0,3,2,1]
-  term: 
-
-new pos trace:
-PT96 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 84.344 seconds
-  winning worker id: 0
-  winning worker time: 84.344 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var1][var0][var0][var1]) => (var1 = var0)
-Fluent12:
-  initially: FALSE
-  init: Forward: [0,3,4,1]
-  term: 
-
-new pos trace:
-PT97 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 105.936 seconds
-  winning worker id: 0
-  winning worker time: 105.935 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var0][var0][var1]) => (var0 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [3,1,0]
-  term: 
-
-new pos trace:
-PT98 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1)
-(trace has been seen before)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 74.775 seconds
-  winning worker id: 0
-  winning worker time: 74.775 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var0][var0][var0][var1][var1]) => (var0 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [2,4,3,0,1]
-  term: 
-
-new pos trace:
-PT99 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 106.955 seconds
-  winning worker id: 0
-  winning worker time: 106.955 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent12[var1][var1][var1][var0]) => (var1 = var0)
-Fluent12:
-  initially: FALSE
-  init: Forward: [2,1,4,0]
-  term: 
-
-new pos trace:
-PT100 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n1n1 + T2->Forwardn2n1n1n1n1)
-(trace has been seen before)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 94.205 seconds
-  winning worker id: 0
-  winning worker time: 94.204 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent12[var2][var1][var0]) => (var2 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [0,4,1]
-  term: 
-
-new pos trace:
-PT101 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n1n3)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 165.384 seconds
-  winning worker id: 0
-  winning worker time: 165.383 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent12[var0][var1][var2]) => (var2 = var1)
-Fluent12:
-  initially: FALSE
-  init: Forward: [1,2,0]
-  term: 
-
-new pos trace:
-PT102 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn2n1n2n1n1 + T3->Forwardn2n1n1n3n1 + T4->Forwardn1n1n1n2n1 + T5->Forwardn1n1n2n3n1 + T6->Forwardn1n1n3n1n1)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 325.216 seconds
-  winning worker id: 0
-  winning worker time: 325.216 seconds
-Synthesized: \A var0 \in Node : (Fluent12[var0]) => (Fluent13[var0][var0][var0])
-Fluent12:
-  initially: FALSE
-  init: Forward: [0]
-  term: 
-Fluent13:
-  initially: FALSE
-  init: Forward: [2,3,0]
-  term: 
-The formula is an invariant! Moving to the next round.
-Round 7 took 1764.54 seconds
+Minimizing the invariants found thus far.
+Minimization finished in 5.09 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent29_0[var1][var0]) => (Fluent28_0[var1][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent16_0[var1][var0]) => (Fluent17_0[var1][var0])
+Round 7 took 7.995 seconds
 
 Round 8
 -------
+TLC neg trace generation time: 1.081 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.719 seconds
 attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n3n2n3 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 104.821 seconds
-  winning worker id: 0
-  winning worker time: 104.821 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent14[var1][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0,1]
-  term: 
-
-new pos trace:
-PT103 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n1n3)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 93.311 seconds
-  winning worker id: 0
-  winning worker time: 93.311 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var0][var1][var1][var0][var0]) => (var0 = var1)
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,4,3,1,2]
-  term: 
-
-new pos trace:
-PT104 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 98.234 seconds
-  winning worker id: 0
-  winning worker time: 98.234 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var1][var0][var0]) => (var0 = var1)
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,2,4]
-  term: 
-
-new pos trace:
-PT105 (PosTrace): (T0->Forwardn2n1n2n2n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 90.652 seconds
-  winning worker id: 0
-  winning worker time: 90.652 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var0][var0][var1][var1]) => (var1 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4,1,0]
-  term: 
-
-new pos trace:
-PT106 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 114.506 seconds
-  winning worker id: 0
-  winning worker time: 114.506 seconds
-Synthesized: \A var0 \in Node : (Fluent15[var0][var0]) => (Fluent14[var0][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,0]
-  term: 
-
-new pos trace:
-PT107 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 35.855 seconds
-  winning worker id: 0
-  winning worker time: 35.855 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent14[var1][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,1]
-  term: 
-
-new pos trace:
-PT108 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 42.933 seconds
-  winning worker id: 0
-  winning worker time: 42.933 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent14[var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,2]
-  term: 
-
-new pos trace:
-PT109 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 5
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 56.439 seconds
-  winning worker id: 0
-  winning worker time: 56.439 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ~(Fluent14[var1][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0]
-  term: 
-
-new pos trace:
-PT110 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n1n3)
-(trace has been seen before)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 85.495 seconds
-  winning worker id: 0
-  winning worker time: 85.495 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var1][var0]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,2,1]
-  term: 
-
-new pos trace:
-PT111 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 128.04 seconds
-  winning worker id: 0
-  winning worker time: 128.039 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var1][var0][var2]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,1,3]
-  term: 
-
-new pos trace:
-PT112 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n2n2 + T2->Forwardn2n1n2n2n3)
-max # pos traces: 6
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 62.661 seconds
-  winning worker id: 0
-  winning worker time: 62.66 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var0][var1][var1]) => (var0 = var1)
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,2,4]
-  term: 
-
-new pos trace:
-PT113 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-(trace has been seen before)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 105.162 seconds
-  winning worker id: 0
-  winning worker time: 105.161 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var1]) => (var1 = var2)
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-
-new pos trace:
-PT114 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 145.638 seconds
-  winning worker id: 0
-  winning worker time: 145.638 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var2][var0][var1]) => (var0 = var2)
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,3,0,4]
-  term: 
-
-new pos trace:
-PT115 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n3)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 152.073 seconds
-  winning worker id: 0
-  winning worker time: 152.071 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var0][var1]) => (Fluent15[var0][var0][var1][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,4,3,2]
-  term: 
-
-new pos trace:
-PT116 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 226.699 seconds
-  winning worker id: 0
-  winning worker time: 226.698 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent15[var0][var0][var1][var1]) => (Fluent14[var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,1,4,2]
-  term: 
-
-new pos trace:
-PT117 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 7
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 150.635 seconds
-  winning worker id: 0
-  winning worker time: 150.634 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var0][var0]) => (Fluent14[var1][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,2,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT118 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)
-(trace has been seen before)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 255.122 seconds
-  winning worker id: 0
-  winning worker time: 255.122 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var0][var1][var0]) => (Fluent14[var0][var1][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,2,0,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,4,1]
-  term: 
-
-new pos trace:
-PT119 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n1n3)
-max # pos traces: 8
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 132.07 seconds
-  winning worker id: 0
-  winning worker time: 132.068 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var2][var1]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,3,2]
-  term: 
-
-new pos trace:
-PT120 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-(trace has been seen before)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 372.118 seconds
-  winning worker id: 0
-  winning worker time: 372.117 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var0][var0]) => (Fluent15[var1][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,3,0]
-  term: 
-
-new pos trace:
-PT121 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n3)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 510.18 seconds
-  winning worker id: 0
-  winning worker time: 510.179 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var1][var0][var0]) => (~(Fluent15[var0][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,3]
-  term: 
-
-new pos trace:
-PT122 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n3)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 419.618 seconds
-  winning worker id: 0
-  winning worker time: 419.617 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var0][var1]) => (~(Fluent14[var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,4]
-  term: 
-
-new pos trace:
-PT123 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n3)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 198.448 seconds
-  winning worker id: 0
-  winning worker time: 198.447 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var1][var0]) => (Fluent14[var1][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,0]
-  term: 
-
-new pos trace:
-PT124 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n1n1)
-max # pos traces: 9
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 128.496 seconds
-  winning worker id: 0
-  winning worker time: 128.495 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var1]) => (var0 = var2)
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,1,4]
-  term: 
-
-new pos trace:
-PT125 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n2n2 + T2->Forwardn2n1n2n2n3)
-(trace has been seen before)
-max # pos traces: 10
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 207.906 seconds
-  winning worker id: 0
-  winning worker time: 207.906 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var1][var0][var0][var2]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0,1,3]
-  term: 
-
-new pos trace:
-PT126 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n3)
-(trace has been seen before)
-max # pos traces: 11
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 547.868 seconds
-  winning worker id: 0
-  winning worker time: 547.868 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var1][var2]) => (Fluent14[var1][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,2,4]
-  term: 
-
-new pos trace:
-PT127 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n2)
-max # pos traces: 11
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 439.08 seconds
-  winning worker id: 0
-  winning worker time: 439.08 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var0][var1]) => (Fluent15[var1][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,1,2]
-  term: 
-
-new pos trace:
-PT128 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1)
-max # pos traces: 11
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 299.039 seconds
-  winning worker id: 0
-  winning worker time: 299.038 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var0][var0]) => (Fluent15[var1][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-
-new pos trace:
-PT129 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n2)
-(trace has been seen before)
-max # pos traces: 12
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 387.84 seconds
-  winning worker id: 0
-  winning worker time: 387.84 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var0][var0][var1]) => (Fluent14[var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,0,2]
-  term: 
-
-new pos trace:
-PT130 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 766.536 seconds
-  winning worker id: 0
-  winning worker time: 766.535 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var1][var2][var0][var0]) => (Fluent15[var0][var1][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,3,0,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,0,3]
-  term: 
-
-new pos trace:
-PT131 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n3n1)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 706.78 seconds
-  winning worker id: 0
-  winning worker time: 706.78 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var1]) => (Fluent15[var2][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,0,3]
-  term: 
-
-new pos trace:
-PT132 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n1n3)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1032.274 seconds
-  winning worker id: 0
-  winning worker time: 1032.274 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var2][var1][var0]) => (Fluent14[var1][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,4,1]
-  term: 
-
-new pos trace:
-PT133 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2 + T3->Forwardn1n1n1n2n3)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 359.977 seconds
-  winning worker id: 0
-  winning worker time: 359.976 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var0][var0][var1]) => (Fluent15[var0][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,1,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,4,1]
-  term: 
-
-new pos trace:
-PT134 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 738.849 seconds
-  winning worker id: 0
-  winning worker time: 738.849 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var1][var2]) => (Fluent14[var0][var2][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4,1,0]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,3,2]
-  term: 
-
-new pos trace:
-PT135 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 763.601 seconds
-  winning worker id: 0
-  winning worker time: 763.6 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var2][var1]) => (Fluent15[var2][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,4,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,1,2]
-  term: 
-
-new pos trace:
-PT136 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n3n2 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n1n1)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 284.749 seconds
-  winning worker id: 0
-  winning worker time: 284.749 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var0][var0]) => (Fluent15[var1][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,2,0]
-  term: 
-
-new pos trace:
-PT137 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)
-(trace has been seen before)
-max # pos traces: 13
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 361.316 seconds
-  winning worker id: 0
-  winning worker time: 361.315 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent15[var0][var0][var1]) => (Fluent14[var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,2,0]
-  term: 
-
-new pos trace:
-PT138 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n3)
-(trace has been seen before)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 800.809 seconds
-  winning worker id: 0
-  winning worker time: 800.808 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var1][var0]) => (Fluent15[var1][var1][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,4,2]
-  term: 
-
-new pos trace:
-PT139 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 756.773 seconds
-  winning worker id: 0
-  winning worker time: 756.772 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var1][var2][var0]) => (Fluent14[var0][var0][var2][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0,2,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,4,1]
-  term: 
-
-new pos trace:
-PT140 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 230.882 seconds
-  winning worker id: 0
-  winning worker time: 230.882 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var1][var2]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,4,3]
-  term: 
-
-new pos trace:
-PT141 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n2n2 + T2->Forwardn2n1n2n2n3)
-(trace has been seen before)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 410.217 seconds
-  winning worker id: 0
-  winning worker time: 410.217 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var2][var0][var1]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,3,0,4]
-  term: 
-
-new pos trace:
-PT142 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n3)
-(trace has been seen before)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 890.143 seconds
-  winning worker id: 0
-  winning worker time: 890.142 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var2][var1][var0]) => (Fluent14[var1][var0][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,1,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,3,0]
-  term: 
-
-new pos trace:
-PT143 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n2n1)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 743.77 seconds
-  winning worker id: 0
-  winning worker time: 743.77 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var2][var1]) => (Fluent14[var0][var2][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,3,4]
-  term: 
-
-new pos trace:
-PT144 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n1n2n3)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 459.776 seconds
-  winning worker id: 0
-  winning worker time: 459.776 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var1][var0]) => (Fluent14[var0][var1][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2,1,0]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,0]
-  term: 
-
-new pos trace:
-PT145 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n1)
-(trace has been seen before)
-max # pos traces: 14
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 422.831 seconds
-  winning worker id: 0
-  winning worker time: 422.831 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var1][var0]) => (Fluent14[var1][var0][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,0,2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,0]
-  term: 
-
-new pos trace:
-PT146 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n1n1)
-(trace has been seen before)
-max # pos traces: 15
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 647.798 seconds
-  winning worker id: 0
-  winning worker time: 647.797 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var2][var0][var1]) => (Fluent14[var2][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,0,2]
-  term: 
-
-new pos trace:
-PT147 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n2)
-(trace has been seen before)
-max # pos traces: 16
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1315.432 seconds
-  winning worker id: 0
-  winning worker time: 1315.431 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent14[var1]) => (~(Fluent15[var0][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,2]
-  term: 
-
-new pos trace:
-PT148 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n3)
-(trace has been seen before)
-max # pos traces: 17
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1121.587 seconds
-  winning worker id: 0
-  winning worker time: 1121.586 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var1][var2][var0][var0]) => (Fluent15[var2][var0][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,3,0,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,1,4,2]
-  term: 
-
-new pos trace:
-PT149 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n2n1)
-max # pos traces: 17
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1619.708 seconds
-  winning worker id: 0
-  winning worker time: 1619.708 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var1][var0]) => (Fluent15[var2][var1][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,3,1]
-  term: 
-
-new pos trace:
-PT150 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n1n3)
-(trace has been seen before)
-max # pos traces: 18
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1024.768 seconds
-  winning worker id: 0
-  winning worker time: 1024.767 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var0][var1][var2]) => (Fluent14[var2][var1][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,0,4,2]
-  term: 
-
-new pos trace:
-PT151 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1 + T3->Forwardn1n1n2n1n3)
-max # pos traces: 18
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 909.523 seconds
-  winning worker id: 0
-  winning worker time: 909.521 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var1][var2]) => (Fluent14[var1][var0][var2][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,0,3,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,2,4]
-  term: 
-
-new pos trace:
-PT152 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n3n2 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n2n1)
-max # pos traces: 18
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 506.525 seconds
-  winning worker id: 0
-  winning worker time: 506.525 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var0][var1]) => (Fluent14[var0][var0][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,3,1,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,2]
-  term: 
-
-new pos trace:
-PT153 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-(trace has been seen before)
-max # pos traces: 19
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1248.62 seconds
-  winning worker id: 0
-  winning worker time: 1248.619 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var2][var1]) => (Fluent14[var1][var2][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,3,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,3,4]
-  term: 
-
-new pos trace:
-PT154 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n3n1)
-(trace has been seen before)
-max # pos traces: 20
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 936.732 seconds
-  winning worker id: 0
-  winning worker time: 936.732 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var2][var1]) => (Fluent14[var0][var2][var2][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,2,3,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,3,4]
-  term: 
-
-new pos trace:
-PT155 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2 + T3->Forwardn1n1n1n2n3)
-(trace has been seen before)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1076.145 seconds
-  winning worker id: 0
-  winning worker time: 1076.144 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var1]) => (Fluent15[var2][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,1,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT156 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n3n3)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 6265.829 seconds
-  winning worker id: 0
-  winning worker time: 6265.828 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \A var2 \in Node : (Fluent15[var1][var1][var2][var1][var0]) => ((Fluent14[var0][var1][var0][var1][var2]) => (var1 = var2))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,0,2,1,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,0,2,1,3]
-  term: 
-
-new pos trace:
-PT157 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n1)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 7647.61 seconds
-  winning worker id: 0
-  winning worker time: 7647.608 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((~(Fluent14[var1][var0])) => (var0 = var1)) => (Fluent15[var1][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,4,0]
-  term: 
-
-new pos trace:
-PT158 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 5670.038 seconds
-  winning worker id: 0
-  winning worker time: 5670.036 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((~(var1 = var0)) => (Fluent15[var1][var0])) => (Fluent14[var1][var1][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,2,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-
-new pos trace:
-PT159 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n2)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 5916.727 seconds
-  winning worker id: 0
-  winning worker time: 5916.727 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var1][var2]) => ((Fluent14[var0][var2]) => (var2 = var1))
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT160 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n3)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 4619.914 seconds
-  winning worker id: 0
-  winning worker time: 4619.913 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var1][var2]) => ((Fluent14[var2][var0]) => (var1 = var2))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT161 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 513.275 seconds
-  winning worker id: 0
-  winning worker time: 513.273 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent15[var0][var0][var1][var1]) => (Fluent14[var0][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,0,4,2]
-  term: 
-
-new pos trace:
-PT162 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n2)
-(trace has been seen before)
-max # pos traces: 21
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 8104.962 seconds
-  winning worker id: 0
-  winning worker time: 8104.962 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent16[var0][var0][var1]) => ((Fluent14[var1]) => (Fluent15[var1][var1][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [4,2,0]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,2,1]
-  term: 
-
-new pos trace:
-PT163 (PosTrace): (T0->Forwardn2n1n2n2n2)
-(trace has been seen before)
-max # pos traces: 22
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9770.525 seconds
-  winning worker id: 0
-  winning worker time: 9770.518 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent16[var1][var1][var0]) => ((Fluent14[var0][var0]) => (Fluent15[var0][var0]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [3,2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,3]
-  term: 
-
-new pos trace:
-PT164 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n1)
-max # pos traces: 22
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 4267.589 seconds
-  winning worker id: 0
-  winning worker time: 4267.587 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var0][var0]) => ((Fluent15[var1][var0][var2][var0]) => (var0 = var2))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,1,0,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,1,3,0]
-  term: 
-
-new pos trace:
-PT165 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n2n3)
-max # pos traces: 22
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 6245.114 seconds
-  winning worker id: 0
-  winning worker time: 6245.114 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0]) => ((Fluent15[var2][var1]) => (var2 = var1))
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT166 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n2n3 + T3->Forwardn1n1n2n2n1)
-max # pos traces: 22
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 4016.698 seconds
-  winning worker id: 0
-  winning worker time: 4016.696 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var2]) => ((Fluent15[var1][var2]) => (var0 = var2))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,2]
-  term: 
-
-new pos trace:
-PT167 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)
-(trace has been seen before)
-max # pos traces: 23
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 10137.068 seconds
-  winning worker id: 0
-  winning worker time: 10137.065 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent15[var1][var0][var0][var1]) => ((Fluent14[var1][var0][var1][var1]) => (Fluent16[var1][var1][var1][var0]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,4,2,0]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [2,0,1,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,4,2,0]
-  term: 
-
-new pos trace:
-PT168 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n3n2 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n1n2)
-max # pos traces: 23
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9665.04 seconds
-  winning worker id: 0
-  winning worker time: 9665.039 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var0][var0][var1]) => ((Fluent16[var1]) => (Fluent15[var1][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4,0]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT169 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1 + T3->Forwardn1n1n2n1n2)
-max # pos traces: 23
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9736.038 seconds
-  winning worker id: 0
-  winning worker time: 9736.038 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var0][var0]) => ((Fluent16[var1][var1][var1][var0][var1]) => (Fluent15[var1][var1][var1][var0][var0]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [0,2,1,4,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,2,1,4,3]
-  term: 
-
-new pos trace:
-PT170 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn2n1n2n2n2)
-max # pos traces: 23
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9716.772 seconds
-  winning worker id: 0
-  winning worker time: 9716.771 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent16[var0][var1][var0][var1]) => ((Fluent14[var0][var0][var0][var1]) => (Fluent15[var0][var1][var0][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,3,1,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [0,4,1,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,2,3,4]
-  term: 
-
-new pos trace:
-PT171 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)
-max # pos traces: 23
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1049.757 seconds
-  winning worker id: 0
-  winning worker time: 1049.757 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var1][var0][var2]) => (Fluent14[var2][var0][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,1,0,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,3,1,4]
-  term: 
-
-new pos trace:
-PT172 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2)
-(trace has been seen before)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1311.564 seconds
-  winning worker id: 0
-  winning worker time: 1311.563 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var1][var2]) => (Fluent14[var2][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,2,4]
-  term: 
-
-new pos trace:
-PT173 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 5090.71 seconds
-  winning worker id: 0
-  winning worker time: 5090.709 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var0]) => ((Fluent15[var1][var2]) => (var2 = var0))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-
-new pos trace:
-PT174 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n1n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9177.061 seconds
-  winning worker id: 0
-  winning worker time: 9177.059 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var1][var1][var0][var1]) => ((Fluent16[var0][var0]) => (Fluent15[var1][var1][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,1,3,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,2,1]
-  term: 
-
-new pos trace:
-PT175 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n1n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9862.804 seconds
-  winning worker id: 0
-  winning worker time: 9862.802 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var1][var1][var1][var0]) => ((Fluent15[var0][var1][var0]) => (Fluent16[var0][var1][var1][var0]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,3,2,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [4,0,1,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,0,4]
-  term: 
-
-new pos trace:
-PT176 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 11311.494 seconds
-  winning worker id: 0
-  winning worker time: 11311.494 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : (Fluent15[var0][var0]) => ((Fluent16[var1]) => (Fluent14[var1][var1][var1][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,2,0,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT177 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n3)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 9605.023 seconds
-  winning worker id: 0
-  winning worker time: 9605.022 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : (Fluent14[var0][var1][var1]) => ((Fluent16[var0][var0][var0][var1]) => (Fluent15[var0][var0][var0][var1]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [0,4,2]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [2,3,1,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [0,1,2,3]
-  term: 
-
-new pos trace:
-PT178 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n1n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 21168.078 seconds
-  winning worker id: 0
-  winning worker time: 21168.078 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \A var2 \in Node : (Fluent14[var0][var1]) => ((Fluent16[var0][var1][var2][var0][var2]) => (Fluent15[var0][var0][var0]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [0,3,2,1,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,2,4]
-  term: 
-
-new pos trace:
-PT179 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 22118.639 seconds
-  winning worker id: 0
-  winning worker time: 22118.638 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \A var2 \in Node : (Fluent16[var2][var2][var2][var0]) => ((Fluent14[var1][var1][var0]) => (Fluent15[var2][var2][var2][var2]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2,3]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [4,1,0,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,1,0,2]
-  term: 
-
-new pos trace:
-PT180 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1 + T3->Forwardn1n1n2n2n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 23000.863 seconds
-  winning worker id: 0
-  winning worker time: 23000.861 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((~(Fluent16[var0][var1][var0])) => (Fluent15[var0][var1])) => (Fluent14[var1][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,2,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [3,2,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-
-new pos trace:
-PT181 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n1n1)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 23478.073 seconds
-  winning worker id: 0
-  winning worker time: 23478.071 seconds
-Synthesized: \A var0 \in Node : \A var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var2][var1][var2]) => ((Fluent15[var2][var1][var2][var0][var1]) => (Fluent16[var2][var2][var2][var2]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,2,0,3,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [2,1,0,4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,2,0,3,4]
-  term: 
-
-new pos trace:
-PT182 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n2)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 24250.155 seconds
-  winning worker id: 0
-  winning worker time: 24250.154 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((~(Fluent15[var0][var1])) => (Fluent14[var1][var0])) => (Fluent16[var1][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [4,2,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-
-new pos trace:
-PT183 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n3)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 21264.383 seconds
-  winning worker id: 0
-  winning worker time: 21264.382 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent16[var1]) => ((Fluent14[var0][var2]) => (Fluent15[var1][var2]))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [4]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,4]
-  term: 
-
-new pos trace:
-PT184 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n3 + T3->Forwardn1n1n3n1n1)
-max # pos traces: 24
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1427.181 seconds
-  winning worker id: 0
-  winning worker time: 1427.181 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var1][var0][var0]) => (Fluent15[var2][var2])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4,0,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT185 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n3n3)
-(trace has been seen before)
-max # pos traces: 25
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1317.999 seconds
-  winning worker id: 0
-  winning worker time: 1317.998 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var0][var2][var1][var0]) => (Fluent14[var1][var2][var0][var0])
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,2,3,0]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,2,4,0]
-  term: 
-
-new pos trace:
-PT186 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n3)
-(trace has been seen before)
-max # pos traces: 25
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 508.433 seconds
-  winning worker id: 0
-  winning worker time: 508.433 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var0][var2][var1][var0]) => (var2 = var0)
-Fluent14:
-  initially: FALSE
-  init: Forward: [1,3,2,0]
-  term: 
-
-new pos trace:
-PT187 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-(trace has been seen before)
-max # pos traces: 25
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 1229.88 seconds
-  winning worker id: 0
-  winning worker time: 1229.879 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var1][var0]) => (Fluent15[var2][var0][var0][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [3,0,1,2]
-  term: 
-
-new pos trace:
-PT188 (PosTrace): (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n3n1)
-(trace has been seen before)
-max # pos traces: 25
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 8167.178 seconds
-  winning worker id: 0
-  winning worker time: 8167.178 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var1][var2][var0]) => ((Fluent14[var1][var0][var0]) => (var0 = var2))
-Fluent14:
-  initially: FALSE
-  init: Forward: [2,0,1]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [4,3,1]
-  term: 
-
-new pos trace:
-PT189 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n2n3)
-max # pos traces: 25
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 5155.287 seconds
-  winning worker id: 0
-  winning worker time: 5155.287 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent15[var1][var2]) => ((Fluent14[var2][var0]) => (var2 = var1))
-Fluent14:
-  initially: FALSE
-  init: Forward: [4,3]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [2,3]
-  term: 
-
-new pos trace:
-PT190 (PosTrace): (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n3)
-(trace has been seen before)
-max # pos traces: 26
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 5616.279 seconds
-  winning worker id: 0
-  winning worker time: 5616.278 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent14[var2][var0][var0][var1]) => ((Fluent15[var0][var2][var0][var0]) => (var2 = var1))
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,0,1,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,4,0,2]
-  term: 
-
-new pos trace:
-PT191 (PosTrace): (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)
-(trace has been seen before)
-max # pos traces: 27
-Total # synth jobs: 1
-Formula synthesis info:
-  overall (multithread) time: 25226.433 seconds
-  winning worker id: 0
-  winning worker time: 25226.432 seconds
-Synthesized: \A var0 \in Node : \E var1 \in Node : ((~(Fluent14[var0][var1])) => (Fluent15[var1][var1][var1][var0])) => (Fluent16[var1][var1][var1][var1])
-Fluent14:
-  initially: FALSE
-  init: Forward: [3,4]
-  term: 
-Fluent16:
-  initially: FALSE
-  init: Forward: [1,0,4,2]
-  term: 
-Fluent15:
-  initially: FALSE
-  init: Forward: [1,0,4,2]
-  term: 
-
-new pos trace:
-PT192 (PosTrace): (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n2n2 + T2->Forwardn2n1n2n2n3)
-(trace has been seen before)
-max # pos traces: 27
-Total # synth jobs: 1
-Synthesized: UNSAT
-
-Could not synthesize a spearating assumption. Here are the intermediate conjuncts:
-/\ \A var0 \in Node : (Fluent0[var0]) => (Fluent1[var0][var0])
-/\ \A var0 \in Node : (Fluent3[var0][var0]) => (Fluent2[var0][var0])
-/\ \A var0 \in Node : \E var1 \in Node : ((Fluent4[var0][var0][var1]) => (var0 = var1)) => (~(Fluent5[var0][var0][var1]))
-/\ \A var0 \in Node : (Fluent6[var0][var0]) => (Fluent7[var0][var0])
-/\ \A var0 \in Node : \E var1 \in Node : (Fluent9[var0][var0]) => (Fluent8[var1][var0][var1])
-/\ \A var0 \in Node : \E var1 \in Node : ((Fluent10[var0][var1][var0]) => (var1 = var0)) => (~(Fluent11[var0][var1]))
-/\ \A var0 \in Node : (Fluent12[var0]) => (Fluent13[var0][var0][var0])
-/\ UNSAT
-400888.48user 1402.73system 109:08:13elapsed 102%CPU (0avgtext+0avgdata 13093072maxresident)k
-20448inputs+217631760outputs (11major+344989062minor)pagefaults 0swaps
+NT1 (NegTrace): (T0->Forwarde2e1e1e1e2 + T1->Forwarde3e1e1e1e1 + T2->Forwarde3e1e1e2e2 + T3->Forwarde3e1e2e1e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 5.719 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent29_0[var1][var0]) => (Fluent28_0[var1][var0])
+Round 8 took 8.798 seconds
+
+Round 9
+-------
+TLC neg trace generation time: 0.894 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.191 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde2e2e2e2e1 + T1->Forwarde2e2e1e1e3 + T2->Forwarde2e2e1e3e1 + T3->Forwarde2e1e3e1e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : \A var1 \in Node : (Fluent16_0[var1][var0]) => (Fluent17_0[var1][var0])
+  Fluent17_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE
+  Fluent16_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 6.246 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent5_0[var0]) => (Fluent6_0[var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent29_0[var1][var0]) => (Fluent28_0[var1][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent16_0[var1][var0]) => (Fluent17_0[var1][var0])
+Round 9 took 10.58 seconds
+
+Round 10
+-------
+TLC neg trace generation time: 1.166 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.434 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2 + T3->Forwarde1e1e3e2e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.986 seconds
+\A var0 \in Node : (Fluent30_0[var0]) => (Fluent31_0[var0])
+  Fluent30_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent31_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e3 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.17 seconds
+\A var0 \in Node : (Fluent32_0[var0][var0]) => (Fluent31_0[var0][var0])
+  Fluent31_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent32_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete3e1 + T2->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 38.55s
+Formula synthesis complete in 12.856 seconds
+\A var0 \in Node : (Fluent33_0[var0][var0]) => (Fluent32_0[var0][var0])
+  Fluent32_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent33_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 51.381s
+Formula synthesis complete in 17.134 seconds
+\A var0 \in Node : (Fluent33_0[var0][var0][var0]) => (Fluent34_0[var0][var0][var0])
+  Fluent34_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 2] = TRUE
+  Fluent33_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 1] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e3e2 + T3->Forwarde1e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 59.541s
+Formula synthesis complete in 19.853 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent35_0[var0][var1]) => (Fluent34_0[var0][var1])
+  Fluent34_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent35_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e3e1 + T4->Forwarde2e2e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 184.731s
+Formula synthesis complete in 61.583 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent35_0[var0][var0][var1][var1]) => (var0 = var1)
+  Fluent35_0[Node, Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0, 2, 3] = TRUE
+
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete3e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde1e1e1e3e1 + T4->Forwarde1e1e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 232.509s
+Formula synthesis complete in 77.51 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent36_0[var1][var1][var0]) => (Fluent37_0[var1][var1][var0])
+  Fluent36_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 3] = TRUE
+  Fluent37_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 3] = TRUE
+
+new pos trace(s):
+PT8 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 247.182s
+Formula synthesis complete in 82.4 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent37_0[var0][var1][var0]) => (Fluent38_0[var0][var1][var0])
+  Fluent38_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3, 2] = TRUE
+  Fluent37_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2, 0] = TRUE
+
+new pos trace(s):
+PT9 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e3e1 + T4->Forwarde2e1e3e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 317.613s
+Formula synthesis complete in 105.878 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent38_0[var0][var1][var0]) => (Fluent39_0[var0][var1])
+  Fluent38_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 3] = TRUE
+  Fluent39_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+
+new pos trace(s):
+PT10 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e3e1 + T3->Forwarde1e1e3e2e1 + T4->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 427.377s
+Formula synthesis complete in 142.465 seconds
+\A var0 \in Node : (~(Fluent39_0[var0][var0])) => ((Fluent40_0[var0][var0][var0]) => (Fluent41_0[var0][var0]))
+  Fluent39_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = TRUE
+  Fluent41_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent40_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1, 4] = TRUE
+
+new pos trace(s):
+PT11 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 814.83s
+Formula synthesis complete in 271.616 seconds
+\A var0 \in Node : \A var1 \in Node : (~(Fluent40_0[var0][var0])) => ((Fluent42_0[var0][var0][var1]) => (Fluent41_0[var0][var0][var1]))
+  Fluent41_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 3] = TRUE
+  Fluent42_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 3] = TRUE
+  Fluent40_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+
+new pos trace(s):
+PT12 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e3e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 12
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 989.724s
+Formula synthesis complete in 329.915 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent43_0[var0]) => ((~(Fluent42_0[var0][var1][var1])) => (Fluent41_0[var0][var1][var1]))
+  Fluent41_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 3] = TRUE
+  Fluent42_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2, 0] = TRUE
+  Fluent43_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+
+new pos trace(s):
+PT13 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 13
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1589.478s
+Formula synthesis complete in 529.833 seconds
+\A var0 \in Node : \A var1 \in Node : (~(Fluent42_0[var0][var0])) => ((Fluent43_0[var0][var1][var1]) => (Fluent44_0[var0][var0][var1]))
+  Fluent42_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent43_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 3] = TRUE
+  Fluent44_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 3] = TRUE
+
+new pos trace(s):
+PT14 (PosTrace): (T0->NewPackete3e1 + T1->Forwarde3e1e3e3e1 + T2->Forwarde3e1e3e1e1 + T3->Forwarde3e1e1e2e1 + T4->Forwarde3e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 14
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1662.705s
+Formula synthesis complete in 554.241 seconds
+\A var0 \in Node : \A var1 \in Node : (~(Fluent43_0[var1][var1])) => ((Fluent45_0[var1][var1][var0][var0]) => (Fluent44_0[var1][var1][var0]))
+  Fluent45_0[Node, Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0, 3, 2] = TRUE
+  Fluent43_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent44_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 3] = TRUE
+
+new pos trace(s):
+PT15 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e3e1 + T4->Forwarde1e1e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 15
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2012.301s
+Formula synthesis complete in 670.774 seconds
+\A var0 \in Node : \E var1 \in Node : (~(Fluent45_0[var0][var1][var1])) => ((Fluent44_0[var0][var0]) => (Fluent46_0[var0][var1][var1]))
+  Fluent45_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4, 0] = TRUE
+  Fluent46_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3, 4] = TRUE
+  Fluent44_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+
+new pos trace(s):
+PT16 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e3e1 + T3->Forwarde2e1e3e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 16
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1928.634s
+Formula synthesis complete in 642.885 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent45_0[var0][var0]) => ((~(Fluent47_0[var0][var1][var1])) => (Fluent46_0[var0][var1][var1]))
+  Fluent47_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 4, 3] = TRUE
+  Fluent45_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 4] = TRUE
+  Fluent46_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2, 0] = TRUE
+
+new pos trace(s):
+PT17 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e3e2 + T3->Forwarde1e1e3e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 17
+Total # workers: 1
+# workers using: 1
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 0 incomplete formula synth workers
+Formula synthesis complete in 1029.733 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e1 + T2->Forwarde1e1e2e3e2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.177 seconds
+\A var0 \in Node : (Fluent48_0[var0][var0]) => (Fluent47_0[var0][var0])
+  Fluent47_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent48_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+
+new pos trace(s):
+PT18 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 33.672s
+Formula synthesis complete in 11.231 seconds
+\A var0 \in Node : (Fluent49_0[var0][var0][var0]) => (Fluent48_0[var0][var0][var0])
+  Fluent49_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 4, 0] = TRUE
+  Fluent48_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 2] = TRUE
+
+new pos trace(s):
+PT19 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e3e1 + T3->Forwarde2e2e3e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 48.039s
+Formula synthesis complete in 16.02 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent50_0[var1][var0]) => (Fluent49_0[var1][var0])
+  Fluent49_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+  Fluent50_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0] = TRUE
+
+new pos trace(s):
+PT20 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e3e3 + T4->Forwarde2e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 140.346s
+Formula synthesis complete in 46.788 seconds
+\A var0 \in Node : (~(Fluent51_0[var0][var0])) => ((Fluent52_0[var0][var0]) => (~(Fluent50_0[var0][var0])))
+  Fluent52_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent51_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+  Fluent50_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+
+new pos trace(s):
+PT21 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 164.478s
+Formula synthesis complete in 54.833 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent51_0[var0][var1][var1]) => (Fluent52_0[var0][var1][var1])
+  Fluent52_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1, 2] = TRUE
+  Fluent51_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 1] = TRUE
+
+new pos trace(s):
+PT22 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e3 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e3e1 + T5->Forwarde1e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 188.145s
+Formula synthesis complete in 62.722 seconds
+\A var0 \in Node : (Fluent53_0[var0][var0]) => ((~(Fluent52_0[var0][var0])) => (Fluent54_0[var0][var0]))
+  Fluent53_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+  Fluent52_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+  Fluent54_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = TRUE
+
+new pos trace(s):
+PT23 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 200.337s
+Formula synthesis complete in 66.786 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent54_0[var1][var0][var1]) => (Fluent53_0[var1][var0])
+  Fluent53_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+  Fluent54_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0, 2] = TRUE
+
+new pos trace(s):
+PT24 (PosTrace): (T0->NewPackete3e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e3e1 + T5->Forwarde1e1e3e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 204.963s
+Formula synthesis complete in 68.327 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent54_0[var1][var0][var1]) => (Fluent55_0[var1][var0])
+  Fluent55_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+  Fluent54_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 0, 2] = TRUE
+
+new pos trace(s):
+PT25 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e3e2 + T4->Forwarde2e1e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 476.253s
+Formula synthesis complete in 158.758 seconds
+\A var0 \in Node : (Fluent56_0[var0][var0]) => ((~(Fluent55_0[var0][var0])) => (Fluent57_0[var0][var0]))
+  Fluent57_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+  Fluent56_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent55_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE (mutexFl)
+
+new pos trace(s):
+PT26 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e2e1 + T4->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 522.777s
+Formula synthesis complete in 174.266 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent56_0[var0][var1][var0]) => ((Fluent57_0[var0][var1]) => (var0 = var1))
+  Fluent57_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent56_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0, 2] = TRUE
+
+new pos trace(s):
+PT27 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e1e1 + T4->Forwarde2e2e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 793.722s
+Formula synthesis complete in 264.58 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent58_0[var1][var2][var0]) => (Fluent57_0[var1][var2][var0])
+  Fluent58_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2, 1] = TRUE
+  Fluent57_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 4] = TRUE
+
+new pos trace(s):
+PT28 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 12
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 608.805s
+Formula synthesis complete in 202.942 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent59_0[var1][var0][var1][var0]) => (Fluent58_0[var1][var0][var1])
+  Fluent59_0[Node, Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3, 4, 2] = TRUE
+  Fluent58_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3, 0] = TRUE
+
+new pos trace(s):
+PT29 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e2 + T2->Forwarde1e2e1e1e1 + T3->Forwarde1e2e1e2e1 + T4->Forwarde1e2e2e3e1 + T5->Forwarde1e2e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 13
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 877.965s
+Formula synthesis complete in 292.662 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent59_0[var0][var0][var1][var1]) => (Fluent60_0[var0][var0][var1])
+  Fluent59_0[Node, Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0, 2, 3] = TRUE
+  Fluent60_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2, 3] = TRUE
+
+new pos trace(s):
+PT30 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e3e1 + T4->Forwarde1e1e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 14
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1656.585s
+Formula synthesis complete in 552.202 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent61_0[var0][var2]) => ((Fluent60_0[var0]) => (var1 = var2))
+  Fluent60_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = FALSE (mutexFl)
+  Fluent61_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+
+new pos trace(s):
+PT31 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 15
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1548.681s
+Formula synthesis complete in 516.234 seconds
+\A var0 \in Node : (~(Fluent61_0[var0][var0][var0])) => ((Fluent63_0[var0][var0][var0]) => (~(Fluent62_0[var0][var0])))
+  Fluent63_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 1] = TRUE
+  Fluent62_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = FALSE (mutexFl)
+  Fluent61_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0, 2] = TRUE
+
+new pos trace(s):
+PT32 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e2e1 + T4->Forwarde1e1e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 16
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1843.377s
+Formula synthesis complete in 614.466 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent64_0[var0][var1]) => ((Fluent62_0[var0][var1]) => (Fluent63_0[var0][var1]))
+  Fluent64_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent63_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent62_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE (mutexFl)
+
+new pos trace(s):
+PT33 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 17
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1714.08s
+Formula synthesis complete in 571.366 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent64_0[var0][var1]) => ((Fluent65_0[var0][var1]) => (Fluent63_0[var0][var1]))
+  Fluent64_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE (mutexFl)
+  Fluent63_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent65_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+
+new pos trace(s):
+PT34 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 18
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1884.957s
+Formula synthesis complete in 628.325 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent65_0[var0][var1][var0]) => ((Fluent64_0[var0][var1][var0]) => (Fluent66_0[var0][var1]))
+  Fluent64_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1, 3] = TRUE
+  Fluent66_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+  Fluent65_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0, 2] = TRUE
+
+new pos trace(s):
+PT35 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e3e2 + T5->Forwarde1e1e3e3e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 19
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1966.881s
+Formula synthesis complete in 655.634 seconds
+\A var0 \in Node : \A var1 \in Node : (~(Fluent65_0[var0][var0][var1])) => ((Fluent67_0[var0][var0][var1]) => (Fluent66_0[var0][var0]))
+  Fluent67_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1, 2] = TRUE
+  Fluent66_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent65_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 3] = TRUE
+
+new pos trace(s):
+PT36 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e3e1 + T4->Forwarde2e2e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 20
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2326.347s
+Formula synthesis complete in 775.455 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent66_0[var2][var0]) => ((Fluent67_0[var2]) => (var1 = var2))
+  Fluent67_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = FALSE (mutexFl)
+  Fluent66_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+
+new pos trace(s):
+PT37 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e3e1 + T4->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 21
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2003.493s
+Formula synthesis complete in 667.838 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent67_0[var1][var0][var0]) => ((Fluent69_0[var1][var0][var0]) => (Fluent68_0[var1][var0][var0]))
+  Fluent69_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 2] = TRUE
+  Fluent68_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3, 4] = TRUE
+  Fluent67_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2, 3] = TRUE
+
+new pos trace(s):
+PT38 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e2e1 + T4->Forwarde1e1e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 22
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2276.085s
+Formula synthesis complete in 758.701 seconds
+\A var0 \in Node : \A var1 \in Node : (~(Fluent70_0[var0][var0])) => ((Fluent68_0[var0][var0][var1]) => (Fluent69_0[var0][var0][var1]))
+  Fluent70_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent69_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 3] = TRUE
+  Fluent68_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 2] = TRUE
+
+new pos trace(s):
+PT39 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e3e1 + T3->Forwarde2e1e3e1e2 + T4->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 23
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2318.16s
+Formula synthesis complete in 772.727 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent70_0[var1][var0][var0]) => ((Fluent71_0[var1][var0][var0]) => (Fluent69_0[var1][var0]))
+  Fluent70_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 2] = TRUE
+  Fluent69_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent71_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3, 2] = TRUE
+
+new pos trace(s):
+PT40 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e3e1 + T4->Forwarde1e1e3e3e1 + T5->Forwarde1e1e3e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 24
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 3021.825s
+Formula synthesis complete in 1007.282 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent72_0[var1][var0]) => ((Fluent70_0[var1][var0][var1]) => (Fluent71_0[var1][var0]))
+  Fluent70_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 4] = TRUE
+  Fluent71_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+  Fluent72_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+
+new pos trace(s):
+PT41 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e3e2 + T3->Forwarde1e1e3e2e1 + T4->Forwarde1e1e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 25
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5949.831s
+Formula synthesis complete in 1983.284 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent73_0[var0][var1][var1]) => ((Fluent71_0[var0][var1][var1]) => (Fluent72_0[var0][var1][var1]))
+  Fluent71_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3, 2] = TRUE
+  Fluent72_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4, 2] = TRUE
+  Fluent73_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 2] = TRUE (mutexFl)
+
+new pos trace(s):
+PT42 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e2e1 + T3->Forwarde1e2e2e2e1 + T4->Forwarde1e2e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 26
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 6258.231s
+Formula synthesis complete in 2086.084 seconds
+\A var0 \in Node : \A var1 \in Node : (~(Fluent73_0[var0][var1][var0])) => ((Fluent74_0[var0][var1][var0]) => (Fluent72_0[var0][var1][var0]))
+  Fluent72_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4, 1] = FALSE (mutexFl)
+  Fluent73_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 3] = TRUE
+  Fluent74_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 4] = TRUE
+
+new pos trace(s):
+PT43 (PosTrace): (T0->NewPackete3e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e3e1 + T4->Forwarde1e1e3e2e1 + T5->Forwarde1e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2)
+Formula synth batch: 27
+Total # workers: 1
+# workers using: 1
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 0 incomplete formula synth workers
+Formula synthesis complete in 153.114 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e1 + T2->Forwarde1e1e2e3e2 + T3->Forwarde1e1e3e2e1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2 + T3->Forwarde1e1e3e2e1)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1

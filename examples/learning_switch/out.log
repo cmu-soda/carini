@@ -1,0 +1,2888 @@
+Building the LTS for the initial trace (ls_pending.tla)
+Built the LTS in 1.708s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.19s
+
+Round 1
+-------
+TLC neg trace generation time: 0.776 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.659 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2 + T1->Forwarde3e2e2e1e1 + T2->Forwarde3e1e1e2e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde2e2e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 2.819 seconds
+\A var0 \in Node : (Fluent2_0[var0]) => (Fluent1_0[var0])
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent1_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e2e2e1e2)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.426 seconds
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+Round 1 took 222.609 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 0.838 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.27 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde3e3e1e2e3 + T2->Forwarde3e1e2e1e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e3e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde3e3e1e2e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.345 seconds
+\A var0 \in Node : (Fluent5_0[var0]) => (~(Fluent4_0[var0]))
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+  Fluent4_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde3e3e1e2e3)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.708 seconds
+\A var0 \in Node : (Fluent6_0[var0]) => (Fluent5_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent5_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde3e3e1e2e3)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 7.013 seconds
+\A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent7_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+  Fluent6_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent7_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.856 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+Round 2 took 322.868 seconds
+
+Round 3
+-------
+TLC neg trace generation time: 0.912 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.208 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e3e3e2 + T2->Forwarde3e3e2e1e3 + T3->Forwarde3e1e1e2e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.392 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+/\ \A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+Round 3 took 4.254 seconds
+
+Round 4
+-------
+TLC neg trace generation time: 1.013 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.193 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3 + T2->Forwarde2e2e1e3e1 + T3->Forwarde2e1e3e1e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde2e2e2e2e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.329 seconds
+\A var0 \in Node : (Fluent8_0[var0]) => (Fluent9_0[var0])
+  Fluent9_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent8_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.091 seconds
+\A var0 \in Node : (Fluent9_0[var0]) => (Fluent10_0[var0])
+  Fluent9_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent10_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 34.722s
+Formula synthesis complete in 11.58 seconds
+\A var0 \in Node : (Fluent10_0[var0]) => (~(Fluent11_0[var0]))
+  Fluent11_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent10_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 41.505s
+Formula synthesis complete in 13.841 seconds
+\A var0 \in Node : (Fluent12_0[var0]) => (Fluent11_0[var0])
+  Fluent11_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE (priority 1)
+      Forward[0] = FALSE
+  Fluent12_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete1e2 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 60.186s
+Formula synthesis complete in 20.069 seconds
+\A var0 \in Node : (Fluent13_0[var0]) => (~(Fluent12_0[var0]))
+  Fluent13_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+  Fluent12_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 54.468s
+Formula synthesis complete in 18.163 seconds
+\A var0 \in Node : (Fluent13_0[var0]) => (~(Fluent14_0[var0]))
+  Fluent14_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+  Fluent13_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 73.392s
+Formula synthesis complete in 24.471 seconds
+\A var0 \in Node : (Fluent14_0[var0]) => (~(Fluent15_0[var0]))
+  Fluent15_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent14_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = FALSE (priority 1)
+      Forward[1] = TRUE
+
+new pos trace(s):
+PT8 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 98.334s
+Formula synthesis complete in 32.784 seconds
+\A var0 \in Node : (Fluent16_0[var0][var0]) => (Fluent15_0[var0][var0])
+  Fluent15_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1] = TRUE
+      Forward[3, 4] = TRUE (priority 1)
+  Fluent16_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = TRUE
+
+new pos trace(s):
+PT9 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e2 + T3->Forwarde2e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 83.601s
+Formula synthesis complete in 27.874 seconds
+\A var0 \in Node : (Fluent17_0[var0]) => (Fluent16_0[var0])
+  Fluent17_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+      Forward[1] = FALSE (priority 1)
+  Fluent16_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+      Forward[1] = FALSE (priority 1)
+
+new pos trace(s):
+PT10 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete1e2 + T2->Forwarde1e2e1e1e1 + T3->Forwarde1e1e1e1e1 + T4->Forwarde1e2e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 100.641s
+Formula synthesis complete in 33.554 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent17_0[var1][var0]) => (Fluent18_0[var1][var0])
+  Fluent17_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent18_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+
+new pos trace(s):
+PT11 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e2e1 + T3->Forwarde1e2e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 118.227s
+Formula synthesis complete in 39.415 seconds
+\A var0 \in Node : (Fluent19_0[var0]) => (~(Fluent18_0[var0]))
+  Fluent19_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = FALSE (priority 1)
+      Forward[1] = TRUE
+  Fluent18_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT12 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e2e2e2e3)
+Formula synth batch: 12
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 174.039s
+Formula synthesis complete in 58.02 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+  Fluent19_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent20_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+  Fluent19_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent20_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
+
+Minimizing the invariants found thus far.
+Found ret code 1 from TLC, treating like ret code 12
+Minimization finished in 1.694 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+/\ \A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+Round 4 took 605.066 seconds
+
+Round 5
+-------
+TLC neg trace generation time: 1.231 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.269 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e3e2e3 + T2->Forwarde1e1e2e3e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.753 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+/\ \A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+Round 5 took 4.941 seconds
+
+Round 6
+-------
+TLC neg trace generation time: 1.047 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.912 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e1e3e3 + T3->Forwarde2e1e3e1e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e3e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 7.158 seconds
+\A var0 \in Node : \A var1 \in Node : (var1 = var0) => (~(Fluent21_0[var0]))
+  Fluent21_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = FALSE (priority 1)
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e3 + T2->Forwarde1e2e1e3e1 + T3->Forwarde1e2e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 31.869s
+Formula synthesis complete in 10.63 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent22_0[var0][var1]) => (~(var0 = var1))
+  Fluent22_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 40.32s
+Formula synthesis complete in 13.446 seconds
+\A var0 \in Node : (Fluent23_0[var0]) => (~(Fluent24_0[var0]))
+  Fluent24_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent23_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde1e1e1e1e3 + T4->Forwarde1e1e1e2e3 + T5->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 67.11s
+Formula synthesis complete in 22.376 seconds
+\A var0 \in Node : (Fluent24_0[var0]) => (~(Fluent25_0[var0]))
+  Fluent25_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+  Fluent24_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete3e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e3e1e1e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 90.594s
+Formula synthesis complete in 30.204 seconds
+\A var0 \in Node : (Fluent25_0[var0][var0]) => (Fluent26_0[var0][var0])
+  Fluent26_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE
+  Fluent25_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent25_0[var0][var0]) => (Fluent26_0[var0][var0])
+  Fluent26_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE
+  Fluent25_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = TRUE
+
+Minimizing the invariants found thus far.
+Found ret code 1 from TLC, treating like ret code 12
+Minimization finished in 2.942 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+/\ \A var0 \in Node : (Fluent25_0[var0][var0]) => (Fluent26_0[var0][var0])
+/\ \A var0 \in Node : (Fluent6_0[var0]) => (Fluent7_0[var0])
+Round 6 took 395.524 seconds
+
+Round 7
+-------
+TLC neg trace generation time: 1.052 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.797 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3 + T3->Forwarde2e1e3e1e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.348 seconds
+\A var0 \in Node : (Fluent28_0[var0]) => (Fluent27_0[var0])
+  Fluent28_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+  Fluent27_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.072 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent28_0[var1][var1]) => (var0 = var1)
+  Fluent28_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 32.529s
+Formula synthesis complete in 10.85 seconds
+\A var0 \in Node : (Fluent30_0[var0]) => (~(Fluent29_0[var0]))
+  Fluent29_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent30_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e3 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 41.766s
+Formula synthesis complete in 13.928 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent30_0[var1]) => (var2 = var0)
+  Fluent30_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e3 + T2->Forwarde1e2e1e2e1 + T3->Forwarde1e2e1e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 49.65s
+Formula synthesis complete in 16.556 seconds
+\A var0 \in Node : (Fluent32_0[var0][var0]) => (Fluent31_0[var0][var0])
+  Fluent31_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 0] = TRUE
+  Fluent32_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 58.947s
+Formula synthesis complete in 19.655 seconds
+\A var0 \in Node : (Fluent32_0[var0]) => (~(Fluent33_0[var0]))
+  Fluent32_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent33_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 66.912s
+Formula synthesis complete in 22.31 seconds
+\A var0 \in Node : (Fluent34_0[var0]) => (~(Fluent33_0[var0]))
+  Fluent34_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent33_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT8 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde1e1e1e1e3 + T4->Forwarde1e1e1e2e1 + T5->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 114.309s
+Formula synthesis complete in 38.109 seconds
+\A var0 \in Node : (Fluent35_0[var0]) => (Fluent34_0[var0])
+  Fluent34_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+  Fluent35_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = FALSE (priority 1)
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT9 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e3 + T2->Forwarde1e2e1e3e1 + T3->Forwarde1e2e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 127.182s
+Formula synthesis complete in 42.401 seconds
+\A var0 \in Node : (Fluent35_0[var0]) => (~(Fluent36_0[var0]))
+  Fluent36_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+  Fluent35_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT10 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete3e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 158.184s
+Formula synthesis complete in 52.736 seconds
+\A var0 \in Node : (Fluent36_0[var0]) => (Fluent37_0[var0])
+  Fluent36_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE (priority 1)
+      Forward[4] = FALSE
+  Fluent37_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE (priority 1)
+      Forward[1] = FALSE
+
+new pos trace(s):
+PT11 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 164.577s
+Formula synthesis complete in 54.866 seconds
+\A var0 \in Node : (Fluent38_0[var0][var0]) => (~(Fluent37_0[var0]))
+  Fluent38_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+      Forward[1, 0] = FALSE (priority 1)
+  Fluent37_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT12 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde1e1e1e1e2 + T5->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 12
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 201.498s
+Formula synthesis complete in 67.172 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent39_0[var0][var1]) => (~(Fluent38_0[var0]))
+  Fluent38_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent39_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
+
+new pos trace(s):
+PT13 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e3 + T3->Forwarde1e1e2e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 13
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 216.396s
+Formula synthesis complete in 72.139 seconds
+\A var0 \in Node : (Fluent40_0[var0]) => (~(Fluent39_0[var0]))
+  Fluent39_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = FALSE
+      Forward[3] = TRUE (priority 1)
+  Fluent40_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT14 (PosTrace): (T0->NewPackete3e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde1e1e1e3e1 + T4->Forwarde1e1e1e1e1 + T5->Forwarde1e1e3e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 14
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 329.499s
+Formula synthesis complete in 109.84 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent41_0[var0][var1]) => (Fluent40_0[var0][var1])
+  Fluent41_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0] = TRUE
+  Fluent40_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+
+new pos trace(s):
+PT15 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e3e1 + T4->Forwarde1e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde2e1e2e2e3 + T1->Forwarde1e1e1e1e2 + T2->Forwarde2e1e1e3e3)
+Formula synth batch: 15
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 311.946s
+Formula synthesis complete in 103.988 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+  Fluent41_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+  Fluent42_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+  Fluent41_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+  Fluent42_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 3.801 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+Round 7 took 960.708 seconds
+
+Round 8
+-------
+TLC neg trace generation time: 1.021 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.648 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde3e3e1e1e3 + T1->Forwarde3e3e1e2e3 + T2->Forwarde3e1e2e1e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+  Fluent19_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent20_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 1.485 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+Round 8 took 4.622 seconds
+
+Round 9
+-------
+TLC neg trace generation time: 1.122 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.123 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1 + T2->Forwarde1e1e2e3e2 + T3->Forwarde1e1e3e2e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.411 seconds
+\A var0 \in Node : (Fluent44_0[var0]) => (Fluent43_0[var0])
+  Fluent43_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent44_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete3e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.206 seconds
+\A var0 \in Node : (Fluent45_0[var0][var0]) => (Fluent44_0[var0])
+  Fluent45_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent44_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e3 + T2->Forwarde1e2e1e2e1 + T3->Forwarde1e2e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 37.089s
+Formula synthesis complete in 12.369 seconds
+\A var0 \in Node : (Fluent46_0[var0][var0]) => (Fluent45_0[var0][var0])
+  Fluent45_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent46_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete3e1 + T1->Forwarde3e1e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 55.203s
+Formula synthesis complete in 18.408 seconds
+\A var0 \in Node : (Fluent46_0[var0][var0]) => (Fluent47_0[var0][var0])
+  Fluent47_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent46_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 79.545s
+Formula synthesis complete in 26.521 seconds
+\A var0 \in Node : (Fluent47_0[var0]) => (Fluent48_0[var0])
+  Fluent47_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[0] = TRUE
+  Fluent48_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[2] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e3 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e1e1e1 + T5->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 117.27s
+Formula synthesis complete in 39.096 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent49_0[var1][var0]) => (Fluent48_0[var1][var0])
+  Fluent49_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+  Fluent48_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e3e1 + T3->Forwarde1e1e3e2e1 + T4->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 119.904s
+Formula synthesis complete in 39.975 seconds
+\A var0 \in Node : (Fluent50_0[var0][var0]) => (Fluent49_0[var0][var0])
+  Fluent49_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent50_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = FALSE (priority 1)
+      Forward[0, 1] = TRUE
+
+new pos trace(s):
+PT8 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 132.618s
+Formula synthesis complete in 44.212 seconds
+\A var0 \in Node : (Fluent51_0[var0][var0][var0]) => (Fluent50_0[var0][var0])
+  Fluent51_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0, 4] = TRUE
+  Fluent50_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+
+new pos trace(s):
+PT9 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 202.923s
+Formula synthesis complete in 67.647 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent51_0[var0]) => (Fluent52_0[var0][var1])
+  Fluent52_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE
+      Forward[3, 4] = TRUE (priority 1)
+  Fluent51_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT10 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete3e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 265.731s
+Formula synthesis complete in 88.583 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent53_0[var0]) => (Fluent52_0[var0][var1])
+  Fluent53_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent52_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = FALSE
+      Forward[2, 3] = TRUE (priority 1)
+
+new pos trace(s):
+PT11 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde1e1e1e2e2 + T4->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 247.335s
+Formula synthesis complete in 82.452 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent53_0[var1][var0]) => (Fluent54_0[var1][var0])
+  Fluent53_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = FALSE (priority 1)
+      Forward[2, 0] = TRUE
+  Fluent54_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+
+new pos trace(s):
+PT12 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e3e2 + T4->Forwarde1e1e3e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 12
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 295.941s
+Formula synthesis complete in 98.654 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent55_0[var0][var1][var1]) => (Fluent54_0[var0][var1])
+  Fluent55_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3, 2] = TRUE
+  Fluent54_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+
+new pos trace(s):
+PT13 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e3e1 + T3->Forwarde2e1e3e1e3 + T4->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 13
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 381.816s
+Formula synthesis complete in 127.278 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent56_0[var0]) => (Fluent55_0[var0][var1])
+  Fluent56_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent55_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1] = FALSE
+      Forward[2, 3] = TRUE (priority 1)
+
+new pos trace(s):
+PT14 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete1e2 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e2e1e1e1 + T5->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 14
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 386.367s
+Formula synthesis complete in 128.796 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent56_0[var0]) => (Fluent57_0[var0][var1])
+  Fluent57_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE (priority 1)
+      Forward[4, 0] = FALSE
+  Fluent56_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT15 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e3 + T2->Forwarde1e2e1e2e1 + T3->NewPackete2e1 + T4->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 15
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 387.414s
+Formula synthesis complete in 129.145 seconds
+\A var0 \in Node : (Fluent58_0[var0][var0]) => (~(Fluent57_0[var0][var0]))
+  Fluent58_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = FALSE (priority 1)
+      Forward[1, 3] = TRUE
+  Fluent57_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+      Forward[4, 3] = FALSE (priority 1)
+
+new pos trace(s):
+PT16 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 16
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 352.791s
+Formula synthesis complete in 117.605 seconds
+\A var0 \in Node : (Fluent58_0[var0][var0]) => (~(Fluent59_0[var0]))
+  Fluent59_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+      Forward[1] = FALSE (priority 1)
+  Fluent58_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = TRUE
+      Forward[2, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT17 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 17
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 412.098s
+Formula synthesis complete in 137.373 seconds
+\A var0 \in Node : (Fluent60_0[var0][var0]) => (Fluent59_0[var0][var0])
+  Fluent59_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE (priority 1)
+      Forward[4, 3] = TRUE
+  Fluent60_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE (priority 1)
+      Forward[0, 1] = TRUE
+
+new pos trace(s):
+PT18 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 18
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 602.538s
+Formula synthesis complete in 200.852 seconds
+\A var0 \in Node : (Fluent61_0[var0][var0]) => (Fluent60_0[var0][var0])
+  Fluent60_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE (priority 1)
+      Forward[4, 0] = FALSE
+  Fluent61_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = FALSE (priority 1)
+      Forward[1, 3] = TRUE
+
+new pos trace(s):
+PT19 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e3e1 + T3->Forwarde2e2e3e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 19
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1086.684s
+Formula synthesis complete in 362.235 seconds
+\A var0 \in Node : (Fluent61_0[var0][var0]) => (~(Fluent62_0[var0][var0]))
+  Fluent62_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+      Forward[3, 0] = FALSE (priority 1)
+  Fluent61_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = FALSE (priority 1)
+      Forward[4] = TRUE
+
+new pos trace(s):
+PT20 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e2 + T3->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 20
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1040.922s
+Formula synthesis complete in 346.98 seconds
+\A var0 \in Node : \E var1 \in Node : ((var1 = var0) => (Fluent63_0[var1][var0])) => (Fluent62_0[var1][var0])
+  Fluent63_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = TRUE
+  Fluent62_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = FALSE
+      Forward[3, 2] = TRUE (priority 1)
+
+new pos trace(s):
+PT21 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->NewPackete2e1 + T4->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e2e2e1)
+Formula synth batch: 21
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1093.035s
+Formula synthesis complete in 364.352 seconds
+\A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+  Fluent64_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent63_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+  Fluent64_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+  Fluent63_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[0] = TRUE
+
+Minimizing the invariants found thus far.
+Found ret code 1 from TLC, treating like ret code 12
+Minimization finished in 4.714 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+/\ \A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+Round 9 took 2774.711 seconds
+
+Round 10
+-------
+TLC neg trace generation time: 1.005 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.311 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e3e1e2e2 + T2->Forwarde1e3e2e1e3 + T3->Forwarde2e2e1e1e3 + T4->Forwarde2e2e1e3e1 + T5->Forwarde2e1e3e1e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+  Fluent19_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent20_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.05 seconds
+Current partial assumption:
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+/\ \A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+Round 10 took 6.548 seconds
+
+Round 11
+-------
+TLC neg trace generation time: 2.232 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 2.832 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e1e1e2 + T4->Forwarde2e1e1e3e3 + T5->Forwarde2e1e3e1e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.889 seconds
+\A var0 \in Node : (Fluent66_0[var0]) => (Fluent65_0[var0])
+  Fluent66_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent65_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 41.847s
+Formula synthesis complete in 13.955 seconds
+\A var0 \in Node : (Fluent66_0[var0]) => (~(Fluent67_0[var0]))
+  Fluent67_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent66_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 46.809s
+Formula synthesis complete in 15.609 seconds
+\A var0 \in Node : (Fluent67_0[var0]) => (~(Fluent68_0[var0]))
+  Fluent68_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[0] = TRUE
+  Fluent67_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 64.05s
+Formula synthesis complete in 21.357 seconds
+\A var0 \in Node : (Fluent69_0[var0]) => (Fluent68_0[var0])
+  Fluent69_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[0] = TRUE
+  Fluent68_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e3 + T2->Forwarde2e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 68.001s
+Formula synthesis complete in 22.673 seconds
+\A var0 \in Node : (Fluent69_0[var0]) => (Fluent70_0[var0][var0])
+  Fluent70_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+  Fluent69_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent69_0[var0]) => (Fluent70_0[var0][var0])
+  Fluent70_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = TRUE
+  Fluent69_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 6.231 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent69_0[var0]) => (Fluent70_0[var0][var0])
+/\ \A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+Round 11 took 401.183 seconds
+
+Round 12
+-------
+TLC neg trace generation time: 0.988 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.645 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde2e3e1e2e2 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e3e3e2e3 + T3->Forwarde1e1e2e3e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.153 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent69_0[var0]) => (Fluent70_0[var0][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+/\ \A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+Round 12 took 4.854 seconds
+
+Round 13
+-------
+TLC neg trace generation time: 1.161 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.947 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde2e3e2e2e3 + T1->Forwarde1e2e1e1e3 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e2e2 + T4->Forwarde1e3e2e2e1 + T5->Forwarde1e3e2e3e1 + T6->Forwarde1e1e3e2e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+  Fluent19_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent20_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.812 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent69_0[var0]) => (Fluent70_0[var0][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+/\ \A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+Round 13 took 8.809 seconds
+
+Round 14
+-------
+TLC neg trace generation time: 1.437 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.125 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e2e1e1e3 + T1->Forwarde2e1e1e2e2 + T2->Forwarde1e2e3e2e1 + T3->Forwarde1e2e2e3e1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+  Fluent2_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.231 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent69_0[var0]) => (Fluent70_0[var0][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent41_0[var1][var0]) => (Fluent42_0[var1][var0])
+/\ \A var0 \in Node : \A var1 \in Node : (Fluent19_0[var1][var0]) => (Fluent20_0[var1][var0])
+/\ \A var0 \in Node : \E var1 \in Node : ((Fluent64_0[var0][var1]) => (var0 = var1)) => (~(Fluent63_0[var0]))
+Round 14 took 6.382 seconds
+
+Round 15
+-------
+TLC neg trace generation time: 8.261 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 4.011 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2 + T5->Forwarde2e1e1e3e3 + T6->Forwarde2e1e3e1e1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 36.165s
+Formula synthesis complete in 12.061 seconds
+\A var0 \in Node : (Fluent71_0[var0]) => (~(Fluent72_0[var0]))
+  Fluent71_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent72_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[1] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete1e2 + T2->Forwarde1e2e1e1e1 + T3->Forwarde1e2e1e2e1 + T4->Forwarde1e2e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 2
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 53.166s
+Formula synthesis complete in 17.729 seconds
+\A var0 \in Node : (Fluent73_0[var0]) => (~(Fluent72_0[var0]))
+  Fluent72_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent73_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde1e1e1e1e3 + T4->Forwarde1e1e1e2e1 + T5->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 3
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 77.835s
+Formula synthesis complete in 25.951 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent73_0[var1][var0][var0]) => (var0 = var1)
+  Fluent73_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 3] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 4
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 126.114s
+Formula synthesis complete in 42.044 seconds
+\A var0 \in Node : (Fluent74_0[var0]) => (~(Fluent75_0[var0]))
+  Fluent74_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = FALSE (priority 1)
+      Forward[4] = TRUE
+  Fluent75_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = FALSE
+      Forward[3] = TRUE (priority 1)
+
+new pos trace(s):
+PT5 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e2 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e2e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 5
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 149.274s
+Formula synthesis complete in 49.764 seconds
+\A var0 \in Node : (Fluent76_0[var0][var0]) => (Fluent75_0[var0][var0])
+  Fluent76_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent75_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE (priority 1)
+      Forward[3, 4] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 6
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 131.499s
+Formula synthesis complete in 43.839 seconds
+\A var0 \in Node : (Fluent77_0[var0]) => (Fluent76_0[var0])
+  Fluent76_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE (priority 1)
+      Forward[0] = FALSE
+  Fluent77_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = FALSE
+      Forward[3] = TRUE (priority 1)
+
+new pos trace(s):
+PT7 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e3e1 + T3->Forwarde1e1e1e1e1 + T4->Forwarde1e1e3e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 7
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 191.898s
+Formula synthesis complete in 63.973 seconds
+\A var0 \in Node : (Fluent77_0[var0][var0]) => (Fluent78_0[var0][var0])
+  Fluent77_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = TRUE
+  Fluent78_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE
+      Forward[0, 1] = TRUE (priority 1)
+
+new pos trace(s):
+PT8 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde1e1e1e1e2 + T5->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 8
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 182.397s
+Formula synthesis complete in 60.805 seconds
+\A var0 \in Node : (Fluent78_0[var0][var0]) => (Fluent79_0[var0][var0])
+  Fluent78_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent79_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 0] = TRUE (priority 1)
+      Forward[2, 3] = FALSE
+
+new pos trace(s):
+PT9 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->NewPackete2e1 + T4->Forwarde2e1e2e2e1 + T5->Forwarde2e1e2e1e1 + T6->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 9
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 215.451s
+Formula synthesis complete in 71.823 seconds
+\A var0 \in Node : (Fluent80_0[var0][var0]) => (~(Fluent79_0[var0][var0]))
+  Fluent80_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 1] = TRUE
+      Forward[4, 1] = FALSE (priority 1)
+  Fluent79_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+
+new pos trace(s):
+PT10 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 10
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 386.103s
+Formula synthesis complete in 128.707 seconds
+\A var0 \in Node : \E var1 \in Node : ((~(var0 = var1)) => (Fluent80_0[var1][var1])) => (Fluent81_0[var1][var1])
+  Fluent80_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent81_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+
+new pos trace(s):
+PT11 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2 + T4->NewPackete1e1 + T5->Forwarde1e1e1e1e2 + T6->Forwarde1e1e1e2e2 + T7->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 11
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 455.103s
+Formula synthesis complete in 151.708 seconds
+\A var0 \in Node : (Fluent82_0[var0]) => (~(Fluent81_0[var0][var0]))
+  Fluent81_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1] = TRUE (priority 1)
+      Forward[1, 4] = FALSE
+  Fluent82_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE
+      Forward[0] = FALSE (priority 1)
+
+new pos trace(s):
+PT12 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 12
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 440.154s
+Formula synthesis complete in 146.725 seconds
+\A var0 \in Node : \A var1 \in Node : \E var2 \in Node : (Fluent82_0[var2][var1]) => (~(var1 = var0))
+  Fluent82_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE (priority 1)
+      Forward[2, 4] = FALSE
+
+new pos trace(s):
+PT13 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 13
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 724.785s
+Formula synthesis complete in 241.602 seconds
+\A var0 \in Node : (Fluent84_0[var0][var0]) => (~(Fluent83_0[var0]))
+  Fluent83_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE (priority 1)
+      Forward[0] = FALSE
+  Fluent84_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = FALSE (priority 1)
+      Forward[1, 0] = TRUE
+
+new pos trace(s):
+PT14 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde1e1e1e1e2 + T5->Forwarde1e1e1e2e2 + T6->Forwarde1e1e2e1e2 + T7->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 14
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 555.255s
+Formula synthesis complete in 185.091 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent84_0[var0][var2]) => (~(var1 = var2))
+  Fluent84_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = FALSE
+      Forward[1, 4] = TRUE (priority 1)
+
+new pos trace(s):
+PT15 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e3e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 15
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 642.42s
+Formula synthesis complete in 214.147 seconds
+\A var0 \in Node : (Fluent85_0[var0][var0]) => (~(Fluent86_0[var0][var0]))
+  Fluent85_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+      Forward[2, 4] = FALSE (priority 1)
+  Fluent86_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+      Forward[4, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT16 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e1 + T4->Forwarde1e1e2e2e1 + T5->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 16
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 629.985s
+Formula synthesis complete in 210.003 seconds
+\A var0 \in Node : \E var1 \in Node : ((Fluent87_0[var1]) => (var0 = var1)) => (~(Fluent86_0[var1]))
+  Fluent87_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[3] = TRUE (priority 1)
+      Forward[0] = FALSE
+  Fluent86_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE
+
+new pos trace(s):
+PT17 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e1e2 + T4->Forwarde1e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 17
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 736.845s
+Formula synthesis complete in 245.622 seconds
+\A var0 \in Node : \A var1 \in Node : \E var2 \in Node : (var1 = var0) => (~(Fluent87_0[var2][var0]))
+  Fluent87_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+      Forward[2, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT18 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e2 + T4->Forwarde2e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 18
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 698.151s
+Formula synthesis complete in 232.723 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent89_0[var1][var0]) => (Fluent88_0[var1][var0])
+  Fluent88_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+  Fluent89_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = TRUE (priority 1)
+      Forward[2, 0] = TRUE
+
+new pos trace(s):
+PT19 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete3e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e2e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 19
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 736.224s
+Formula synthesis complete in 245.415 seconds
+\A var0 \in Node : (Fluent90_0[var0][var0]) => (Fluent89_0[var0][var0])
+  Fluent90_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = FALSE (priority 1)
+      Forward[0, 4] = TRUE
+  Fluent89_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE (priority 1)
+      Forward[0, 4] = TRUE
+
+new pos trace(s):
+PT20 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e2e1 + T4->NewPackete2e1 + T5->Forwarde2e1e2e2e1 + T6->Forwarde2e1e2e1e1 + T7->Forwarde2e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 20
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 993.717s
+Formula synthesis complete in 331.246 seconds
+\A var0 \in Node : (Fluent91_0[var0][var0]) => (Fluent90_0[var0][var0])
+  Fluent91_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = FALSE (priority 1)
+      Forward[1, 0] = TRUE
+  Fluent90_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE
+      Forward[0, 2] = TRUE (priority 1)
+
+new pos trace(s):
+PT21 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete3e1 + T2->Forwarde3e1e3e3e1 + T3->Forwarde3e1e3e1e1 + T4->Forwarde1e1e1e1e3 + T5->Forwarde3e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 21
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1002.111s
+Formula synthesis complete in 334.044 seconds
+\A var0 \in Node : (Fluent91_0[var0][var0]) => (~(Fluent92_0[var0]))
+  Fluent91_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = FALSE (priority 1)
+      Forward[0, 4] = TRUE
+  Fluent92_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = FALSE (priority 1)
+      Forward[3] = TRUE
+
+new pos trace(s):
+PT22 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e2e1 + T4->Forwarde1e1e2e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 22
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1148.439s
+Formula synthesis complete in 382.819 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent92_0[var1][var0]) => (~(Fluent93_0[var1][var0]))
+  Fluent93_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+      Forward[2, 4] = FALSE (priority 1)
+  Fluent92_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+
+new pos trace(s):
+PT23 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e3e2 + T3->Forwarde1e1e3e1e1 + T4->Forwarde1e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 23
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1073.946s
+Formula synthesis complete in 357.989 seconds
+\A var0 \in Node : (Fluent93_0[var0][var0]) => (~(Fluent94_0[var0][var0]))
+  Fluent93_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = FALSE (priority 1)
+      Forward[2, 1] = TRUE
+  Fluent94_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+      Forward[4, 2] = FALSE (priority 1)
+
+new pos trace(s):
+PT24 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde1e1e1e1e2 + T5->Forwarde1e1e1e2e2 + T6->Forwarde2e1e1e1e1 + T7->Forwarde1e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 24
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1008.435s
+Formula synthesis complete in 336.152 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent94_0[var1][var2]) => (var0 = var2)
+  Fluent94_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = TRUE (priority 1)
+      Forward[3, 0] = FALSE
+
+new pos trace(s):
+PT25 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e2e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 25
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1045.53s
+Formula synthesis complete in 348.516 seconds
+\A var0 \in Node : (Fluent95_0[var0]) => (~(Fluent96_0[var0][var0]))
+  Fluent95_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[2] = TRUE
+      Forward[0] = FALSE (priority 1)
+  Fluent96_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = FALSE
+      Forward[0, 4] = TRUE (priority 1)
+
+new pos trace(s):
+PT26 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->NewPackete3e1 + T3->Forwarde3e1e3e3e1 + T4->Forwarde3e1e3e1e2 + T5->Forwarde3e1e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 26
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1577.715s
+Formula synthesis complete in 525.911 seconds
+\A var0 \in Node : (Fluent96_0[var0][var0]) => (~(Fluent97_0[var0][var0]))
+  Fluent97_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE (priority 1)
+      Forward[3, 4] = FALSE
+  Fluent96_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = FALSE (priority 1)
+      Forward[2, 3] = TRUE
+
+new pos trace(s):
+PT27 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->NewPackete2e1 + T3->Forwarde2e1e2e2e1 + T4->Forwarde2e1e2e1e2 + T5->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 27
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1629.39s
+Formula synthesis complete in 543.137 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent97_0[var0][var1]) => (~(Fluent98_0[var0]))
+  Fluent98_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE
+  Fluent97_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = FALSE (priority 1)
+      Forward[1, 4] = TRUE
+
+new pos trace(s):
+PT28 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e2 + T3->Forwarde2e1e2e2e1 + T4->Forwarde2e1e2e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 28
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1406.043s
+Formula synthesis complete in 468.687 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent99_0[var0][var1]) => (Fluent98_0[var0])
+  Fluent99_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent98_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE (priority 1)
+      Forward[3] = FALSE
+
+new pos trace(s):
+PT29 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e2 + T3->NewPackete3e1 + T4->Forwarde3e1e3e3e2 + T5->Forwarde2e1e1e1e3 + T6->Forwarde3e1e3e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 29
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1170.714s
+Formula synthesis complete in 390.244 seconds
+\A var0 \in Node : (Fluent100_0[var0][var0]) => (Fluent99_0[var0][var0])
+  Fluent99_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2] = FALSE
+      Forward[0, 3] = TRUE (priority 1)
+  Fluent100_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+      Forward[4, 2] = FALSE (priority 1)
+
+new pos trace(s):
+PT30 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde1e1e1e1e2 + T5->Forwarde2e1e1e1e1 + T6->Forwarde1e1e1e2e1 + T7->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 30
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1703.916s
+Formula synthesis complete in 567.979 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent100_0[var0][var1]) => (Fluent101_0[var0])
+  Fluent100_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent101_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[0] = TRUE (priority 1)
+      Forward[2] = FALSE
+
+new pos trace(s):
+PT31 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete3e1 + T2->Forwarde1e1e1e1e1 + T3->Forwarde1e1e1e2e2 + T4->NewPackete3e1 + T5->Forwarde3e1e3e3e1 + T6->Forwarde3e1e3e1e1 + T7->Forwarde1e1e2e1e3 + T8->Forwarde3e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 31
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1436.208s
+Formula synthesis complete in 478.742 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent101_0[var0][var1]) => (Fluent102_0[var0][var1])
+  Fluent102_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE
+      Forward[0, 2] = TRUE (priority 1)
+  Fluent101_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+
+new pos trace(s):
+PT32 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e1e2 + T3->NewPackete3e1 + T4->Forwarde3e1e3e3e1 + T5->Forwarde3e1e3e1e1 + T6->Forwarde1e2e1e1e3 + T7->Forwarde3e1e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 32
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1417.011s
+Formula synthesis complete in 472.343 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent102_0[var1][var0]) => (Fluent103_0[var1][var0])
+  Fluent102_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent103_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0] = TRUE (priority 1)
+      Forward[0, 3] = FALSE
+
+new pos trace(s):
+PT33 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e2 + T3->Forwarde1e1e2e1e3 + T4->NewPackete2e1 + T5->Forwarde2e1e2e2e1 + T6->Forwarde2e1e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 33
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1453.8s
+Formula synthesis complete in 484.607 seconds
+\A var0 \in Node : (Fluent104_0[var0][var0]) => (~(Fluent103_0[var0][var0]))
+  Fluent104_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1] = FALSE (priority 1)
+      Forward[3, 1] = TRUE
+  Fluent103_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE (priority 1)
+      Forward[4, 1] = FALSE
+
+new pos trace(s):
+PT34 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e1 + T2->NewPackete1e2 + T3->Forwarde2e1e2e2e1 + T4->Forwarde2e1e2e1e1 + T5->Forwarde1e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 34
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2249.283s
+Formula synthesis complete in 749.767 seconds
+\A var0 \in Node : (Fluent104_0[var0][var0]) => (~(Fluent105_0[var0][var0]))
+  Fluent104_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+      Forward[4, 2] = FALSE (priority 1)
+  Fluent105_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1] = TRUE
+      Forward[1, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT35 (PosTrace): (T0->NewPackete3e1 + T1->NewPackete1e2 + T2->Forwarde3e1e3e3e1 + T3->Forwarde3e1e3e1e1 + T4->Forwarde3e1e1e3e1 + T5->Forwarde1e2e1e1e2 + T6->Forwarde1e2e1e2e1 + T7->Forwarde1e2e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 35
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1441.353s
+Formula synthesis complete in 480.457 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent105_0[var1][var0][var0]) => (Fluent106_0[var1][var0][var0])
+  Fluent105_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0, 4] = TRUE
+  Fluent106_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 0, 2] = TRUE
+
+new pos trace(s):
+PT36 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e2e3e1 + T4->Forwarde1e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 36
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1634.415s
+Formula synthesis complete in 544.812 seconds
+\A var0 \in Node : (Fluent106_0[var0][var0]) => (~(Fluent107_0[var0][var0]))
+  Fluent106_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = FALSE (priority 1)
+      Forward[0, 4] = TRUE
+  Fluent107_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = TRUE
+      Forward[4, 1] = FALSE (priority 1)
+
+new pos trace(s):
+PT37 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->NewPackete2e1 + T3->Forwarde2e1e2e2e1 + T4->Forwarde2e1e2e1e1 + T5->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 37
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 1660.44s
+Formula synthesis complete in 553.486 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent107_0[var1][var0]) => (Fluent108_0[var1][var0])
+  Fluent108_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE (priority 1)
+      Forward[4, 2] = FALSE
+  Fluent107_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+
+new pos trace(s):
+PT38 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e3e1 + T3->Forwarde2e1e3e2e2 + T4->Forwarde2e1e2e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 38
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 2695.737s
+Formula synthesis complete in 898.585 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent109_0[var1][var0]) => (~(Fluent108_0[var1][var0]))
+  Fluent108_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent109_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+      Forward[2, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT39 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e1e2 + T3->NewPackete3e1 + T4->Forwarde1e1e1e1e3 + T5->Forwarde3e1e3e3e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 39
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 3487.203s
+Formula synthesis complete in 1162.407 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent109_0[var1][var0]) => (Fluent110_0[var1][var0][var1])
+  Fluent109_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE (priority 1)
+      Forward[4, 2] = TRUE
+  Fluent110_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0, 4] = TRUE
+
+new pos trace(s):
+PT40 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete1e2 + T2->Forwarde1e2e1e1e1 + T3->Forwarde1e1e1e1e2 + T4->Forwarde1e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 40
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 3859.494s
+Formula synthesis complete in 1286.508 seconds
+\A var0 \in Node : (Fluent111_0[var0][var0]) => ((~(Fluent110_0[var0][var0])) => (Fluent112_0[var0][var0]))
+  Fluent112_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE (priority 1)
+      Forward[3, 1] = FALSE
+  Fluent111_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent110_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+
+new pos trace(s):
+PT41 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e1e2 + T4->Forwarde2e2e1e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 41
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4129.554s
+Formula synthesis complete in 1376.527 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent112_0[var0][var1]) => (Fluent111_0[var0][var1])
+  Fluent112_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent111_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 4] = FALSE (priority 1)
+      Forward[0] = TRUE
+
+new pos trace(s):
+PT42 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e1e2 + T3->NewPackete3e1 + T4->Forwarde1e1e1e1e3 + T5->Forwarde3e1e3e3e1 + T6->Forwarde3e1e3e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 42
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 3833.289s
+Formula synthesis complete in 1277.771 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent112_0[var1][var0]) => ((Fluent113_0[var1][var0]) => (var0 = var1))
+  Fluent113_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = FALSE (priority 1)
+      Forward[1, 4] = TRUE
+  Fluent112_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+
+new pos trace(s):
+PT43 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete1e2 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde2e1e1e1e1 + T5->Forwarde1e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 43
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4021.182s
+Formula synthesis complete in 1340.401 seconds
+\A var0 \in Node : (~(Fluent115_0[var0][var0])) => ((Fluent114_0[var0][var0]) => (~(Fluent113_0[var0][var0])))
+  Fluent115_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 4] = TRUE
+  Fluent114_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 3] = TRUE
+      Forward[4, 0] = FALSE (priority 1)
+  Fluent113_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+
+new pos trace(s):
+PT44 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e2e2 + T4->Forwarde2e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 44
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4823.265s
+Formula synthesis complete in 1607.761 seconds
+\A var0 \in Node : (~(Fluent116_0[var0][var0])) => ((Fluent114_0[var0][var0]) => (~(Fluent115_0[var0][var0])))
+  Fluent116_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent115_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent114_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = FALSE (priority 1)
+      Forward[3, 1] = TRUE
+
+new pos trace(s):
+PT45 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde1e1e1e1e2 + T4->Forwarde2e1e2e1e1 + T5->Forwarde1e1e1e2e2 + T6->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 45
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4026.957s
+Formula synthesis complete in 1342.325 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent115_0[var1][var0][var2]) => (Fluent116_0[var1][var0][var2])
+  Fluent116_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 1, 4] = TRUE
+  Fluent115_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1, 0] = TRUE
+
+new pos trace(s):
+PT46 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->NewPackete3e1 + T4->Forwarde1e1e1e1e3 + T5->Forwarde3e1e3e3e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 46
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4208.277s
+Formula synthesis complete in 1402.765 seconds
+\A var0 \in Node : \E var1 \in Node : ((Fluent116_0[var1]) => (var0 = var1)) => (~(Fluent117_0[var1]))
+  Fluent116_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = FALSE
+      Forward[3] = TRUE (priority 1)
+  Fluent117_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = TRUE (priority 1)
+      Forward[0] = FALSE
+
+new pos trace(s):
+PT47 (PosTrace): (T0->NewPackete2e1 + T1->NewPackete3e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e3 + T4->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 47
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 3996.669s
+Formula synthesis complete in 1332.229 seconds
+\A var0 \in Node : (~(Fluent117_0[var0][var0])) => ((Fluent118_0[var0][var0]) => (Fluent119_0[var0][var0]))
+  Fluent119_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 3] = TRUE
+  Fluent118_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent117_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2] = TRUE
+      Forward[3, 2] = FALSE (priority 1)
+
+new pos trace(s):
+PT48 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 48
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4248.594s
+Formula synthesis complete in 1416.204 seconds
+\A var0 \in Node : (~(Fluent120_0[var0][var0])) => ((Fluent119_0[var0][var0]) => (~(Fluent118_0[var0][var0])))
+  Fluent119_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent118_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = FALSE (priority 1)
+      Forward[3, 2] = TRUE
+  Fluent120_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+
+new pos trace(s):
+PT49 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde2e1e2e1e1 + T4->Forwarde2e1e1e1e2 + T5->NewPackete1e1 + T6->Forwarde1e1e1e1e1 + T7->Forwarde1e1e1e2e1 + T8->Forwarde1e1e2e2e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 49
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 4590.222s
+Formula synthesis complete in 1530.081 seconds
+\A var0 \in Node : (Fluent119_0[var0][var0]) => ((~(Fluent121_0[var0][var0])) => (Fluent120_0[var0][var0]))
+  Fluent119_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent121_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent120_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 2] = FALSE (priority 1)
+      Forward[4, 0] = TRUE
+
+new pos trace(s):
+PT50 (PosTrace): (T0->NewPackete2e2 + T1->Forwarde2e2e2e2e1 + T2->Forwarde2e2e2e1e1 + T3->Forwarde2e2e1e2e2 + T4->Forwarde2e2e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 50
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5164.677s
+Formula synthesis complete in 1721.565 seconds
+\A var0 \in Node : (~(Fluent120_0[var0][var0])) => ((Fluent121_0[var0][var0]) => (Fluent122_0[var0][var0]))
+  Fluent122_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0] = TRUE (priority 1)
+      Forward[2, 1] = FALSE
+  Fluent121_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+  Fluent120_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+
+new pos trace(s):
+PT51 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2 + T4->NewPackete3e2 + T5->Forwarde3e2e3e3e1 + T6->Forwarde3e2e3e2e1 + T7->Forwarde3e2e2e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 51
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5883.441s
+Formula synthesis complete in 1961.153 seconds
+\A var0 \in Node : \E var1 \in Node : \A var2 \in Node : (Fluent121_0[var0][var1][var2]) => (var2 = var0)
+  Fluent121_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 2, 1] = TRUE (priority 1)
+      Forward[3, 4, 0] = TRUE
+
+new pos trace(s):
+PT52 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e1 + T2->Forwarde1e1e1e2e1 + T3->Forwarde1e1e1e2e2 + T4->Forwarde1e1e2e2e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 52
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5066.502s
+Formula synthesis complete in 1688.84 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent122_0[var1][var0]) => (~(Fluent123_0[var1][var0]))
+  Fluent123_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+      Forward[2, 4] = FALSE (priority 1)
+  Fluent122_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[1, 0] = FALSE
+      Forward[4, 0] = TRUE (priority 1)
+
+new pos trace(s):
+PT53 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e2 + T2->Forwarde2e2e2e2e1 + T3->Forwarde2e2e2e1e3 + T4->Forwarde2e2e1e1e2 + T5->NewPackete1e2 + T6->Forwarde1e2e1e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 53
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5332.782s
+Formula synthesis complete in 1777.6 seconds
+\A var0 \in Node : \E var1 \in Node : ((~(Fluent123_0[var1][var1])) => (var1 = var0)) => (Fluent124_0[var1][var1])
+  Fluent124_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 2] = TRUE
+  Fluent123_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = FALSE
+      Forward[0, 4] = TRUE (priority 1)
+
+new pos trace(s):
+PT54 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->Forwarde2e1e2e1e1 + T3->Forwarde2e1e1e1e2 + T4->NewPackete1e1 + T5->Forwarde1e1e1e1e2 + T6->Forwarde1e1e1e3e2 + T7->Forwarde1e1e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 54
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5324.316s
+Formula synthesis complete in 1774.779 seconds
+\A var0 \in Node : \E var1 \in Node : ((Fluent125_0[var1][var0]) => (var1 = var0)) => (~(Fluent124_0[var1][var0]))
+  Fluent125_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = TRUE
+  Fluent124_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+      Forward[2, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT55 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e2e2 + T3->Forwarde1e2e2e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 55
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 13984.095s
+Formula synthesis complete in 4661.371 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent126_0[var0][var1]) => (Fluent125_0[var0][var1])
+  Fluent126_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 0] = TRUE
+      Forward[2, 4] = TRUE (priority 1)
+  Fluent125_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 4] = TRUE
+      Forward[3, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT56 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e2e2 + T3->Forwarde1e2e2e1e1 + T4->Forwarde1e2e1e2e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 56
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 8852.784s
+Formula synthesis complete in 2950.935 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent127_0[var0]) => (~(Fluent126_0[var0][var1]))
+  Fluent127_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = FALSE (priority 1)
+      Forward[2] = TRUE
+  Fluent126_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 1] = FALSE
+      Forward[0, 4] = TRUE (priority 1)
+
+new pos trace(s):
+PT57 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e1e3 + T3->Forwarde1e2e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 57
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5346.705s
+Formula synthesis complete in 1782.242 seconds
+\A var0 \in Node : \E var1 \in Node : ((~(var1 = var0)) => (Fluent127_0[var1][var1])) => (Fluent128_0[var1][var1])
+  Fluent127_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE
+  Fluent128_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 3] = FALSE (priority 1)
+      Forward[2, 0] = TRUE
+
+new pos trace(s):
+PT58 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde1e1e1e1e1 + T3->NewPackete2e1 + T4->Forwarde2e1e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 58
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5321.538s
+Formula synthesis complete in 1773.854 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent128_0[var1][var0]) => (~(Fluent129_0[var1][var0]))
+  Fluent129_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 0] = TRUE (priority 1)
+      Forward[3, 4] = FALSE
+  Fluent128_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[4, 1] = TRUE
+      Forward[2, 0] = FALSE (priority 1)
+
+new pos trace(s):
+PT59 (PosTrace): (T0->NewPackete1e1 + T1->Forwarde1e1e1e1e2 + T2->Forwarde1e1e1e2e3 + T3->Forwarde1e1e2e1e1 + T4->NewPackete2e1 + T5->Forwarde2e1e2e2e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 59
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 5989.587s
+Formula synthesis complete in 1996.536 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent130_0[var0][var1]) => (~(Fluent129_0[var0][var1]))
+  Fluent129_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+      Forward[2, 1] = FALSE (priority 1)
+  Fluent130_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = FALSE (priority 1)
+      Forward[2, 4] = TRUE
+
+new pos trace(s):
+PT60 (PosTrace): (T0->NewPackete1e1 + T1->NewPackete2e1 + T2->Forwarde2e1e2e2e1 + T3->Forwarde1e1e1e1e2 + T4->Forwarde2e1e2e1e1 + T5->Forwarde2e1e1e1e2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 60
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 6987.426s
+Formula synthesis complete in 2329.149 seconds
+\A var0 \in Node : \E var1 \in Node : ((~(var0 = var1)) => (Fluent130_0[var1][var0])) => (Fluent131_0[var1])
+  Fluent131_0[Node]
+    initially: FALSE
+    flActions:
+      Forward[4] = FALSE (priority 1)
+      Forward[0] = TRUE
+  Fluent130_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[0, 4] = TRUE
+
+new pos trace(s):
+PT61 (PosTrace): (T0->NewPackete2e1 + T1->Forwarde2e1e2e2e1 + T2->NewPackete3e1 + T3->Forwarde3e1e3e3e1 + T4->Forwarde3e1e3e1e2 + T5->Forwarde3e1e1e1e3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 61
+Total # workers: 1
+# workers using: 1
+First worker finished, shutdown count is 6508.008s
+Formula synthesis complete in 2169.343 seconds
+\A var0 \in Node : \A var1 \in Node : (Fluent131_0[var0][var1]) => (Fluent132_0[var0][var1][var1])
+  Fluent131_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[2, 0] = TRUE
+  Fluent132_0[Node, Node, Node]
+    initially: FALSE
+    flActions:
+      Forward[3, 2, 0] = TRUE
+      Forward[3, 1, 4] = TRUE (priority 1)
+
+new pos trace(s):
+PT62 (PosTrace): (T0->NewPackete1e2 + T1->Forwarde1e2e1e1e1 + T2->Forwarde1e2e1e2e1 + T3->Forwarde1e2e2e3e1 + T4->Forwarde1e2e3e1e1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2)
+Formula synth batch: 62
+Total # workers: 1
+# workers using: 1
+Formula synthesis complete in 210.665 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2 + T5->Forwarde2e1e1e3e3)
+Formula synth batch: 1
+Total # workers: 1
+# workers using: 1

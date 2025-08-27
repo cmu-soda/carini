@@ -1,0 +1,29 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 109 and seed 8712159299559849664 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 32682] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/msr/c3c2/C3_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Integers.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module C3_hist
+Starting... (2025-03-01 11:47:45)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-03-01 11:47:45.
+Progress(13) at 2025-03-01 11:47:48: 196,157 states generated (196,157 s/min), 51,790 distinct states found (51,790 ds/min), 22,196 states left on queue.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 3.2E-8
+  based on the actual fingerprints:  val = 9.3E-9
+2093062 states generated, 337876 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 32.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 10 and the 95th percentile is 3).
+Finished in 28s at (2025-03-01 11:48:13)

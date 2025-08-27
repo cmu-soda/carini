@@ -1,14 +1,17 @@
-//14
+//133
+//0
 open util/boolean
 open util/ordering[Idx] as IdxOrder
 open util/ordering[ParamIdx] as ParamIdxOrder
+open util/ordering[FlActionIdx] as FlActionIdxOrder
 
 abstract sig Var {}
 
 abstract sig Atom {}
 
 abstract sig Sort {
-	atoms : some Atom
+	atoms : some Atom,
+	numericSort : Bool
 }
 
 abstract sig ParamIdx {}
@@ -22,9 +25,42 @@ abstract sig BaseName {
 // concrete action
 abstract sig Act {
 	baseName : BaseName,
-	params : ParamIdx->Atom
+	params : ParamIdx->Atom,
+	initiates : Env->Fluent->FlActionIdx,
+	terminates : Env->Fluent->FlActionIdx
 }
 
+fact {
+    // initiation for a concrete action (Act)
+    all e : Env, a : Act, f : Fluent, si : FlActionIdx | e->f->si in a.initiates iff
+        (initiation[e,a,f,si]
+        or
+        (not termination[e,a,f,si] and some si.prev and e->f->(si.prev) in a.initiates))
+
+    // termination for a concrete action (Act)
+    all e : Env, a : Act, f : Fluent, si : FlActionIdx | e->f->si in a.terminates iff
+        (termination[e,a,f,si]
+        or
+        (not initiation[e,a,f,si] and some si.prev and e->f->(si.prev) in a.terminates))
+}
+
+pred initiation[e : Env, a : Act, f : Fluent, si : FlActionIdx] {
+    let s = { s : f.flActions | s.baseName = a.baseName and s.flActIdx = si } |
+        initiation[e,a,f,s]
+}
+
+pred initiation[e : Env, a : Act, f : Fluent, s : FlSymAction] {
+    s.value = True and (~(f.vars)).(s.flToActParamsMap).(a.params) in e.maps
+}
+
+pred termination[e : Env, a : Act, f : Fluent, si : FlActionIdx] {
+    let s = { s : f.flActions | s.baseName = a.baseName and s.flActIdx = si } |
+        termination[e,a,f,s]
+}
+
+pred termination[e : Env, a : Act, f : Fluent, s : FlSymAction] {
+    s.value = False and (~(f.vars)).(s.flToActParamsMap).(a.params) in e.maps
+}
 
 /* Formula signatures (represented by a DAG) */
 abstract sig Formula {
@@ -35,7 +71,7 @@ sig Not extends Formula {
 	child : Formula
 } {
 	children = child
-	child in (Fluent + VarEquals)
+	child in (Fluent + VarEquals + VarSetContains + VarLTE)
 }
 
 sig Implies extends Formula {
@@ -43,58 +79,76 @@ sig Implies extends Formula {
 	right : Formula
 } {
 	children = left + right
+	left != right
+	not (left in Not and right in Not) // for readability
 }
+
+abstract sig FlActionIdx {}
 
 sig FlSymAction {
     baseName : BaseName,
 
-    // actToFlParamsMap maps action-params to fluent-params
-    // in other words, actToFlParamsMap decides which of the action-params will be
+    // flToActParamsMap maps fluent-param idxs to action-param idxs.
+    // in other words, flToActParamsMap decides which of the action-params will be
     // used for setting a boolean value of the state variable (representing the
     // fluent) in the _hist TLA+ code.
-    actToFlParamsMap : set(ParamIdx->ParamIdx)
-} {
-    // domain(actToFlParamsMap) \subseteq paramIdxs(baseName)
-    actToFlParamsMap.ParamIdx in baseName.paramIdxs
+    flToActParamsMap : set(ParamIdx->ParamIdx),
 
-    // actToFlParamsMap is a function
-    all k1,k2,v : ParamIdx | (k1->v in actToFlParamsMap and k2->v in actToFlParamsMap) implies (k1 = k2)
+    value : Bool, // init v. term
+
+    // the 'priority' of the action, which matters when there's multiple FlSymActions
+    // with the same base action.
+    flActIdx : FlActionIdx
+} {
+    // domain(flToActParamsMap) must be a sequence of P0, P1, ... (i.e. no gaps between param numbers)
+    (no flToActParamsMap) or (P0 in flToActParamsMap.ParamIdx)
+    (flToActParamsMap.ParamIdx).*(~ParamIdxOrder/next) = flToActParamsMap.ParamIdx
+
+    // range(flToActParamsMap) \subseteq paramIdxs(baseName), i.e. the range must be valid param idxs
+    ParamIdx.flToActParamsMap in baseName.paramIdxs
+
+    // flToActParamsMap is a function
+    all k,v1,v2 : ParamIdx | (k->v1 in flToActParamsMap and k->v2 in flToActParamsMap) implies (v1 = v2)
+
+    // flToActParamsMap is injective
+    // this is an overconstraint for improving speed
+    all k1,k2,v : ParamIdx | (k1->v in flToActParamsMap and k2->v in flToActParamsMap) implies (k1 = k2)
+
+    // it only makes sense for trueifies/falsifies to be the lowest priority action
+    (no flToActParamsMap) implies (flActIdx = S0)
 }
 
 sig Fluent extends Formula {
     initially : Bool,
-    initFl : set FlSymAction,
-    termFl : set FlSymAction,
+    flActions : some FlSymAction,
 
     // vars represents the parameters (including the ordering) to the fluent itself
     vars : set(ParamIdx->Var)
 } {
     no children
-    no initFl & termFl // ensures initFl and termFl are mutex
-    some initFl + termFl
     some vars
+
+    initially = False // makes the fluent easier to read, but doesn't sacrifice expressivity (because of Not)
 
     // vars is a function
     all p : ParamIdx, v1,v2 : Var | (p->v1 in vars and p->v2 in vars) implies (v1 = v2)
 
-    // each fluent must accept all the fluent params in vars
-    all s : (initFl + termFl) | ParamIdx.(s.actToFlParamsMap) = vars.Var
-
     // each action must input the same param-types to the fluent
     let flParamTypes = vars.envVarTypes |
-        all a : (initFl+termFl) |
+        all a : flActions |
             // for each param in the action, its type must match the fluent
-            all actIdx : a.actToFlParamsMap.ParamIdx |
-                let flIdx = actIdx.(a.actToFlParamsMap) |
+            all actIdx : ParamIdx.(a.flToActParamsMap) |
+                let flIdx = (a.flToActParamsMap).actIdx |
                     flIdx.flParamTypes = actIdx.(a.baseName.paramTypes)
 
-    // actToFlParamsMap is an injective function
-    // furthermore, when we combine actToFlParamsMap across all actions, the combination
-    // must STILL be injective
-    all x1,x2,y1,y2 : ParamIdx |
-        (x1->y1 in (initFl+termFl).actToFlParamsMap and x2->y2 in (initFl+termFl).actToFlParamsMap) implies (x1->y1 = x2->y2 or (not x1=x2 and not y1=y2))
-
-    initially = False // speed optimization, also makes the fluent easier to read
+    // For each 'category' of FlSymAction's (the FlSymAction's that share the same base name), they must:
+    // 1. have different orderings (priorities) and
+    // 2. their orderings must form a sequence from 0 up to the max idx
+    all actName : BaseName |
+        let flActCategory = { a : flActions | a.baseName = actName } |
+        let maxIdx = FlActionIdxOrder/max[flActCategory.flActIdx] |
+            (all a1,a2 : flActCategory | (a1.flActIdx = a2.flActIdx implies a1=a2)) and
+            (flActCategory.flActIdx = rangeFlActionIdx[maxIdx])
 }
 
 sig VarEquals extends Formula {
@@ -104,6 +158,27 @@ sig VarEquals extends Formula {
 	no children
 	lhs != rhs
 	lhs.envVarTypes = rhs.envVarTypes // only compare vars of the same type
+}
+
+sig VarSetContains extends Formula {
+    elem : Var,
+    theSet : Var
+} {
+	no children
+	elem != theSet
+	isElemOfSet[elem.envVarTypes, theSet.envVarTypes]
+}
+
+sig VarLTE extends Formula {
+    sort : Sort,
+    lhs : Var,
+    rhs : Var
+} {
+	no children
+	lhs != rhs
+	lhs.envVarTypes = sort
+	rhs.envVarTypes = sort
+	sort.numericSort = True // the sort type must be numeric
 }
 
 sig Forall extends Formula {
@@ -130,10 +205,10 @@ fact {
 	// the following two facts make sure that the formulas create a tree (i.e. DAG w/o 'diamond' structures)
 	no Root.(~children) // the root has no parents
 	all f : (Formula - Root) | one f.(~children) // all non-root formulas have exactly one parent
-	all f : Formula | f in Root.*children // not strictly needed, but seems to make things faster
+	all f : Formula | f in Root.*children // all Formulas must be part of the overall formula
 
 	// no free vars, all vars must be used in the matrix
-	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.lhs + VarEquals.rhs |
+	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.(lhs+rhs) + VarSetContains.(elem+theSet) + VarLTE.(lhs+rhs) |
 		varsInMatrix = (Forall.var + Exists.var)
 
 	// do not quantify over a variable that's already in scope
@@ -142,12 +217,8 @@ fact {
 	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)
 	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)
 
-	// speed optimization: require lhs to not have have an Implies node
-	// we declare this here (instead of in Implies) because referring to 'children'
-	// results in an error (due to weird scoping).
-	all f : Implies | f.left.*children not in Implies
-
 	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form
+	some Implies // avoid degenerate formulas
 }
 
 
@@ -169,17 +240,19 @@ abstract sig Trace {
 	all e : Env, i : Idx, f : Not | e->i->f in satisfies iff (e->i->f.child not in satisfies)
 	all e : Env, i : Idx, f : Implies | e->i->f in satisfies iff (e->i->f.left in satisfies implies e->i->f.right in satisfies)
 	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (f.lhs).(e.maps) = (f.rhs).(e.maps)
+	all e : Env, i : Idx, f : VarSetContains | e->i->f in satisfies iff setContains[(f.theSet).(e.maps), (f.elem).(e.maps)]
+	all e : Env, i : Idx, f : VarLTE | e->i->f in satisfies iff lte[(f.lhs).(e.maps), (f.rhs).(e.maps)]
 
 	// e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:
-	// 1. i = 0 and f.initally = True and t[i] \notin f.termFl
-	// 2. t[i] \in f.initFl
+	// 1. t[i] \in f.initFl
+	// 2. t[i] \notin f.termFl and i = 0 and f.initally = True
 	// 3. t[i] \notin f.termFl and (e |- t,i-1 |= f)
 	all e : Env, i : Idx, f : Fluent | e->i->f in satisfies iff
-        // a is the action at the current index i in the trace
+        // a is the action at the current index i in the trace (i.e. a = t[i])
         let a = i.path |
-            ((i = IdxOrder/first and f.initially = True and not isTermAct[a,e,f]) or
-             (isInitAct[a,e,f]) or
-             (not isTermAct[a,e,f] and some i' : Idx | i'->i in IdxOrder/next and e->i'->f in satisfies))
+            (isInitAct[a,e,f]) or
+            (not isTermAct[a,e,f] and no i.prev and f.initially = True) or
+            (not isTermAct[a,e,f] and some i.prev and e->(i.prev)->f in satisfies)
 
 	all e : Env, i : Idx, f : Forall | e->i->f in satisfies iff
 		(all x : f.sort.atoms | some e' : Env | pushEnv[e',e,f.var,x] and e'->i->f.matrix in satisfies)
@@ -188,16 +261,22 @@ abstract sig Trace {
 	all e : Env, i : Idx, f : Root | e->i->f in satisfies iff e->i->f.children in satisfies
 }
 
+fun highestPriority[cat : set FlSymAction] : FlActionIdx {
+    { s : cat | all s' : cat | FlActionIdxOrder/gte[s.flActIdx, s'.flActIdx] }.flActIdx
+}
+
 // does this action initiate the fluent?
 pred isInitAct[a : Act, e : Env, f : Fluent] {
-    some s : f.initFl |
-        a.baseName = s.baseName and (~(f.vars)).(~(s.actToFlParamsMap)).(a.params) in e.maps
+    let flActCategory = { s : f.flActions | s.baseName = a.baseName } |
+    let si = highestPriority[flActCategory] |
+        some si and e->f->si in a.initiates
 }
 
 // does this action terminate the fluent?
 pred isTermAct[a : Act, e : Env, f : Fluent] {
-    some s : f.termFl |
-        a.baseName = s.baseName and (~(f.vars)).(~(s.actToFlParamsMap)).(a.params) in e.maps
+    let flActCategory = { s : f.flActions | s.baseName = a.baseName } |
+    let si = highestPriority[flActCategory] |
+        some si and e->f->si in a.terminates
 }
 
 pred pushEnv[env', env : Env, v : Var, x : Atom] {
@@ -212,6 +291,10 @@ fun rangeParamIdx[p : ParamIdx] : set ParamIdx {
 	p.*(~ParamIdxOrder/next)
 }
 
+fun rangeFlActionIdx[s : FlActionIdx] : set FlActionIdx {
+	s.*(~FlActionIdxOrder/next)
+}
+
 abstract sig PosTrace extends Trace {} {}
 abstract sig NegTrace extends Trace {} {}
 one sig EmptyTrace extends Trace {} {
@@ -219,15 +302,25 @@ one sig EmptyTrace extends Trace {} {
 }
 
 
+// 'partial fluents' are fluents that do not update every param in the fluent (and hence, in practice,
+// update every sort value of the missing param).
+fun partialFluents : set FlSymAction {
+	 { a : FlSymAction | some f : Fluent | a in f.flActions and a.flToActParamsMap.ParamIdx != f.vars.Var }
+}
+
+
 /* main */
 run {
 	// find a formula that separates "good" traces from "bad" ones
 	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies
-	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)
+	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies) // target the last index
 	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace
-	minsome children // smallest formula possible
-	minsome initFl + termFl // heuristic to synthesize the least complicated fluents as possible
-	minsome Fluent // fewer fluents makes local inductive invariant inference easier
+
+	// minimization constraints
+	softno partialFluents // fewer partial fluents
+	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals
+	minsome flActions // heuristic to synthesize the least complicated fluents as possible
+	minsome Fluent.vars // minimize the # of params for each fluent
 }
 for 9 Formula, 5 FlSymAction
 
@@ -241,96 +334,70 @@ fact {
 
 
 
-one sig n1, n2, n3 extends Atom {}
+one sig S0, S1 extends FlActionIdx {}
+
+fact {
+	FlActionIdxOrder/first = S0
+	FlActionIdxOrder/next = S0->S1
+}
+
+
+
+pred setContains[s : Atom, e : Atom] {
+	let containsRel = (none->none) |
+		(s->e) in containsRel
+}
+
+
+pred isElemOfSet[e : Sort, s : Sort] {
+	let elemOfRel = (none->none) |
+		(e->s) in elemOfRel
+}
+
+
+pred lte[lhs : Atom, rhs : Atom] {
+	let containsRel = (none->none) |
+		(lhs->rhs) in containsRel
+}
+
+
+one sig e1, e2, e3 extends Atom {}
 
 one sig Node extends Sort {} {
-	atoms = n1 + n2 + n3
+	atoms = e1 + e2 + e3
+	numericSort = False
 }
 
 one sig Forward extends BaseName {} {
 	paramIdxs = P0 + P1 + P2 + P3 + P4
 	paramTypes = P0->Node + P1->Node + P2->Node + P3->Node + P4->Node
 }
-one sig Forwardn2n1n2n2n1 extends Act {} {
-	params = (P0->n2 + P1->n1 + P2->n2 + P3->n2 + P4->n1)
+one sig Forwarde1e1e1e1e2 extends Act {} {
+	params = (P0->e1 + P1->e1 + P2->e1 + P3->e1 + P4->e2)
 }
-one sig Forwardn2n1n2n2n3 extends Act {} {
-	params = (P0->n2 + P1->n1 + P2->n2 + P3->n2 + P4->n3)
+one sig Forwarde1e1e1e2e3 extends Act {} {
+	params = (P0->e1 + P1->e1 + P2->e1 + P3->e2 + P4->e3)
 }
-one sig Forwardn2n1n2n2n2 extends Act {} {
-	params = (P0->n2 + P1->n1 + P2->n2 + P3->n2 + P4->n2)
+one sig Forwarde2e1e1e1e2 extends Act {} {
+	params = (P0->e2 + P1->e1 + P2->e1 + P3->e1 + P4->e2)
 }
-one sig Forwardn1n1n3n1n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n3 + P3->n1 + P4->n2)
+one sig Forwarde1e1e2e1e1 extends Act {} {
+	params = (P0->e1 + P1->e1 + P2->e2 + P3->e1 + P4->e1)
 }
-one sig Forwardn1n1n3n1n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n3 + P3->n1 + P4->n1)
+one sig Forwarde2e1e1e3e3 extends Act {} {
+	params = (P0->e2 + P1->e1 + P2->e1 + P3->e3 + P4->e3)
 }
-one sig Forwardn1n1n3n1n3 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n3 + P3->n1 + P4->n3)
-}
-one sig Forwardn1n1n1n1n3 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n1 + P4->n3)
-}
-one sig Forwardn1n1n2n3n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n3 + P4->n1)
-}
-one sig Forwardn1n1n2n3n3 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n3 + P4->n3)
-}
-one sig Forwardn1n1n1n1n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n1 + P4->n2)
-}
-one sig Forwardn1n1n2n3n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n3 + P4->n2)
-}
-one sig Forwardn1n1n1n1n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n1 + P4->n1)
-}
-one sig Forwardn1n1n2n2n3 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n2 + P4->n3)
-}
-one sig Forwardn1n1n2n2n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n2 + P4->n2)
-}
-one sig Forwardn1n1n2n2n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n2 + P4->n1)
-}
-one sig Forwardn1n1n2n1n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n1 + P4->n2)
-}
-one sig Forwardn1n1n2n1n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n2 + P3->n1 + P4->n1)
-}
-one sig Forwardn1n1n3n2n3 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n3 + P3->n2 + P4->n3)
-}
-one sig Forwardn1n1n3n2n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n3 + P3->n2 + P4->n1)
-}
-one sig Forwardn1n1n1n3n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n3 + P4->n2)
-}
-one sig Forwardn1n1n1n3n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n3 + P4->n1)
-}
-one sig Forwardn1n1n1n2n1 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n2 + P4->n1)
-}
-one sig Forwardn1n1n1n2n3 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n2 + P4->n3)
-}
-one sig Forwardn1n1n1n2n2 extends Act {} {
-	params = (P0->n1 + P1->n1 + P2->n1 + P3->n2 + P4->n2)
+one sig Forwarde2e1e2e2e3 extends Act {} {
+	params = (P0->e2 + P1->e1 + P2->e2 + P3->e2 + P4->e3)
 }
 
 
-one sig T0, T1, T2, T3 extends Idx {}
+one sig T0, T1, T2, T3, T4, T5 extends Idx {}
 
 fact {
 	IdxOrder/first = T0
-	IdxOrder/next = T0->T1 + T1->T2 + T2->T3
-
+	IdxOrder/next = T0->T1 + T1->T2 + T2->T3 + T3->T4 + T4->T5
+	Forward in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula
 }
 
 
@@ -342,143 +409,99 @@ fun envVarTypes : set(Var->Sort) {
 one sig var2, var1, var0 extends Var {} {}
 
 
-one sig var0ton1var1ton1var2ton1 extends Env {} {}
-one sig var0ton3var1ton2 extends Env {} {}
-one sig var1ton3var0ton2 extends Env {} {}
-one sig var0ton3var1ton3 extends Env {} {}
-one sig var0ton3var1ton3var2ton1 extends Env {} {}
-one sig var0ton3var1ton2var2ton2 extends Env {} {}
-one sig var1ton3var0ton2var2ton2 extends Env {} {}
-one sig var2ton3var0ton3var1ton1 extends Env {} {}
-one sig var2ton3var0ton2var1ton2 extends Env {} {}
-one sig var2ton3var1ton3var0ton1 extends Env {} {}
-one sig var0ton3var1ton2var2ton1 extends Env {} {}
-one sig var1ton3var0ton2var2ton1 extends Env {} {}
-one sig var0ton3var2ton2var1ton1 extends Env {} {}
-one sig var0ton2var1ton2var2ton2 extends Env {} {}
-one sig var1ton3var2ton2var0ton1 extends Env {} {}
-one sig var2ton3var0ton2var1ton1 extends Env {} {}
-one sig var2ton3var1ton2var0ton1 extends Env {} {}
-one sig var0ton3var1ton1var2ton1 extends Env {} {}
-one sig var0ton2var1ton2var2ton1 extends Env {} {}
-one sig var1ton3var0ton1var2ton1 extends Env {} {}
-one sig var0ton2 extends Env {} {}
-one sig var0ton2var2ton2var1ton1 extends Env {} {}
-one sig var1ton2var2ton2var0ton1 extends Env {} {}
-one sig var2ton3var0ton1var1ton1 extends Env {} {}
-one sig var0ton2var1ton1var2ton1 extends Env {} {}
-one sig var1ton2var0ton1var2ton1 extends Env {} {}
-one sig var0ton1 extends Env {} {}
-one sig var2ton2var0ton1var1ton1 extends Env {} {}
-one sig var2ton3var0ton3var1ton3 extends Env {} {}
-one sig var0ton3 extends Env {} {}
-one sig var0ton3var1ton3var2ton2 extends Env {} {}
-one sig var2ton3var0ton3var1ton2 extends Env {} {}
-one sig var2ton3var1ton3var0ton2 extends Env {} {}
-one sig var0ton3var1ton1 extends Env {} {}
-one sig var0ton2var1ton2 extends Env {} {}
-one sig var1ton3var0ton1 extends Env {} {}
-one sig var0ton1var1ton1 extends Env {} {}
-one sig var0ton2var1ton1 extends Env {} {}
-one sig var1ton2var0ton1 extends Env {} {}
+one sig var0toe2 extends Env {} {}
+one sig var0toe3var2toe2var1toe1 extends Env {} {}
+one sig var0toe2var1toe3var2toe1 extends Env {} {}
+one sig var1toe2var0toe3var2toe1 extends Env {} {}
+one sig var0toe3var1toe1 extends Env {} {}
+one sig var1toe2var0toe2 extends Env {} {}
+one sig var1toe3var0toe1 extends Env {} {}
+one sig var1toe2var0toe2var2toe2 extends Env {} {}
+one sig var2toe2var1toe3var0toe1 extends Env {} {}
+one sig var1toe2var2toe3var0toe1 extends Env {} {}
+one sig var0toe2var2toe3var1toe1 extends Env {} {}
+one sig var0toe3 extends Env {} {}
+one sig var0toe3var1toe3var2toe1 extends Env {} {}
+one sig var1toe2var0toe3var2toe2 extends Env {} {}
+one sig var0toe2var2toe2var1toe3 extends Env {} {}
+one sig var0toe3var2toe3var1toe1 extends Env {} {}
+one sig var1toe2var0toe2var2toe3 extends Env {} {}
+one sig var2toe3var1toe3var0toe1 extends Env {} {}
+one sig var0toe2var1toe1 extends Env {} {}
+one sig var1toe2var0toe1 extends Env {} {}
+one sig var0toe3var1toe3 extends Env {} {}
+one sig var0toe3var2toe2var1toe3 extends Env {} {}
+one sig var1toe2var0toe3var2toe3 extends Env {} {}
+one sig var0toe2var2toe3var1toe3 extends Env {} {}
+one sig var1toe2var0toe3 extends Env {} {}
+one sig var0toe2var1toe3 extends Env {} {}
+one sig var0toe1 extends Env {} {}
+one sig var0toe3var2toe3var1toe3 extends Env {} {}
+one sig var1toe1var0toe1 extends Env {} {}
+one sig var2toe1var1toe1var0toe1 extends Env {} {}
+one sig var0toe2var2toe1var1toe1 extends Env {} {}
+one sig var1toe2var2toe1var0toe1 extends Env {} {}
+one sig var2toe2var1toe1var0toe1 extends Env {} {}
+one sig var0toe3var2toe1var1toe1 extends Env {} {}
+one sig var1toe2var0toe2var2toe1 extends Env {} {}
+one sig var1toe3var2toe1var0toe1 extends Env {} {}
+one sig var0toe2var2toe2var1toe1 extends Env {} {}
+one sig var1toe2var2toe2var0toe1 extends Env {} {}
+one sig var2toe3var1toe1var0toe1 extends Env {} {}
 
 
 fact PartialInstance {
-	lastIdx = (EmptyTrace->T0) + (PT172->T2) + (PT179->T2) + (PT182->T3) + (PT166->T3) + (PT175->T3) + (PT183->T2) + (PT168->T3) + (PT184->T3) + (PT187->T3) + (PT191->T3) + (PT190->T3) + (PT169->T3) + (PT176->T2) + (PT188->T2) + (PT171->T2) + (PT186->T3) + (PT192->T2) + (PT178->T3) + (PT180->T3) + (PT185->T3) + (PT170->T1) + (PT181->T2) + (PT177->T3) + (PT167->T2) + (PT189->T3) + (PT173->T3) + (PT174->T3) + (NT1->T3)
+	lastIdx = (EmptyTrace->T0) + (PT1->T3) + (NT1->T5)
 
-	path = (PT172 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2)) +
-		(PT179 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n2)) +
-		(PT182 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n2)) +
-		(PT166 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n1n2 + T2->Forwardn1n1n1n2n3 + T3->Forwardn1n1n2n2n1)) +
-		(PT175 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n1n2)) +
-		(PT183 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n3)) +
-		(PT168 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n3n2 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n1n2)) +
-		(PT184 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n3 + T3->Forwardn1n1n3n1n1)) +
-		(PT187 -> (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)) +
-		(PT191 -> (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n1)) +
-		(PT190 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n2n3)) +
-		(PT169 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1 + T3->Forwardn1n1n2n1n2)) +
-		(PT176 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n1n2)) +
-		(PT188 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n3 + T2->Forwardn1n1n2n3n1)) +
-		(PT171 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n2n2)) +
-		(PT186 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n2n1 + T3->Forwardn1n1n2n2n3)) +
-		(PT192 -> (T0->Forwardn2n1n2n2n1 + T1->Forwardn2n1n2n2n2 + T2->Forwardn2n1n2n2n3)) +
-		(PT178 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n2n1 + T3->Forwardn1n1n2n1n2)) +
-		(PT180 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n1n1 + T3->Forwardn1n1n2n2n2)) +
-		(PT185 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n3n3)) +
-		(PT170 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn2n1n2n2n2)) +
-		(PT181 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n3n1n1)) +
-		(PT177 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n1 + T3->Forwardn1n1n3n1n3)) +
-		(PT167 -> (T0->Forwardn1n1n1n1n2 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n1n3n1)) +
-		(PT189 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n1 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n2n3)) +
-		(PT173 -> (T0->Forwardn1n1n1n1n1 + T1->Forwardn1n1n1n2n2 + T2->Forwardn1n1n2n3n2 + T3->Forwardn1n1n3n1n2)) +
-		(PT174 -> (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n1n3n1 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n1n2)) +
-		(NT1 -> (T0->Forwardn1n1n1n1n3 + T1->Forwardn1n1n3n2n3 + T2->Forwardn1n1n1n2n2 + T3->Forwardn1n1n2n3n1))
+	path = (PT1 -> (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3)) +
+		(NT1 -> (T0->Forwarde1e1e1e1e2 + T1->Forwarde1e1e1e2e3 + T2->Forwarde1e1e2e1e1 + T3->Forwarde2e1e2e2e3 + T4->Forwarde2e1e1e1e2 + T5->Forwarde2e1e1e3e3))
 
-	maps = var0ton1var1ton1var2ton1->(var0->n1 + var1->n1 + var2->n1) +
-		var0ton3var1ton2->(var0->n3 + var1->n2) +
-		var1ton3var0ton2->(var1->n3 + var0->n2) +
-		var0ton3var1ton3->(var0->n3 + var1->n3) +
-		var0ton3var1ton3var2ton1->(var0->n3 + var1->n3 + var2->n1) +
-		var0ton3var1ton2var2ton2->(var0->n3 + var1->n2 + var2->n2) +
-		var1ton3var0ton2var2ton2->(var1->n3 + var0->n2 + var2->n2) +
-		var2ton3var0ton3var1ton1->(var2->n3 + var0->n3 + var1->n1) +
-		var2ton3var0ton2var1ton2->(var2->n3 + var0->n2 + var1->n2) +
-		var2ton3var1ton3var0ton1->(var2->n3 + var1->n3 + var0->n1) +
-		var0ton3var1ton2var2ton1->(var0->n3 + var1->n2 + var2->n1) +
-		var1ton3var0ton2var2ton1->(var1->n3 + var0->n2 + var2->n1) +
-		var0ton3var2ton2var1ton1->(var0->n3 + var2->n2 + var1->n1) +
-		var0ton2var1ton2var2ton2->(var0->n2 + var1->n2 + var2->n2) +
-		var1ton3var2ton2var0ton1->(var1->n3 + var2->n2 + var0->n1) +
-		var2ton3var0ton2var1ton1->(var2->n3 + var0->n2 + var1->n1) +
-		var2ton3var1ton2var0ton1->(var2->n3 + var1->n2 + var0->n1) +
-		var0ton3var1ton1var2ton1->(var0->n3 + var1->n1 + var2->n1) +
-		var0ton2var1ton2var2ton1->(var0->n2 + var1->n2 + var2->n1) +
-		var1ton3var0ton1var2ton1->(var1->n3 + var0->n1 + var2->n1) +
-		var0ton2->(var0->n2) +
-		var0ton2var2ton2var1ton1->(var0->n2 + var2->n2 + var1->n1) +
-		var1ton2var2ton2var0ton1->(var1->n2 + var2->n2 + var0->n1) +
-		var2ton3var0ton1var1ton1->(var2->n3 + var0->n1 + var1->n1) +
-		var0ton2var1ton1var2ton1->(var0->n2 + var1->n1 + var2->n1) +
-		var1ton2var0ton1var2ton1->(var1->n2 + var0->n1 + var2->n1) +
-		var0ton1->(var0->n1) +
-		var2ton2var0ton1var1ton1->(var2->n2 + var0->n1 + var1->n1) +
-		var2ton3var0ton3var1ton3->(var2->n3 + var0->n3 + var1->n3) +
-		var0ton3->(var0->n3) +
-		var0ton3var1ton3var2ton2->(var0->n3 + var1->n3 + var2->n2) +
-		var2ton3var0ton3var1ton2->(var2->n3 + var0->n3 + var1->n2) +
-		var2ton3var1ton3var0ton2->(var2->n3 + var1->n3 + var0->n2) +
-		var0ton3var1ton1->(var0->n3 + var1->n1) +
-		var0ton2var1ton2->(var0->n2 + var1->n2) +
-		var1ton3var0ton1->(var1->n3 + var0->n1) +
-		var0ton1var1ton1->(var0->n1 + var1->n1) +
-		var0ton2var1ton1->(var0->n2 + var1->n1) +
-		var1ton2var0ton1->(var1->n2 + var0->n1)
+	maps = var0toe2->(var0->e2) +
+		var0toe3var2toe2var1toe1->(var0->e3 + var2->e2 + var1->e1) +
+		var1toe2var0toe3var2toe1->(var1->e2 + var0->e3 + var2->e1) +
+		var0toe2var1toe3var2toe1->(var0->e2 + var1->e3 + var2->e1) +
+		var0toe3var1toe1->(var0->e3 + var1->e1) +
+		var1toe2var0toe2->(var1->e2 + var0->e2) +
+		var1toe3var0toe1->(var1->e3 + var0->e1) +
+		var1toe2var0toe2var2toe2->(var1->e2 + var0->e2 + var2->e2) +
+		var2toe2var1toe3var0toe1->(var2->e2 + var1->e3 + var0->e1) +
+		var1toe2var2toe3var0toe1->(var1->e2 + var2->e3 + var0->e1) +
+		var0toe2var2toe3var1toe1->(var0->e2 + var2->e3 + var1->e1) +
+		var0toe3->(var0->e3) +
+		var0toe3var1toe3var2toe1->(var0->e3 + var1->e3 + var2->e1) +
+		var1toe2var0toe3var2toe2->(var1->e2 + var0->e3 + var2->e2) +
+		var0toe2var2toe2var1toe3->(var0->e2 + var2->e2 + var1->e3) +
+		var0toe3var2toe3var1toe1->(var0->e3 + var2->e3 + var1->e1) +
+		var1toe2var0toe2var2toe3->(var1->e2 + var0->e2 + var2->e3) +
+		var2toe3var1toe3var0toe1->(var2->e3 + var1->e3 + var0->e1) +
+		var0toe2var1toe1->(var0->e2 + var1->e1) +
+		var1toe2var0toe1->(var1->e2 + var0->e1) +
+		var0toe3var1toe3->(var0->e3 + var1->e3) +
+		var0toe3var2toe2var1toe3->(var0->e3 + var2->e2 + var1->e3) +
+		var1toe2var0toe3var2toe3->(var1->e2 + var0->e3 + var2->e3) +
+		var0toe2var2toe3var1toe3->(var0->e2 + var2->e3 + var1->e3) +
+		var1toe2var0toe3->(var1->e2 + var0->e3) +
+		var0toe2var1toe3->(var0->e2 + var1->e3) +
+		var0toe1->(var0->e1) +
+		var0toe3var2toe3var1toe3->(var0->e3 + var2->e3 + var1->e3) +
+		var1toe1var0toe1->(var1->e1 + var0->e1) +
+		var2toe1var1toe1var0toe1->(var2->e1 + var1->e1 + var0->e1) +
+		var0toe2var2toe1var1toe1->(var0->e2 + var2->e1 + var1->e1) +
+		var1toe2var2toe1var0toe1->(var1->e2 + var2->e1 + var0->e1) +
+		var2toe2var1toe1var0toe1->(var2->e2 + var1->e1 + var0->e1) +
+		var0toe3var2toe1var1toe1->(var0->e3 + var2->e1 + var1->e1) +
+		var1toe2var0toe2var2toe1->(var1->e2 + var0->e2 + var2->e1) +
+		var1toe3var2toe1var0toe1->(var1->e3 + var2->e1 + var0->e1) +
+		var0toe2var2toe2var1toe1->(var0->e2 + var2->e2 + var1->e1) +
+		var1toe2var2toe2var0toe1->(var1->e2 + var2->e2 + var0->e1) +
+		var2toe3var1toe1var0toe1->(var2->e3 + var1->e1 + var0->e1)
 
-	baseName = Forwardn1n1n2n3n3->Forward +
-		Forwardn1n1n2n3n2->Forward +
-		Forwardn1n1n2n2n3->Forward +
-		Forwardn2n1n2n2n2->Forward +
-		Forwardn2n1n2n2n3->Forward +
-		Forwardn2n1n2n2n1->Forward +
-		Forwardn1n1n2n1n1->Forward +
-		Forwardn1n1n2n3n1->Forward +
-		Forwardn1n1n2n2n2->Forward +
-		Forwardn1n1n2n2n1->Forward +
-		Forwardn1n1n2n1n2->Forward +
-		Forwardn1n1n3n1n2->Forward +
-		Forwardn1n1n3n2n1->Forward +
-		Forwardn1n1n3n1n1->Forward +
-		Forwardn1n1n1n3n2->Forward +
-		Forwardn1n1n1n2n3->Forward +
-		Forwardn1n1n1n1n3->Forward +
-		Forwardn1n1n1n3n1->Forward +
-		Forwardn1n1n1n2n2->Forward +
-		Forwardn1n1n1n1n2->Forward +
-		Forwardn1n1n3n2n3->Forward +
-		Forwardn1n1n1n2n1->Forward +
-		Forwardn1n1n3n1n3->Forward +
-		Forwardn1n1n1n1n1->Forward
+	baseName = Forwarde2e1e1e1e2->Forward +
+		Forwarde2e1e1e3e3->Forward +
+		Forwarde1e1e1e2e3->Forward +
+		Forwarde1e1e2e1e1->Forward +
+		Forwarde2e1e2e2e3->Forward +
+		Forwarde1e1e1e1e2->Forward
 }
 
 
@@ -490,30 +513,4 @@ fact {
 
 one sig NT1 extends NegTrace {} {}
 
-one sig PT166 extends PosTrace {} {}
-one sig PT167 extends PosTrace {} {}
-one sig PT168 extends PosTrace {} {}
-one sig PT169 extends PosTrace {} {}
-one sig PT170 extends PosTrace {} {}
-one sig PT171 extends PosTrace {} {}
-one sig PT172 extends PosTrace {} {}
-one sig PT173 extends PosTrace {} {}
-one sig PT174 extends PosTrace {} {}
-one sig PT175 extends PosTrace {} {}
-one sig PT176 extends PosTrace {} {}
-one sig PT177 extends PosTrace {} {}
-one sig PT178 extends PosTrace {} {}
-one sig PT179 extends PosTrace {} {}
-one sig PT180 extends PosTrace {} {}
-one sig PT181 extends PosTrace {} {}
-one sig PT182 extends PosTrace {} {}
-one sig PT183 extends PosTrace {} {}
-one sig PT184 extends PosTrace {} {}
-one sig PT185 extends PosTrace {} {}
-one sig PT186 extends PosTrace {} {}
-one sig PT187 extends PosTrace {} {}
-one sig PT188 extends PosTrace {} {}
-one sig PT189 extends PosTrace {} {}
-one sig PT190 extends PosTrace {} {}
-one sig PT191 extends PosTrace {} {}
-one sig PT192 extends PosTrace {} {}
+one sig PT1 extends PosTrace {} {}

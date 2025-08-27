@@ -1,0 +1,1260 @@
+Building the LTS for the initial trace (Transfer.tla)
+Built the LTS in 0.225s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.139s
+
+Round 1
+-------
+TLC neg trace generation time: 0.675 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.254 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->RecvTransferMsgN1K1V1 + T1->RecvTransferMsgN2K1V1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->ReshardK1V1N1N1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->RecvTransferMsgN1K1V1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.516 seconds
+\A var0 \in Key : (Fluent2_1[var0]) => (Fluent1_1[var0])
+  Fluent2_1[Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1] = TRUE
+  Fluent1_1[Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1] = FALSE
+\A var0 \in Node : (Fluent1_5[var0]) => (Fluent2_5[var0])
+  Fluent1_5[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent2_5[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = FALSE
+\A var0 \in Key : (Fluent1_21[var0]) => (Fluent2_21[var0])
+  Fluent2_21[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+  Fluent1_21[Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Key : (Fluent1_21[var0]) => (Fluent2_21[var0])
+  Fluent2_21[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+  Fluent1_21[Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Key : (Fluent1_21[var0]) => (Fluent2_21[var0])
+Round 1 took 8.999 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 0.671 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.156 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 22.774 seconds
+\A var0 \in Node : (Fluent4_14[var0]) => (Fluent3_14[var0])
+  Fluent3_14[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+  Fluent4_14[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+\A var0 \in Node : (Fluent4_24[var0]) => (Fluent3_24[var0])
+  Fluent3_24[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+  Fluent4_24[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+\A var0 \in Value : \E var1 \in Node : (Fluent4_0[var1]) => (~(Fluent3_0[var0]))
+  Fluent4_0[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent3_0[Value]
+    initially: FALSE
+    flActions:
+      Reshard[1] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent4_21[var0]) => (~(Fluent3_21[var0][var1]))
+  Fluent3_21[Key, Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1, 0] = TRUE
+  Fluent4_21[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+\A var0 \in Key : \A var1 \in Node : (Fluent3_26[var1][var0]) => (Fluent4_26[var1][var0])
+  Fluent4_26[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE
+  Fluent3_26[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 1] = TRUE
+\A var0 \in Value : \E var1 \in Node : (Fluent4_16[var1][var0]) => (Fluent3_16[var1][var0])
+  Fluent3_16[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = FALSE
+  Fluent4_16[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = TRUE
+\A var0 \in Key : \E var1 \in Node : \A var2 \in Key : (var2 = var0) => (~(Fluent3_4[var1]))
+  Fluent3_4[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+\A var0 \in Value : \A var1 \in Value : \E var2 \in Node : (Fluent3_15[var2]) => (var0 = var1)
+  Fluent3_15[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+\A var0 \in Key : \A var1 \in Value : \E var2 \in Node : (Fluent4_22[var1][var0][var2]) => (Fluent3_22[var1][var0])
+  Fluent4_22[Value, Key, Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[2, 1, 0] = TRUE
+  Fluent3_22[Value, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[2, 1] = FALSE
+
+new pos trace(s):
+PT9 (PosTrace): (T0->ReshardK2V2N1N1 + T1->ReshardK2V1N1N2 + T2->RecvTransferMsgN1K2V2 + T3->RecvTransferMsgN2K2V1)
+PT3 (PosTrace): (T0->ReshardK1V1N2N1 + T1->RecvTransferMsgN1K1V1)
+PT7 (PosTrace): (T0->ReshardK2V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K2V1)
+PT6 (PosTrace): (T0->ReshardK2V1N2N1 + T1->RecvTransferMsgN1K2V1)
+PT10 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN1K1V1 + T3->RecvTransferMsgN2K1V1)
+PT5 (PosTrace): (T0->ReshardK2V1N1N1 + T1->ReshardK2V1N1N2 + T2->RecvTransferMsgN2K2V1 + T3->RecvTransferMsgN1K2V1 + T4->OwnN1K2)
+PT4 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K1V1)
+PT2 (PosTrace): (T0->ReshardK2V2N1N1 + T1->RecvTransferMsgN1K2V2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+Formula synth batch: 2
+Total # workers: 26
+# workers using: 10
+First worker finished, shutdown count is 99.387s
+Formula synthesis complete in 100.442 seconds
+\A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+  Fluent4_24[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent5_24[Node]
+    initially: FALSE
+    flActions:
+      Reshard[3] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+  Fluent4_24[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent5_24[Node]
+    initially: FALSE
+    flActions:
+      Reshard[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.506 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+Round 2 took 134.237 seconds
+
+Round 3
+-------
+TLC neg trace generation time: 0.701 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.95 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->OwnN2K1 + T4->RecvTransferMsgN1K1V1 + T5->PutN2K1V1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->OwnN2K2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->OwnN2K1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 39.104 seconds
+\A var0 \in Key : (Fluent7_21[var0]) => (Fluent6_21[var0])
+  Fluent6_21[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      Own[1] = FALSE
+  Fluent7_21[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+\A var0 \in Value : \A var1 \in Key : (Fluent7_9[var1][var0]) => (Fluent6_9[var1])
+  Fluent7_9[Key, Value]
+    initially: FALSE
+    flActions:
+      Reshard[0, 1] = TRUE
+  Fluent6_9[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      Own[1] = FALSE
+\A var0 \in Node : \A var1 \in Key : (Fluent7_14[var1][var0]) => (Fluent6_14[var1])
+  Fluent7_14[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+  Fluent6_14[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      Own[1] = FALSE
+\A var0 \in Value : \A var1 \in Key : (Fluent7_17[var1][var0]) => (~(Fluent6_17[var1]))
+  Fluent7_17[Key, Value]
+    initially: FALSE
+    flActions:
+      Reshard[0, 1] = TRUE
+  Fluent6_17[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+      Reshard[0] = FALSE
+\A var0 \in Value : \A var1 \in Value : \E var2 \in Key : (Fluent6_18[var2]) => (var1 = var0)
+  Fluent6_18[Key]
+    initially: FALSE
+    flActions:
+      Reshard[] = TRUE
+      Own[1] = TRUE
+      Reshard[0] = FALSE (priority 1)
+\A var0 \in Node : \A var1 \in Value : \E var2 \in Key : (Fluent6_25[var1][var0]) => (Fluent7_25[var2])
+  Fluent7_25[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      Own[1] = FALSE
+  Fluent6_25[Value, Node]
+    initially: FALSE
+    flActions:
+      Reshard[1, 3] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->ReshardK1V1N1N1 + T1->RecvTransferMsgN1K1V1 + T2->OwnN1K1)
+PT6 (PosTrace): (T0->OwnN1K1 + T1->OwnN1K2)
+PT4 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK2V1N1N1 + T2->RecvTransferMsgN1K1V1 + T3->OwnN1K1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->OwnN2K1)
+Formula synth batch: 2
+Total # workers: 24
+# workers using: 10
+First worker finished, shutdown count is 83.799s
+Formula synthesis complete in 82.48 seconds
+\A var0 \in Key : (Fluent7_0[var0]) => (Fluent8_0[var0])
+  Fluent8_0[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      Own[1] = FALSE
+  Fluent7_0[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      RecvTransferMsg[1] = FALSE
+
+Found the following new invariant this round:
+\A var0 \in Key : (Fluent7_0[var0]) => (Fluent8_0[var0])
+  Fluent8_0[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      Own[1] = FALSE
+  Fluent7_0[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+      RecvTransferMsg[1] = FALSE
+
+Minimizing the invariants found thus far.
+Minimization finished in 1.253 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+/\ \A var0 \in Key : (Fluent7_0[var0]) => (Fluent8_0[var0])
+Round 3 took 130.931 seconds
+
+Round 4
+-------
+TLC neg trace generation time: 0.723 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.18 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->OwnN1K1 + T1->PutN1K1V1 + T2->ReshardK1V1N1N1 + T3->OwnN2K2 + T4->RecvTransferMsgN1K2V1 + T5->PutN2K2V1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Key : (Fluent1_21[var0]) => (Fluent2_21[var0])
+  Fluent2_21[Key]
+    initially: FALSE
+    flActions:
+      Reshard[0] = TRUE
+  Fluent1_21[Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.637 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+/\ \A var0 \in Key : (Fluent1_21[var0]) => (Fluent2_21[var0])
+/\ \A var0 \in Key : (Fluent7_0[var0]) => (Fluent8_0[var0])
+Round 4 took 4.018 seconds
+
+Round 5
+-------
+TLC neg trace generation time: 0.717 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.805 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->ReshardK1V1N1N1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 54.768s
+Formula synthesis complete in 56.95 seconds
+\A var0 \in Node : (Fluent9_2[var0]) => (Fluent10_2[var0])
+  Fluent9_2[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3] = FALSE (priority 1)
+  Fluent10_2[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+\A var0 \in Value : \E var1 \in Node : (Fluent9_0[var1][var0]) => (Fluent10_0[var1][var0])
+  Fluent9_0[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = TRUE
+  Fluent10_0[Node, Value]
+    initially: FALSE
+    flActions:
+      Reshard[2, 1] = TRUE
+      RecvTransferMsg[0, 2] = FALSE
+\A var0 \in Key : \A var1 \in Key : \E var2 \in Node : (Fluent9_1[var2]) => (~(var1 = var0))
+  Fluent9_1[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+\A var0 \in Key : \E var1 \in Node : \A var2 \in Node : (Fluent9_21[var0][var1]) => (~(var1 = var2))
+  Fluent9_21[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+\A var0 \in Value : \E var1 \in Key : \E var2 \in Node : (Fluent10_12[var0]) => (Fluent9_12[var0][var1][var2])
+  Fluent9_12[Value, Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[1, 0, 2] = TRUE
+      RecvTransferMsg[2, 1, 0] = FALSE
+  Fluent10_12[Value]
+    initially: FALSE
+    flActions:
+      Reshard[1] = TRUE
+\A var0 \in Key : \A var1 \in Value : \E var2 \in Node : (Fluent10_22[var0][var2]) => (Fluent9_22[var0][var2][var1])
+  Fluent9_22[Key, Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1, 0, 2] = TRUE
+  Fluent10_22[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK2V1N1N1 + T2->ReshardK1V1N2N2 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+PT6 (PosTrace): (T0->ReshardK1V1N1N1 + T1->RecvTransferMsgN1K1V1)
+PT4 (PosTrace): (T0->ReshardK2V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K2V1)
+PT3 (PosTrace): (T0->ReshardK2V1N1N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K2V1)
+PT7 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN1K1V1 + T3->RecvTransferMsgN2K1V1)
+PT2 (PosTrace): (T0->ReshardK1V2N1N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 2
+Total # workers: 23
+# workers using: 10
+First worker finished, shutdown count is 306.846s
+Formula synthesis complete in 223.407 seconds
+\A var0 \in Node : \E var1 \in Node : (Fluent10_5[var1]) => (~(Fluent11_5[var0]))
+  Fluent10_5[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+  Fluent11_5[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent10_4[var0][var1]) => (~(Fluent11_4[var0]))
+  Fluent11_4[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent10_4[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+\A var0 \in Node : (Fluent11_3[var0]) => ((Fluent10_3[var0]) => (~(Fluent12_3[var0])))
+  Fluent12_3[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent11_3[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[] = TRUE
+      RecvTransferMsg[0] = FALSE (priority 1)
+  Fluent10_3[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+\A var0 \in Node : (Fluent10_21[var0]) => ((Fluent12_21[var0]) => (Fluent11_21[var0]))
+  Fluent10_21[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent11_21[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE (priority 1)
+      RecvTransferMsg[] = FALSE
+  Fluent12_21[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+\A var0 \in Value : \E var1 \in Node : (Fluent10_0[var1][var0]) => (~(Fluent11_0[var1]))
+  Fluent11_0[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+  Fluent10_0[Node, Value]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+\A var0 \in Value : \E var1 \in Node : (Fluent11_14[var1][var0]) => (~(Fluent10_14[var1][var0]))
+  Fluent10_14[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = TRUE
+      Reshard[2, 1] = FALSE
+  Fluent11_14[Node, Value]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+\A var0 \in Key : \A var1 \in Key : \E var2 \in Node : (Fluent10_1[var0]) => (~(Fluent11_1[var1][var2]))
+  Fluent10_1[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent11_1[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+\A var0 \in Value : \A var1 \in Key : \E var2 \in Node : (Fluent11_10[var1][var0][var2]) => (~(Fluent10_10[var1]))
+  Fluent10_10[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent11_10[Key, Value, Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[1, 2, 0] = TRUE
+      Reshard[0, 1, 2] = FALSE
+\A var0 \in Value : \E var1 \in Value : \E var2 \in Node : (Fluent10_13[var1][var2]) => (~(Fluent11_13[var0][var2]))
+  Fluent10_13[Value, Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+  Fluent11_13[Value, Node]
+    initially: FALSE
+    flActions:
+      Reshard[1, 2] = FALSE
+      RecvTransferMsg[2, 0] = TRUE
+
+new pos trace(s):
+PT14 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V2N2N2 + T2->RecvTransferMsgN2K1V2 + T3->RecvTransferMsgN1K1V1 + T4->OwnN1K1)
+PT9 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN1K1V1 + T3->RecvTransferMsgN2K1V1 + T4->OwnN1K1)
+PT12 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K1V1 + T4->OwnN1K1)
+PT15 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK2V1N1N1 + T2->ReshardK1V1N2N2 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1 + T5->OwnN1K1)
+PT16 (PosTrace): (T0->ReshardK1V1N2N2 + T1->ReshardK2V1N1N1 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K2V1 + T4->OwnN1K1)
+PT8 (PosTrace): (T0->ReshardK2V1N1N1 + T1->ReshardK1V1N2N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K2V1 + T4->OwnN1K1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 3
+Total # workers: 22
+# workers using: 10
+First worker finished, shutdown count is 419.214s
+Formula synthesis complete in 344.731 seconds
+\A var0 \in Key : \E var1 \in Node : (Fluent12_21[var0]) => (Fluent11_21[var0][var1])
+  Fluent11_21[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+      Own[1, 0] = TRUE
+  Fluent12_21[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent12_4[var0][var1]) => (~(Fluent11_4[var0]))
+  Fluent11_4[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent12_4[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+      Own[1, 0] = FALSE
+\A var0 \in Node : (Fluent11_3[var0]) => ((Fluent12_3[var0]) => (Fluent13_3[var0][var0]))
+  Fluent12_3[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+  Fluent11_3[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE (priority 1)
+      Reshard[3] = FALSE
+  Fluent13_3[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[3, 2] = TRUE
+\A var0 \in Node : (Fluent13_19[var0]) => ((~(Fluent11_19[var0])) => (Fluent12_19[var0]))
+  Fluent11_19[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = FALSE
+      Own[0] = TRUE
+  Fluent13_19[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+  Fluent12_19[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE (priority 1)
+      RecvTransferMsg[] = FALSE
+\A var0 \in Node : (Fluent13_20[var0]) => ((~(Fluent11_20[var0][var0])) => (Fluent12_20[var0]))
+  Fluent13_20[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE (priority 1)
+      Reshard[3] = FALSE
+  Fluent11_20[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[3, 2] = TRUE
+  Fluent12_20[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+\A var0 \in Node : \E var1 \in Node : ((var0 = var1) => (Fluent12_5[var1])) => (Fluent11_5[var1])
+  Fluent12_5[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+  Fluent11_5[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+      Own[0] = TRUE
+\A var0 \in Key : \E var1 \in Key : \E var2 \in Node : (Fluent11_1[var0]) => (Fluent12_1[var1][var2])
+  Fluent12_1[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+      Own[1, 0] = TRUE
+  Fluent11_1[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+\A var0 \in Value : \E var1 \in Value : \E var2 \in Node : (Fluent11_13[var2][var0]) => (Fluent12_13[var2][var1][var2])
+  Fluent12_13[Node, Value, Node]
+    initially: FALSE
+    flActions:
+      Reshard[3, 1, 2] = TRUE
+  Fluent11_13[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = TRUE
+      Reshard[2, 1] = FALSE
+\A var0 \in Key : \E var1 \in Value : \E var2 \in Node : (Fluent12_17[var2][var0]) => (Fluent11_17[var2][var0][var1][var2])
+  Fluent11_17[Node, Key, Value, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0, 1, 3] = TRUE
+  Fluent12_17[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 1] = TRUE
+      Reshard[2, 0] = FALSE
+
+new pos trace(s):
+PT19 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1)
+PT21 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK2V1N1N2 + T2->RecvTransferMsgN1K1V1)
+PT20 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N2 + T2->OwnN2K2 + T3->RecvTransferMsgN2K1V1 + T4->RecvTransferMsgN1K1V1)
+PT23 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V2N1N1 + T2->RecvTransferMsgN1K1V2)
+PT22 (PosTrace): (T0->ReshardK1V1N1N1 + T1->OwnN1K2 + T2->RecvTransferMsgN1K1V1)
+PT18 (PosTrace): (T0->ReshardK1V2N2N1 + T1->RecvTransferMsgN1K1V2 + T2->OwnN2K1 + T3->ReshardK1V1N2N2 + T4->RecvTransferMsgN2K1V1)
+PT24 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->RecvTransferMsgN2K1V1)
+PT17 (PosTrace): (T0->ReshardK2V1N1N1 + T1->OwnN1K1 + T2->ReshardK1V1N1N1 + T3->RecvTransferMsgN1K1V1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 4
+Total # workers: 21
+# workers using: 10
+First worker finished, shutdown count is 669.855s
+Formula synthesis complete in 437.865 seconds
+\A var0 \in Node : (Fluent13_7[var0]) => ((Fluent12_7[var0]) => (Fluent14_7[var0]))
+  Fluent12_7[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3] = FALSE (priority 1)
+  Fluent14_7[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+  Fluent13_7[Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent13_20[var0]) => (Fluent12_20[var0][var1])
+  Fluent13_20[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent12_20[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+      Own[1] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent13_15[var0]) => (Fluent12_15[var0][var1])
+  Fluent13_15[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent12_15[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+      Own[1] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent12_4[var0][var1]) => (~(Fluent13_4[var0]))
+  Fluent13_4[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+  Fluent12_4[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+      Own[] = FALSE
+\A var0 \in Node : (Fluent14_2[var0]) => ((Fluent12_2[var0]) => (~(Fluent13_2[var0])))
+  Fluent13_2[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3] = FALSE (priority 1)
+  Fluent12_2[Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+  Fluent14_2[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+\A var0 \in Node : (Fluent13_19[var0]) => ((Fluent14_19[var0]) => (Fluent12_19[var0]))
+  Fluent14_19[Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+  Fluent13_19[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3] = FALSE (priority 1)
+  Fluent12_19[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+\A var0 \in Node : (Fluent14_3[var0]) => ((Fluent13_3[var0]) => (~(Fluent12_3[var0])))
+  Fluent12_3[Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+  Fluent14_3[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3] = FALSE (priority 1)
+  Fluent13_3[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+\A var0 \in Node : (Fluent14_17[var0]) => ((Fluent13_17[var0]) => (Fluent12_17[var0]))
+  Fluent12_17[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+  Fluent13_17[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3] = FALSE (priority 1)
+  Fluent14_17[Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+\A var0 \in Value : \A var1 \in Node : (Fluent14_13[var1]) => ((Fluent13_13[var1][var0]) => (Fluent12_13[var1][var0]))
+  Fluent12_13[Node, Value]
+    initially: FALSE
+    flActions:
+      Reshard[3, 1] = TRUE (priority 1)
+      Reshard[2, 1] = FALSE
+  Fluent13_13[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = TRUE
+      Reshard[2, 1] = FALSE
+  Fluent14_13[Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+
+new pos trace(s):
+PT34 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->OwnN1K2)
+PT27 (PosTrace): (T0->ReshardK1V1N1N1 + T1->OwnN2K2 + T2->ReshardK2V1N1N1 + T3->ReshardK2V1N1N2 + T4->RecvTransferMsgN1K2V1 + T5->RecvTransferMsgN2K2V1)
+PT29 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V1N1N1 + T2->ReshardK1V1N2N2 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+PT28 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V1N1N1 + T2->ReshardK1V2N2N2 + T3->RecvTransferMsgN2K1V2 + T4->RecvTransferMsgN1K1V1)
+PT26 (PosTrace): (T0->ReshardK1V2N1N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V2 + T3->OwnN1K2)
+PT32 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK2V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->OwnN1K1)
+PT30 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->OwnN1K2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 5
+Total # workers: 20
+# workers using: 10
+First worker finished, shutdown count is 1346.841s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 1795.85 seconds
+\A var0 \in Node : (Fluent13_3[var0]) => ((Fluent15_3[var0][var0]) => (Fluent14_3[var0]))
+  Fluent14_3[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      RecvTransferMsg[0] = FALSE
+  Fluent13_3[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Own[0] = FALSE
+      Reshard[3] = FALSE (priority 1)
+  Fluent15_3[Node, Node]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+      Reshard[3, 2] = FALSE
+\A var0 \in Node : \E var1 \in Node : (Fluent15_7[var0]) => ((Fluent13_7[var1]) => (Fluent14_7[var1][var1]))
+  Fluent14_7[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 3] = TRUE
+  Fluent13_7[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+  Fluent15_7[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+\A var0 \in Key : \E var1 \in Node : (Fluent15_14[var0]) => ((Fluent13_14[var1]) => (Fluent14_14[var1][var1]))
+  Fluent13_14[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+  Fluent14_14[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 3] = TRUE
+  Fluent15_14[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+\A var0 \in Node : \E var1 \in Node : (Fluent15_16[var0]) => ((Fluent13_16[var1]) => (Fluent14_16[var1][var1]))
+  Fluent14_16[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[3, 2] = TRUE
+  Fluent15_16[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+  Fluent13_16[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+\A var0 \in Value : \E var1 \in Node : (Fluent15_12[var0]) => ((Fluent13_12[var1]) => (Fluent14_12[var1][var1]))
+  Fluent14_12[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[3, 2] = TRUE
+  Fluent15_12[Value]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+  Fluent13_12[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+      Reshard[2] = FALSE
+\A var0 \in Key : \E var1 \in Node : (Fluent13_4[var0][var1]) => ((Fluent14_4[var0]) => (Fluent15_4[var1][var1]))
+  Fluent13_4[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE
+      RecvTransferMsg[1, 0] = TRUE
+  Fluent15_4[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 3] = TRUE
+  Fluent14_4[Key]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+\A var0 \in Value : \E var1 \in Value : \E var2 \in Node : (Fluent14_11[var1][var2]) => (Fluent13_11[var0][var2][var2])
+  Fluent13_11[Value, Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[1, 2] = FALSE
+      Reshard[1, 2, 3] = TRUE (priority 1)
+      Own[] = TRUE
+  Fluent14_11[Value, Node]
+    initially: FALSE
+    flActions:
+      Reshard[1, 2] = FALSE
+      Own[] = TRUE
+      RecvTransferMsg[2, 0] = TRUE
+\A var0 \in Value : \A var1 \in Key : \E var2 \in Node : (Fluent14_8[var1][var2][var2]) => (Fluent13_8[var1][var2][var0])
+  Fluent13_8[Key, Node, Value]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2, 1] = TRUE
+      RecvTransferMsg[1, 0, 2] = FALSE
+      Own[1] = TRUE
+  Fluent14_8[Key, Node, Node]
+    initially: FALSE
+    flActions:
+      Own[1] = TRUE
+      Reshard[0, 2, 3] = FALSE
+\A var0 \in Value : \E var1 \in Node : (Fluent14_0[var1][var0]) => ((Fluent13_0[var1][var0]) => (Fluent15_0[var1][var1]))
+  Fluent15_0[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 3] = TRUE
+  Fluent14_0[Node, Value]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 2] = TRUE
+      Reshard[2, 1] = FALSE
+  Fluent13_0[Node, Value]
+    initially: FALSE
+    flActions:
+      Own[] = TRUE
+
+new pos trace(s):
+PT38 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN2K1V1 + T3->RecvTransferMsgN1K1V1 + T4->OwnN1K1)
+PT37 (PosTrace): (T0->ReshardK2V1N2N1 + T1->ReshardK2V1N1N2 + T2->RecvTransferMsgN1K2V1 + T3->RecvTransferMsgN2K2V1 + T4->OwnN1K1)
+PT40 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->RecvTransferMsgN2K1V1 + T4->OwnN1K1)
+PT36 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->OwnN2K2 + T4->RecvTransferMsgN2K1V1)
+PT42 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V2N2N1 + T2->ReshardK1V2N1N2 + T3->RecvTransferMsgN1K1V2 + T4->RecvTransferMsgN2K1V2)
+PT41 (PosTrace): (T0->OwnN2K2 + T1->ReshardK2V1N2N1 + T2->ReshardK1V1N1N2 + T3->RecvTransferMsgN2K1V1 + T4->RecvTransferMsgN1K2V1)
+PT35 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK2V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->OwnN2K1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 6
+Total # workers: 20
+# workers using: 10
+First worker finished, shutdown count is 10141.14s
+Formula synthesis complete in 5721.983 seconds
+\A var0 \in Key : \E var1 \in Node : \A var2 \in Node : (Fluent15_14[var1][var0][var2]) => (Fluent14_14[var1][var0])
+  Fluent14_14[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE
+      RecvTransferMsg[0, 1] = FALSE
+  Fluent15_14[Node, Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0, 3] = FALSE (priority 1)
+      Reshard[3, 0, 2] = TRUE
+      Own[0] = FALSE (priority 1)
+      Own[] = TRUE
+\A var0 \in Node : \E var1 \in Key : (Fluent15_17[var0]) => ((Fluent16_17[var0][var1]) => (Fluent14_17[var0][var1]))
+  Fluent15_17[Node]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0] = TRUE
+  Fluent16_17[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[3, 0] = TRUE
+      Own[0, 1] = FALSE (priority 1)
+      Own[0] = TRUE
+      Reshard[2, 0] = FALSE (priority 1)
+  Fluent14_17[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 1] = TRUE (priority 1)
+      RecvTransferMsg[] = FALSE
+\A var0 \in Value : \E var1 \in Node : \A var2 \in Key : (Fluent14_12[var1][var2][var0]) => (Fluent15_12[var1][var2])
+  Fluent14_12[Node, Key, Value]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0, 1] = FALSE
+      RecvTransferMsg[0, 1, 2] = TRUE
+      Own[0] = TRUE
+  Fluent15_12[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[3, 0] = TRUE (priority 1)
+      Own[0] = TRUE
+      Reshard[2] = FALSE
+\A var0 \in Node : \E var1 \in Value : \E var2 \in Key : (Fluent15_18[var2][var0][var1]) => (Fluent14_18[var2][var0])
+  Fluent14_18[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+      Own[1] = TRUE
+  Fluent15_18[Key, Node, Value]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2, 1] = TRUE
+      Reshard[0, 3, 1] = FALSE (priority 1)
+      Own[1, 0] = FALSE (priority 1)
+      Own[] = TRUE
+\A var0 \in Key : \E var1 \in Key : \A var2 \in Node : (Fluent14_1[var2][var1][var2][var0]) => (Fluent15_1[var2][var1])
+  Fluent14_1[Node, Key, Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[3, 0, 2] = FALSE
+      Own[0] = FALSE (priority 1)
+      Own[] = TRUE
+  Fluent15_1[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE (priority 2)
+      Reshard[3] = TRUE
+      Own[] = TRUE
+      Reshard[2] = FALSE (priority 1)
+      RecvTransferMsg[0, 1] = FALSE
+\A var0 \in Node : \E var1 \in Key : (Fluent16_2[var0][var1]) => ((Fluent15_2[var0][var1]) => (Fluent14_2[var0][var1]))
+  Fluent15_2[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[] = TRUE
+      RecvTransferMsg[0, 1] = FALSE (priority 1)
+  Fluent14_2[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE (priority 1)
+      Reshard[3, 0] = FALSE
+  Fluent16_2[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 1] = TRUE
+      Own[0, 1] = FALSE (priority 1)
+      Own[0] = TRUE
+\A var0 \in Key : \A var1 \in Node : (Fluent15_4[var0][var1][var1]) => ((Fluent16_4[var0][var1]) => (Fluent14_4[var0][var1]))
+  Fluent15_4[Key, Node, Node]
+    initially: FALSE
+    flActions:
+      Own[1, 0] = FALSE (priority 1)
+      Own[1] = TRUE
+      Reshard[0, 2, 3] = FALSE
+  Fluent14_4[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+  Fluent16_4[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 3] = FALSE (priority 1)
+      Reshard[0, 2] = TRUE
+
+new pos trace(s):
+PT45 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N1N2 + T2->ReshardK2V1N1N2 + T3->RecvTransferMsgN2K2V1 + T4->RecvTransferMsgN1K1V1)
+PT50 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N1N2 + T2->RecvTransferMsgN1K1V1 + T3->RecvTransferMsgN2K1V1 + T4->OwnN2K1)
+PT47 (PosTrace): (T0->OwnN2K1 + T1->ReshardK1V1N1N1 + T2->ReshardK1V1N1N2 + T3->RecvTransferMsgN1K1V1)
+PT44 (PosTrace): (T0->ReshardK2V1N1N1 + T1->OwnN2K1 + T2->ReshardK2V2N1N2 + T3->RecvTransferMsgN1K2V1)
+PT46 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK2V1N1N1 + T2->RecvTransferMsgN1K1V1 + T3->OwnN2K1 + T4->ReshardK2V1N2N1)
+PT48 (PosTrace): (T0->ReshardK2V1N1N1 + T1->OwnN2K1 + T2->ReshardK2V1N1N2 + T3->RecvTransferMsgN1K2V1)
+PT49 (PosTrace): (T0->ReshardK2V2N1N1 + T1->OwnN2K1 + T2->ReshardK1V1N1N2 + T3->RecvTransferMsgN2K1V1 + T4->RecvTransferMsgN1K2V2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 7
+Total # workers: 17
+# workers using: 10
+First worker finished, shutdown count is 7557.51s
+Formula synthesis complete in 4449.191 seconds
+\A var0 \in Node : \E var1 \in Key : (Fluent16_1[var0]) => ((Fluent17_1[var0][var1]) => (Fluent15_1[var0]))
+  Fluent16_1[Node]
+    initially: FALSE
+    flActions:
+      Own[0] = TRUE
+  Fluent15_1[Node]
+    initially: FALSE
+    flActions:
+      Reshard[3] = TRUE
+      Own[0] = TRUE
+      RecvTransferMsg[0] = TRUE (priority 1)
+      RecvTransferMsg[] = FALSE
+  Fluent17_1[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE (priority 1)
+      Reshard[3, 0] = TRUE
+      Reshard[2, 0] = FALSE (priority 2)
+\A var0 \in Node : \E var1 \in Key : \E var2 \in Node : (Fluent15_8[var2][var0]) => (Fluent16_8[var2][var1])
+  Fluent15_8[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 3] = TRUE
+      Own[0] = TRUE
+      Reshard[3, 2] = FALSE (priority 1)
+  Fluent16_8[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE
+      Own[0, 1] = TRUE
+      RecvTransferMsg[0, 1] = FALSE
+\A var0 \in Node : \E var1 \in Node : \E var2 \in Key : (Fluent16_13[var0][var2]) => (Fluent15_13[var1][var2])
+  Fluent15_13[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE
+      Own[0, 1] = TRUE
+      RecvTransferMsg[0, 1] = FALSE
+  Fluent16_13[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[3, 0] = TRUE
+      Own[0] = TRUE
+      Reshard[2, 0] = FALSE (priority 1)
+\A var0 \in Key : \A var1 \in Node : \E var2 \in Node : (Fluent15_11[var0][var2][var1]) => (Fluent16_11[var0][var2])
+  Fluent16_11[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+  Fluent15_11[Key, Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 3, 2] = TRUE
+      Own[1, 0] = FALSE (priority 1)
+      Own[1] = TRUE
+      Reshard[0, 2, 3] = FALSE (priority 1)
+\A var0 \in Node : \E var1 \in Key : (Fluent15_14[var0]) => ((Fluent17_14[var0][var1]) => (Fluent16_14[var0][var1]))
+  Fluent17_14[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[3, 0] = TRUE
+      Own[0] = TRUE
+      Reshard[2, 0] = FALSE (priority 1)
+  Fluent16_14[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[3, 0] = TRUE
+      RecvTransferMsg[0, 1] = TRUE (priority 1)
+      RecvTransferMsg[] = FALSE
+  Fluent15_14[Node]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Own[0] = FALSE
+\A var0 \in Value : \E var1 \in Node : \A var2 \in Key : (Fluent15_10[var1][var2]) => (~(Fluent16_10[var1][var2][var0]))
+  Fluent16_10[Node, Key, Value]
+    initially: FALSE
+    flActions:
+      Reshard[2] = TRUE
+      Reshard[3, 0] = FALSE (priority 1)
+  Fluent15_10[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[0, 1] = TRUE
+      Own[0, 1] = FALSE (priority 1)
+      Own[0] = TRUE
+      Reshard[2, 0] = FALSE
+
+new pos trace(s):
+PT55 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK1V1N1N2 + T2->ReshardK2V1N1N2 + T3->RecvTransferMsgN1K1V1)
+PT56 (PosTrace): (T0->ReshardK1V1N2N1 + T1->ReshardK2V1N1N1 + T2->RecvTransferMsgN1K1V1 + T3->OwnN2K1)
+PT53 (PosTrace): (T0->ReshardK2V1N1N1 + T1->ReshardK1V1N1N1 + T2->ReshardK1V1N1N2 + T3->ReshardK2V1N1N2 + T4->RecvTransferMsgN1K1V1 + T5->RecvTransferMsgN1K2V1)
+PT51 (PosTrace): (T0->ReshardK2V1N2N1 + T1->ReshardK2V1N1N2 + T2->OwnN2K1 + T3->RecvTransferMsgN1K2V1)
+PT52 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V1N2N1 + T2->ReshardK1V1N2N2 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+PT54 (PosTrace): (T0->ReshardK2V1N1N1 + T1->OwnN1K1 + T2->ReshardK1V1N1N2 + T3->ReshardK1V1N2N1 + T4->RecvTransferMsgN1K1V1 + T5->RecvTransferMsgN2K1V1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 8
+Total # workers: 13
+# workers using: 10
+First worker finished, shutdown count is 13559.454s
+Formula synthesis complete in 10475.889 seconds
+\A var0 \in Node : \E var1 \in Key : \E var2 \in Node : (Fluent17_5[var1][var2][var0]) => (Fluent16_5[var1][var2])
+  Fluent16_5[Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = TRUE
+      RecvTransferMsg[1, 0] = FALSE
+  Fluent17_5[Key, Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[0, 3, 2] = TRUE
+      Own[1, 0] = FALSE (priority 1)
+      Own[] = TRUE
+      Reshard[0, 2, 3] = FALSE (priority 1)
+\A var0 \in Node : \E var1 \in Node : \E var2 \in Key : (Fluent17_9[var1][var2][var0]) => (Fluent16_9[var1][var2])
+  Fluent16_9[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE
+      RecvTransferMsg[0, 1] = FALSE
+  Fluent17_9[Node, Key, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0, 3] = FALSE (priority 1)
+      Reshard[3, 0, 2] = TRUE
+      Own[0, 1] = FALSE (priority 1)
+      Own[] = TRUE
+\A var0 \in Node : \E var1 \in Value : \E var2 \in Key : (Fluent17_11[var0][var0]) => (Fluent16_11[var2][var0][var1])
+  Fluent16_11[Key, Node, Value]
+    initially: FALSE
+    flActions:
+      Reshard[0, 2] = FALSE (priority 1)
+      Reshard[0] = TRUE
+      RecvTransferMsg[1, 0, 2] = FALSE
+      Own[1] = TRUE
+      Reshard[0, 2, 1] = TRUE (priority 2)
+  Fluent17_11[Node, Node]
+    initially: FALSE
+    flActions:
+      Reshard[2, 3] = FALSE
+      Own[0] = FALSE (priority 1)
+      Own[] = TRUE
+\A var0 \in Node : \E var1 \in Key : (Fluent18_10[var0][var1]) => ((Fluent16_10[var0][var1]) => (Fluent17_10[var0][var1]))
+  Fluent17_10[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE (priority 1)
+      Reshard[3, 0] = FALSE
+  Fluent16_10[Node, Key]
+    initially: FALSE
+    flActions:
+      Reshard[2, 0] = TRUE
+      Own[0, 1] = FALSE (priority 1)
+      Own[0] = TRUE
+  Fluent18_10[Node, Key]
+    initially: FALSE
+    flActions:
+      RecvTransferMsg[] = TRUE
+      Reshard[3, 0] = FALSE
+      RecvTransferMsg[0, 1] = FALSE (priority 1)
+
+new pos trace(s):
+PT60 (PosTrace): (T0->ReshardK1V1N1N1 + T1->ReshardK1V1N2N1 + T2->ReshardK2V1N1N2 + T3->ReshardK2V1N2N1 + T4->RecvTransferMsgN2K2V1)
+PT59 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V1N1N2 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN2K1V1)
+PT58 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V1N1N2 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->RecvTransferMsgN2K1V1)
+PT57 (PosTrace): (T0->OwnN1K1 + T1->ReshardK1V1N1N2 + T2->ReshardK1V2N2N1 + T3->RecvTransferMsgN2K1V1 + T4->RecvTransferMsgN1K1V2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->OwnN2K1 + T1->PutN2K1V1 + T2->ReshardK1V1N2N1 + T3->RecvTransferMsgN1K1V1 + T4->ReshardK1V1N1N2 + T5->RecvTransferMsgN2K1V1 + T6->RecvTransferMsgN1K1V1)
+Formula synth batch: 9
+Total # workers: 7
+# workers using: 7
+Formula synthesis complete in 4942.162 seconds
+Could not synthesize a spearating assumption. Here are the intermediate conjuncts:
+/\ /\ \A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+/\ \A var0 \in Key : (Fluent1_21[var0]) => (Fluent2_21[var0])
+/\ UNSAT
+/\ \A var0 \in Key : (Fluent7_0[var0]) => (Fluent8_0[var0])

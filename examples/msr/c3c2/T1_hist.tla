@@ -3,12 +3,12 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets, TLC
 
 CONSTANTS Server, Quorums, FinNat
 
-VARIABLES currentTerm, Fluent11_16, log, state, Fluent12_16, config
+VARIABLES currentTerm, log, state, config, Fluent22_2
 
-vars == <<currentTerm, Fluent11_16, log, state, Fluent12_16, config>>
+vars == <<currentTerm, log, state, config, Fluent22_2>>
 
 CandSep ==
-\A var0 \in FinNat : \A var1 \in Server : \A var2 \in Quorums : (Fluent11_16[var2]) => ((Fluent12_16[var0][var1]) => (var1 \in var2))
+/\ \A var0 \in FinNat : \E var1 \in FinNat : \A var2 \in FinNat : (Fluent22_2[var2][var0]) => (var1 = var2)
 
 Secondary == "secondary"
 
@@ -17,8 +17,6 @@ Primary == "primary"
 Nil == "nil"
 
 StateConstraint == (\A s \in Server : Len(log[s]) < 4)
-
-MinTerm(Q) == (CHOOSE t \in FinNat : ((\A n \in Q : t <= currentTerm[n]) /\ (\E n \in Q : t = currentTerm[n])))
 
 Empty(s) == Len(s) = 0
 
@@ -60,7 +58,7 @@ ClientRequest(i,curTerm) ==
 /\ currentTerm[i] = curTerm
 /\ log' = [log EXCEPT![i] = Append(log[i],curTerm)]
 /\ UNCHANGED <<currentTerm,state,config>>
-/\ UNCHANGED<<Fluent11_16, Fluent12_16>>
+/\ UNCHANGED<<Fluent22_2>>
 
 GetEntries(i,j) ==
 /\ state[i] = Secondary
@@ -72,58 +70,42 @@ GetEntries(i,j) ==
       newLog == Append(log[i],newEntry) IN
     /\ log' = [log EXCEPT![i] = newLog]
 /\ UNCHANGED <<currentTerm,state,config>>
-/\ UNCHANGED<<Fluent11_16, Fluent12_16>>
+/\ UNCHANGED<<Fluent22_2>>
 
 RollbackEntries(i,j) ==
 /\ state[i] = Secondary
 /\ CanRollback(i,j)
 /\ log' = [log EXCEPT![i] = SubSeq(log[i],1,(Len(log[i]) - 1))]
 /\ UNCHANGED <<currentTerm,state,config>>
-/\ UNCHANGED<<Fluent11_16, Fluent12_16>>
+/\ UNCHANGED<<Fluent22_2>>
 
-BecomeLeader(i,voteQuorum,newTerm) ==
-/\ (voteQuorum \in Quorums)
-/\ newTerm = (currentTerm[i] + 1)
-/\ (i \in voteQuorum)
-/\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
-/\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]]
-/\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]]
-/\ UNCHANGED <<log,config>>
-/\ Fluent11_16' = [Fluent11_16 EXCEPT ![voteQuorum] = TRUE]
-/\ UNCHANGED<<Fluent12_16>>
+BecomeLeader(i,newTerm) ==
+/\ (\E voteQuorum \in Quorums : (newTerm = (currentTerm[i] + 1) /\ (i \in voteQuorum) /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm)) /\ currentTerm' = [s \in Server |-> IF (s \in voteQuorum) THEN newTerm ELSE currentTerm[s]] /\ state' = [s \in Server |-> IF s = i THEN Primary ELSE IF (s \in voteQuorum) THEN Secondary ELSE state[s]] /\ UNCHANGED <<log,config>>))
+/\ UNCHANGED<<Fluent22_2>>
 
-CommitEntry(i,commitQuorum,ind,curTerm,minQTerm) ==
-/\ minQTerm = MinTerm(commitQuorum)
-/\ (commitQuorum \in Quorums)
-/\ curTerm = currentTerm[i]
-/\ ind = Len(log[i])
-/\ ind > 0
-/\ state[i] = Primary
-/\ log[i][ind] = curTerm
-/\ ImmediatelyCommitted(<<ind,curTerm>>,commitQuorum)
-/\ UNCHANGED <<currentTerm,state,log,config>>
-/\ Fluent12_16' = [Fluent12_16 EXCEPT ![minQTerm][i] = TRUE]
-/\ UNCHANGED<<Fluent11_16>>
+CommitEntry(i,ind,curTerm) ==
+/\ (\E commitQuorum \in Quorums : (curTerm = currentTerm[i] /\ ind = Len(log[i]) /\ ind > 0 /\ state[i] = Primary /\ log[i][ind] = curTerm /\ ImmediatelyCommitted(<<ind,curTerm>>,commitQuorum) /\ UNCHANGED <<currentTerm,state,log,config>>))
+/\ Fluent22_2' = [Fluent22_2 EXCEPT ![curTerm][ind] = TRUE]
+/\ UNCHANGED<<>>
 
 UpdateTerms(i,j) ==
 /\ UpdateTermsExpr(i,j)
 /\ UNCHANGED <<log,config>>
-/\ UNCHANGED<<Fluent11_16, Fluent12_16>>
+/\ UNCHANGED<<Fluent22_2>>
 
 Init ==
 /\ currentTerm = [i \in Server |-> 0]
 /\ state = [i \in Server |-> Secondary]
 /\ log = [i \in Server |-> <<>>]
 /\ (\E initConfig \in SUBSET(Server) : (initConfig /= {} /\ config = [i \in Server |-> initConfig]))
-/\ Fluent11_16 = [ x0 \in Quorums |-> FALSE]
-/\ Fluent12_16 = [ x0 \in FinNat |-> [ x1 \in Server |-> FALSE]]
+/\ Fluent22_2 = [ x0 \in FinNat |-> [ x1 \in FinNat |-> FALSE]]
 
 Next ==
 \/ (\E s \in Server : (\E t \in FinNat : ClientRequest(s,t)))
 \/ (\E s,t \in Server : GetEntries(s,t))
 \/ (\E s,t \in Server : RollbackEntries(s,t))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : (\E minQTerm \in FinNat : CommitEntry(s,Q,ind,curTerm,minQTerm))))))
+\/ (\E s \in Server : (\E newTerm \in FinNat : BecomeLeader(s,newTerm)))
+\/ (\E s \in Server : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,ind,curTerm))))
 \/ (\E s,t \in Server : UpdateTerms(s,t))
 
 Spec == (Init /\ [][Next]_vars)

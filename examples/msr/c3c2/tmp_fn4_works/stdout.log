@@ -1,0 +1,1964 @@
+Building the LTS for the initial trace (T2.tla)
+Built the LTS in 3.928s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.149s
+
+Round 1
+-------
+TLC neg trace generation time: 13.481 seconds
+# neg traces: 46
+# min neg traces: 29
+partial neg trace generation time: 12.422 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->ClientRequestn1NUM1 + T1->GetEntriesn2n1 + T2->ClientRequestn3NUM3 + T3->CommitEntryn2_n1n2_NUM1NUM1NUM0 + T4->RollbackEntriesn2n3 + T5->GetEntriesn2n3 + T6->CommitEntryn2_n2n3_NUM1NUM3NUM0)
+
+Init pos trace:
+PT1 (PosTrace): (T0->GetEntriesn2n1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->ClientRequestn1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 38.103s
+Formula synthesis complete in 43.708 seconds
+\A var0 \in FinNat : (Fluent4_2[var0]) => (Fluent3_2[var0])
+  Fluent4_2[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent3_2[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE
+\A var0 \in Server : (Fluent3_1[var0]) => (Fluent4_1[var0])
+  Fluent4_1[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = FALSE
+  Fluent3_1[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+\A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+  Fluent3_16[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent4_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+  Fluent3_16[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent4_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+Round 1 took 374.842 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 5.082 seconds
+# neg traces: 32
+# min neg traces: 21
+partial neg trace generation time: 12.662 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern2_n1n2n3_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1 + T3->BecomeLeadern2_n2n3_NUM3 + T4->ClientRequestn3NUM3 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM0 + T6->RollbackEntriesn1n3 + T7->GetEntriesn1n3 + T8->CommitEntryn1_n1n3_NUM1NUM3NUM0)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern2_n1n2n3_NUM1 + T1->ClientRequestn2NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern2_n1n2n3_NUM1 + T1->ClientRequestn1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 60.297s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 80.419 seconds
+\A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+  Fluent6_8[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+  Fluent5_8[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+  Fluent6_8[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+  Fluent5_8[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 1.517 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 2 took 402.381 seconds
+
+Round 3
+-------
+TLC neg trace generation time: 18.752 seconds
+# neg traces: 192
+# min neg traces: 60
+partial neg trace generation time: 25.143 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2n3_NUM3 + T1->ClientRequestn1NUM2 + T2->BecomeLeadern2_n2n3_NUM0 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM4 + T5->CommitEntryn1_n1n3_NUM1NUM2NUM0 + T6->RollbackEntriesn3n2 + T7->GetEntriesn3n2 + T8->CommitEntryn2_n2n3_NUM1NUM4NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+  Fluent3_16[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent4_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 4 took 54.45 seconds
+
+Round 4
+-------
+TLC neg trace generation time: 20.866 seconds
+# neg traces: 84
+# min neg traces: 42
+partial neg trace generation time: 37.74 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM0 + T6->RollbackEntriesn2n3 + T7->GetEntriesn2n3 + T8->CommitEntryn2_n2n3_NUM1NUM2NUM0)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn3_n1n2_NUM1NUM2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM0)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 206.268s
+Formula synthesis complete in 267.294 seconds
+\A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+  Fluent8_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent7_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+  Fluent8_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent7_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.868 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+Round 4 took 637.318 seconds
+
+Round 5
+-------
+TLC neg trace generation time: 7.69 seconds
+# neg traces: 105
+# min neg traces: 81
+partial neg trace generation time: 45.755 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern2_n1n2n3_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1 + T3->BecomeLeadern2_n2n3_NUM3 + T4->ClientRequestn3NUM3 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM1 + T6->RollbackEntriesn1n3 + T7->GetEntriesn1n3 + T8->CommitEntryn1_n1n3_NUM1NUM3NUM3)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+  Fluent6_8[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+  Fluent5_8[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 6 took 59.436 seconds
+
+Round 6
+-------
+TLC neg trace generation time: 25.993 seconds
+# neg traces: 234
+# min neg traces: 100
+partial neg trace generation time: 98.696 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM1 + T6->RollbackEntriesn2n3 + T7->GetEntriesn2n3 + T8->CommitEntryn2_n2n3_NUM1NUM2NUM1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn3_n1n2_NUM1NUM2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 129.273s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 172.379 seconds
+\A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+  Fluent10_5[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent9_5[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+  Fluent10_5[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent9_5[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 3.753 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+Round 6 took 617.834 seconds
+
+Round 7
+-------
+TLC neg trace generation time: 13.742 seconds
+# neg traces: 102
+# min neg traces: 86
+partial neg trace generation time: 90.91 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn3n1 + T3->BecomeLeadern3_n1n3_NUM2 + T4->ClientRequestn2NUM2 + T5->CommitEntryn3_n1n3_NUM1NUM1NUM4 + T6->RollbackEntriesn3n2 + T7->GetEntriesn3n2 + T8->CommitEntryn3_n2n3_NUM1NUM2NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+  Fluent8_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent7_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+Round 8 took 110.757 seconds
+
+Round 8
+-------
+TLC neg trace generation time: 15.13 seconds
+# neg traces: 225
+# min neg traces: 100
+partial neg trace generation time: 122.408 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn3n1 + T3->BecomeLeadern1_n1n3_NUM2 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T6->RollbackEntriesn1n2 + T7->GetEntriesn1n2 + T8->CommitEntryn1_n1n2_NUM1NUM2NUM2)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+  Fluent6_8[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+  Fluent5_8[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 9 took 150.326 seconds
+
+Round 9
+-------
+TLC neg trace generation time: 34.713 seconds
+# neg traces: 144
+# min neg traces: 100
+partial neg trace generation time: 135.816 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn1_n1n2_NUM1NUM1NUM2 + T6->RollbackEntriesn1n3 + T7->GetEntriesn1n3 + T8->CommitEntryn1_n1n3_NUM1NUM2NUM1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn3_n1n2_NUM1NUM2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn1_n1n2_NUM1NUM1NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 193.683s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 258.253 seconds
+\A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+  Fluent12_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent11_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+  Fluent12_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent11_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 5.682 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 9 took 746.744 seconds
+
+Round 10
+-------
+TLC neg trace generation time: 23.228 seconds
+# neg traces: 168
+# min neg traces: 60
+partial neg trace generation time: 25.278 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2n3_NUM3 + T1->ClientRequestn1NUM2 + T2->BecomeLeadern2_n2n3_NUM0 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM4 + T5->CommitEntryn1_n1n3_NUM1NUM2NUM2 + T6->RollbackEntriesn1n2 + T7->GetEntriesn1n2 + T8->CommitEntryn1_n1n2_NUM1NUM4NUM4)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+  Fluent3_16[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent4_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+Round 11 took 58.41 seconds
+
+Round 11
+-------
+TLC neg trace generation time: 23.989 seconds
+# neg traces: 78
+# min neg traces: 46
+partial neg trace generation time: 44.294 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->CommitEntryn2_n1n2_NUM1NUM1NUM1 + T6->RollbackEntriesn2n3 + T7->GetEntriesn2n3 + T8->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+  Fluent10_5[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent9_5[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in Server : (Fluent10_5[var0]) => (Fluent9_5[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 12 took 73.102 seconds
+
+Round 12
+-------
+TLC neg trace generation time: 37.241 seconds
+# neg traces: 86
+# min neg traces: 84
+partial neg trace generation time: 74.925 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T6->RollbackEntriesn3n2 + T7->GetEntriesn3n2 + T8->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn2_n1n3_NUM1NUM2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 220.266s
+Formula synthesis complete in 228.372 seconds
+\A var0 \in FinNat : (Fluent14_2[var0]) => (~(Fluent13_2[var0]))
+  Fluent13_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent14_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2] = TRUE
+\A var0 \in Server : (Fluent13_9[var0]) => (~(Fluent14_9[var0]))
+  Fluent14_9[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent13_9[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = TRUE
+\A var0 \in FinNat : (Fluent13_0[var0]) => (~(Fluent14_0[var0]))
+  Fluent14_0[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent13_0[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2] = TRUE
+\A var0 \in Server : (Fluent13_10[var0]) => (~(Fluent14_10[var0]))
+  Fluent14_10[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent13_10[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = TRUE
+\A var0 \in Server : (Fluent13_19[var0]) => (~(Fluent14_19[var0]))
+  Fluent14_19[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = TRUE
+  Fluent13_19[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+\A var0 \in Server : (Fluent14_12[var0]) => (~(Fluent13_12[var0]))
+  Fluent14_12[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = TRUE
+  Fluent13_12[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+\A var0 \in FinNat : (Fluent13_16[var0]) => (~(Fluent14_16[var0]))
+  Fluent14_16[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2] = TRUE
+  Fluent13_16[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+\A var0 \in FinNat : (Fluent13_17[var0]) => (~(Fluent14_17[var0]))
+  Fluent14_17[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent13_17[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2] = TRUE
+\A var0 \in Quorums : \A var1 \in FinNat : \A var2 \in Quorums : (Fluent13_25[var1][var1]) => (var0 = var2)
+  Fluent13_25[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 3] = TRUE
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in Server : (Fluent13_13[var2][var1]) => ((var2 \in var1) => (var0 = var1))
+  Fluent13_13[Server, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[0, 1] = TRUE
+
+new pos trace(s):
+PT10 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT5 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 500.352s
+Formula synthesis complete in 655.588 seconds
+\A var0 \in Server : (Fluent14_19[var0]) => (Fluent15_19[var0])
+  Fluent14_19[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent15_19[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE (mutexFl)
+\A var0 \in FinNat : (Fluent15_4[var0]) => (~(Fluent14_4[var0]))
+  Fluent15_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent14_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+\A var0 \in FinNat : (Fluent14_2[var0]) => (~(Fluent15_2[var0]))
+  Fluent15_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent14_2[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE (mutexFl)
+\A var0 \in FinNat : (Fluent15_0[var0]) => (~(Fluent14_0[var0]))
+  Fluent15_0[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent14_0[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+\A var0 \in Server : (Fluent15_12[var0]) => (~(Fluent14_12[var0]))
+  Fluent14_12[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent15_12[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = FALSE (mutexFl)
+\A var0 \in FinNat : (Fluent15_24[var0]) => (~(Fluent14_24[var0][var0]))
+  Fluent15_24[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent14_24[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3, 2] = TRUE
+\A var0 \in FinNat : (Fluent14_16[var0]) => (~(Fluent15_16[var0][var0]))
+  Fluent14_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent15_16[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3, 2] = TRUE
+\A var0 \in Quorums : \A var1 \in Server : (Fluent14_3[var1]) => ((Fluent15_3[var1][var0]) => (~(var1 \in var0)))
+  Fluent14_3[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+  Fluent15_3[Server, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[0, 1] = TRUE
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in Server : (Fluent14_13[var2]) => ((Fluent15_13[var2]) => (var0 = var1))
+  Fluent15_13[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = FALSE (mutexFl)
+  Fluent14_13[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in FinNat : (var1 = var0) => ((Fluent14_26[var2]) => (Fluent15_26[var2]))
+  Fluent14_26[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent15_26[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE (mutexFl)
+
+new pos trace(s):
+PT12 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern2_n1n2_NUM2)
+PT13 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+PT14 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->CommitEntryn1_n1n2_NUM1NUM2NUM2)
+PT19 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT16 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->CommitEntryn2_n1n2_NUM1NUM2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 351.969s
+Killing 5 incomplete formula synth workers
+Formula synthesis complete in 469.353 seconds
+\A var0 \in Server : (Fluent15_5[var0]) => (~(Fluent16_5[var0]))
+  Fluent16_5[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = FALSE
+      ClientRequest[0] = FALSE (mutexFl)
+  Fluent15_5[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+\A var0 \in FinNat : (Fluent15_4[var0]) => (~(Fluent16_4[var0][var0]))
+  Fluent15_4[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE (mutexFl)
+  Fluent16_4[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 3] = TRUE
+\A var0 \in Server : (Fluent15_20[var0]) => ((Fluent16_20[var0]) => (~(Fluent17_20[var0])))
+  Fluent15_20[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+  Fluent16_20[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent17_20[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = TRUE
+\A var0 \in Quorums : \A var1 \in Server : (var1 \in var0) => ((Fluent16_11[var1][var0]) => (Fluent15_11[var1][var0]))
+  Fluent16_11[Server, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[0, 1] = TRUE
+  Fluent15_11[Server, Quorums]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0, 1] = TRUE
+
+new pos trace(s):
+PT25 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT23 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->CommitEntryn1_n1n2_NUM2NUM2NUM2)
+PT22 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM2 + T2->ClientRequestn1NUM1 + T3->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+PT24 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1 + T3->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 4
+Total # workers: 26
+# workers using: 10
+First worker finished, shutdown count is 1896.636s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 2528.923 seconds
+\A var0 \in Server : (Fluent16_1[var0]) => (Fluent17_1[var0])
+  Fluent16_1[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent17_1[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = FALSE
+      BecomeLeader[] = TRUE
+\A var0 \in Server : (Fluent17_18[var0]) => (Fluent16_18[var0])
+  Fluent17_18[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent16_18[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = FALSE
+      BecomeLeader[] = TRUE
+\A var0 \in FinNat : (Fluent18_15[var0]) => ((Fluent17_15[var0]) => (Fluent16_15[var0]))
+  Fluent16_15[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE (mutexFl)
+  Fluent17_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent18_15[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent16_24[var1]) => (~(Fluent17_24[var1][var0]))
+  Fluent17_24[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[3, 1] = TRUE
+  Fluent16_24[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE
+      GetEntries[] = TRUE
+\A var0 \in Quorums : \A var1 \in Server : (Fluent16_3[var1]) => ((Fluent17_3[var0]) => (var1 \in var0))
+  Fluent16_3[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent17_3[Quorums]
+    initially: FALSE
+    flActions:
+      BecomeLeader[1] = TRUE
+\A var0 \in Quorums : \A var1 \in Server : (Fluent16_10[var0]) => ((Fluent17_10[var1]) => (var1 \in var0))
+  Fluent17_10[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+  Fluent16_10[Quorums]
+    initially: FALSE
+    flActions:
+      BecomeLeader[1] = TRUE
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in Server : (var0 = var1) => ((Fluent16_12[var2]) => (Fluent17_12[var2]))
+  Fluent17_12[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = FALSE
+      BecomeLeader[] = TRUE
+  Fluent16_12[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+
+new pos trace(s):
+PT28 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T3->BecomeLeadern1_n1n2_NUM2 + T4->ClientRequestn1NUM2)
+PT31 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern2_n2n3_NUM2)
+PT26 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT29 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 5
+Total # workers: 24
+# workers using: 10
+First worker finished, shutdown count is 958.233s
+Killing 6 incomplete formula synth workers
+Formula synthesis complete in 1277.656 seconds
+\A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+  Fluent17_11[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+      BecomeLeader[0] = TRUE (mutexFl)
+  Fluent18_11[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE (mutexFl)
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+  Fluent17_11[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+      BecomeLeader[0] = TRUE (mutexFl)
+  Fluent18_11[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE (mutexFl)
+
+Minimizing the invariants found thus far.
+Minimization finished in 7.169 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 12 took 5622.345 seconds
+
+Round 13
+-------
+TLC neg trace generation time: 34.785 seconds
+# neg traces: 20
+# min neg traces: 12
+partial neg trace generation time: 4.951 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2n3_NUM3 + T1->ClientRequestn1NUM3 + T2->BecomeLeadern2_n2n3_NUM0 + T3->ClientRequestn2NUM0 + T4->GetEntriesn3n2 + T5->CommitEntryn2_n2n3_NUM1NUM0NUM0 + T6->RollbackEntriesn2n1 + T7->GetEntriesn2n1 + T8->CommitEntryn2_n1n2_NUM1NUM3NUM3)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2n3_NUM3)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 598.053 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->ClientRequestn1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2n3_NUM3 + T1->ClientRequestn1NUM3)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 5159.075 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2n3_NUM3 + T1->ClientRequestn1NUM3 + T2->BecomeLeadern2_n2n3_NUM0)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 357.894s
+Killing 7 incomplete formula synth workers
+Formula synthesis complete in 477.286 seconds
+\A var0 \in FinNat : \E var1 \in FinNat : (var0 <= var1) => (~(Fluent21_0[var0]))
+  Fluent21_0[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \E var1 \in FinNat : (var0 <= var1) => (~(Fluent21_0[var0]))
+  Fluent21_0[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 6.994 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : \E var1 \in FinNat : (var0 <= var1) => (~(Fluent21_0[var0]))
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 13 took 6584.414 seconds
+
+Round 14
+-------
+TLC neg trace generation time: 252.529 seconds
+# neg traces: 52
+# min neg traces: 32
+partial neg trace generation time: 29.768 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM3 + T3->ClientRequestn3NUM0 + T4->GetEntriesn2n3 + T5->CommitEntryn3_n2n3_NUM1NUM0NUM0 + T6->RollbackEntriesn3n1 + T7->GetEntriesn3n1 + T8->CommitEntryn3_n1n3_NUM1NUM1NUM1)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+  Fluent3_16[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent4_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.001 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : \E var1 \in FinNat : (var0 <= var1) => (~(Fluent21_0[var0]))
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 15 took 285.976 seconds
+
+Round 15
+-------
+TLC neg trace generation time: 22.868 seconds
+# neg traces: 15
+# min neg traces: 12
+partial neg trace generation time: 4.994 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->ClientRequestn1NUM2 + T2->BecomeLeadern3_n2n3_NUM1 + T3->ClientRequestn3NUM1 + T4->GetEntriesn2n3 + T5->CommitEntryn3_n2n3_NUM1NUM1NUM1 + T6->RollbackEntriesn3n1 + T7->GetEntriesn3n1 + T8->CommitEntryn3_n1n3_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n3_NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 574.853 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n3_NUM1 + T1->ClientRequestn1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->ClientRequestn1NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+No formulas synthesized and more than half of the workers returned UNSAT; aborting formula synth
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 4152.405 seconds
+All synthesized formulas are UNSAT, increasing the size of the partial neg trace
+New init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n3_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->ClientRequestn1NUM2 + T2->BecomeLeadern3_n2n3_NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 728.739s
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 971.738 seconds
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent24_0[var0]) => ((Fluent25_0[var1]) => (var1 <= var0))
+  Fluent25_0[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent24_0[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+\A var0 \in FinNat : \A var1 \in FinNat : (Fluent25_14[var0]) => ((Fluent24_14[var1]) => (var0 <= var1))
+  Fluent25_14[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent24_14[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+\A var0 \in Server : \A var1 \in FinNat : \A var2 \in FinNat : (Fluent24_1[var1]) => ((Fluent25_1[var2][var0]) => (var2 <= var1))
+  Fluent25_1[FinNat, Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[1, 0] = TRUE
+  Fluent24_1[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+\A var0 \in FinNat : \A var1 \in Quorums : \A var2 \in FinNat : (Fluent24_15[var0]) => ((Fluent25_15[var2][var1]) => (var0 <= var2))
+  Fluent24_15[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent25_15[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 1] = TRUE
+\A var0 \in Quorums : \A var1 \in FinNat : \A var2 \in FinNat : (Fluent25_23[var1][var0]) => ((Fluent24_23[var2]) => (var2 <= var1))
+  Fluent24_23[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent25_23[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 1] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM2 + T2->ClientRequestn1NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM2 + T1->ClientRequestn1NUM2 + T2->BecomeLeadern3_n2n3_NUM1)
+Formula synth batch: 2
+Total # workers: 26
+# workers using: 10
+First worker finished, shutdown count is 4307.352s
+Killing 6 incomplete formula synth workers
+Formula synthesis complete in 5743.298 seconds
+\A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+  Fluent25_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent26_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+  Fluent25_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent26_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 8.876 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in FinNat : (Fluent4_16[var0]) => (Fluent3_16[var0])
+/\ \A var0 \in Server : (Fluent5_8[var0]) => (Fluent6_8[var0])
+Round 15 took 11787.241 seconds
+
+Round 16
+-------
+TLC neg trace generation time: 124.793 seconds
+# neg traces: 343
+# min neg traces: 20
+partial neg trace generation time: 13.005 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn1NUM2 + T3->ClientRequestn2NUM1 + T4->GetEntriesn3n2 + T5->CommitEntryn2_n2n3_NUM1NUM1NUM1 + T6->RollbackEntriesn2n1 + T7->GetEntriesn2n1 + T8->CommitEntryn2_n1n2_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn2NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->ClientRequestn1NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 106.953s
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 142.633 seconds
+\A var0 \in Server : (Fluent27_10[var0]) => (Fluent28_10[var0])
+  Fluent27_10[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+  Fluent28_10[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE (mutexFl)
+\A var0 \in Server : (Fluent27_19[var0]) => (Fluent28_19[var0])
+  Fluent28_19[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE (mutexFl)
+  Fluent27_19[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+\A var0 \in Server : (Fluent27_9[var0]) => (~(Fluent28_9[var0]))
+  Fluent27_9[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = FALSE (mutexFl)
+  Fluent28_9[Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[0] = TRUE
+\A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+  Fluent27_16[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+  Fluent28_16[FinNat, Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[1, 0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+  Fluent27_16[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+  Fluent28_16[FinNat, Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[1, 0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 9.539 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+Round 16 took 618.885 seconds
+
+Round 17
+-------
+TLC neg trace generation time: 206.041 seconds
+# neg traces: 186
+# min neg traces: 100
+partial neg trace generation time: 101.268 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern3_n1n3_NUM3 + T6->CommitEntryn3_n1n3_NUM1NUM1NUM4 + T7->RollbackEntriesn3n2 + T8->GetEntriesn3n2 + T9->CommitEntryn3_n2n3_NUM1NUM2NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+  Fluent8_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent7_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+Round 18 took 321.729 seconds
+
+Round 18
+-------
+TLC neg trace generation time: 225.527 seconds
+# neg traces: 500
+# min neg traces: 100
+partial neg trace generation time: 130.806 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->BecomeLeadern2_n1n2_NUM3 + T6->CommitEntryn2_n1n2_NUM1NUM1NUM1 + T7->RollbackEntriesn2n3 + T8->GetEntriesn2n3 + T9->CommitEntryn2_n2n3_NUM1NUM2NUM3)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+  Fluent12_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent11_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+Round 19 took 392.856 seconds
+
+Round 19
+-------
+TLC neg trace generation time: 233.063 seconds
+# neg traces: 208
+# min neg traces: 100
+partial neg trace generation time: 105.208 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->BecomeLeadern2_n1n2_NUM3 + T6->CommitEntryn2_n1n2_NUM1NUM1NUM1 + T7->RollbackEntriesn2n3 + T8->GetEntriesn2n3 + T9->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->BecomeLeadern2_n1n2_NUM3 + T6->CommitEntryn2_n1n2_NUM1NUM3NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->BecomeLeadern2_n1n2_NUM3 + T6->CommitEntryn2_n1n2_NUM1NUM1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 316.533s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 422.036 seconds
+\A var0 \in FinNat : (Fluent29_4[var0]) => (~(Fluent30_4[var0]))
+  Fluent29_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent30_4[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in FinNat : (Fluent29_14[var0]) => (~(Fluent30_14[var0]))
+  Fluent29_14[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent30_14[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+\A var0 \in FinNat : (Fluent30_24[var0]) => (~(Fluent29_24[var0]))
+  Fluent29_24[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent30_24[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in Server : \A var1 \in FinNat : (Fluent29_1[var1][var0]) => (~(Fluent30_1[var1]))
+  Fluent29_1[FinNat, Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[1, 0] = TRUE
+  Fluent30_1[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent30_25[var1][var0]) => (~(Fluent29_25[var1][var0]))
+  Fluent29_25[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 1] = TRUE
+  Fluent30_25[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[3, 1] = TRUE
+\A var0 \in Server : \A var1 \in Server : \A var2 \in FinNat : (Fluent29_5[var2][var2]) => (~(var1 = var0))
+  Fluent29_5[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 2] = TRUE
+\A var0 \in Quorums : \A var1 \in Quorums : \A var2 \in FinNat : (Fluent29_26[var2][var2]) => (~(var0 = var1))
+  Fluent29_26[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 2] = TRUE
+\A var0 \in Server : \A var1 \in Quorums : \A var2 \in FinNat : (Fluent29_19[var2][var2]) => (~(var0 \in var1))
+  Fluent29_19[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 3] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->ClientRequestn3NUM2 + T4->GetEntriesn2n1 + T5->BecomeLeadern2_n1n2_NUM3 + T6->CommitEntryn2_n1n2_NUM1NUM1NUM1)
+Formula synth batch: 2
+Total # workers: 26
+# workers using: 10
+First worker finished, shutdown count is 569.877s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 759.855 seconds
+\A var0 \in FinNat : (Fluent31_4[var0]) => (~(Fluent30_4[var0]))
+  Fluent30_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent31_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+\A var0 \in FinNat : (Fluent31_0[var0]) => (~(Fluent30_0[var0]))
+  Fluent30_0[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent31_0[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+\A var0 \in FinNat : (Fluent30_14[var0]) => (~(Fluent31_14[var0]))
+  Fluent31_14[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent30_14[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+\A var0 \in FinNat : (Fluent30_23[var0]) => (~(Fluent31_23[var0]))
+  Fluent30_23[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent31_23[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+\A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+  Fluent30_9[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+  Fluent31_9[FinNat, Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+  Fluent30_9[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+  Fluent31_9[FinNat, Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 11.094 seconds
+Current partial assumption:
+/\ \A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+Round 19 took 1866.142 seconds
+
+Round 20
+-------
+TLC neg trace generation time: 249.007 seconds
+# neg traces: 14
+# min neg traces: 12
+partial neg trace generation time: 7.142 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM0 + T3->ClientRequestn2NUM0 + T4->GetEntriesn3n2 + T5->CommitEntryn2_n2n3_NUM1NUM0NUM0 + T6->RollbackEntriesn2n1 + T7->GetEntriesn2n1 + T8->CommitEntryn2_n1n2_NUM1NUM1NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+  Fluent25_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent26_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.001 seconds
+Current partial assumption:
+/\ \A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+Round 21 took 258.482 seconds
+
+Round 21
+-------
+TLC neg trace generation time: 289.729 seconds
+# neg traces: 278
+# min neg traces: 100
+partial neg trace generation time: 92.685 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM3 + T7->RollbackEntriesn1n2 + T8->GetEntriesn1n2 + T9->CommitEntryn1_n1n2_NUM1NUM2NUM3)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+  Fluent12_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent11_15[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+Round 22 took 407.15 seconds
+
+Round 22
+-------
+TLC neg trace generation time: 287.513 seconds
+# neg traces: 40
+# min neg traces: 40
+partial neg trace generation time: 37.88 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM2 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T7->RollbackEntriesn1n2 + T8->ClientRequestn1NUM2 + T9->CommitEntryn1_n1n2_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 306.48s
+Killing 5 incomplete formula synth workers
+Formula synthesis complete in 408.707 seconds
+\A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+  Fluent32_15[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent33_15[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE
+      ClientRequest[] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+  Fluent32_15[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent33_15[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE
+      ClientRequest[] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 12.044 seconds
+Current partial assumption:
+/\ \A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+Round 22 took 1055.304 seconds
+
+Round 23
+-------
+TLC neg trace generation time: 273.255 seconds
+# neg traces: 40
+# min neg traces: 40
+partial neg trace generation time: 34.988 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->GetEntriesn2n1 + T4->BecomeLeadern1_n1n3_NUM2 + T5->ClientRequestn3NUM2 + T6->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T7->RollbackEntriesn1n3 + T8->ClientRequestn1NUM2 + T9->CommitEntryn1_n1n3_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->GetEntriesn2n1 + T4->BecomeLeadern1_n1n3_NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM2 + T3->GetEntriesn2n1 + T4->BecomeLeadern1_n1n3_NUM2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 453.717s
+Killing 7 incomplete formula synth workers
+Formula synthesis complete in 605.073 seconds
+\A var0 \in FinNat : \E var1 \in Server : \A var2 \in Server : (Fluent34_4[var0][var2]) => (var1 = var2)
+  Fluent34_4[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : \E var1 \in Server : \A var2 \in Server : (Fluent34_4[var0][var2]) => (var1 = var2)
+  Fluent34_4[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 13.432 seconds
+Current partial assumption:
+/\ \A var0 \in Server : \A var1 \in FinNat : (Fluent31_9[var1][var0]) => (Fluent30_9[var1][var0])
+/\ \A var0 \in FinNat : \E var1 \in Server : \A var2 \in Server : (Fluent34_4[var0][var2]) => (var1 = var2)
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent11_15[var0]) => (Fluent12_15[var0])
+Round 23 took 1235.909 seconds
+
+Round 24
+-------
+TLC neg trace generation time: 104.021 seconds
+# neg traces: 24
+# min neg traces: 20
+partial neg trace generation time: 25.014 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T7->RollbackEntriesn3n2 + T8->GetEntriesn3n2 + T9->BecomeLeadern2_n2n3_NUM4 + T10->CommitEntryn2_n2n3_NUM1NUM2NUM2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM3NUM3)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 339.108s
+Killing 3 incomplete formula synth workers
+Formula synthesis complete in 452.159 seconds
+\A var0 \in FinNat : (Fluent36_2[var0]) => (~(Fluent35_2[var0]))
+  Fluent36_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent35_2[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in FinNat : (Fluent35_4[var0]) => (~(Fluent36_4[var0]))
+  Fluent35_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent36_4[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in FinNat : (Fluent36_14[var0]) => (~(Fluent35_14[var0]))
+  Fluent36_14[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent35_14[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent35_22[var1][var0]) => (Fluent36_22[var1][var0])
+  Fluent35_22[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 1] = TRUE
+  Fluent36_22[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 1] = TRUE
+\A var0 \in Server : \A var1 \in FinNat : (Fluent36_18[var0][var1]) => (~(Fluent35_18[var0][var1]))
+  Fluent35_18[Server, FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[0, 1] = TRUE
+  Fluent36_18[Server, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[0, 4] = TRUE
+\A var0 \in Server : \A var1 \in FinNat : \A var2 \in Server : (Fluent35_10[var1][var1]) => (var2 = var0)
+  Fluent35_10[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3, 2] = TRUE
+\A var0 \in Server : \A var1 \in Quorums : \A var2 \in FinNat : (Fluent35_19[var2][var2]) => (var0 \in var1)
+  Fluent35_19[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 3] = TRUE
+
+new pos trace(s):
+PT5 (PosTrace): (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT7 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT2 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 1032.744s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 1377.08 seconds
+\A var0 \in FinNat : (Fluent37_0[var0]) => (Fluent36_0[var0])
+  Fluent36_0[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE (mutexFl)
+  Fluent37_0[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+\A var0 \in FinNat : (Fluent37_2[var0]) => (Fluent36_2[var0])
+  Fluent36_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE (mutexFl)
+  Fluent37_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+\A var0 \in FinNat : (Fluent37_16[var0]) => (Fluent36_16[var0])
+  Fluent37_16[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+  Fluent36_16[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE (mutexFl)
+\A var0 \in Quorums : \A var1 \in FinNat : (Fluent37_25[var1][var0]) => (Fluent36_25[var1])
+  Fluent37_25[FinNat, Quorums]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 1] = TRUE
+  Fluent36_25[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE (mutexFl)
+\A var0 \in Server : \A var1 \in FinNat : (Fluent37_10[var1][var0]) => (~(Fluent36_10[var1]))
+  Fluent37_10[FinNat, Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[4, 0] = TRUE
+  Fluent36_10[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+\A var0 \in Server : \A var1 \in FinNat : (Fluent37_1[var0][var1]) => (~(Fluent36_1[var0][var1]))
+  Fluent37_1[Server, FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0, 2] = FALSE (mutexFl)
+  Fluent36_1[Server, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[0, 4] = TRUE
+\A var0 \in Quorums : \A var1 \in Server : \A var2 \in FinNat : (Fluent36_21[var2]) => ((Fluent37_21[var2]) => (var1 \in var0))
+  Fluent37_21[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent36_21[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+\A var0 \in Server : \A var1 \in Quorums : \A var2 \in FinNat : (Fluent37_19[var2]) => ((Fluent36_19[var2]) => (var0 \in var1))
+  Fluent36_19[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent37_19[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+new pos trace(s):
+PT15 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 1590.0s
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 2120.072 seconds
+\A var0 \in FinNat : (Fluent37_2[var0]) => (~(Fluent38_2[var0]))
+  Fluent37_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE
+      GetEntries[] = TRUE
+  Fluent38_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+\A var0 \in FinNat : (Fluent37_24[var0]) => (~(Fluent38_24[var0]))
+  Fluent38_24[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE
+      GetEntries[] = TRUE
+  Fluent37_24[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+\A var0 \in FinNat : (Fluent37_0[var0]) => (~(Fluent38_0[var0][var0]))
+  Fluent38_0[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 4] = TRUE
+  Fluent37_0[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE (mutexFl)
+\A var0 \in Server : \A var1 \in FinNat : (Fluent37_1[var0]) => (~(Fluent38_1[var1][var1]))
+  Fluent37_1[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[0] = TRUE
+  Fluent38_1[FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[2, 3] = TRUE
+\A var0 \in Server : \A var1 \in FinNat : (Fluent37_18[var0]) => (~(Fluent38_18[var0][var1][var1]))
+  Fluent37_18[Server]
+    initially: FALSE
+    flActions:
+      GetEntries[1] = TRUE
+  Fluent38_18[Server, FinNat, FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[0, 2, 4] = TRUE
+\A var0 \in Server : \A var1 \in Server : \A var2 \in FinNat : (Fluent38_5[var2]) => ((Fluent37_5[var2]) => (var0 = var1))
+  Fluent37_5[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent38_5[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE
+      GetEntries[] = TRUE
+
+new pos trace(s):
+PT20 (PosTrace): (T0->GetEntriesn1n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT19 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->CommitEntryn1_n1n2_NUM2NUM2NUM2)
+PT17 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+PT21 (PosTrace): (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 1935.264s
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 2580.396 seconds
+\A var0 \in FinNat : (~(Fluent39_2[var0])) => ((Fluent40_2[var0]) => (~(Fluent38_2[var0])))
+  Fluent38_2[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent39_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE (mutexFl)
+  Fluent40_2[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+\A var0 \in FinNat : (Fluent40_24[var0]) => ((Fluent39_24[var0]) => (~(Fluent38_24[var0])))
+  Fluent39_24[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[3] = TRUE
+  Fluent38_24[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent40_24[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE (mutexFl)
+\A var0 \in FinNat : (Fluent38_16[var0]) => ((Fluent40_16[var0]) => (~(Fluent39_16[var0])))
+  Fluent38_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = FALSE (mutexFl)
+  Fluent39_16[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent40_16[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+new pos trace(s):
+PT24 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T3->BecomeLeadern1_n1n2_NUM2 + T4->ClientRequestn1NUM2)
+PT23 (PosTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T3->BecomeLeadern1_n1n2_NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->ClientRequestn2NUM2 + T4->GetEntriesn3n1 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1)
+Formula synth batch: 5
+Total # workers: 24
+# workers using: 10
+First worker finished, shutdown count is 3639.705s
+Killing 6 incomplete formula synth workers
+Formula synthesis complete in 4853.054 seconds
+\A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+  Fluent39_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent40_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[] = FALSE
+      CommitEntry[3] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+  Fluent39_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent40_2[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[] = FALSE
+      CommitEntry[3] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 17.217 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+Round 24 took 11867.314 seconds
+
+Round 25
+-------
+TLC neg trace generation time: 771.376 seconds
+# neg traces: 56
+# min neg traces: 48
+partial neg trace generation time: 36.346 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern3_n2n3_NUM0 + T3->ClientRequestn3NUM0 + T4->GetEntriesn2n3 + T5->CommitEntryn3_n2n3_NUM1NUM0NUM1 + T6->BecomeLeadern2_n2n3_NUM1 + T7->RollbackEntriesn2n1 + T8->ClientRequestn2NUM1 + T9->CommitEntryn1_n1n2_NUM1NUM1NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+  Fluent32_15[FinNat]
+    initially: FALSE
+    flActions:
+      ClientRequest[1] = TRUE
+  Fluent33_15[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE
+      ClientRequest[] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+Round 26 took 812.277 seconds
+
+Round 26
+-------
+TLC neg trace generation time: 2655.475 seconds
+# neg traces: 18
+# min neg traces: 18
+partial neg trace generation time: 11.071 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n3_NUM1 + T1->BecomeLeadern2_n2n3_NUM0 + T2->ClientRequestn2NUM0 + T3->GetEntriesn3n2 + T4->CommitEntryn3_n2n3_NUM1NUM0NUM1 + T5->BecomeLeadern3_n1n2n3_NUM1 + T6->ClientRequestn1NUM1 + T7->RollbackEntriesn3n1 + T8->GetEntriesn3n1 + T9->CommitEntryn1_n1n3_NUM1NUM1NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+  Fluent17_11[Server]
+    initially: FALSE
+    flActions:
+      CommitEntry[0] = TRUE
+      BecomeLeader[0] = TRUE (mutexFl)
+  Fluent18_11[Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[0] = TRUE (mutexFl)
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+Round 27 took 2668.795 seconds
+
+Round 27
+-------
+TLC neg trace generation time: 2685.029 seconds
+# neg traces: 60
+# min neg traces: 60
+partial neg trace generation time: 58.689 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn3n1 + T3->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T4->BecomeLeadern3_n1n3_NUM2 + T5->ClientRequestn2NUM2 + T6->RollbackEntriesn3n2 + T7->GetEntriesn3n2 + T8->CommitEntryn3_n2n3_NUM1NUM2NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+  Fluent8_4[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+  Fluent7_4[FinNat]
+    initially: FALSE
+    flActions:
+      CommitEntry[4] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+Round 28 took 2748.748 seconds
+
+Round 28
+-------
+TLC neg trace generation time: 6274.813 seconds
+# neg traces: 80
+# min neg traces: 80
+partial neg trace generation time: 94.277 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn3n1 + T3->CommitEntryn1_n1n3_NUM1NUM1NUM1 + T4->BecomeLeadern3_n1n3_NUM2 + T5->ClientRequestn2NUM2 + T6->RollbackEntriesn3n2 + T7->GetEntriesn3n2 + T8->CommitEntryn3_n2n3_NUM1NUM2NUM1)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+  Fluent27_16[FinNat, Server]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2, 0] = TRUE
+  Fluent28_16[FinNat, Server]
+    initially: FALSE
+    flActions:
+      ClientRequest[1, 0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.0 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+Round 29 took 6376.733 seconds
+
+Round 29
+-------
+TLC neg trace generation time: 3850.903 seconds
+# neg traces: 12
+# min neg traces: 12
+partial neg trace generation time: 12.311 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n2n3_NUM0 + T2->ClientRequestn2NUM0 + T3->GetEntriesn3n2 + T4->CommitEntryn2_n2n3_NUM1NUM0NUM0 + T5->BecomeLeadern2_n1n2_NUM1 + T6->ClientRequestn1NUM1 + T7->RollbackEntriesn2n1 + T8->GetEntriesn2n1 + T9->CommitEntryn2_n1n2_NUM1NUM1NUM0)
+
+The following formula (that was removed from minimization) eliminates the neg trace:
+\A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+  Fluent25_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = FALSE (mutexFl)
+  Fluent26_13[FinNat]
+    initially: FALSE
+    flActions:
+      BecomeLeader[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.001 seconds
+Current partial assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+Round 30 took 3866.636 seconds
+
+Round 30
+-------
+TLC neg trace generation time: 7200.166 seconds
+Round 30 took 7200.178 seconds
+
+The following formula is a separating assumption:
+/\ \A var0 \in FinNat : (Fluent39_2[var0]) => (~(Fluent40_2[var0]))
+/\ \A var0 \in FinNat : \A var1 \in Server : (Fluent28_16[var0][var1]) => (Fluent27_16[var0][var1])
+/\ \A var0 \in FinNat : \A var1 \in FinNat : (~(Fluent25_13[var0])) => ((Fluent26_13[var1]) => (var1 <= var0))
+/\ \A var0 \in Server : (Fluent17_11[var0]) => (Fluent18_11[var0])
+/\ \A var0 \in FinNat : (Fluent32_15[var0]) => (Fluent33_15[var0])
+/\ \A var0 \in FinNat : (Fluent7_4[var0]) => (Fluent8_4[var0])
+    69274.36 real    375018.20 user      4480.98 sys

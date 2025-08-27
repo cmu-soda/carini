@@ -1,0 +1,368 @@
+idardik [~/Documents/CMU/compositional_ii/recomp-verify/examples/client_server_db_ae/cust_decomp2] $ time ./run_D0.sh
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Round 1
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->ServerProcessDbResponsen1id1resp1 + T1->ReceiveResponsen1resp1)
+Formula synthesis info:
+  overall (multithread) time: 13.999 seconds
+  winning worker id: 42
+  winning worker time: 13.979 seconds
+Synthesized: \A var0 \in Node : Fluent0[var0]
+Fluent0:
+  initially: TRUE
+  init:
+  term: ServerProcessDbResponse
+  paramsMap: ServerProcessDbResponse: [0]
+
+new pos traces:
+PT2 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->ServerProcessDbResponsen1id1resp1)
+Formula synthesis info:
+  overall (multithread) time: 25.599 seconds
+  winning worker id: 16
+  winning worker time: 25.596 seconds
+Synthesized: \A var0 \in DbRequestId : (Fluent1[var0]) => (Fluent0[var0])
+Fluent1:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [0]
+Fluent0:
+  initially: TRUE
+  init:
+  term: ServerProcessDbResponse
+  paramsMap: ServerProcessDbResponse: [1]
+The formula is an invariant! Moving to the next round.
+Round 1 took 82.713 seconds
+
+Round 2
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->DbProcessRequestid1req1resp1 + T1->ServerProcessDbResponsen1id1resp1 + T2->ReceiveResponsen1resp1)
+Formula synthesis info:
+  overall (multithread) time: 29.289 seconds
+  winning worker id: 42
+  winning worker time: 29.287 seconds
+Synthesized: \A var0 \in Node : (Fluent2[var0]) => (Fluent3[var0])
+Fluent3:
+  initially: FALSE
+  init: ServerProcessRequest
+  term:
+  paramsMap: ServerProcessRequest: [0]
+Fluent2:
+  initially: FALSE
+  init: ServerProcessDbResponse
+  term:
+  paramsMap: ServerProcessDbResponse: [0]
+The formula is an invariant! Moving to the next round.
+Round 2 took 73.497 seconds
+
+Round 3
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->ServerProcessDbResponsen1id1resp2 + T4->ReceiveResponsen1resp2)
+Formula synthesis info:
+  overall (multithread) time: 21.165 seconds
+  winning worker id: 1
+  winning worker time: 21.159 seconds
+Synthesized: \E var0 \in Response : Fluent4[var0]
+Fluent4:
+  initially: TRUE
+  init:
+  term: ServerProcessDbResponse, DbProcessRequest
+  paramsMap: ServerProcessDbResponse: [2]
+             DbProcessRequest: [2]
+
+new pos traces:
+PT3 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->DbProcessRequestid1req1resp2)
+Formula synthesis info:
+  overall (multithread) time: 67.854 seconds
+  winning worker id: 2
+  winning worker time: 67.851 seconds
+Synthesized: \A var0 \in Response : (Fluent5[var0]) => (Fluent4[var0])
+Fluent5:
+  initially: FALSE
+  init: ServerProcessDbResponse
+  term:
+  paramsMap: ServerProcessDbResponse: [2]
+Fluent4:
+  initially: FALSE
+  init: DbProcessRequest
+  term:
+  paramsMap: DbProcessRequest: [2]
+The formula is an invariant! Moving to the next round.
+Round 3 took 135.669 seconds
+
+Round 4
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req2 + T1->DbProcessRequestid1req1resp1 + T2->ServerProcessRequestn1req2id1 + T3->ServerProcessDbResponsen1id1resp1 + T4->ReceiveResponsen1resp1)
+Formula synthesis info:
+  overall (multithread) time: 85.345 seconds
+  winning worker id: 54
+  winning worker time: 85.343 seconds
+Synthesized: \A var0 \in Request : (Fluent6[var0]) => (Fluent7[var0])
+Fluent7:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [1]
+Fluent6:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [1]
+The formula is an invariant! Moving to the next round.
+Round 4 took 133.917 seconds
+
+Round 5
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->NewRequestn2req2 + T4->ServerProcessRequestn2req2id1 + T5->ServerProcessDbResponsen2id1resp1 + T6->ReceiveResponsen2resp1)
+Formula synthesis info:
+  overall (multithread) time: 27.451 seconds
+  winning worker id: 49
+  winning worker time: 27.447 seconds
+Synthesized: \E var0 \in Node : Fluent8[var0]
+Fluent8:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0]
+
+new pos traces:
+PT4 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->NewRequestn2req1 + T3->ServerProcessRequestn2req1id2)
+Formula synthesis info:
+  overall (multithread) time: 35.513 seconds
+  winning worker id: 45
+  winning worker time: 35.501 seconds
+Synthesized: \A var0 \in DbRequestId : \E var1 \in Node : Fluent8[var1][var0]
+Fluent8:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0,2]
+The formula is an invariant! Moving to the next round.
+Round 5 took 120.073 seconds
+
+Round 6
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->NewRequestn2req2 + T4->ServerProcessRequestn2req2id2 + T5->ServerProcessDbResponsen2id1resp1 + T6->ReceiveResponsen2resp1)
+Formula synthesis info:
+  overall (multithread) time: 223.277 seconds
+  winning worker id: 42
+  winning worker time: 223.257 seconds
+Synthesized: (\E var0 \in Node : Fluent9[var0]) => (\E var0 \in Node : Fluent10[var0])
+Fluent9:
+  initially: FALSE
+  init: ServerProcessDbResponse
+  term:
+  paramsMap: ServerProcessDbResponse: [0]
+Fluent10:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0]
+
+new pos traces:
+PT5 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->NewRequestn2req1 + T4->ServerProcessRequestn2req1id2 + T5->ServerProcessDbResponsen1id1resp1)
+Formula synthesis info:
+  overall (multithread) time: 402.729 seconds
+  winning worker id: 20
+  winning worker time: 402.713 seconds
+Synthesized: \E var0 \in Request : \A var1 \in Node : (Fluent9[var1][var0]) => (Fluent10[var1])
+Fluent9:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0,1]
+Fluent10:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0]
+
+new pos traces:
+PT6 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->NewRequestn2req2 + T3->ServerProcessRequestn2req2id2)
+Formula synthesis info:
+  overall (multithread) time: 661.983 seconds
+  winning worker id: 59
+  winning worker time: 661.966 seconds
+Synthesized: \A var0 \in DbRequestId : \A var1 \in Node : (Fluent10[var0][var1]) => (Fluent9[var1][var0])
+Fluent9:
+  initially: TRUE
+  init:
+  term: ServerProcessDbResponse
+  paramsMap: ServerProcessDbResponse: [0,1]
+Fluent10:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [2,0]
+The formula is an invariant! Moving to the next round.
+Round 6 took 1380.474 seconds
+
+Round 7
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid2req1resp1 + T3->NewRequestn2req2 + T4->ServerProcessRequestn2req2id2 + T5->ServerProcessDbResponsen2id2resp1 + T6->ReceiveResponsen2resp1)
+Formula synthesis info:
+  overall (multithread) time: 565.253 seconds
+  winning worker id: 32
+  winning worker time: 565.243 seconds
+Synthesized: \A var0 \in Request : \A var1 \in DbRequestId : (Fluent11[var1][var0]) => (Fluent12[var1][var0])
+Fluent12:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [0,1]
+Fluent11:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [2,1]
+The formula is an invariant! Moving to the next round.
+Round 7 took 654.296 seconds
+
+Round 8
+-------
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->NewRequestn2req2 + T4->ServerProcessRequestn2req2id2 + T5->DbProcessRequestid2req2resp2 + T6->ServerProcessDbResponsen2id2resp1 + T7->ReceiveResponsen2resp1)
+Formula synthesis info:
+  overall (multithread) time: 46.886 seconds
+  winning worker id: 28
+  winning worker time: 46.882 seconds
+Synthesized: \E var0 \in DbRequestId : Fluent13[var0]
+Fluent13:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [0]
+
+new pos traces:
+PT7 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessRequestn1req1id2 + T3->DbProcessRequestid1req1resp1 + T4->DbProcessRequestid2req1resp1)
+Formula synthesis info:
+  overall (multithread) time: 290.589 seconds
+  winning worker id: 30
+  winning worker time: 290.575 seconds
+Synthesized: \E var0 \in Node : \E var1 \in DbRequestId : (Fluent14[var1]) => (Fluent13[var0])
+Fluent14:
+  initially: FALSE
+  init: DbProcessRequest
+  term:
+  paramsMap: DbProcessRequest: [0]
+Fluent13:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0]
+
+new pos traces:
+PT8 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->NewRequestn2req1 + T4->ServerProcessRequestn2req1id2 + T5->DbProcessRequestid2req1resp1)
+Formula synthesis info:
+  overall (multithread) time: 471.653 seconds
+  winning worker id: 8
+  winning worker time: 471.637 seconds
+Synthesized: (\E var0 \in DbRequestId : Fluent13[var0]) => (\E var0 \in DbRequestId : Fluent14[var0])
+Fluent14:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [0]
+Fluent13:
+  initially: FALSE
+  init: ServerProcessDbResponse
+  term:
+  paramsMap: ServerProcessDbResponse: [1]
+
+new pos traces:
+PT9 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessRequestn1req1id2 + T3->DbProcessRequestid2req1resp1 + T4->DbProcessRequestid1req1resp1 + T5->ServerProcessDbResponsen1id1resp1)
+Formula synthesis info:
+  overall (multithread) time: 588.957 seconds
+  winning worker id: 17
+  winning worker time: 588.935 seconds
+Synthesized: \A var0 \in Response : \E var1 \in Response : (Fluent14[var0]) => (Fluent13[var1])
+Fluent14:
+  initially: FALSE
+  init: ServerProcessDbResponse
+  term:
+  paramsMap: ServerProcessDbResponse: [2]
+Fluent13:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [2]
+
+new pos traces:
+PT10 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->DbProcessRequestid1req1resp2 + T4->ServerProcessDbResponsen1id1resp1)
+Formula synthesis info:
+  overall (multithread) time: 561.553 seconds
+  winning worker id: 47
+  winning worker time: 561.533 seconds
+Synthesized: \E var0 \in Response : (Fluent13[var0]) => (\E var1 \in Node : Fluent14[var1])
+Fluent14:
+  initially: TRUE
+  init:
+  term: ServerProcessRequest
+  paramsMap: ServerProcessRequest: [0]
+Fluent13:
+  initially: FALSE
+  init: DbProcessRequest
+  term:
+  paramsMap: DbProcessRequest: [2]
+
+new pos traces:
+PT11 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp1 + T3->NewRequestn2req1 + T4->ServerProcessRequestn2req1id2 + T5->DbProcessRequestid1req1resp2)
+Formula synthesis info:
+  overall (multithread) time: 883.437 seconds
+  winning worker id: 16
+  winning worker time: 883.42 seconds
+Synthesized: \E var0 \in DbRequestId : (Fluent13[var0]) => (\E var1 \in Response : Fluent14[var1])
+Fluent14:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [2]
+Fluent13:
+  initially: FALSE
+  init: DbProcessRequest
+  term:
+  paramsMap: DbProcessRequest: [0]
+
+new pos traces:
+PT12 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessRequestn1req1id2 + T3->DbProcessRequestid1req1resp1 + T4->DbProcessRequestid2req1resp2)
+Formula synthesis info:
+  overall (multithread) time: 1385.479 seconds
+  winning worker id: 9
+  winning worker time: 1385.463 seconds
+Synthesized: \A var0 \in Response : \A var1 \in DbRequestId : (Fluent14[var0][var1]) => (Fluent13[var0][var1])
+Fluent14:
+  initially: TRUE
+  init:
+  term: DbProcessRequest
+  paramsMap: DbProcessRequest: [2,0]
+Fluent13:
+  initially: TRUE
+  init:
+  term: ServerProcessDbResponse
+  paramsMap: ServerProcessDbResponse: [2,1]
+The formula is an invariant! Moving to the next round.
+Round 8 took 4410.288 seconds
+
+Round 9
+-------
+attempting to eliminate the following neg trace this round:
+null (null): null
+Round 9 took 106.838 seconds
+
+The following formula is a separating assumption:
+/\ \A var0 \in DbRequestId : (Fluent1[var0]) => (Fluent0[var0])
+/\ \A var0 \in Node : (Fluent2[var0]) => (Fluent3[var0])
+/\ \A var0 \in Response : (Fluent5[var0]) => (Fluent4[var0])
+/\ \A var0 \in Request : (Fluent6[var0]) => (Fluent7[var0])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : Fluent8[var1][var0]
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent10[var0][var1]) => (Fluent9[var1][var0])
+/\ \A var0 \in Request : \A var1 \in DbRequestId : (Fluent11[var1][var0]) => (Fluent12[var1][var0])
+/\ \A var0 \in Response : \A var1 \in DbRequestId : (Fluent14[var0][var1]) => (Fluent13[var0][var1])
+./run_D0.sh  13583.72s user 1584.58s system 212% cpu 1:58:57.82 total

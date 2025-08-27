@@ -3,13 +3,14 @@
 
 CONSTANTS Key, Value, Node
 
-VARIABLES owner, Fluent2, Fluent1, Fluent0, table
+VARIABLES owner, Fluent3_7, Fluent2_7, Fluent4_24, Fluent5_24, table
 
-vars == <<owner, Fluent2, Fluent1, Fluent0, table>>
+vars == <<owner, Fluent3_7, Fluent2_7, Fluent4_24, Fluent5_24, table>>
 
 CandSep ==
-/\ \A var0 \in Key : \E var1 \in Node : Fluent0[var1][var0]
-/\ \A var0 \in Key : (Fluent2[var0]) => (Fluent1[var0])
+/\ /\ \A var0 \in Node : (Fluent4_24[var0]) => (Fluent5_24[var0])
+/\ \A var0 \in Key : (Fluent3_7[var0]) => (Fluent2_7[var0])
+/\ UNSAT
 
 Nil == "nil"
 
@@ -17,24 +18,24 @@ Reshard(k,v,n_old,n_new) ==
 /\ table[n_old][k] = v
 /\ table' = [table EXCEPT![n_old][k] = Nil]
 /\ owner' = [owner EXCEPT![n_old] = (owner[n_old] \ {k})]
-/\ Fluent2' = [Fluent2 EXCEPT![k] = FALSE]
-/\ Fluent0' = [Fluent0 EXCEPT![n_old][k] = TRUE]
-/\ UNCHANGED<<Fluent1>>
+/\ Fluent5_24' = [Fluent5_24 EXCEPT ![n_new] = TRUE]
+/\ Fluent2_7' = [Fluent2_7 EXCEPT ![k] = TRUE]
+/\ UNCHANGED<<Fluent4_24, Fluent3_7>>
 /\ CandSep'
 
 RecvTransferMsg(n,k,v) ==
 /\ table' = [table EXCEPT![n][k] = v]
 /\ owner' = [owner EXCEPT![n] = (owner[n] \cup {k})]
-/\ Fluent1' = [Fluent1 EXCEPT![k] = FALSE]
-/\ Fluent0' = [Fluent0 EXCEPT![n][k] = FALSE]
-/\ UNCHANGED<<Fluent2>>
+/\ Fluent4_24' = [Fluent4_24 EXCEPT ![n] = TRUE]
+/\ Fluent3_7' = [Fluent3_7 EXCEPT ![k] = TRUE]
+/\ UNCHANGED<<Fluent5_24, Fluent2_7>>
 /\ CandSep'
 
 Put(n,k,v) ==
 /\ (k \in owner[n])
 /\ table' = [table EXCEPT![n][k] = v]
 /\ UNCHANGED <<owner>>
-/\ UNCHANGED<<Fluent2, Fluent1, Fluent0>>
+/\ UNCHANGED<<Fluent4_24, Fluent5_24, Fluent3_7, Fluent2_7>>
 /\ CandSep'
 
 Next ==
@@ -46,9 +47,10 @@ Init ==
 /\ table = [n \in Node |-> [k \in Key |-> Nil]]
 /\ (owner \in [Node -> SUBSET(Key)])
 /\ (\A i,j \in Node : (\A k \in Key : (((k \in owner[i]) /\ (k \in owner[j])) => i = j)))
-/\ Fluent2 = [ x0 \in Key |-> TRUE]
-/\ Fluent1 = [ x0 \in Key |-> TRUE]
-/\ Fluent0 = [ x0 \in Node |-> [ x1 \in Key |-> TRUE]]
+/\ Fluent4_24 = [ x0 \in Node |-> FALSE]
+/\ Fluent5_24 = [ x0 \in Node |-> FALSE]
+/\ Fluent3_7 = [ x0 \in Key |-> FALSE]
+/\ Fluent2_7 = [ x0 \in Key |-> FALSE]
 
 Spec == (Init /\ [][Next]_vars)
 

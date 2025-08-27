@@ -55,7 +55,8 @@ RollbackEntries(i,j,idx) ==
 /\ CanRollback(i,j)
 /\ log' = [log EXCEPT![i] = SubSeq(log[i],1,(Len(log[i]) - 1))]
 
-BecomeLeader(i,voteQuorum,newTerm) ==
+BecomeLeader(i,voteQuorum,newTerm,idx) ==
+/\ idx = Len(log[i]) + 1
 /\ (i \in voteQuorum)
 /\ (\A v \in voteQuorum : CanVoteForOplog(v,i,newTerm))
 /\ UNCHANGED <<log>>
@@ -76,7 +77,7 @@ Next ==
 \/ (\E s \in Server : (\E t,idx \in FinNat : ClientRequest(s,t,idx)))
 \/ (\E s,t \in Server : (\E idx \in FinNat : GetEntries(s,t,idx)))
 \/ (\E s,t \in Server : (\E idx \in FinNat : RollbackEntries(s,t,idx)))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
+\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm,idx \in FinNat : BecomeLeader(s,Q,newTerm,idx))))
 \/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,Q,ind,curTerm)))))
 
 Spec == (Init /\ [][Next]_vars)

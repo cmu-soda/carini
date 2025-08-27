@@ -1,0 +1,67 @@
+Building the LTS for the initial trace (D1.tla)
+Built the LTS in 0.34s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.148s
+
+Round 1
+-------
+TLC neg trace generation time: 0.73 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.258 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->ServerProcessDbResponsen1id1resp1 + T1->ReceiveResponsen1resp1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->ServerProcessRequestn2req3id2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->ServerProcessDbResponsen1id1resp1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.836 seconds
+\A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+  Fluent2_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE (0)
+  Fluent1_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE (0)
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+  Fluent2_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE (0)
+  Fluent1_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE (0)
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.001 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+Round 1 took 8.018 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 0.87 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.501 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessDbResponsen1id1resp1 + T3->ReceiveResponsen1resp1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessRequestn2req3id2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessDbResponsen1id1resp1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10

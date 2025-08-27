@@ -1,0 +1,48 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 94 and seed -8075041184235265313 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 20173] (Mac OS X 14.7.6 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/sharded_kv/OwnerTransfer_hist.tla
+Semantic processing of module OwnerTransfer_hist
+Starting... (2025-07-16 14:52:25)
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Computed 8 initial states...
+Finished computing initial states: 9 distinct states generated at 2025-07-16 14:52:25.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ owner = (N1 :> {} @@ N2 :> {K2})
+/\ transfer_msg = {}
+/\ Fluent15_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> FALSE))
+/\ Fluent14_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> FALSE))
+
+State 2: <Put line 28, col 1 to line 32, col 16 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {} @@ N2 :> {K2})
+/\ transfer_msg = {}
+/\ Fluent15_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> TRUE))
+/\ Fluent14_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> TRUE))
+
+State 3: <Reshard line 16, col 1 to line 19, col 27 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {} @@ N2 :> {K2})
+/\ transfer_msg = {<<N1, K2, V1>>}
+/\ Fluent15_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> TRUE))
+/\ Fluent14_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> FALSE))
+
+State 4: <RecvTransferMsg line 22, col 1 to line 25, col 40 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K2} @@ N2 :> {K2})
+/\ transfer_msg = {}
+/\ Fluent15_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> TRUE))
+/\ Fluent14_11 = (N1 :> (K1 :> FALSE @@ K2 :> FALSE) @@ N2 :> (K1 :> FALSE @@ K2 :> FALSE))
+
+State 5: <Put line 28, col 1 to line 32, col 16 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K2} @@ N2 :> {K2})
+/\ transfer_msg = {}
+/\ Fluent15_11 = (N1 :> (K1 :> FALSE @@ K2 :> TRUE) @@ N2 :> (K1 :> FALSE @@ K2 :> TRUE))
+/\ Fluent14_11 = (N1 :> (K1 :> FALSE @@ K2 :> TRUE) @@ N2 :> (K1 :> FALSE @@ K2 :> FALSE))
+
+44522 states generated, 6420 distinct states found, 4285 states left on queue.
+The depth of the complete state graph search is 6.
+The average outdegree of the complete state graph is 3 (minimum is 0, the maximum 17 and the 95th percentile is 9).
+Finished in 00s at (2025-07-16 14:52:26)

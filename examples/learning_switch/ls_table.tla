@@ -11,6 +11,8 @@ VARIABLE
     \* @type: Set(<<Str, Str, Str>>);
     table
 
+vars == <<table>>
+
 
 \* @type: (Str, Str, Str, Str, Str) => Bool;
 Forward(ps,pd,sw0,sw1,nondet) ==
@@ -28,6 +30,8 @@ Next ==
 
 Init ==
     /\ table = {<<t,n1,n2>> \in (Node \X Node \X Node) : n1 = n2}
+
+Spec == Init /\ [][Next]_vars
 
 NextUnchanged == UNCHANGED <<table>>
 

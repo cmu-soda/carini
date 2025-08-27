@@ -1,0 +1,70 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 129 and seed -6761990031544457409 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 59285] (Mac OS X 14.2.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/msr/log_last/C1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Integers.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module C1_hist
+Starting... (2025-03-15 12:16:52)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-03-15 12:16:52.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ Fluent20_20 = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+/\ log = (n1 :> <<>> @@ n2 :> <<>> @@ n3 :> <<>>)
+/\ Fluent19_20 = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+
+State 2: <ClientRequest line 43, col 1 to line 46, col 27 of module C1_hist>
+/\ Fluent20_20 = ( n1 :> (0 :> TRUE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+/\ log = (n1 :> <<2>> @@ n2 :> <<>> @@ n3 :> <<>>)
+/\ Fluent19_20 = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+
+State 3: <GetEntries line 49, col 1 to line 57, col 40 of module C1_hist>
+/\ Fluent20_20 = ( n1 :> (0 :> TRUE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+/\ log = (n1 :> <<2>> @@ n2 :> <<2>> @@ n3 :> <<>>)
+/\ Fluent19_20 = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+
+State 4: <BecomeLeader line 66, col 1 to line 72, col 16 of module C1_hist>
+/\ Fluent20_20 = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+/\ log = (n1 :> <<2>> @@ n2 :> <<2>> @@ n3 :> <<>>)
+/\ Fluent19_20 = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+
+State 5: <CommitEntry line 75, col 1 to line 81, col 27 of module C1_hist>
+/\ Fluent20_20 = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE @@ 3 :> FALSE) )
+/\ log = (n1 :> <<2>> @@ n2 :> <<2>> @@ n3 :> <<>>)
+/\ Fluent19_20 = ( n1 :> (0 :> TRUE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) @@
+  n2 :> (0 :> TRUE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) @@
+  n3 :> (0 :> TRUE @@ 1 :> TRUE @@ 2 :> TRUE @@ 3 :> TRUE) )
+
+38265 states generated, 12351 distinct states found, 11099 states left on queue.
+The depth of the complete state graph search is 6.
+The average outdegree of the complete state graph is 10 (minimum is 0, the maximum 20 and the 95th percentile is 18).
+Finished in 00s at (2025-03-15 12:16:53)

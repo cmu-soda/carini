@@ -1,0 +1,69 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 36 and seed -5663825794214013551 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 18760] (Mac OS X 14.7.6 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/sharded_kv_own/OwnerTransfer_hist.tla
+Semantic processing of module OwnerTransfer_hist
+Starting... (2025-07-27 16:43:15)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-07-27 16:43:15.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ owner = (N1 :> {} @@ N2 :> {})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ transfer_msg = {}
+
+State 2: <Reshard line 16, col 1 to line 20, col 16 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {} @@ N2 :> {})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ transfer_msg = {<<N1, K1, V2>>}
+
+State 3: <Reshard line 16, col 1 to line 20, col 16 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {} @@ N2 :> {})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ transfer_msg = {<<N1, K1, V1>>, <<N1, K1, V2>>}
+
+State 4: <Reshard line 16, col 1 to line 20, col 16 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {} @@ N2 :> {})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ transfer_msg = {<<N1, K1, V1>>, <<N1, K1, V2>>, <<N2, K1, V1>>}
+
+State 5: <RecvTransferMsg line 23, col 1 to line 27, col 26 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K1} @@ N2 :> {})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> TRUE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ transfer_msg = {<<N1, K1, V2>>, <<N2, K1, V1>>}
+
+State 6: <Put line 30, col 1 to line 33, col 26 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K1} @@ N2 :> {})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> TRUE @@ N2 :> TRUE))
+/\ transfer_msg = {<<N1, K1, V2>>, <<N2, K1, V1>>}
+
+State 7: <RecvTransferMsg line 23, col 1 to line 27, col 26 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K1} @@ N2 :> {K1})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> FALSE @@ N2 :> TRUE) @@ K2 :> (N1 :> TRUE @@ N2 :> TRUE))
+/\ transfer_msg = {<<N1, K1, V2>>}
+
+State 8: <RecvTransferMsg line 23, col 1 to line 27, col 26 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K1} @@ N2 :> {K1})
+/\ Fluent46_6 = (K1 :> (N1 :> FALSE @@ N2 :> FALSE) @@ K2 :> (N1 :> FALSE @@ N2 :> FALSE))
+/\ Fluent47_6 = (K1 :> (N1 :> TRUE @@ N2 :> TRUE) @@ K2 :> (N1 :> TRUE @@ N2 :> TRUE))
+/\ transfer_msg = {}
+
+State 9: <Own line 36, col 1 to line 41, col 26 of module OwnerTransfer_hist>
+/\ owner = (N1 :> {K1} @@ N2 :> {K1, K2})
+/\ Fluent46_6 = (K1 :> (N1 :> TRUE @@ N2 :> TRUE) @@ K2 :> (N1 :> TRUE @@ N2 :> TRUE))
+/\ Fluent47_6 = (K1 :> (N1 :> TRUE @@ N2 :> TRUE) @@ K2 :> (N1 :> TRUE @@ N2 :> TRUE))
+/\ transfer_msg = {}
+
+308119 states generated, 44442 distinct states found, 29563 states left on queue.
+The depth of the complete state graph search is 9.
+The average outdegree of the complete state graph is 3 (minimum is 0, the maximum 19 and the 95th percentile is 8).
+Finished in 00s at (2025-07-27 16:43:15)

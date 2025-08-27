@@ -1,5 +1,5 @@
-//103
-//0
+//24
+//2
 open util/boolean
 open util/ordering[Idx] as IdxOrder
 open util/ordering[ParamIdx] as ParamIdxOrder
@@ -52,27 +52,33 @@ sig Implies extends Formula {
 sig FlSymAction {
     baseName : BaseName,
 
-    // actToFlParamsMap maps action-params to fluent-params
-    // in other words, actToFlParamsMap decides which of the action-params will be
+    // flToActParamsMap maps fluent-param idxs to action-param idxs.
+    // in other words, flToActParamsMap decides which of the action-params will be
     // used for setting a boolean value of the state variable (representing the
     // fluent) in the _hist TLA+ code.
-    actToFlParamsMap : set(ParamIdx->ParamIdx)
-} {
-    // domain(actToFlParamsMap) \subseteq paramIdxs(baseName)
-    actToFlParamsMap.ParamIdx in baseName.paramIdxs
+    flToActParamsMap : set(ParamIdx->ParamIdx),
 
-    // actToFlParamsMap is a function
-    all k,v1,v2 : ParamIdx | (k->v1 in actToFlParamsMap and k->v2 in actToFlParamsMap) implies (v1 = v2)
-    // actToFlParamsMap is injective
-    all k1,k2,v : ParamIdx | (k1->v in actToFlParamsMap and k2->v in actToFlParamsMap) implies (k1 = k2)
+    value : Bool, // init v. term
+    mutexFl : Bool
+} {
+    // domain(flToActParamsMap) must be a sequence of P0, P1, ... (i.e. no gaps between param numbers)
+    (no flToActParamsMap) or (P0 in flToActParamsMap.ParamIdx)
+    (flToActParamsMap.ParamIdx).*(~ParamIdxOrder/next) = flToActParamsMap.ParamIdx
+
+    // range(flToActParamsMap) \subseteq paramIdxs(baseName), i.e. the range must be valid param idxs
+    ParamIdx.flToActParamsMap in baseName.paramIdxs
+
+    // flToActParamsMap is a function
+    all k,v1,v2 : ParamIdx | (k->v1 in flToActParamsMap and k->v2 in flToActParamsMap) implies (v1 = v2)
+
+    // flToActParamsMap is injective
+    // this is an overconstraint for improving speed
+    //all k1,k2,v : ParamIdx | (k1->v in flToActParamsMap and k2->v in flToActParamsMap) implies (k1 = k2)
 }
 
 sig Fluent extends Formula {
     initially : Bool,
-    initFl : set FlSymAction,
-    termFl : set FlSymAction,
-    mutInitFl : set FlSymAction,
-    falsifyFl : set FlSymAction,
+    flActions : some FlSymAction,
 
     // vars represents the parameters (including the ordering) to the fluent itself
     vars : set(ParamIdx->Var)
@@ -80,38 +86,34 @@ sig Fluent extends Formula {
     no children
     some vars
 
+    initially = False // makes the fluent easier to read, but doesn't sacrifice expressivity (because of Not)
+
+    // each param to the fluent must be used by some fl action
+    (flActions.flToActParamsMap).ParamIdx = vars.Var
+
     // strong condition for ensuring each fluent category is mutex
-    no initFl & termFl
-    no initFl & mutInitFl
-    no initFl & falsifyFl
-    no termFl & mutInitFl
-    no termFl & falsifyFl
-    no mutInitFl & falsifyFl
-    all fl1,fl2 : (initFl+termFl+mutInitFl+falsifyFl) | (fl1.baseName & fl2.baseName != none) implies fl1 = fl2
-    some initFl + termFl + mutInitFl + falsifyFl
+    all fl1,fl2 : flActions | (some fl1.baseName & fl2.baseName) implies fl1 = fl2
 
     // vars is a function
     all p : ParamIdx, v1,v2 : Var | (p->v1 in vars and p->v2 in vars) implies (v1 = v2)
 
-    // each fluent must accept all the fluent params in vars
-    all s : (initFl+termFl+mutInitFl+falsifyFl) | ParamIdx.(s.actToFlParamsMap) = vars.Var
-
     // each action must input the same param-types to the fluent
     let flParamTypes = vars.envVarTypes |
-        all a : (initFl+termFl+mutInitFl+falsifyFl) |
+        all a : flActions |
             // for each param in the action, its type must match the fluent
-            all actIdx : a.actToFlParamsMap.ParamIdx |
-                let flIdx = actIdx.(a.actToFlParamsMap) |
+            all actIdx : ParamIdx.(a.flToActParamsMap) |
+                let flIdx = (a.flToActParamsMap).actIdx |
                     flIdx.flParamTypes = actIdx.(a.baseName.paramTypes)
 
-    // actToFlParamsMap is an injective function
-    // furthermore, when we combine actToFlParamsMap across all actions, the combination
-    // must STILL be injective
-    all x1,x2,y1,y2 : ParamIdx |
-    let allFluents = initFl+termFl+mutInitFl+falsifyFl |
-        (x1->y1 in allFluents.actToFlParamsMap and x2->y2 in allFluents.actToFlParamsMap) implies (x1->y1 = x2->y2 or (not x1=x2 and not y1=y2))
+    // constraints for improving speed, but sacrifice expressivity
+    #flActions <= 3 // at most three total fluent actions
+    #({a : flActions | a.value = True}) <= 2 // at most two True-valued fluent action
+    #({a : flActions | a.value = False}) <= 2 // at most two False-valued fluent action
 
-    initially = False // speed optimization, also makes the fluent easier to read
+    // flToActParamsMap is an injective function across all actions
+    // this is an overconstraint for improving speed
+    all x1,x2,y1,y2 : ParamIdx |
+        (x1->y1 in flActions.flToActParamsMap and x2->y2 in flActions.flToActParamsMap) implies (x1->y1 = x2->y2 or (not x1=x2 and not y1=y2))
 }
 
 sig VarEquals extends Formula {
@@ -169,7 +171,8 @@ fact {
 	no Root.(~children) // the root has no parents
 	all f : (Formula - Root) | one f.(~children) // all non-root formulas have exactly one parent
 	all f : Formula | f in Root.*children // all Formulas must be part of the overall formula
-	Fluent.(initFl+termFl+mutInitFl+falsifyFl) = FlSymAction // all FlSymActions must be in fluents
+	Fluent.flActions = FlSymAction // all FlSymActions must be in fluents
+	all f1,f2 : Fluent, a : FlSymAction | (a in f1.flActions and a in f2.flActions) implies f1 = f2 // no sharing FlSymActions
 
 	// no free vars, all vars must be used in the matrix
 	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.(lhs+rhs) + VarSetContains.(elem+theSet) + VarLTE.(lhs+rhs) |
@@ -181,10 +184,9 @@ fact {
 	all f1 : Forall, f2 : Exists | (f2 in f1.^children) implies not (f1.var = f2.var)
 	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)
 
-	// speed optimization: require lhs to not have have an Implies node
-	// we declare this here (instead of in Implies) because referring to 'children'
-	// results in an error (due to weird scoping).
-	all f : Implies | (f.left).*children not in Implies
+	// require lhs to not have have an Implies node
+ // this is an overconstraint for improving speed
+	all f : Implies | no (f.left.*children) & Implies
 
 	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form
 	some Implies // non-degenerate formulas
@@ -232,20 +234,24 @@ abstract sig Trace {
 
 // does this action initiate the fluent?
 pred isInitAct[a : Act, e : Env, f : Fluent] {
-    some s : (f.initFl+f.mutInitFl) |
-        a.baseName = s.baseName and (~(f.vars)).(~(s.actToFlParamsMap)).(a.params) in e.maps
+    // init fluents, both usual and mutex
+    (some s : f.flActions |
+        s.value = True and a.baseName = s.baseName and (~(f.vars)).(s.flToActParamsMap).(a.params) in e.maps)
+    or
+    // mutex term fluents
+    (some s : f.flActions |
+        s.mutexFl = True and s.value = False and a.baseName = s.baseName and (~(f.vars)).(s.flToActParamsMap).(a.params) not in e.maps)
 }
 
 // does this action terminate the fluent?
 pred isTermAct[a : Act, e : Env, f : Fluent] {
-    (some s : f.termFl |
-        a.baseName = s.baseName and (~(f.vars)).(~(s.actToFlParamsMap)).(a.params) in e.maps)
+    // term fluents, both usual and mutex
+    (some s : f.flActions |
+        s.value = False and a.baseName = s.baseName and (~(f.vars)).(s.flToActParamsMap).(a.params) in e.maps)
     or
-    (some s : f.mutInitFl |
-        a.baseName = s.baseName and (~(f.vars)).(~(s.actToFlParamsMap)).(a.params) not in e.maps)
-    or
-    (some s : f.falsifyFl |
-        a.baseName = s.baseName)
+    // mutex init fluents
+    (some s : f.flActions |
+        s.mutexFl = True and s.value = True and a.baseName = s.baseName and (~(f.vars)).(s.flToActParamsMap).(a.params) not in e.maps)
 }
 
 pred pushEnv[env', env : Env, v : Var, x : Atom] {
@@ -267,15 +273,14 @@ one sig EmptyTrace extends Trace {} {
 }
 
 
-fun maxUnsatIdx[t : Trace] : Idx {
-    let unsatTriples = EmptyEnv->indices[t]->Root - t.satisfies |
-    let unsatIdxs = EmptyEnv.unsatTriples.Root |
-        (IdxOrder/max)[unsatIdxs]
+fun mutInitFluents : set FlSymAction {
+	 { a : FlSymAction | a.mutexFl = True }
 }
 
-fun weightedMaxUnsatIdx[t : Trace] : set Idx {
-    let mxIdx = maxUnsatIdx[t] |
-        mxIdx.*(~IdxOrder/next)
+	// 'partial fluents' are fluents that do not update every param in the fluent (and hence, in practice,
+	// update every sort value of the missing param).
+fun partialFluents : set FlSymAction {
+	 { a : FlSymAction | some f : Fluent | a in f.flActions and a.flToActParamsMap.ParamIdx != f.vars.Var }
 }
 
 
@@ -283,27 +288,15 @@ fun weightedMaxUnsatIdx[t : Trace] : set Idx {
 run {
 	// find a formula that separates "good" traces from "bad" ones
 	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies
-	//all nt : NegTrace | EmptyEnv->(nt.lastIdx)->Root not in nt.satisfies
-	all nt : NegTrace | EmptyEnv->indices[nt]->Root not in nt.satisfies
-    //maxsome weightedMaxUnsatIdx[NegTrace]
+	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies)
 	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace
 	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals
-	minsome initFl + termFl + mutInitFl + falsifyFl // heuristic to synthesize the least complicated fluents as possible
-	softno mutInitFl // prefer initFl and termFl ( and falsifyFl) over mutInitFl
+	minsome flActions // heuristic to synthesize the least complicated fluents as possible
+	softno mutInitFluents // fewer mutex fluents
+	softno partialFluents // fewer partial fluents
 	minsome Fluent.vars // minimize the # of params for each fluent
 }
-for 9 Formula, 6 FlSymAction
-
-fact {
-/*
-    Root.children.children in Implies
-    Root.children.children.left in Fluent
-    some Root.children.children.left.initFl
-    some Root.children.children.left.falsifyFl
-    Root.children.children.right in Fluent
-    some Root.children.children.right.mutInitFl
-    */
-}
+for 9 Formula, 5 FlSymAction
 
 one sig P0, P1, P2, P3, P4 extends ParamIdx {}
 
@@ -328,13 +321,17 @@ pred isElemOfSet[e : Sort, s : Sort] {
 
 
 pred lte[lhs : Atom, rhs : Atom] {
-	let containsRel = (NUM0->NUM0 + NUM0->NUM1 + NUM0->NUM2 + NUM0->NUM3 + NUM1->NUM1 + NUM1->NUM2 + NUM1->NUM3 + NUM2->NUM2 + NUM2->NUM3 + NUM3->NUM3) |
+	let containsRel = (NUM1->NUM1 + NUM1->NUM2 + NUM1->NUM3 + NUM2->NUM2 + NUM2->NUM3 + NUM3->NUM3) |
 		(lhs->rhs) in containsRel
 }
 
 
-one sig n1, n2, n3, _n2n3_, _n1n2n3_, NUM2, NUM3, _n1n3_, _n1n2_, NUM0, NUM1 extends Atom {}
+one sig n1, n2, n3, _n2n3_, _n1n2n3_, NUM2, NUM3, _n1n3_, _n1n2_, NUM1 extends Atom {}
 
+one sig FinNat extends Sort {} {
+	atoms = NUM2 + NUM3 + NUM1
+	numericSort = False
+}
 one sig Server extends Sort {} {
 	atoms = n1 + n2 + n3
 	numericSort = False
@@ -343,89 +340,57 @@ one sig Quorums extends Sort {} {
 	atoms = _n2n3_ + _n1n2n3_ + _n1n3_ + _n1n2_
 	numericSort = False
 }
-one sig FinNat extends Sort {} {
-	atoms = NUM2 + NUM3 + NUM0 + NUM1
-	numericSort = True
-}
 
 one sig RollbackEntries extends BaseName {} {
 	paramIdxs = P0 + P1
 	paramTypes = P0->Server + P1->Server
 }
-
+one sig RollbackEntriesn1n1 extends Act {} {
+	params = (P0->n1 + P1->n1)
+}
+one sig RollbackEntriesn2n1 extends Act {} {
+	params = (P0->n2 + P1->n1)
+}
 
 one sig GetEntries extends BaseName {} {
 	paramIdxs = P0 + P1
 	paramTypes = P0->Server + P1->Server
 }
-one sig GetEntriesn1n1 extends Act {} {
-	params = (P0->n1 + P1->n1)
-}
-one sig GetEntriesn2n1 extends Act {} {
-	params = (P0->n2 + P1->n1)
-}
-one sig GetEntriesn3n1 extends Act {} {
-	params = (P0->n3 + P1->n1)
+one sig GetEntriesn3n2 extends Act {} {
+	params = (P0->n3 + P1->n2)
 }
 
 one sig BecomeLeader extends BaseName {} {
 	paramIdxs = P0 + P1 + P2
 	paramTypes = P0->Server + P1->Quorums + P2->FinNat
 }
+one sig BecomeLeadern1_n1n2n3_NUM1 extends Act {} {
+	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM1)
+}
+one sig BecomeLeadern1_n1n2n3_NUM3 extends Act {} {
+	params = (P0->n1 + P1->_n1n2n3_ + P2->NUM3)
+}
 one sig BecomeLeadern2_n2n3_NUM2 extends Act {} {
 	params = (P0->n2 + P1->_n2n3_ + P2->NUM2)
-}
-one sig BecomeLeadern3_n2n3_NUM1 extends Act {} {
-	params = (P0->n3 + P1->_n2n3_ + P2->NUM1)
-}
-one sig BecomeLeadern2_n1n2_NUM2 extends Act {} {
-	params = (P0->n2 + P1->_n1n2_ + P2->NUM2)
-}
-one sig BecomeLeadern1_n1n2_NUM3 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM3)
-}
-one sig BecomeLeadern1_n1n3_NUM3 extends Act {} {
-	params = (P0->n1 + P1->_n1n3_ + P2->NUM3)
-}
-one sig BecomeLeadern1_n1n2_NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM1)
-}
-one sig BecomeLeadern1_n1n3_NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n3_ + P2->NUM1)
-}
-one sig BecomeLeadern1_n1n2_NUM2 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM2)
 }
 
 one sig CommitEntry extends BaseName {} {
 	paramIdxs = P0 + P1 + P2 + P3 + P4
 	paramTypes = P0->Server + P1->Quorums + P2->FinNat + P3->FinNat + P4->FinNat
 }
-one sig CommitEntryn1_n1n2_NUM1NUM2NUM2 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM1 + P3->NUM2 + P4->NUM2)
+one sig CommitEntryn2_n2n3_NUM1NUM2NUM3 extends Act {} {
+	params = (P0->n2 + P1->_n2n3_ + P2->NUM1 + P3->NUM2 + P4->NUM3)
 }
-one sig CommitEntryn1_n1n2_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn1_n1n3_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n3_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn2_n1n2_NUM1NUM2NUM2 extends Act {} {
-	params = (P0->n2 + P1->_n1n2_ + P2->NUM1 + P3->NUM2 + P4->NUM2)
-}
-one sig CommitEntryn1_n1n2_NUM2NUM1NUM1 extends Act {} {
-	params = (P0->n1 + P1->_n1n2_ + P2->NUM2 + P3->NUM1 + P4->NUM1)
-}
-one sig CommitEntryn3_n2n3_NUM1NUM1NUM1 extends Act {} {
-	params = (P0->n3 + P1->_n2n3_ + P2->NUM1 + P3->NUM1 + P4->NUM1)
+one sig CommitEntryn2_n2n3_NUM1NUM2NUM2 extends Act {} {
+	params = (P0->n2 + P1->_n2n3_ + P2->NUM1 + P3->NUM2 + P4->NUM2)
 }
 
 one sig ClientRequest extends BaseName {} {
 	paramIdxs = P0 + P1
 	paramTypes = P0->Server + P1->FinNat
 }
-one sig ClientRequestn1NUM2 extends Act {} {
-	params = (P0->n1 + P1->NUM2)
+one sig ClientRequestn1NUM3 extends Act {} {
+	params = (P0->n1 + P1->NUM3)
 }
 one sig ClientRequestn1NUM1 extends Act {} {
 	params = (P0->n1 + P1->NUM1)
@@ -440,207 +405,121 @@ one sig T0, T1, T2, T3, T4, T5, T6 extends Idx {}
 fact {
 	IdxOrder/first = T0
 	IdxOrder/next = T0->T1 + T1->T2 + T2->T3 + T3->T4 + T4->T5 + T5->T6
-	CommitEntry in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula
-
+	BecomeLeader in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula
 }
 
 
 fun envVarTypes : set(Var->Sort) {
-	var2->Server + var1->FinNat + var0->FinNat
+	var2->FinNat + var1->FinNat + var0->FinNat
 }
 
 
 one sig var2, var1, var0 extends Var {} {}
 
 
-one sig var1toNUM0var0toNUM1var2ton1 extends Env {} {}
-one sig var0toNUM0var1toNUM1var2ton1 extends Env {} {}
 one sig var0toNUM3 extends Env {} {}
-one sig var0toNUM0var1toNUM0var2ton2 extends Env {} {}
-one sig var0toNUM3var1toNUM3 extends Env {} {}
 one sig var0toNUM1 extends Env {} {}
-one sig var0toNUM0var1toNUM2 extends Env {} {}
-one sig var1toNUM0var0toNUM2 extends Env {} {}
-one sig var0toNUM1var1toNUM1 extends Env {} {}
-one sig var0toNUM2var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM1 extends Env {} {}
-one sig var0toNUM3var1toNUM1 extends Env {} {}
-one sig var1toNUM0var0toNUM1 extends Env {} {}
-one sig var0toNUM0var1toNUM1 extends Env {} {}
-one sig var2ton3var0toNUM3var1toNUM3 extends Env {} {}
-one sig var0toNUM2var2ton1var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM1var2ton1 extends Env {} {}
-one sig var0toNUM3var1toNUM1var2ton1 extends Env {} {}
-one sig var2ton3var0toNUM1var1toNUM1 extends Env {} {}
-one sig var0toNUM1var2ton2var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM0var2ton2 extends Env {} {}
-one sig var0toNUM3var1toNUM0var2ton2 extends Env {} {}
-one sig var1toNUM1var2ton2var0toNUM2 extends Env {} {}
-one sig var2ton3var0toNUM0var1toNUM2 extends Env {} {}
-one sig var2ton3var1toNUM0var0toNUM2 extends Env {} {}
-one sig var0toNUM3var1toNUM3var2ton1 extends Env {} {}
-one sig var0toNUM3var2ton2var1toNUM2 extends Env {} {}
-one sig var1toNUM3var2ton2var0toNUM2 extends Env {} {}
-one sig var2ton3var0toNUM2var1toNUM2 extends Env {} {}
-one sig var2ton3var1toNUM3var0toNUM1 extends Env {} {}
-one sig var2ton3var0toNUM3var1toNUM1 extends Env {} {}
-one sig var0toNUM3var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM2 extends Env {} {}
-one sig var0toNUM0var1toNUM0var2ton1 extends Env {} {}
 one sig var0toNUM2 extends Env {} {}
-one sig var0toNUM0var2ton1var1toNUM2 extends Env {} {}
-one sig var1toNUM0var0toNUM2var2ton1 extends Env {} {}
-one sig var0toNUM1var1toNUM1var2ton1 extends Env {} {}
-one sig var1toNUM0var0toNUM1var2ton2 extends Env {} {}
-one sig var0toNUM0var1toNUM1var2ton2 extends Env {} {}
-one sig var2ton3var0toNUM0var1toNUM0 extends Env {} {}
-one sig var0toNUM1var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM0 extends Env {} {}
-one sig var0toNUM3var1toNUM0 extends Env {} {}
-one sig var1toNUM1var0toNUM2 extends Env {} {}
-one sig var0toNUM3var1toNUM3var2ton2 extends Env {} {}
-one sig var2ton3var0toNUM3var1toNUM2 extends Env {} {}
-one sig var2ton3var1toNUM3var0toNUM2 extends Env {} {}
-one sig var0toNUM0var1toNUM0 extends Env {} {}
-one sig var0toNUM0 extends Env {} {}
-one sig var0toNUM3var1toNUM0var2ton1 extends Env {} {}
-one sig var0toNUM1var2ton1var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM0var2ton1 extends Env {} {}
-one sig var1toNUM1var0toNUM2var2ton1 extends Env {} {}
-one sig var0toNUM0var2ton2var1toNUM2 extends Env {} {}
-one sig var1toNUM0var2ton2var0toNUM2 extends Env {} {}
-one sig var0toNUM1var1toNUM1var2ton2 extends Env {} {}
-one sig var2ton3var1toNUM0var0toNUM1 extends Env {} {}
-one sig var2ton3var0toNUM0var1toNUM1 extends Env {} {}
-one sig var2ton3var1toNUM3var0toNUM0 extends Env {} {}
-one sig var0toNUM3var2ton1var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM2var2ton1 extends Env {} {}
-one sig var2ton2var0toNUM2var1toNUM2 extends Env {} {}
-one sig var1toNUM3var0toNUM1var2ton2 extends Env {} {}
-one sig var0toNUM3var1toNUM1var2ton2 extends Env {} {}
-one sig var2ton3var0toNUM1var1toNUM2 extends Env {} {}
-one sig var2ton3var0toNUM3var1toNUM0 extends Env {} {}
-one sig var2ton3var1toNUM1var0toNUM2 extends Env {} {}
+one sig var0toNUM1var2toNUM1var1ton1 extends Env {} {}
+one sig var1ton1var0toNUM2 extends Env {} {}
+one sig var0toNUM1var1ton2 extends Env {} {}
+one sig var0toNUM1var1ton1 extends Env {} {}
+one sig var0toNUM3var1ton3var2toNUM2 extends Env {} {}
+one sig var0toNUM3var2toNUM3var1ton2 extends Env {} {}
+one sig var2toNUM3var1ton3var0toNUM2 extends Env {} {}
+one sig var0toNUM3var1ton3 extends Env {} {}
+one sig var0toNUM3var1ton2 extends Env {} {}
+one sig var1ton3var0toNUM2 extends Env {} {}
+one sig var0toNUM3var2toNUM3var1ton3 extends Env {} {}
+one sig var0toNUM3var1ton1 extends Env {} {}
+one sig var1ton2var0toNUM2 extends Env {} {}
+one sig var1ton3var0toNUM1 extends Env {} {}
+one sig var1ton1var0toNUM2var2toNUM2 extends Env {} {}
+one sig var0toNUM1var1ton2var2toNUM2 extends Env {} {}
+one sig var2toNUM3var0toNUM1var1ton1 extends Env {} {}
+one sig var0toNUM3var2toNUM1var1ton1 extends Env {} {}
+one sig var2toNUM1var1ton2var0toNUM2 extends Env {} {}
+one sig var1ton3var0toNUM1var2toNUM1 extends Env {} {}
+one sig var0toNUM1var1ton1var2toNUM2 extends Env {} {}
+one sig var2toNUM1var1ton1var0toNUM2 extends Env {} {}
+one sig var0toNUM1var2toNUM1var1ton2 extends Env {} {}
+one sig var0toNUM3var1ton2var2toNUM2 extends Env {} {}
+one sig var1ton3var0toNUM2var2toNUM2 extends Env {} {}
+one sig var0toNUM3var2toNUM3var1ton1 extends Env {} {}
+one sig var2toNUM3var1ton2var0toNUM2 extends Env {} {}
+one sig var2toNUM3var1ton3var0toNUM1 extends Env {} {}
+one sig var0toNUM3var1ton3var2toNUM1 extends Env {} {}
+one sig var0toNUM3var1ton1var2toNUM2 extends Env {} {}
+one sig var1ton2var0toNUM2var2toNUM2 extends Env {} {}
+one sig var1ton3var0toNUM1var2toNUM2 extends Env {} {}
+one sig var2toNUM3var1ton1var0toNUM2 extends Env {} {}
+one sig var2toNUM3var0toNUM1var1ton2 extends Env {} {}
+one sig var0toNUM3var2toNUM1var1ton2 extends Env {} {}
+one sig var1ton3var2toNUM1var0toNUM2 extends Env {} {}
 
 
 fact PartialInstance {
-	//lastIdx = (EmptyTrace->T0) + (PT115->T2) + (PT105->T2) + (PT101->T2) + (PT83->T1) + (PT85->T2) + (PT1->T0) + (PT114->T3) + (PT99->T3) + (PT119->T3) + (PT113->T2) + (PT129->T1) + (PT110->T2) + (PT118->T3) + (PT124->T4) + (PT127->T2) + (PT121->T2) + (PT93->T2) + (NT1->T6)
-	lastIdx = (EmptyTrace->T0) + (PT1->T0) + (NT1->T6) + (PT2->T6)
+	lastIdx = (EmptyTrace->T0) + (PT1->T1) + (NT1->T1)
 
-	path = /*(PT115 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM2NUM1NUM1)) +
-		(PT105 -> (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->GetEntriesn3n1)) +
-		(PT101 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->BecomeLeadern1_n1n2_NUM2)) +
-		(PT83 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM2NUM1NUM1)) +
-		(PT85 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
-		(PT114 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->CommitEntryn2_n1n2_NUM1NUM2NUM2)) +
-		(PT99 -> (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->ClientRequestn1NUM1 + T3->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +
-		(PT119 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n1n2_NUM2 + T3->ClientRequestn2NUM2)) +
-		(PT113 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern2_n1n2_NUM2 + T2->CommitEntryn2_n1n2_NUM1NUM2NUM2)) +
-		(PT129 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->GetEntriesn2n1)) +
-		(PT110 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->CommitEntryn1_n1n2_NUM1NUM1NUM1 + T2->ClientRequestn1NUM1)) +
-		(PT118 -> (T0->GetEntriesn1n1 + T1->GetEntriesn2n1 + T2->BecomeLeadern3_n2n3_NUM1 + T3->CommitEntryn3_n2n3_NUM1NUM1NUM1)) +
-		(PT127 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->GetEntriesn2n1)) +
-		(PT121 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->BecomeLeadern1_n1n2_NUM2 + T2->BecomeLeadern1_n1n2_NUM3)) +
-		(PT93 -> (T0->GetEntriesn2n1 + T1->BecomeLeadern1_n1n2_NUM1 + T2->CommitEntryn1_n1n2_NUM1NUM1NUM1)) +*/
-		(PT1 -> (T0->BecomeLeadern1_n1n3_NUM1)) +
+	path = (PT1 -> (T0->BecomeLeadern1_n1n2n3_NUM1 + T1->BecomeLeadern2_n2n3_NUM2)) +
+		(NT1 -> (T0->BecomeLeadern2_n2n3_NUM2 + T1->BecomeLeadern2_n2n3_NUM2))
 
-		(PT2 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern1_n1n2_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn1NUM2 + T5->ClientRequestn1NUM2 + T6->CommitEntryn1_n1n2_NUM1NUM2NUM2)) +
-		(NT1 -> (T0->BecomeLeadern1_n1n2_NUM1 + T1->ClientRequestn1NUM1 + T2->BecomeLeadern2_n2n3_NUM2 + T3->GetEntriesn3n1 + T4->ClientRequestn2NUM2 + T5->BecomeLeadern1_n1n3_NUM3 + T6->CommitEntryn1_n1n3_NUM1NUM1NUM1))
-
-	maps = var1toNUM0var0toNUM1var2ton1->(var1->NUM0 + var0->NUM1 + var2->n1) +
-		var0toNUM0var1toNUM1var2ton1->(var0->NUM0 + var1->NUM1 + var2->n1) +
-		var0toNUM3->(var0->NUM3) +
-		var0toNUM0var1toNUM0var2ton2->(var0->NUM0 + var1->NUM0 + var2->n2) +
-		var0toNUM3var1toNUM3->(var0->NUM3 + var1->NUM3) +
+	maps = var0toNUM3->(var0->NUM3) +
 		var0toNUM1->(var0->NUM1) +
-		var0toNUM0var1toNUM2->(var0->NUM0 + var1->NUM2) +
-		var1toNUM0var0toNUM2->(var1->NUM0 + var0->NUM2) +
-		var0toNUM1var1toNUM1->(var0->NUM1 + var1->NUM1) +
-		var0toNUM2var1toNUM2->(var0->NUM2 + var1->NUM2) +
-		var1toNUM3var0toNUM1->(var1->NUM3 + var0->NUM1) +
-		var0toNUM3var1toNUM1->(var0->NUM3 + var1->NUM1) +
-		var1toNUM0var0toNUM1->(var1->NUM0 + var0->NUM1) +
-		var0toNUM0var1toNUM1->(var0->NUM0 + var1->NUM1) +
-		var2ton3var0toNUM3var1toNUM3->(var2->n3 + var0->NUM3 + var1->NUM3) +
-		var0toNUM2var2ton1var1toNUM2->(var0->NUM2 + var2->n1 + var1->NUM2) +
-		var1toNUM3var0toNUM1var2ton1->(var1->NUM3 + var0->NUM1 + var2->n1) +
-		var0toNUM3var1toNUM1var2ton1->(var0->NUM3 + var1->NUM1 + var2->n1) +
-		var0toNUM1var2ton2var1toNUM2->(var0->NUM1 + var2->n2 + var1->NUM2) +
-		var2ton3var0toNUM1var1toNUM1->(var2->n3 + var0->NUM1 + var1->NUM1) +
-		var1toNUM3var0toNUM0var2ton2->(var1->NUM3 + var0->NUM0 + var2->n2) +
-		var0toNUM3var1toNUM0var2ton2->(var0->NUM3 + var1->NUM0 + var2->n2) +
-		var1toNUM1var2ton2var0toNUM2->(var1->NUM1 + var2->n2 + var0->NUM2) +
-		var2ton3var0toNUM0var1toNUM2->(var2->n3 + var0->NUM0 + var1->NUM2) +
-		var2ton3var1toNUM0var0toNUM2->(var2->n3 + var1->NUM0 + var0->NUM2) +
-		var0toNUM3var1toNUM3var2ton1->(var0->NUM3 + var1->NUM3 + var2->n1) +
-		var0toNUM3var2ton2var1toNUM2->(var0->NUM3 + var2->n2 + var1->NUM2) +
-		var1toNUM3var2ton2var0toNUM2->(var1->NUM3 + var2->n2 + var0->NUM2) +
-		var2ton3var0toNUM2var1toNUM2->(var2->n3 + var0->NUM2 + var1->NUM2) +
-		var2ton3var1toNUM3var0toNUM1->(var2->n3 + var1->NUM3 + var0->NUM1) +
-		var2ton3var0toNUM3var1toNUM1->(var2->n3 + var0->NUM3 + var1->NUM1) +
-		var0toNUM3var1toNUM2->(var0->NUM3 + var1->NUM2) +
-		var1toNUM3var0toNUM2->(var1->NUM3 + var0->NUM2) +
-		var0toNUM0var1toNUM0var2ton1->(var0->NUM0 + var1->NUM0 + var2->n1) +
 		var0toNUM2->(var0->NUM2) +
-		var0toNUM0var2ton1var1toNUM2->(var0->NUM0 + var2->n1 + var1->NUM2) +
-		var1toNUM0var0toNUM2var2ton1->(var1->NUM0 + var0->NUM2 + var2->n1) +
-		var0toNUM1var1toNUM1var2ton1->(var0->NUM1 + var1->NUM1 + var2->n1) +
-		var1toNUM0var0toNUM1var2ton2->(var1->NUM0 + var0->NUM1 + var2->n2) +
-		var0toNUM0var1toNUM1var2ton2->(var0->NUM0 + var1->NUM1 + var2->n2) +
-		var2ton3var0toNUM0var1toNUM0->(var2->n3 + var0->NUM0 + var1->NUM0) +
-		var0toNUM1var1toNUM2->(var0->NUM1 + var1->NUM2) +
-		var1toNUM3var0toNUM0->(var1->NUM3 + var0->NUM0) +
-		var0toNUM3var1toNUM0->(var0->NUM3 + var1->NUM0) +
-		var1toNUM1var0toNUM2->(var1->NUM1 + var0->NUM2) +
-		var0toNUM3var1toNUM3var2ton2->(var0->NUM3 + var1->NUM3 + var2->n2) +
-		var2ton3var0toNUM3var1toNUM2->(var2->n3 + var0->NUM3 + var1->NUM2) +
-		var2ton3var1toNUM3var0toNUM2->(var2->n3 + var1->NUM3 + var0->NUM2) +
-		var0toNUM0var1toNUM0->(var0->NUM0 + var1->NUM0) +
-		var0toNUM0->(var0->NUM0) +
-		var0toNUM1var2ton1var1toNUM2->(var0->NUM1 + var2->n1 + var1->NUM2) +
-		var1toNUM3var0toNUM0var2ton1->(var1->NUM3 + var0->NUM0 + var2->n1) +
-		var0toNUM3var1toNUM0var2ton1->(var0->NUM3 + var1->NUM0 + var2->n1) +
-		var1toNUM1var0toNUM2var2ton1->(var1->NUM1 + var0->NUM2 + var2->n1) +
-		var0toNUM0var2ton2var1toNUM2->(var0->NUM0 + var2->n2 + var1->NUM2) +
-		var1toNUM0var2ton2var0toNUM2->(var1->NUM0 + var2->n2 + var0->NUM2) +
-		var0toNUM1var1toNUM1var2ton2->(var0->NUM1 + var1->NUM1 + var2->n2) +
-		var2ton3var1toNUM0var0toNUM1->(var2->n3 + var1->NUM0 + var0->NUM1) +
-		var2ton3var0toNUM0var1toNUM1->(var2->n3 + var0->NUM0 + var1->NUM1) +
-		var2ton2var0toNUM2var1toNUM2->(var2->n2 + var0->NUM2 + var1->NUM2) +
-		var0toNUM3var2ton1var1toNUM2->(var0->NUM3 + var2->n1 + var1->NUM2) +
-		var1toNUM3var0toNUM2var2ton1->(var1->NUM3 + var0->NUM2 + var2->n1) +
-		var1toNUM3var0toNUM1var2ton2->(var1->NUM3 + var0->NUM1 + var2->n2) +
-		var0toNUM3var1toNUM1var2ton2->(var0->NUM3 + var1->NUM1 + var2->n2) +
-		var2ton3var0toNUM1var1toNUM2->(var2->n3 + var0->NUM1 + var1->NUM2) +
-		var2ton3var1toNUM3var0toNUM0->(var2->n3 + var1->NUM3 + var0->NUM0) +
-		var2ton3var0toNUM3var1toNUM0->(var2->n3 + var0->NUM3 + var1->NUM0) +
-		var2ton3var1toNUM1var0toNUM2->(var2->n3 + var1->NUM1 + var0->NUM2)
+		var0toNUM1var2toNUM1var1ton1->(var0->NUM1 + var2->NUM1 + var1->n1) +
+		var1ton1var0toNUM2->(var1->n1 + var0->NUM2) +
+		var0toNUM1var1ton2->(var0->NUM1 + var1->n2) +
+		var0toNUM1var1ton1->(var0->NUM1 + var1->n1) +
+		var0toNUM3var1ton3var2toNUM2->(var0->NUM3 + var1->n3 + var2->NUM2) +
+		var0toNUM3var2toNUM3var1ton2->(var0->NUM3 + var2->NUM3 + var1->n2) +
+		var2toNUM3var1ton3var0toNUM2->(var2->NUM3 + var1->n3 + var0->NUM2) +
+		var0toNUM3var1ton3->(var0->NUM3 + var1->n3) +
+		var0toNUM3var1ton2->(var0->NUM3 + var1->n2) +
+		var1ton3var0toNUM2->(var1->n3 + var0->NUM2) +
+		var0toNUM3var2toNUM3var1ton3->(var0->NUM3 + var2->NUM3 + var1->n3) +
+		var0toNUM3var1ton1->(var0->NUM3 + var1->n1) +
+		var1ton2var0toNUM2->(var1->n2 + var0->NUM2) +
+		var1ton3var0toNUM1->(var1->n3 + var0->NUM1) +
+		var1ton1var0toNUM2var2toNUM2->(var1->n1 + var0->NUM2 + var2->NUM2) +
+		var0toNUM1var1ton2var2toNUM2->(var0->NUM1 + var1->n2 + var2->NUM2) +
+		var2toNUM3var0toNUM1var1ton1->(var2->NUM3 + var0->NUM1 + var1->n1) +
+		var0toNUM3var2toNUM1var1ton1->(var0->NUM3 + var2->NUM1 + var1->n1) +
+		var2toNUM1var1ton2var0toNUM2->(var2->NUM1 + var1->n2 + var0->NUM2) +
+		var1ton3var0toNUM1var2toNUM1->(var1->n3 + var0->NUM1 + var2->NUM1) +
+		var0toNUM1var1ton1var2toNUM2->(var0->NUM1 + var1->n1 + var2->NUM2) +
+		var2toNUM1var1ton1var0toNUM2->(var2->NUM1 + var1->n1 + var0->NUM2) +
+		var0toNUM1var2toNUM1var1ton2->(var0->NUM1 + var2->NUM1 + var1->n2) +
+		var0toNUM3var1ton2var2toNUM2->(var0->NUM3 + var1->n2 + var2->NUM2) +
+		var1ton3var0toNUM2var2toNUM2->(var1->n3 + var0->NUM2 + var2->NUM2) +
+		var0toNUM3var2toNUM3var1ton1->(var0->NUM3 + var2->NUM3 + var1->n1) +
+		var2toNUM3var1ton2var0toNUM2->(var2->NUM3 + var1->n2 + var0->NUM2) +
+		var2toNUM3var1ton3var0toNUM1->(var2->NUM3 + var1->n3 + var0->NUM1) +
+		var0toNUM3var1ton3var2toNUM1->(var0->NUM3 + var1->n3 + var2->NUM1) +
+		var0toNUM3var1ton1var2toNUM2->(var0->NUM3 + var1->n1 + var2->NUM2) +
+		var1ton2var0toNUM2var2toNUM2->(var1->n2 + var0->NUM2 + var2->NUM2) +
+		var1ton3var0toNUM1var2toNUM2->(var1->n3 + var0->NUM1 + var2->NUM2) +
+		var2toNUM3var1ton1var0toNUM2->(var2->NUM3 + var1->n1 + var0->NUM2) +
+		var2toNUM3var0toNUM1var1ton2->(var2->NUM3 + var0->NUM1 + var1->n2) +
+		var0toNUM3var2toNUM1var1ton2->(var0->NUM3 + var2->NUM1 + var1->n2) +
+		var1ton3var2toNUM1var0toNUM2->(var1->n3 + var2->NUM1 + var0->NUM2)
 
-	baseName = CommitEntryn2_n1n2_NUM1NUM2NUM2->CommitEntry +
-		BecomeLeadern1_n1n3_NUM3->BecomeLeader +
-		ClientRequestn1NUM1->ClientRequest +
-		CommitEntryn1_n1n3_NUM1NUM1NUM1->CommitEntry +
-		ClientRequestn1NUM2->ClientRequest +
-		BecomeLeadern1_n1n3_NUM1->BecomeLeader +
-		BecomeLeadern1_n1n2_NUM1->BecomeLeader +
-		BecomeLeadern3_n2n3_NUM1->BecomeLeader +
-		BecomeLeadern2_n1n2_NUM2->BecomeLeader +
-		CommitEntryn1_n1n2_NUM1NUM2NUM2->CommitEntry +
+	baseName = CommitEntryn2_n2n3_NUM1NUM2NUM2->CommitEntry +
+		CommitEntryn2_n2n3_NUM1NUM2NUM3->CommitEntry +
+		RollbackEntriesn2n1->RollbackEntries +
 		BecomeLeadern2_n2n3_NUM2->BecomeLeader +
-		CommitEntryn1_n1n2_NUM1NUM1NUM1->CommitEntry +
-		GetEntriesn2n1->GetEntries +
-		CommitEntryn3_n2n3_NUM1NUM1NUM1->CommitEntry +
+		RollbackEntriesn1n1->RollbackEntries +
+		ClientRequestn1NUM1->ClientRequest +
+		BecomeLeadern1_n1n2n3_NUM1->BecomeLeader +
 		ClientRequestn2NUM2->ClientRequest +
-		GetEntriesn1n1->GetEntries +
-		CommitEntryn1_n1n2_NUM2NUM1NUM1->CommitEntry +
-		BecomeLeadern1_n1n2_NUM3->BecomeLeader +
-		GetEntriesn3n1->GetEntries +
-		BecomeLeadern1_n1n2_NUM2->BecomeLeader
+		BecomeLeadern1_n1n2n3_NUM3->BecomeLeader +
+		GetEntriesn3n2->GetEntries +
+		ClientRequestn1NUM3->ClientRequest
 }
 
 
 fact {
-	#(Forall + Exists) <= 3 // allow only 3 quantifiers
+	#(Forall + Exists) <= 2 // allow only 3 quantifiers
 	Root.children in Forall // the first quantifier must be a forall
 }
 
@@ -648,22 +527,3 @@ fact {
 one sig NT1 extends NegTrace {} {}
 
 one sig PT1 extends PosTrace {} {}
-one sig PT2 extends PosTrace {} {}
-/*
-one sig PT115 extends PosTrace {} {}
-one sig PT105 extends PosTrace {} {}
-one sig PT101 extends PosTrace {} {}
-one sig PT83 extends PosTrace {} {}
-one sig PT85 extends PosTrace {} {}
-one sig PT114 extends PosTrace {} {}
-one sig PT99 extends PosTrace {} {}
-one sig PT119 extends PosTrace {} {}
-one sig PT113 extends PosTrace {} {}
-one sig PT129 extends PosTrace {} {}
-one sig PT110 extends PosTrace {} {}
-one sig PT118 extends PosTrace {} {}
-one sig PT124 extends PosTrace {} {}
-one sig PT127 extends PosTrace {} {}
-one sig PT121 extends PosTrace {} {}
-one sig PT93 extends PosTrace {} {}
-*/

@@ -5,8 +5,6 @@ CONSTANTS Server, Quorums, FinNat
 
 VARIABLES committed
 
-CONSTANTS Server, Quorums, FinNat
-
 Secondary == "secondary"
 
 Primary == "primary"
@@ -25,11 +23,13 @@ LastEntry(xlog) == <<Len(xlog),xlog[Len(xlog)]>>
 
 IsPrefix(s,t) == (Len(s) <= Len(t) /\ SubSeq(s,1,Len(s)) = SubSeq(t,1,Len(s)))
 
-BecomeLeader(i,voteQuorum,newTerm) ==
+BecomeLeader(i,newTerm) ==
+\E voteQuorum \in Quorums :
 /\ (i \in voteQuorum)
 /\ UNCHANGED <<committed>>
 
-CommitEntry(i,commitQuorum,ind,curTerm,minQTerm) ==
+CommitEntry(i,ind,curTerm) ==
+\E commmitQuorum \in Quorums :
 /\ ind > 0
 /\ ~((\E c \in committed : c.entry = <<ind,curTerm>>))
 /\ committed' = (committed \cup {[entry |-> <<ind,curTerm>>,term |-> curTerm]})
@@ -38,8 +38,8 @@ Init ==
 /\ committed = {}
 
 Next ==
-\/ (\E s \in Server : (\E Q \in Quorums : (\E newTerm \in FinNat : BecomeLeader(s,Q,newTerm))))
-\/ (\E s \in Server : (\E Q \in Quorums : (\E ind \in FinNat : (\E curTerm \in FinNat : (\E minQTerm \in FinNat : CommitEntry(s,Q,ind,curTerm,minQTerm))))))
+\/ (\E s \in Server : (\E newTerm \in FinNat : BecomeLeader(s,newTerm)))
+\/ (\E s \in Server : (\E ind \in FinNat : (\E curTerm \in FinNat : CommitEntry(s,ind,curTerm))))
 
 Spec == (Init /\ [][Next]_vars)
 

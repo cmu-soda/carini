@@ -1,43 +1,41 @@
 --------------------------- MODULE T1_hist ---------------------------
-EXTENDS Naturals, Sequences, Integers
+EXTENDS Naturals, Sequences, Integers, FiniteSets, TLC
 
 CONSTANTS RMs
 
-VARIABLES msgs, tmState, tmPrepared, Fluent5, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0
+VARIABLES Fluent6_0, msgs, Fluent5_0, tmState, Fluent9_0, tmPrepared, Fluent8_0
 
-vars == <<msgs, tmState, tmPrepared, Fluent5, Fluent4, Fluent3, Fluent2, Fluent1, Fluent0>>
+vars == <<Fluent6_0, msgs, Fluent5_0, tmState, Fluent9_0, tmPrepared, Fluent8_0>>
 
 CandSep ==
-/\ \A var0 \in RMs : (Fluent0[var0]) => (Fluent1[var0])
-/\ \A var0 \in RMs : \A var1 \in RMs : (Fluent3[var0]) => (Fluent2[var1])
-/\ \A var0 \in RMs : \A var1 \in RMs : (Fluent4[var0]) => (~(Fluent5[var1]))
+/\ \A var0 \in RMs : (Fluent5_0[var0]) => (~(Fluent6_0[var0]))
+/\ \A var0 \in RMs : (Fluent9_0[var0]) => (Fluent8_0[var0])
 
-Message == ([type : {"Prepared"},theRM : RMs] \cup [type : {"Commit","Abort"}])
+Symmetry == Permutations(RMs)
+
+Message == ([type |-> {"Prepared"},theRM |-> RMs] \cup [type |-> {"Commit","Abort"}])
 
 Init ==
 /\ msgs = {}
 /\ tmState = "init"
 /\ tmPrepared = {}
-/\ Fluent3 = [ x0 \in RMs |-> FALSE]
-/\ Fluent2 = [ x0 \in RMs |-> FALSE]
-/\ Fluent1 = [ x0 \in RMs |-> FALSE]
-/\ Fluent0 = [ x0 \in RMs |-> FALSE]
-/\ Fluent5 = [ x0 \in RMs |-> FALSE]
-/\ Fluent4 = [ x0 \in RMs |-> FALSE]
+/\ Fluent6_0 = [ x0 \in RMs |-> FALSE]
+/\ Fluent5_0 = [ x0 \in RMs |-> FALSE]
+/\ Fluent9_0 = [ x0 \in RMs |-> FALSE]
+/\ Fluent8_0 = [ x0 \in RMs |-> FALSE]
 
 SndPrepare(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Prepared",theRM |-> rm]})
 /\ UNCHANGED <<tmState,tmPrepared>>
-/\ Fluent2' = [Fluent2 EXCEPT ![rm] = TRUE]
-/\ Fluent1' = [Fluent1 EXCEPT ![rm] = TRUE]
-/\ UNCHANGED<<Fluent3, Fluent0, Fluent5, Fluent4>>
+/\ Fluent8_0' = [Fluent8_0 EXCEPT ![rm] = TRUE]
+/\ UNCHANGED<<Fluent6_0, Fluent5_0, Fluent9_0>>
 
 RcvPrepare(rm) ==
 /\ ([type |-> "Prepared",theRM |-> rm] \in msgs)
 /\ tmState = "init"
 /\ tmPrepared' = (tmPrepared \cup {rm})
 /\ UNCHANGED <<msgs,tmState>>
-/\ UNCHANGED<<Fluent3, Fluent2, Fluent1, Fluent0, Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent6_0, Fluent5_0, Fluent9_0, Fluent8_0>>
 
 SndCommit(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Commit"]})
@@ -45,28 +43,27 @@ SndCommit(rm) ==
 /\ tmPrepared = RMs
 /\ tmState' = "committed"
 /\ UNCHANGED <<tmPrepared>>
-/\ UNCHANGED<<Fluent3, Fluent2, Fluent1, Fluent0, Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent6_0, Fluent5_0, Fluent9_0, Fluent8_0>>
 
 RcvCommit(rm) ==
 /\ ([type |-> "Commit"] \in msgs)
 /\ UNCHANGED <<msgs,tmState,tmPrepared>>
-/\ Fluent3' = [Fluent3 EXCEPT ![rm] = TRUE]
-/\ Fluent0' = [Fluent0 EXCEPT ![rm] = TRUE]
-/\ Fluent4' = [Fluent4 EXCEPT ![rm] = TRUE]
-/\ UNCHANGED<<Fluent2, Fluent1, Fluent5>>
+/\ Fluent5_0' = [Fluent5_0 EXCEPT ![rm] = TRUE]
+/\ Fluent9_0' = [x0 \in RMs |-> TRUE]
+/\ UNCHANGED<<Fluent6_0, Fluent8_0>>
 
 SndAbort(rm) ==
 /\ msgs' = (msgs \cup {[type |-> "Abort"]})
 /\ (tmState \in {"init","aborted"})
 /\ tmState' = "aborted"
 /\ UNCHANGED <<tmPrepared>>
-/\ UNCHANGED<<Fluent3, Fluent2, Fluent1, Fluent0, Fluent5, Fluent4>>
+/\ UNCHANGED<<Fluent6_0, Fluent5_0, Fluent9_0, Fluent8_0>>
 
 RcvAbort(rm) ==
 /\ ([type |-> "Abort"] \in msgs)
 /\ UNCHANGED <<msgs,tmState,tmPrepared>>
-/\ Fluent5' = [Fluent5 EXCEPT ![rm] = TRUE]
-/\ UNCHANGED<<Fluent3, Fluent2, Fluent1, Fluent0, Fluent4>>
+/\ Fluent6_0' = [x0 \in RMs |-> TRUE]
+/\ UNCHANGED<<Fluent5_0, Fluent9_0, Fluent8_0>>
 
 Next ==
 \E rm \in RMs :

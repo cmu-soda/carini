@@ -1,0 +1,152 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 59 and seed -8554822051348630972 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 52262] (Mac OS X 14.7.6 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/tla-sym-assump-synth/examples/learning_switch/ls_pending_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module ls_pending_hist
+Starting... (2025-07-28 12:42:19)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-07-28 12:42:19.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ Fluent132_0 = ( e1 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e2 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e3 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) )
+/\ pending = {}
+/\ Fluent131_0 = ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) )
+
+State 2: <NewPacket line 14, col 1 to line 15, col 40 of module ls_pending_hist>
+/\ Fluent132_0 = ( e1 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e2 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e3 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) )
+/\ pending = {<<e1, e2, e1, e1>>}
+/\ Fluent131_0 = ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) )
+
+State 3: <Forward line 18, col 1 to line 22, col 16 of module ls_pending_hist>
+/\ Fluent132_0 = ( e1 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e2 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e3 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) )
+/\ pending = {<<e1, e2, e1, e1>>, <<e1, e2, e1, e2>>, <<e1, e2, e1, e3>>}
+/\ Fluent131_0 = ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) )
+
+State 4: <Forward line 18, col 1 to line 22, col 16 of module ls_pending_hist>
+/\ Fluent132_0 = ( e1 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e2 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e3 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) )
+/\ pending = { <<e1, e2, e1, e1>>,
+  <<e1, e2, e1, e2>>,
+  <<e1, e2, e1, e3>>,
+  <<e1, e2, e2, e1>>,
+  <<e1, e2, e2, e2>>,
+  <<e1, e2, e2, e3>> }
+/\ Fluent131_0 = ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e2 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) )
+
+State 5: <Forward line 18, col 1 to line 22, col 16 of module ls_pending_hist>
+/\ Fluent132_0 = ( e1 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e2 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e3 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) )
+/\ pending = { <<e1, e2, e1, e1>>,
+  <<e1, e2, e1, e2>>,
+  <<e1, e2, e1, e3>>,
+  <<e1, e2, e2, e1>>,
+  <<e1, e2, e2, e2>>,
+  <<e1, e2, e2, e3>>,
+  <<e1, e2, e3, e1>>,
+  <<e1, e2, e3, e2>>,
+  <<e1, e2, e3, e3>> }
+/\ Fluent131_0 = ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) )
+
+State 6: <Forward line 18, col 1 to line 22, col 16 of module ls_pending_hist>
+/\ Fluent132_0 = ( e1 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e2 :>
+      ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) @@
+  e3 :>
+      ( e1 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+        e3 :> (e1 :> FALSE @@ e2 :> FALSE @@ e3 :> FALSE) ) )
+/\ pending = { <<e1, e2, e1, e1>>,
+  <<e1, e2, e1, e2>>,
+  <<e1, e2, e1, e3>>,
+  <<e1, e2, e2, e1>>,
+  <<e1, e2, e2, e2>>,
+  <<e1, e2, e2, e3>>,
+  <<e1, e2, e3, e1>>,
+  <<e1, e2, e3, e2>>,
+  <<e1, e2, e3, e3>> }
+/\ Fluent131_0 = ( e1 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e2 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) @@
+  e3 :> (e1 :> TRUE @@ e2 :> FALSE @@ e3 :> FALSE) )
+
+32655 states generated, 11315 distinct states found, 9810 states left on queue.
+The depth of the complete state graph search is 7.
+The average outdegree of the complete state graph is 8 (minimum is 0, the maximum 27 and the 95th percentile is 15).
+Finished in 00s at (2025-07-28 12:42:19)

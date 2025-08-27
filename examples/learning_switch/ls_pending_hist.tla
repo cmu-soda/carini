@@ -3,23 +3,22 @@ EXTENDS Naturals, Sequences, FiniteSets, TLC
 
 CONSTANTS Node
 
-VARIABLES Fluent14, pending, Fluent16, Fluent15
+VARIABLES pending, Fluent131_0, Fluent132_0
 
-vars == <<Fluent14, pending, Fluent16, Fluent15>>
+vars == <<pending, Fluent131_0, Fluent132_0>>
 
 CandSep ==
-\A var0 \in Node : \E var1 \in Node : ((~(Fluent14[var0][var1])) => (Fluent15[var1][var1][var1][var0])) => (Fluent16[var1][var1][var1][var1])
+\A var0 \in Node : \A var1 \in Node : (Fluent131_0[var0][var1]) => (Fluent132_0[var0][var1][var1])
 
 NewPacket(ps,pd) ==
 /\ pending' = (pending \cup {<<ps,pd,ps,ps>>})
-/\ UNCHANGED<<Fluent14, Fluent16, Fluent15>>
+/\ UNCHANGED<<Fluent131_0, Fluent132_0>>
 
 Forward(ps,pd,sw0,sw1,nondet) ==
 /\ (<<ps,pd,sw0,sw1>> \in pending)
 /\ pending' = ({ <<psa,pda,sw1a,da>> \in pending : psa = nondet } \cup { <<ps,pd,sw1,d>> : d \in Node })
-/\ Fluent14' = [Fluent14 EXCEPT ![sw1][nondet] = TRUE]
-/\ Fluent16' = [Fluent16 EXCEPT ![pd][ps][nondet][sw0] = TRUE]
-/\ Fluent15' = [Fluent15 EXCEPT ![pd][ps][nondet][sw0] = TRUE]
+/\ Fluent131_0' = [Fluent131_0 EXCEPT ![sw0][ps] = TRUE]
+/\ Fluent132_0' = [[Fluent132_0 EXCEPT ![sw1][sw0][ps] = TRUE] EXCEPT ![sw1][pd][nondet] = TRUE]
 /\ UNCHANGED<<>>
 
 Next ==
@@ -28,9 +27,8 @@ Next ==
 
 Init ==
 /\ pending = {}
-/\ Fluent14 = [ x0 \in Node |-> [ x1 \in Node |-> FALSE]]
-/\ Fluent16 = [ x0 \in Node |-> [ x1 \in Node |-> [ x2 \in Node |-> [ x3 \in Node |-> FALSE]]]]
-/\ Fluent15 = [ x0 \in Node |-> [ x1 \in Node |-> [ x2 \in Node |-> [ x3 \in Node |-> FALSE]]]]
+/\ Fluent131_0 = [ x0 \in Node |-> [ x1 \in Node |-> FALSE]]
+/\ Fluent132_0 = [ x0 \in Node |-> [ x1 \in Node |-> [ x2 \in Node |-> FALSE]]]
 
 Spec == (Init /\ [][Next]_vars)
 

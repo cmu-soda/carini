@@ -1,5 +1,5 @@
 --------------------------- MODULE E1 ---------------------------
-EXTENDS Naturals, Sequences, Integers
+EXTENDS Naturals, Sequences, Integers, TLC
 
 CONSTANTS RMs
 
@@ -8,6 +8,8 @@ VARIABLES tmState, tmPrepared
 vars == <<tmState,tmPrepared>>
 
 Message == ([type : {"Prepared"},theRM : RMs] \cup [type : {"Commit","Abort"}])
+
+Symmetry == Permutations(RMs)
 
 Init ==
 /\ tmState = "init"

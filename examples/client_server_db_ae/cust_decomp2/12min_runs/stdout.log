@@ -1,0 +1,616 @@
+Building the LTS for the initial trace (D1.tla)
+Built the LTS in 0.341s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.15s
+
+Round 1
+-------
+TLC neg trace generation time: 0.732 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.255 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->ServerProcessDbResponsen1id1resp1 + T1->ReceiveResponsen1resp1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->ServerProcessRequestn2req3id2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->ServerProcessDbResponsen1id1resp1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.395 seconds
+\A var0 \in Node : (Fluent2_26[var0]) => (Fluent1_26[var0])
+  Fluent1_26[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = FALSE
+  Fluent2_26[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+\A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+  Fluent2_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent1_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+  Fluent2_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent1_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.001 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+Round 1 took 9.389 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 0.903 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.489 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessDbResponsen1id1resp1 + T3->ReceiveResponsen1resp1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessRequestn2req3id2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->ServerProcessDbResponsen1id1resp1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 11.411 seconds
+\A var0 \in Node : (Fluent3_42[var0]) => (Fluent4_42[var0])
+  Fluent3_42[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent4_42[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = FALSE
+\A var0 \in Node : (Fluent4_51[var0]) => (~(Fluent3_51[var0]))
+  Fluent4_51[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE
+  Fluent3_51[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+\A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+  Fluent4_48[Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[2] = TRUE
+  Fluent3_48[Response]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[2] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+  Fluent4_48[Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[2] = TRUE
+  Fluent3_48[Response]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.796 seconds
+Current partial assumption:
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+Round 2 took 16.591 seconds
+
+Round 3
+-------
+TLC neg trace generation time: 0.818 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.252 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->DbProcessRequestid2req1resp1 + T1->ServerProcessDbResponsen2id1resp1 + T2->ReceiveResponsen2resp1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+  Fluent2_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent1_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.411 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+Round 3 took 2.195 seconds
+
+Round 4
+-------
+TLC neg trace generation time: 1.23 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.532 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid2req2resp2 + T3->ServerProcessDbResponsen1id1resp2 + T4->ReceiveResponsen1resp2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid2req2resp2)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 12.371 seconds
+\A var0 \in Request : (Fluent6_14[var0]) => (Fluent5_14[var0])
+  Fluent5_14[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = TRUE
+  Fluent6_14[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in Request : (Fluent6_14[var0]) => (Fluent5_14[var0])
+  Fluent5_14[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = TRUE
+  Fluent6_14[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.076 seconds
+Current partial assumption:
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+/\ \A var0 \in Request : (Fluent6_14[var0]) => (Fluent5_14[var0])
+Round 4 took 17.638 seconds
+
+Round 5
+-------
+TLC neg trace generation time: 1.009 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.497 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid2req1resp1 + T3->ServerProcessDbResponsen3id2resp1 + T4->ReceiveResponsen3resp1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+  Fluent2_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent1_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.794 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+/\ \A var0 \in Request : (Fluent6_14[var0]) => (Fluent5_14[var0])
+Round 5 took 3.24 seconds
+
+Round 6
+-------
+TLC neg trace generation time: 2.327 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.498 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id1 + T4->DbProcessRequestid1req1resp2 + T5->ServerProcessDbResponsen2id1resp2 + T6->ReceiveResponsen2resp2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.501s
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 40.626 seconds
+\A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+  Fluent7_29[Node, DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0, 2] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+  Fluent7_29[Node, DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0, 2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 3.89 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent2_58[var0]) => (Fluent1_58[var0])
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+/\ \A var0 \in Request : (Fluent6_14[var0]) => (Fluent5_14[var0])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+Round 6 took 48.755 seconds
+
+Round 7
+-------
+TLC neg trace generation time: 4.41 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.995 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->DbProcessRequestid1req1resp2 + T4->ServerProcessRequestn2req2id2 + T5->ServerProcessDbResponsen2id1resp2 + T6->ReceiveResponsen2resp2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->DbProcessRequestid1req1resp2 + T4->ServerProcessRequestn2req2id2 + T5->ServerProcessDbResponsen1id1resp2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->DbProcessRequestid1req1resp2 + T4->ServerProcessRequestn2req2id2 + T5->ServerProcessDbResponsen2id1resp2)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 59.586s
+Killing 5 incomplete formula synth workers
+Formula synthesis complete in 79.527 seconds
+\A var0 \in Node : (Fluent8_24[var0]) => (~(Fluent9_24[var0]))
+  Fluent8_24[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent9_24[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = TRUE (mutexFl)
+\A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+  Fluent8_63[Node, DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0, 1] = TRUE
+  Fluent9_63[Node, DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0, 2] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+  Fluent8_63[Node, DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0, 1] = TRUE
+  Fluent9_63[Node, DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0, 2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 4.528 seconds
+Current partial assumption:
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+/\ \A var0 \in Request : (Fluent6_14[var0]) => (Fluent5_14[var0])
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+Round 7 took 92.135 seconds
+
+Round 8
+-------
+TLC neg trace generation time: 4.81 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.729 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2 + T4->DbProcessRequestid2req1resp1 + T5->ServerProcessDbResponsen2id2resp1 + T6->ReceiveResponsen2resp1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2 + T4->DbProcessRequestid2req2resp1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2 + T4->DbProcessRequestid2req1resp1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 45.066s
+Killing 3 incomplete formula synth workers
+Formula synthesis complete in 60.12 seconds
+\A var0 \in Request : (Fluent11_37[var0]) => (Fluent10_37[var0])
+  Fluent10_37[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = TRUE (mutexFl)
+  Fluent11_37[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = TRUE
+\A var0 \in Request : (Fluent10_14[var0]) => (Fluent11_14[var0])
+  Fluent10_14[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = TRUE
+  Fluent11_14[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = TRUE (mutexFl)
+\A var0 \in Request : (Fluent11_57[var0]) => (~(Fluent10_57[var0]))
+  Fluent10_57[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = TRUE
+  Fluent11_57[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = FALSE (mutexFl)
+\A var0 \in Request : (Fluent10_21[var0]) => (~(Fluent11_21[var0]))
+  Fluent10_21[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = TRUE
+  Fluent11_21[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = FALSE (mutexFl)
+\A var0 \in Node : \A var1 \in Request : (Fluent10_52[var1][var0]) => (~(Fluent11_52[var1]))
+  Fluent10_52[Request, Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1, 0] = TRUE (mutexFl)
+  Fluent11_52[Request]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1] = FALSE (mutexFl)
+\A var0 \in Response : \A var1 \in Request : (Fluent11_19[var1][var0]) => (~(Fluent10_19[var1]))
+  Fluent11_19[Request, Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1, 2] = TRUE
+  Fluent10_19[Request]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1] = FALSE (mutexFl)
+\A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+  Fluent10_63[Request, DbRequestId]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1, 0] = TRUE
+  Fluent11_63[Request, DbRequestId, Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1, 2, 0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+  Fluent10_63[Request, DbRequestId]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[1, 0] = TRUE
+  Fluent11_63[Request, DbRequestId, Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[1, 2, 0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 5.47 seconds
+Current partial assumption:
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+Round 8 took 77.616 seconds
+
+Round 9
+-------
+TLC neg trace generation time: 6.049 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.99 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2 + T4->DbProcessRequestid1req1resp2 + T5->ServerProcessDbResponsen2id2resp2 + T6->ReceiveResponsen2resp2)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2 + T4->DbProcessRequestid1req1resp2 + T5->ServerProcessDbResponsen1id1resp2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn1req1id1 + T3->ServerProcessRequestn2req2id2 + T4->DbProcessRequestid1req1resp2 + T5->ServerProcessDbResponsen2id2resp2)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Killing 1 incomplete formula synth workers
+Formula synthesis complete in 37.982 seconds
+\A var0 \in Node : (Fluent12_58[var0]) => (Fluent13_58[var0])
+  Fluent13_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = FALSE (mutexFl)
+  Fluent12_58[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+\A var0 \in Node : (Fluent13_38[var0]) => (Fluent12_38[var0])
+  Fluent13_38[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent12_38[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = FALSE (mutexFl)
+\A var0 \in Node : (Fluent13_62[var0]) => (Fluent12_62[var0])
+  Fluent13_62[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[0] = TRUE
+  Fluent12_62[Node]
+    initially: FALSE
+    flActions:
+      ServerProcessRequest[0] = FALSE (mutexFl)
+\A var0 \in DbRequestId : (Fluent12_5[var0]) => (Fluent13_5[var0])
+  Fluent12_5[DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[1] = TRUE
+  Fluent13_5[DbRequestId]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[0] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in DbRequestId : (Fluent12_5[var0]) => (Fluent13_5[var0])
+  Fluent12_5[DbRequestId]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[1] = TRUE
+  Fluent13_5[DbRequestId]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 6.496 seconds
+Current partial assumption:
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+/\ \A var0 \in DbRequestId : (Fluent12_5[var0]) => (Fluent13_5[var0])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+Round 9 took 56.674 seconds
+
+Round 10
+-------
+TLC neg trace generation time: 1.442 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.727 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->ServerProcessRequestn1req1id1 + T2->DbProcessRequestid1req1resp2 + T3->ServerProcessDbResponsen1id1resp1 + T4->ReceiveResponsen1resp1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+  Fluent4_48[Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[2] = TRUE
+  Fluent3_48[Response]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 2.439 seconds
+Current partial assumption:
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+/\ \A var0 \in DbRequestId : (Fluent12_5[var0]) => (Fluent13_5[var0])
+/\ \A var0 \in Response : (Fluent3_48[var0]) => (Fluent4_48[var0])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+Round 10 took 6.16 seconds
+
+Round 11
+-------
+TLC neg trace generation time: 17.314 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.26 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn2req2id1 + T3->ServerProcessRequestn1req1id2 + T4->DbProcessRequestid2req1resp1 + T5->DbProcessRequestid1req2resp2 + T6->ServerProcessDbResponsen2id1resp1 + T7->ReceiveResponsen2resp1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn2req2id1 + T3->ServerProcessRequestn1req1id2 + T4->DbProcessRequestid2req1resp1 + T5->DbProcessRequestid1req2resp2 + T6->ServerProcessDbResponsen2id1resp2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->NewRequestn1req1 + T1->NewRequestn2req2 + T2->ServerProcessRequestn2req2id1 + T3->ServerProcessRequestn1req1id2 + T4->DbProcessRequestid2req1resp1 + T5->DbProcessRequestid1req2resp2 + T6->ServerProcessDbResponsen2id1resp1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 35.856s
+Killing 6 incomplete formula synth workers
+Formula synthesis complete in 47.869 seconds
+\A var0 \in Response : (Fluent14_47[var0]) => (Fluent15_47[var0])
+  Fluent14_47[Response]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[2] = TRUE
+  Fluent15_47[Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[2] = TRUE (mutexFl)
+\A var0 \in Response : (Fluent14_34[var0]) => (~(Fluent15_34[var0]))
+  Fluent14_34[Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[2] = FALSE (mutexFl)
+  Fluent15_34[Response]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[2] = TRUE
+\A var0 \in Request : \E var1 \in Response : \A var2 \in Request : (var2 = var0) => (~(Fluent14_15[var1]))
+  Fluent14_15[Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[2] = TRUE (mutexFl)
+      ServerProcessDbResponse[2] = TRUE
+\A var0 \in DbRequestId : \A var1 \in Node : \A var2 \in Response : (Fluent15_46[var0][var2][var1]) => (Fluent14_46[var0][var2])
+  Fluent15_46[DbRequestId, Response, Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[1, 2, 0] = TRUE
+  Fluent14_46[DbRequestId, Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[0, 2] = TRUE
+
+Found 1 new invariant(s) this round:
+\A var0 \in DbRequestId : \A var1 \in Node : \A var2 \in Response : (Fluent15_46[var0][var2][var1]) => (Fluent14_46[var0][var2])
+  Fluent15_46[DbRequestId, Response, Node]
+    initially: FALSE
+    flActions:
+      ServerProcessDbResponse[1, 2, 0] = TRUE
+  Fluent14_46[DbRequestId, Response]
+    initially: FALSE
+    flActions:
+      DbProcessRequest[0, 2] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 16.715 seconds
+Current partial assumption:
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+/\ \A var0 \in DbRequestId : \A var1 \in Node : \A var2 \in Response : (Fluent15_46[var0][var2][var1]) => (Fluent14_46[var0][var2])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+Round 11 took 91.582 seconds
+
+Round 12
+-------
+TLC neg trace generation time: 300.013 seconds
+Round 12 took 300.087 seconds
+
+The following formula is a separating assumption:
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Request : (Fluent10_63[var2][var0]) => (Fluent11_63[var2][var0][var1])
+/\ \A var0 \in DbRequestId : \A var1 \in Node : \A var2 \in Response : (Fluent15_46[var0][var2][var1]) => (Fluent14_46[var0][var2])
+/\ \A var0 \in DbRequestId : \E var1 \in Node : \A var2 \in Node : (Fluent7_29[var2][var0]) => (var2 = var1)
+/\ \A var0 \in DbRequestId : \A var1 \in Node : (Fluent8_63[var1][var0]) => (Fluent9_63[var1][var0])
+./run_D0.sh  4398.92s user 82.38s system 619% cpu 12:03.50 total
