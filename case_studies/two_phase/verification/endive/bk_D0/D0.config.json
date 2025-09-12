@@ -1,0 +1,36 @@
+{
+    "preds"  :  [
+        "rmState[rmi] = \"working\"",
+        "rmState[rmi] = \"prepared\"",
+        "rmState[rmi] = \"aborted\"",
+        "rmState[rmi] = \"committed\"",
+        "rmState[rmj] = \"working\"",
+        "rmState[rmj] = \"prepared\"",
+        "rmState[rmj] = \"aborted\"",
+        "rmState[rmj] = \"committed\"",
+        "Fluent2[rmi]",
+        "Fluent3[rmi]",
+        "Fluent4[rmi]",
+        "Fluent5[rmi]",
+        "Fluent2[rmj]",
+        "Fluent3[rmj]",
+        "Fluent4[rmj]",
+        "Fluent5[rmj]"
+    ],
+    "preds_alt" : [],
+    "safety"  :  "Consistent",
+    "constants"  :  [
+        "CONSTANTS",
+        "RMs={rm1,rm2}",
+        "rm1 = rm1",
+        "rm2 = rm2",
+        "rm3 = rm3"
+    ],
+    "constraint"  :  "",
+    "quant_inv"  :  "\\A rmi \\in RMs : \\A rmj \\in RMs : ",
+    "quant_inv_alt"  :  null,
+    "model_consts"  :  "CONSTANT rm1,rm2,rm3",
+    "symmetry" : true,
+    "typeok"  :  "TypeOK",
+    "simulate"  :  true      
+}

@@ -1,0 +1,2 @@
+$ python3 endive.py --spec benchmarks/D1 --seed 30 --ninvs 15000 --niters 3 --nrounds 4 --num_simulate_traces 50000 --simulate_depth 6 --tlc_workers 6
+Total duration: 27.07 secs.

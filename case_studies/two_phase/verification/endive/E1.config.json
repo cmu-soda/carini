@@ -1,0 +1,36 @@
+{
+    "preds"  :  [
+        "tmState = \"init\"",
+        "tmState = \"committed\"",
+        "tmState = \"aborted\"",
+        "tmPrepared = RMs",
+        "tmPrepared = tmPrepared \\cup {rmi}",
+        "tmPrepared = tmPrepared \\cup {rmj}",
+        "tmPrepared = tmPrepared \\cup {rmk}",
+        "Fluent9[rmi]",
+        "Fluent8[rmi]",
+        "Fluent10[rmi]",
+        "Fluent9[rmj]",
+        "Fluent8[rmj]",
+        "Fluent10[rmj]",
+        "Fluent9[rmk]",
+        "Fluent8[rmk]",
+        "Fluent10[rmk]"
+    ],
+    "preds_alt" : [],
+    "safety"  :  "Safety",
+    "constants"  :  [
+        "CONSTANTS",
+        "RMs={rm1,rm2,rm3}",
+        "rm1 = rm1",
+        "rm2 = rm2",
+        "rm3 = rm3"
+    ],
+    "constraint"  :  "",
+    "quant_inv"  :  "\\A rmi \\in RMs : \\A rmj \\in RMs : \\E rmk \\in RMs : ",
+    "quant_inv_alt"  :  null,
+    "model_consts"  :  "CONSTANT rm1,rm2,rm3",
+    "symmetry" : true,
+    "typeok"  :  "TypeOK",
+    "simulate"  :  true      
+}
