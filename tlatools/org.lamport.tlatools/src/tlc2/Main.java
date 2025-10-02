@@ -15,6 +15,7 @@ import recomp.FormulaSeparation;
 import recomp.FormulaSynthWorker;
 import recomp.RecompVerify;
 import recomp.WeakestAssumption;
+import recomp_naive.NaiveFormulaSeparation;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,8 +26,10 @@ public class Main {
 			return;
 		}
 		
+		final boolean naive = hasFlag(args,"--naive");
+		
 		// main business logic
-    	if (args.length >= 5) {
+    	if (args.length >= 5 && !naive) {
     		final String tlaComp = args[0];
     		final String cfgComp = args[1];
     		final String tlaRest = args[2];
@@ -36,6 +39,28 @@ public class Main {
     	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
     		final Formula sep =
     				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, seed)
+    					.synthesizeSepInvariant();
+    		final String formula = sep.toString();
+    		
+    		if (!formula.contains("UNSAT")) {
+        		System.out.println("The following formula is a separating assumption:");
+    		}
+    		else {
+        		System.out.println("Could not synthesize a spearating assumption. Here are the intermediate conjuncts:");
+    		}
+    		System.out.println(formula);
+    	}
+    	// run the naive version of the algorithm
+    	else if (args.length >= 5 && naive) {
+    		final String tlaComp = args[0];
+    		final String cfgComp = args[1];
+    		final String tlaRest = args[2];
+    		final String cfgRest = args[3];
+    		final String propFile = args[4];
+    		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
+    	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
+    		final Formula sep =
+    				new NaiveFormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, seed)
     					.synthesizeSepInvariant();
     		final String formula = sep.toString();
     		
