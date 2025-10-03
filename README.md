@@ -14,14 +14,17 @@ By construction, the conjunction of the two local invariants is an inductive inv
 ## Installation
 For convenience, we have prebuilt carini.jar (located in the [bin](https://github.com/cmu-soda/carini/tree/master/bin) folder).
 However, Carini has two dependencies that require a slightly odd (but simple) set up:
-- TLC.
+- **TLC.**
   Carini requires TLC to be installed on your system, which you can get from [here](https://github.com/tlaplus/tlaplus/releases).
   Carini expects TLC to be installed under a bin folder in your home directory with the name tla2tools.jar.
   For example, on a Unix system, TLC should be installed at ~/bin/tla2tools.jar
-- Formula synthesis.
+- **Formula synthesis.**
   Carini requires installing the [alsm-formula-synth tool](https://github.com/iandardik/alsm-formula-synthesis).
   To install this tool, simply git clone it onto your machine.
-  Then, Carini requires you to set the environment variable ALSM_FORMULA_SYNTH to the path where you installed the alsm-formula-synth repo.
+  However, the current installation of open-wbo is compiled for a MAC.
+  If you do not have a MAC (or if you run into installation issues) you should [install open-wbo](https://github.com/sat-group/open-wbo/blob/master/INSTALL) on your machine and substitute it for the [existing binary](https://github.com/iandardik/alsm-formula-synthesis/blob/main/lib/open-wbo).
+  
+  Additionally, Carini requires you to set the environment variable ALSM_FORMULA_SYNTH to the path where you installed the alsm-formula-synth repo.
   For example, if you do a 'git clone' to install alsm-formula-synth from the directory /path/to/dir, then on a Unix system you can do
   ``export ALSM_FORMULA_SYNTH='/path/to/dir/alsm-formula-synthesis``.
 
