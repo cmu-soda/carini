@@ -58,7 +58,7 @@ issue_proc_read_invalid(c, a) ==
     /\ bus_in_use' = TRUE
     
     \* (forall C, A. new(proc_read(C, A)) <-> proc_read(C, A) | C = c & A = a) &
-    /\ proc_read' = [C \in Core |-> [A \in Address |-> proc_read[C][A] \/ (C = c /\ A = a)]]
+    /\ proc_read' = [proc_read EXCEPT![c][a] = TRUE]
 
     \* (forall C, A. new(bus_read(C, A)) <-> bus_read(C,A) | C != c & A = a)
     /\ bus_read' = [C \in Core |-> [A \in Address |-> bus_read[C][A] \/ (C # c /\ A = a)]]
@@ -73,7 +73,7 @@ do_bus_read_invalid(c, a) ==
     /\ invalid[c][a]
 
     \* (forall C, A. new(bus_read(C, A)) <-> bus_read(C, A) & !(C = c & A = a))
-    /\ bus_read' = [C \in Core |-> [A \in Address |-> bus_read[C][A] /\ ~(C = c /\ A = a)]]
+    /\ bus_read' = [bus_read EXCEPT![c][a] = FALSE]
 
     /\ UNCHANGED<<memory, cache, modified, exclusive, shared, invalid, proc_read, proc_write, bus_in_use, bus_read_for_ownership, bus_upgrade, bus_transfer>>
 
@@ -88,16 +88,16 @@ do_bus_read_valid(c, a, v) ==
     /\ cache[c][a] = v
 
     \* (forall C, A. new(bus_read(C, A)) <-> bus_read(C, A) & !(C = c & A = a)) &
-    /\ bus_read' = [C \in Core |-> [A \in Address |-> bus_read[C][A] /\ ~(C = c /\ A = a)]]
+    /\ bus_read' = [bus_read EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(shared(C, A)) <-> shared(C, A) | C = c & A = a) &
-    /\ shared' = [C \in Core |-> [A \in Address |-> shared[C][A] \/ (C = c /\ A = a)]]
+    /\ shared' = [shared EXCEPT![c][a] = TRUE]
 
     \* (forall C, A. new(modified(C, A)) <-> modified(C, A) & !(C = c & A = a)) &
-    /\ modified' = [C \in Core |-> [A \in Address |-> modified[C][A] /\ ~(C = c /\ A = a)]]
+    /\ modified' = [modified EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(exclusive(C, A)) <-> exclusive(C, A) & !(C = c & A = a)) &
-    /\ exclusive' = [C \in Core |-> [A \in Address |-> exclusive[C][A] /\ ~(C = c /\ A = a)]]
+    /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
 
     \* (modified(c, a) ->  # write back
     \*   (forall A.
@@ -132,10 +132,10 @@ complete_proc_read_invalid_shared(c, a, v) ==
     /\ bus_transfer' = [V \in Value |-> FALSE]
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) & !(C = c & A = a)) &
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] /\ ~(C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(shared(C, A)) <-> shared(C, A) | C = c & A = a) &
-    /\ shared' = [C \in Core |-> [A \in Address |-> shared[C][A] \/ (C = c /\ A = a)]]
+    /\ shared' = [shared EXCEPT![c][a] = TRUE]
 
     \* (forall C, A.
     \*   !(C = c & A = a) ->
@@ -147,7 +147,7 @@ complete_proc_read_invalid_shared(c, a, v) ==
     /\ bus_in_use' = FALSE
 
     \* (forall C, A. new(proc_read(C, A)) <-> proc_read(C, A) & !(C = c & A = a))
-    /\ proc_read' = [C \in Core |-> [A \in Address |-> proc_read[C][A] /\ ~(C = c /\ A = a)]]
+    /\ proc_read' = [proc_read EXCEPT![c][a] = FALSE]
 
     /\ UNCHANGED<<memory, modified, exclusive, proc_write, bus_read, bus_read_for_ownership, bus_upgrade>>
 
@@ -168,10 +168,10 @@ complete_proc_read_invalid_exclusive(c, a, v) ==
     /\ memory[a] = v
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) & !(C = c & A = a)) &
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] /\ ~(C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(exclusive(C, A)) <-> exclusive(C, A) | C = c & A = a) &
-    /\ exclusive' = [C \in Core |-> [A \in Address |-> exclusive[C][A] \/ (C = c /\ A = a)]]
+    /\ exclusive' = [exclusive EXCEPT![c][a] = TRUE]
 
     \* (forall C, A.
     \*    !(C = c & A = a) ->
@@ -183,7 +183,7 @@ complete_proc_read_invalid_exclusive(c, a, v) ==
     /\ bus_in_use' = FALSE
 
     \* (forall C, A. new(proc_read(C, A)) <-> proc_read(C, A) & !(C = c & A = a))
-    /\ proc_read' = [C \in Core |-> [A \in Address |-> proc_read[C][A] /\ ~(C = c /\ A = a)]]
+    /\ proc_read' = [proc_read EXCEPT![c][a] = FALSE]
 
     /\ UNCHANGED<<memory, modified, shared, proc_write, bus_read, bus_read_for_ownership, bus_upgrade, bus_transfer>>
 
@@ -198,7 +198,7 @@ issue_proc_write_invalid(c, a, v) ==
     /\ bus_in_use' = TRUE
 
     \* (forall C, A, V. new(proc_write(C, A, V)) <-> proc_write(C, A, V) | C = c & A = a & V = v) &
-    /\ proc_write' = [C \in Core |-> [A \in Address |-> [V \in Value |-> proc_write[C][A][V] \/ (C = c /\ A = a /\ V = v)]]]
+    /\ proc_write' = [proc_write EXCEPT![c][a][v] = TRUE]
 
     \* (forall C, A. new(bus_read_for_ownership(C, A)) <-> bus_read_for_ownership(C,A) | C != c & A = a)
     /\ bus_read_for_ownership' = [C \in Core |-> [A \in Address |-> bus_read_for_ownership[C][A] \/ (C # c /\ A = a)]]
@@ -213,7 +213,7 @@ do_bus_read_for_ownership_invalid(c, a) ==
     /\ invalid[c][a]
 
     \* (forall C, A. new(bus_read_for_ownership(C, A)) <-> bus_read_for_ownership(C, A) & !(C = c & A = a))
-    /\ bus_read_for_ownership' = [C \in Core |-> [A \in Address |-> bus_read_for_ownership[C][A] /\ ~(C = c /\ A = a)]]
+    /\ bus_read_for_ownership' = [bus_read_for_ownership EXCEPT![c][a] = FALSE]
 
     /\ UNCHANGED<<memory, cache, modified, exclusive, shared, invalid, proc_read, proc_write, bus_in_use, bus_read, bus_upgrade, bus_transfer>>
 
@@ -228,19 +228,19 @@ do_bus_read_for_ownership_valid(c, a, v) ==
     /\ cache[c][a] = v
 
     \* (forall C, A. new(bus_read_for_ownership(C, A)) <-> bus_read_for_ownership(C, A) & !(C = c & A = a)) &
-    /\ bus_read_for_ownership' = [C \in Core |-> [A \in Address |-> bus_read_for_ownership[C][A] /\ ~(C = c /\ A = a)]]
+    /\ bus_read_for_ownership' = [bus_read_for_ownership EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) | C = c & A = a) &
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] \/ (C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 
     \* (forall C, A. new(shared(C, A)) <-> shared(C, A) & !(C = c & A = a)) &
-    /\ shared' = [C \in Core |-> [A \in Address |-> shared[C][A] /\ ~(C = c /\ A = a)]]
+    /\ shared' = [shared EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(modified(C, A)) <-> modified(C, A) & !(C = c & A = a)) &
-    /\ modified' = [C \in Core |-> [A \in Address |-> modified[C][A] /\ ~(C = c /\ A = a)]]
+    /\ modified' = [modified EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(exclusive(C, A)) <-> exclusive(C, A) & !(C = c & A = a)) &
-    /\ exclusive' = [C \in Core |-> [A \in Address |-> exclusive[C][A] /\ ~(C = c /\ A = a)]]
+    /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
 
     \* (modified(c, a) ->  # write back
     \*   (forall A.
@@ -272,10 +272,10 @@ complete_proc_write_invalid(c, a, v) ==
     /\ bus_transfer' = [V \in Value |-> FALSE]
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) & !(C = c & A = a)) &
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] /\ ~(C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(modified(C, A)) <-> modified(C, A) | C = c & A = a) &
-    /\ modified' = [C \in Core |-> [A \in Address |-> modified[C][A] \/ (C = c /\ A = a)]]
+    /\ modified' = [modified EXCEPT![c][a] = TRUE]
 
     \* (forall C, A.
     \*    !(C = c & A = a) ->
@@ -287,7 +287,7 @@ complete_proc_write_invalid(c, a, v) ==
     /\ bus_in_use' = FALSE
 
     \* (forall C, A, V. new(proc_write(C, A, V)) <-> proc_write(C, A, V) & !(C = c & A = a & V = v))
-    /\ proc_write' = [C \in Core |-> [A \in Address |-> [V \in Value |-> proc_write[C][A][V] /\ ~(C = c /\ A = a /\ V = v)]]]
+    /\ proc_write' = [proc_write EXCEPT![c][a][v] = FALSE]
 
     /\ UNCHANGED<<memory, exclusive, shared, proc_read, bus_read, bus_read_for_ownership, bus_upgrade>>
 
@@ -299,10 +299,10 @@ proc_write_exclusive(c, a, v) ==
     /\ ~bus_in_use
 
     \* (forall C, A. new(exclusive(C, A)) <-> exclusive(C, A) & !(C = c & A = a)) &
-    /\ exclusive' = [C \in Core |-> [A \in Address |-> exclusive[C][A] /\ ~(C = c /\ A = a)]]
+    /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(modified(C, A)) <-> modified(C, A) | C = c & A = a) &
-    /\ modified' = [C \in Core |-> [A \in Address |-> modified[C][A] \/ (C = c /\ A = a)]]
+    /\ modified' = [modified EXCEPT![c][a] = TRUE]
 
     \* (forall C, A.
     \*    !(C = c & A = a) ->
@@ -323,7 +323,7 @@ issue_proc_write_shared(c, a, v) ==
     /\ bus_in_use' = TRUE
 
     \* (forall C, A, V. new(proc_write(C, A, V)) <-> proc_write(C, A, V) | C = c & A = a & V = v) &
-    /\ proc_write' = [C \in Core |-> [A \in Address |-> [V \in Value |-> proc_write[C][A][V] \/ (C = c /\ A = a /\ V = v)]]]
+    /\ proc_write' = [proc_write EXCEPT![c][a][v] = TRUE]
 
     \* (forall C, A. new(bus_upgrade(C, A)) <-> bus_upgrade(C,A) | C != c & A = a)
     /\ bus_upgrade' = [C \in Core |-> [A \in Address |-> bus_upgrade[C][A] \/ (C # c /\ A = a)]]
@@ -335,13 +335,13 @@ do_bus_upgrade(c, a) ==
     /\ bus_upgrade[c][a]
 
     \* (forall C, A. new(bus_upgrade(C, A)) <-> bus_upgrade(C, A) & !(C = c & A = a)) &
-    /\ bus_upgrade' = [C \in Core |-> [A \in Address |-> bus_upgrade[C][A] /\ ~(C = c /\ A = a)]]
+    /\ bus_upgrade' = [bus_upgrade EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) | C = c & A = a) &
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] \/ (C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 
     \* (forall C, A. new(shared(C, A)) <-> shared(C, A) & !(C = c & A = a))
-    /\ shared' = [C \in Core |-> [A \in Address |-> shared[C][A] /\ ~(C = c /\ A = a)]]
+    /\ shared' = [shared EXCEPT![c][a] = FALSE]
 
     /\ UNCHANGED<<memory, cache, modified, exclusive, proc_read, proc_write, bus_in_use, bus_read, bus_read_for_ownership, bus_transfer>>
 
@@ -356,10 +356,10 @@ complete_proc_write_shared(c, a, v) ==
     /\ \A C \in Core : \A A \in Address : ~bus_upgrade[C][A]
 
     \* (forall C, A. new(shared(C, A)) <-> shared(C, A) & !(C = c & A = a)) &
-    /\ shared' = [C \in Core |-> [A \in Address |-> shared[C][A] /\ ~(C = c /\ A = a)]]
+    /\ shared' = [shared EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(modified(C, A)) <-> modified(C, A) | C = c & A = a) &
-    /\ modified' = [C \in Core |-> [A \in Address |-> modified[C][A] \/ (C = c /\ A = a)]]
+    /\ modified' = [modified EXCEPT![c][a] = TRUE]
 
     \* (forall C, A.
     \*    !(C = c & A = a) ->
@@ -368,7 +368,7 @@ complete_proc_write_shared(c, a, v) ==
     /\ cache' = [cache EXCEPT![c][a] = v]
 
     \* (forall C, A, V. new(proc_write(C, A, V)) <-> proc_write(C, A, V) & !(C = c & A = a & V = v)) &
-    /\ proc_write' = [C \in Core |-> [A \in Address |-> [V \in Value |-> proc_write[C][A][V] /\ ~(C = c /\ A = a /\ V = v)]]]
+    /\ proc_write' = [proc_write EXCEPT![c][a][v] = FALSE]
 
     \* !new(bus_in_use)
     /\ bus_in_use' = FALSE
@@ -389,10 +389,10 @@ evict_modified(c, a) ==
     /\ memory' = [memory EXCEPT![a] = cache[c][a]]
 
     \* (forall C, A. new(modified(C, A)) <-> modified(C, A) & !(C = c & A = a)) &
-    /\ modified' = [C \in Core |-> [A \in Address |-> modified[C][A] /\ ~(C = c /\ A = a)]]
+    /\ modified' = [modified EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) | C = c & A = a)
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] \/ (C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 
     /\ UNCHANGED<<cache, exclusive, shared, proc_read, proc_write, bus_in_use, bus_read, bus_read_for_ownership, bus_upgrade, bus_transfer>>
 
@@ -404,13 +404,13 @@ evict_exclusive_or_shared(c, a) ==
     /\ exclusive[c][a] \/ shared[c][a]
 
     \* (forall C, A. new(exclusive(C, A)) <-> exclusive(C, A) & !(C = c & A = a)) &
-    /\ exclusive' = [C \in Core |-> [A \in Address |-> exclusive[C][A] /\ ~(C = c /\ A = a)]]
+    /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(shared(C, A)) <-> shared(C, A) & !(C = c & A = a)) &
-    /\ shared' = [C \in Core |-> [A \in Address |-> shared[C][A] /\ ~(C = c /\ A = a)]]
+    /\ shared' = [shared EXCEPT![c][a] = FALSE]
 
     \* (forall C, A. new(invalid(C, A)) <-> invalid(C, A) | C = c & A = a)
-    /\ invalid' = [C \in Core |-> [A \in Address |-> invalid[C][A] \/ (C = c /\ A = a)]]
+    /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 
     /\ UNCHANGED<<memory, cache, modified, proc_read, proc_write, bus_in_use, bus_read, bus_read_for_ownership, bus_upgrade, bus_transfer>>
 
