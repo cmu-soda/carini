@@ -219,8 +219,8 @@ public class FormulaSeparation {
     			}
     		}
     		
-    		// calculate the min neg trace len needed for synthesizing an assumption. we will incrementally
-    		// increase it as needed.
+    		// calculate the min neg trace len needed for synthesizing an assumption, which we will use to generate a
+    		// good positive initial positive trace.
     		final int minPartialNegTraceLen = calculatePartialTraceLen(negTrace);
     		int partialNegTraceLen = minPartialNegTraceLen;
     		if (partialNegTraceLen == -1 && !formulaSeparates) {
@@ -257,9 +257,9 @@ public class FormulaSeparation {
     		int numFormulaSynthBatches = 0;
     		while (!formulaSeparates && !foundInvariant) {
     			// compute the partial neg trace
-    			final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
-    			System.out.println("Using the following partial neg trace for formula synth:");
-        		System.out.println(partialNegTrace);
+    			//final AlloyTrace partialNegTrace = negTrace.cutToLen(partialNegTraceLen);
+    			//System.out.println("Using the following partial neg trace for formula synth:");
+        		//System.out.println(partialNegTrace);
         		
 				// synthesize new formulas
         		final int largestFluentNumInInvariants = allInvariants
@@ -273,7 +273,7 @@ public class FormulaSeparation {
         		largestFluentNumSeen = Math.max(largestFluentNumSeen, largestFluentNumInAllFormulas) + 1;
     			++numFormulaSynthBatches;
     			System.out.println("Formula synth batch: " + numFormulaSynthBatches);
-    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(partialNegTrace, currentPosTraces, largestFluentNumSeen, envVarTypes);
+    			final Map<Map<String,String>, Formula> evtToFormulaMap = synthesizeFormulas(negTrace, currentPosTraces, largestFluentNumSeen, envVarTypes);
     			
     			// remove any env var type from this round that returns UNSAT. this is an optimization to prevent
     			// us from re-running workers (in a given round) that are guaranteed to return UNSAT. this modifies
@@ -294,6 +294,7 @@ public class FormulaSeparation {
     					.collect(Collectors.toSet());
     			
     			// if all results are UNSAT and we used a partial neg trace, then we increase the size of the partial neg trace
+    			/*
     			if (envVarTypes.isEmpty() && partialNegTraceLen < negTrace.size()) {
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
@@ -310,7 +311,7 @@ public class FormulaSeparation {
                 	System.out.println(initPosTrace);
                     System.out.println();
                     continue;
-    			}
+    			}*/
     			
     			// if all results are UNSAT (and in this case, we used the full length neg trace) then we report this to the user
     			if (envVarTypes.isEmpty()) {

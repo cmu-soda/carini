@@ -412,11 +412,11 @@ public class FormulaSynthWorker implements Runnable {
 				.mapToObj(i -> "T"+i + "->T"+(i+1))
 				.collect(Collectors.joining(" + "));
 		final String strIndicesNext = strIndicesNextMulti.isEmpty() ? "none->none" : strIndicesNextMulti;
-		final String finalBaseActionForNegTrace = negTrace.finalBaseAction();
+		//final String finalBaseActionForNegTrace = negTrace.finalBaseAction();
 		final String strIndicesFacts = "fact {\n"
 				+ "	IdxOrder/first = T0\n"
 				+ "	IdxOrder/next = " + strIndicesNext + "\n"
-				+ "	" + finalBaseActionForNegTrace + " in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula\n"
+				//+ "	" + finalBaseActionForNegTrace + " in FlSymAction.baseName // the final base name in the neg trace must appear in the sep formula\n"
 				+ "}";
 		
 		// declare facts about the variable types
@@ -503,7 +503,7 @@ public class FormulaSynthWorker implements Runnable {
 		// we also require that the first quantifier is a forall
 		final String numQuantifiersFacts = "fact {\n"
 				+ "	#(Forall + Exists) <= " + qvars.size() + " // allow only " + qvars.size() + " quantifiers\n"
-				+ "	Root.children in Forall // the first quantifier must be a forall\n"
+				//+ "	Root.children in Forall // the first quantifier must be a forall\n"
 				+ "}";
 		
 		// pos trace delcs
@@ -937,12 +937,19 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	 { a : FlSymAction | some f : Fluent | a in f.flActions and a.flToActParamsMap.ParamIdx != f.vars.Var }\n"
 			+ "}\n"
 			+ "\n"
+			+ "// calculates the indices that are larger than the minimum violating index for the negative trace.\n"
+			+ "// this function assumes there's exactly 1 negative trace in this Alloy spec.\n"
+			+ "fun violatingIdxsInNegTrace : set Idx {\n"
+			+ "	 let violatingIdxs = univ.(EmptyEnv->indices[NegTrace]->Root - NegTrace.satisfies).univ |\n"
+			+ "	  violatingIdxs + IdxOrder/nexts[violatingIdxs]\n"
+			+ "}\n"
+			+ "\n"
 			+ "\n"
 			+ "/* main */\n"
 			+ "run {\n"
 			+ "	// find a formula that separates \"good\" traces from \"bad\" ones\n"
 			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies\n"
-			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies) // target the last index\n"
+			+ "	all nt : NegTrace | EmptyEnv->indices[nt]->Root not in nt.satisfies\n"
 			+ "	EmptyEnv->T0->Root in EmptyTrace.satisfies // the formula must satisfy the empty trace\n"
 			+ "\n"
 			+ "	// minimization constraints\n"
@@ -950,5 +957,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
 			+ "	minsome flActions // heuristic to synthesize the least complicated fluents as possible\n"
 			+ "	minsome Fluent.vars // minimize the # of params for each fluent\n"
+			+ "	maxsome violatingIdxsInNegTrace // minimize the index in the neg trace that we block (maxsome is CORRECT)\n"
 			+ "}\n";
 }

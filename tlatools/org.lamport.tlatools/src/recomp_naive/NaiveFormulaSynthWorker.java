@@ -493,7 +493,7 @@ public class NaiveFormulaSynthWorker implements Runnable {
 		// we also require that the first quantifier is a forall
 		final String numQuantifiersFacts = "fact {\n"
 				+ "	#(Forall + Exists) <= " + qvars.size() + " // allow only " + qvars.size() + " quantifiers\n"
-				+ "	Root.children in Forall // the first quantifier must be a forall\n"
+				//+ "	Root.children in Forall // the first quantifier must be a forall\n"
 				+ "}";
 		
 		// pos trace delcs
