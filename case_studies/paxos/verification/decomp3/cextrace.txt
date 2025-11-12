@@ -1,0 +1,101 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 99 and seed -2515759287337491585 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 94421] (Mac OS X 15.7.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/paxos/verification/decomp3/T1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Integers.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module T1_hist
+Starting... (2025-10-27 22:41:34)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-10-27 22:41:34.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs1a = {}
+/\ Fluent4_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent3_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent2_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 2: <Phase1a line 29, col 1 to line 31, col 50 of module T1_hist>
+/\ msgs1a = {0}
+/\ Fluent4_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent3_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent2_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 3: <Phase1a line 29, col 1 to line 31, col 50 of module T1_hist>
+/\ msgs1a = {0, 2}
+/\ Fluent4_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent3_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent2_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 4: <Phase1b line 34, col 1 to line 40, col 26 of module T1_hist>
+/\ msgs1a = {0, 2}
+/\ Fluent4_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent3_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent2_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ maxBal = (a1 :> 0 @@ a2 :> -1 @@ a3 :> -1)
+
+State 5: <Phase2b line 43, col 1 to line 47, col 38 of module T1_hist>
+/\ msgs1a = {0, 2}
+/\ Fluent4_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent3_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent2_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ maxBal = (a1 :> 0 @@ a2 :> -1 @@ a3 :> -1)
+
+State 6: <Phase1b line 34, col 1 to line 40, col 26 of module T1_hist>
+/\ msgs1a = {0, 2}
+/\ Fluent4_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> TRUE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent3_14 = ( a1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent2_14 = ( a1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> TRUE) @@
+  a2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  a3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ maxBal = (a1 :> 2 @@ a2 :> -1 @@ a3 :> -1)
+
+1654 states generated, 697 distinct states found, 623 states left on queue.
+The depth of the complete state graph search is 6.
+The average outdegree of the complete state graph is 10 (minimum is 3, the maximum 18 and the 95th percentile is 15).
+Finished in 00s at (2025-10-27 22:41:34)

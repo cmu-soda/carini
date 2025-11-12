@@ -1,0 +1,66 @@
+Building the LTS for the initial trace (T1.tla)
+Built the LTS in 1.447s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.171s
+
+Round 1
+-------
+TLC neg trace generation time: 0.841 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.267 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->retransmitn1n1k1v1NUM1 + T1->recv_transfer_msgn1n1k1v1NUM1 + T2->putn2k1v1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->reshardn1n2k1v1NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->retransmitn1n1k1v1NUM1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.735 seconds
+\A var0 \in Node : (Fluent2_59[var0]) => (Fluent1_59[var0])
+  Fluent1_59[Node]
+    initially: FALSE
+    flActions:
+      reshard[0] = TRUE
+  Fluent2_59[Node]
+    initially: FALSE
+    flActions:
+      retransmit[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Node : (Fluent2_59[var0]) => (Fluent1_59[var0])
+  Fluent1_59[Node]
+    initially: FALSE
+    flActions:
+      reshard[0] = TRUE
+  Fluent2_59[Node]
+    initially: FALSE
+    flActions:
+      retransmit[0] = TRUE
+
+Minimizing the invariants found thus far.
+Minimization finished in 0.001 seconds
+Current partial assumption:
+/\ \A var0 \in Node : (Fluent2_59[var0]) => (Fluent1_59[var0])
+Round 1 took 306.333 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 0.147 seconds
+Round 2 took 0.154 seconds
+
+The following formula is a separating assumption:
+/\ \A var0 \in Node : (Fluent2_59[var0]) => (Fluent1_59[var0])
+  Fluent1_59[Node]
+    initially: FALSE
+    flActions:
+      reshard[0] = TRUE
+  Fluent2_59[Node]
+    initially: FALSE
+    flActions:
+      retransmit[0] = TRUE

@@ -86,4 +86,59 @@ Safety ==
     \A N1,N2 \in Node : \A K \in Key : \A V1,V2 \in Value :
         (table[N1][K][V1] /\ table[N2][K][V2]) => (N1 = N2 /\ V1 = V2)
 
+Inv ==
+/\ Safety
+
+\*invariant owner(N1, K) & owner(N2, K) -> N1 = N2
+/\ \A N1,N2 \in Node : \A K \in Key : (owner[N1][K] /\ owner[N2][K]) => (N1 = N2)
+
+\*invariant table(N, K, V) -> owner(N, K)
+/\ \A N \in Node : \A K \in Key : \A V \in Value : table[N][K][V] => owner[N][K]
+
+\*invariant !(transfer_msg(SRC, DST, K, V, S) & !seqnum_recvd(DST, SRC, S) & owner(N, K))
+/\ \A SRC,DST,N \in Node : \A K \in Key : \A V \in Value : \A S \in Seqnum :
+    ~(transfer_msg[SRC][DST][K][V][S] /\ ~seqnum_recvd[DST][SRC][S] /\ owner[N][K])
+
+\*invariant !(unacked(SRC, DST, K, V, S) & !seqnum_recvd(DST, SRC, S) & owner(N, K))
+/\ \A SRC,DST,N \in Node : \A K \in Key : \A V \in Value : \A S \in Seqnum :
+    ~(unacked[SRC][DST][K][V][S] /\ ~seqnum_recvd[DST][SRC][S] /\ owner[N][K])
+
+\*invariant
+\*  transfer_msg(SRC1, DST1, K, V1, S1) & !seqnum_recvd(DST1, SRC1, S1) &
+\*  transfer_msg(SRC2, DST2, K, V2, S2) & !seqnum_recvd(DST2, SRC2, S2) ->
+\*  SRC1 = SRC2 & DST1 = DST2 & V1 = V2 & S1 = S2
+/\ \A SRC1,SRC2,DST1,DST2 \in Node : \A K \in Key : \A V1,V2 \in Value : \A S1,S2 \in Seqnum :
+    (transfer_msg[SRC1][DST1][K][V1][S1] /\ ~seqnum_recvd[DST1][SRC1][S1] /\
+     transfer_msg[SRC2][DST2][K][V2][S2] /\ ~seqnum_recvd[DST2][SRC2][S2]) =>
+     (SRC1 = SRC2 /\ DST1 = DST2 /\ V1 = V2 /\ S1 = S2)
+
+\*invariant
+\*  unacked(SRC1, DST1, K, V1, S1) & !seqnum_recvd(DST1, SRC1, S1) &
+\*  unacked(SRC2, DST2, K, V2, S2) & !seqnum_recvd(DST2, SRC2, S2) ->
+\*  SRC1 = SRC2 & DST1 = DST2 & V1 = V2 & S1 = S2
+/\ \A SRC1,SRC2,DST1,DST2 \in Node : \A K \in Key : \A V1,V2 \in Value : \A S1,S2 \in Seqnum :
+    (unacked[SRC1][DST1][K][V1][S1] /\ ~seqnum_recvd[DST1][SRC1][S1] /\
+     unacked[SRC2][DST2][K][V2][S2] /\ ~seqnum_recvd[DST2][SRC2][S2]) =>
+     (SRC1 = SRC2 /\ DST1 = DST2 /\ V1 = V2 /\ S1 = S2)
+
+\*invariant
+\*  unacked(SRC1, DST1, K, V1, S1) & !seqnum_recvd(DST1, SRC1, S1) &
+\*  transfer_msg(SRC2, DST2, K, V2, S2) & !seqnum_recvd(DST2, SRC2, S2) ->
+\*  SRC1 = SRC2 & DST1 = DST2 & V1 = V2 & S1 = S2
+/\ \A SRC1,SRC2,DST1,DST2 \in Node : \A K \in Key : \A V1,V2 \in Value : \A S1,S2 \in Seqnum :
+    (unacked[SRC1][DST1][K][V1][S1] /\ ~seqnum_recvd[DST1][SRC1][S1] /\
+     transfer_msg[SRC2][DST2][K][V2][S2] /\ ~seqnum_recvd[DST2][SRC2][S2]) =>
+     (SRC1 = SRC2 /\ DST1 = DST2 /\ V1 = V2 /\ S1 = S2)
+
+TypeOK ==
+    /\ table \in [Node -> [Key -> [Value -> BOOLEAN]]]
+    /\ owner \in [Node -> [Key -> BOOLEAN]]
+    /\ transfer_msg \in [Node -> [Node -> [Key -> [Value -> [Seqnum -> BOOLEAN]]]]]
+    /\ seqnum_sent \in [Node -> [Seqnum -> BOOLEAN]]
+    /\ seqnum_recvd \in [Node -> [Node -> [Seqnum -> BOOLEAN]]]
+    /\ unacked \in [Node -> [Node -> [Key -> [Value -> [Seqnum -> BOOLEAN]]]]]
+    /\ ack_msg \in [Node -> [Node -> [Seqnum -> BOOLEAN]]]
+
+IISpec == TypeOK /\ Inv /\ [][Next]_vars
+
 ======

@@ -1,0 +1,208 @@
+Building the LTS for the initial trace (T1.tla)
+Built the LTS in 2.728s
+Creating the initial trace
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Created the initial trace in 0.215s
+
+Round 1
+-------
+TLC neg trace generation time: 0.857 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.142 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+
+Init pos trace:
+PT1 (PosTrace): (T0->reshardn1n2k1v1NUM2)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.229 seconds
+\A var0 \in Key : (Fluent2_2[var0]) => (~(Fluent1_2[var0]))
+  Fluent2_2[Key]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[2] = TRUE
+  Fluent1_2[Key]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[2] = TRUE
+\A var0 \in Node : (Fluent1_7[var0]) => (~(Fluent2_7[var0]))
+  Fluent2_7[Node]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[0] = TRUE
+  Fluent1_7[Node]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[0] = TRUE
+\A var0 \in Key : (Fluent1_24[var0]) => (~(Fluent2_24[var0]))
+  Fluent2_24[Key]
+    initially: FALSE
+    flActions:
+      reshard[2] = TRUE
+  Fluent1_24[Key]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[2] = TRUE
+\A var0 \in Seqnum : (Fluent2_57[var0]) => (Fluent1_57[var0])
+  Fluent2_57[Seqnum]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[4] = TRUE
+  Fluent1_57[Seqnum]
+    initially: FALSE
+    flActions:
+      reshard[4] = FALSE
+\A var0 \in Key : (Fluent2_12[var0]) => (~(Fluent1_12[var0]))
+  Fluent2_12[Key]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[2] = TRUE
+  Fluent1_12[Key]
+    initially: FALSE
+    flActions:
+      reshard[2] = TRUE
+\A var0 \in Node : (Fluent1_37[var0]) => (~(Fluent2_37[var0]))
+  Fluent1_37[Node]
+    initially: FALSE
+    flActions:
+      reshard[1] = TRUE
+  Fluent2_37[Node]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[1] = TRUE
+\A var0 \in Value : (Fluent1_16[var0]) => (~(Fluent2_16[var0]))
+  Fluent2_16[Value]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[3] = TRUE
+  Fluent1_16[Value]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[3] = TRUE
+\A var0 \in Seqnum : (Fluent1_41[var0]) => (~(Fluent2_41[var0]))
+  Fluent2_41[Seqnum]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[4] = TRUE
+  Fluent1_41[Seqnum]
+    initially: FALSE
+    flActions:
+      reshard[4] = TRUE
+\A var0 \in Seqnum : (Fluent1_19[var0]) => (~(Fluent2_19[var0]))
+  Fluent1_19[Seqnum]
+    initially: FALSE
+    flActions:
+      reshard[4] = TRUE
+  Fluent2_19[Seqnum]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[4] = TRUE
+\A var0 \in Value : \A var1 \in Value : (Fluent1_51[var0]) => (var1 = var0)
+  Fluent1_51[Value]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[3] = TRUE
+
+new pos trace(s):
+PT4 (PosTrace): (T0->reshardn1n2k1v2NUM1 + T1->recv_transfer_msgn1n1k1v1NUM1)
+PT5 (PosTrace): (T0->recv_transfer_msgn1n1k1v1NUM1)
+PT7 (PosTrace): (T0->reshardn1n1k1v1NUM1 + T1->recv_transfer_msgn1n1k1v1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 2
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 11.73 seconds
+\A var0 \in Value : (Fluent2_63[var0]) => (~(Fluent3_63[var0]))
+  Fluent2_63[Value]
+    initially: FALSE
+    flActions:
+      reshard[3] = TRUE
+  Fluent3_63[Value]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[3] = TRUE
+\A var0 \in Value : (Fluent2_16[var0]) => (~(Fluent3_16[var0]))
+  Fluent2_16[Value]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[3] = TRUE
+  Fluent3_16[Value]
+    initially: FALSE
+    flActions:
+      reshard[3] = TRUE
+\A var0 \in Seqnum : \A var1 \in Value : (Fluent3_41[var1][var0]) => (~(Fluent2_41[var1]))
+  Fluent2_41[Value]
+    initially: FALSE
+    flActions:
+      reshard[3] = TRUE
+  Fluent3_41[Value, Seqnum]
+    initially: FALSE
+    flActions:
+      recv_transfer_msg[3, 4] = TRUE
+\A var0 \in Key : \A var1 \in Key : \E var2 \in Value : (var1 = var0) => (~(Fluent2_10[var2]))
+  Fluent2_10[Value]
+    initially: FALSE
+    flActions:
+      reshard[] = TRUE
+      reshard[3] = FALSE (priority 1)
+      recv_transfer_msg[3] = TRUE
+
+new pos trace(s):
+PT12 (PosTrace): (T0->reshardn1n2k1v1NUM1 + T1->recv_transfer_msgn1n1k1v1NUM1)
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 3
+Total # workers: 58
+# workers using: 10
+Formula synthesis complete in 15.221 seconds
+
+new pos trace(s):
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 4
+Total # workers: 48
+# workers using: 10
+Formula synthesis complete in 15.089 seconds
+
+new pos trace(s):
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 5
+Total # workers: 38
+# workers using: 10
+Formula synthesis complete in 13.473 seconds
+
+new pos trace(s):
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 6
+Total # workers: 28
+# workers using: 10
+Formula synthesis complete in 14.874 seconds
+
+new pos trace(s):
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 7
+Total # workers: 18
+# workers using: 10
+Formula synthesis complete in 13.867 seconds
+
+new pos trace(s):
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->putn1k1v1 + T1->reshardn1n1k1v1NUM1 + T2->recv_transfer_msgn1n1k1v1NUM1 + T3->putn1k1v2 + T4->recv_transfer_msgn1n1k1v1NUM1)
+Formula synth batch: 8
+Total # workers: 8
+# workers using: 8
+Formula synthesis complete in 12.137 seconds
+Could not synthesize a spearating assumption. Here are the intermediate conjuncts:
+/\ /\ UNSAT
+

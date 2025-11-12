@@ -1,0 +1,176 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 114 and seed 7274476779698812718 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 73577] (Mac OS X 15.7.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/paxos/verification/decomp5/T1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Integers.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module T1_hist
+Starting... (2025-10-30 05:14:33)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-10-30 05:14:33.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs1a = {}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  1 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {}
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 2: <Phase1a line 30, col 1 to line 32, col 40 of module T1_hist>
+/\ msgs1a = {0}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  1 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {}
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 3: <Phase1a line 30, col 1 to line 32, col 40 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  1 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {}
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 4: <Phase1b line 35, col 1 to line 40, col 27 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  1 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {}
+/\ maxBal = (a1 :> 0 @@ a2 :> -1 @@ a3 :> -1)
+
+State 5: <Phase1b line 35, col 1 to line 40, col 27 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  1 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {}
+/\ maxBal = (a1 :> 1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 6: <Phase2a line 43, col 1 to line 47, col 27 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> FALSE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  1 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {<<0, v1>>}
+/\ maxBal = (a1 :> 1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 7: <Phase2a line 43, col 1 to line 47, col 27 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> FALSE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  1 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {<<0, v1>>, <<1, v2>>}
+/\ maxBal = (a1 :> 1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 8: <Phase2b line 50, col 1 to line 56, col 16 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  1 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {<<0, v1>>, <<1, v2>>}
+/\ maxBal = (a1 :> 1 @@ a2 :> 0 @@ a3 :> -1)
+
+State 9: <Phase2b line 50, col 1 to line 56, col 16 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ Fluent23_12 = ( 0 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> TRUE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ Fluent22_12 = ( 0 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  1 :>
+      ( v1 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) @@
+        v2 :> (a1 :> TRUE @@ a2 :> TRUE @@ a3 :> TRUE) ) @@
+  2 :>
+      ( v1 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) @@
+        v2 :> (a1 :> FALSE @@ a2 :> FALSE @@ a3 :> FALSE) ) )
+/\ msgs2a = {<<0, v1>>, <<1, v2>>}
+/\ maxBal = (a1 :> 1 @@ a2 :> 0 @@ a3 :> -1)
+
+422038 states generated, 82179 distinct states found, 59416 states left on queue.
+The depth of the complete state graph search is 9.
+The average outdegree of the complete state graph is 4 (minimum is 0, the maximum 20 and the 95th percentile is 10).
+Finished in 00s at (2025-10-30 05:14:33)

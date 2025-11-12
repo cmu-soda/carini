@@ -1,0 +1,45 @@
+{
+    "preds"  :  [
+        "table[N1][K][V1]",
+        "table[N1][K][V2]",
+        "table[N2][K][V1]",
+        "table[N2][K][V2]",
+        "owner[N1][K]",
+        "owner[N2][K]",
+
+        "ctr1[N1][N1][K][V1][S1]",
+        "ctr1[N1][N1][K][V1][S2]",
+        "ctr1[N1][N1][K][V2][S1]",
+        "ctr1[N1][N1][K][V2][S2]",
+        "ctr1[N1][N2][K][V1][S1]",
+        "ctr1[N1][N2][K][V1][S2]",
+        "ctr1[N1][N2][K][V2][S1]",
+        "ctr1[N1][N2][K][V2][S2]",
+
+        "ctr2[N1][N1][K][V1][S1]",
+        "ctr2[N1][N1][K][V1][S2]",
+        "ctr2[N1][N1][K][V2][S1]",
+        "ctr2[N1][N1][K][V2][S2]",
+        "ctr2[N1][N2][K][V1][S1]",
+        "ctr2[N1][N2][K][V1][S2]",
+        "ctr2[N1][N2][K][V2][S1]",
+        "ctr2[N1][N2][K][V2][S2]"
+    ],
+    "preds_alt" : [],
+    "safety"  :  "Safety",
+    "constants"  : [
+        "CONSTANTS",
+        "Key = {k1,k2}",
+        "Node = {n1,n2}",
+        "Value = {v1,v2}",
+        "Seqnum = {1,2}"
+    ],
+    "constraint"  :  "",
+    "quant_inv"  :  "\\A N1,N2 \\in Node : \\A K \\in Key : \\A V1,V2 \\in Value : \\A S1,S2 \\in Seqnum : ",
+    "quant_inv_alt"  :  null,
+    "quant_vars": ["I","J","N","M"],
+    "model_consts"  :  null,
+    "symmetry" : false,
+    "typeok"  :  "TypeOKRand",
+    "simulate"  :  true
+}

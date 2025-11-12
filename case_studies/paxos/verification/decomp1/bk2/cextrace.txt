@@ -1,0 +1,157 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 94 and seed -991844059369236991 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 18057] (Mac OS X 15.7.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/paxos/verification/decomp1/T1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Integers.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Sequences.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module T1_hist
+Starting... (2025-10-28 22:12:43)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-10-28 22:12:43.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs1a = {}
+/\ msgs1b = {}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  v2 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 2: <Phase1a line 34, col 1 to line 36, col 38 of module T1_hist>
+/\ msgs1a = {1}
+/\ msgs1b = {}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  v2 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 3: <Phase1a line 34, col 1 to line 36, col 38 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  v2 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+
+State 4: <Phase1b line 39, col 1 to line 44, col 38 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {<<a1, 0, -1, "None">>}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  v2 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> 0 @@ a2 :> -1 @@ a3 :> -1)
+
+State 5: <Phase1b line 39, col 1 to line 44, col 38 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {<<a1, 0, -1, "None">>, <<a2, 0, -1, "None">>}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  v2 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> 0 @@ a2 :> 0 @@ a3 :> -1)
+
+State 6: <Phase2a line 47, col 1 to line 54, col 26 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {<<a1, 0, -1, "None">>, <<a2, 0, -1, "None">>}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) @@
+  v2 :>
+      ( v1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        v2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> 0 @@ a2 :> 0 @@ a3 :> -1)
+
+State 7: <Phase2a line 47, col 1 to line 54, col 26 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {<<a1, 0, -1, "None">>, <<a2, 0, -1, "None">>}
+/\ maxVBal = (a1 :> -1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> "None" @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) @@
+  v2 :> (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> 0 @@ a2 :> 0 @@ a3 :> -1)
+
+State 8: <Phase2b line 57, col 1 to line 63, col 26 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {<<a1, 0, -1, "None">>, <<a2, 0, -1, "None">>}
+/\ maxVBal = (a1 :> 1 @@ a2 :> -1 @@ a3 :> -1)
+/\ maxVal = (a1 :> v2 @@ a2 :> "None" @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) @@
+  v2 :> (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> TRUE) @@
+  a2 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> 1 @@ a2 :> 0 @@ a3 :> -1)
+
+State 9: <Phase2b line 57, col 1 to line 63, col 26 of module T1_hist>
+/\ msgs1a = {0, 1}
+/\ msgs1b = {<<a1, 0, -1, "None">>, <<a2, 0, -1, "None">>}
+/\ maxVBal = (a1 :> 1 @@ a2 :> 0 @@ a3 :> -1)
+/\ maxVal = (a1 :> v2 @@ a2 :> v1 @@ a3 :> "None")
+/\ Fluent43_1 = ( v1 :>
+      (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) @@
+  v2 :> (v1 :> (v1 :> TRUE @@ v2 :> TRUE) @@ v2 :> (v1 :> TRUE @@ v2 :> TRUE)) )
+/\ Fluent44_1 = ( a1 :> (v1 :> FALSE @@ v2 :> TRUE) @@
+  a2 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  a3 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ maxBal = (a1 :> 1 @@ a2 :> 0 @@ a3 :> -1)
+
+557046 states generated, 97398 distinct states found, 67065 states left on queue.
+The depth of the complete state graph search is 9.
+The average outdegree of the complete state graph is 3 (minimum is 0, the maximum 27 and the 95th percentile is 12).
+Finished in 00s at (2025-10-28 22:12:43)

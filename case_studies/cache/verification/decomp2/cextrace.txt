@@ -1,0 +1,19 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 23 and seed -3815554578824663488 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 31997] (Mac OS X 15.7.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/cache/verification/decomp2/C1_hist.tla
+Semantic processing of module C1_hist
+Starting... (2025-10-27 09:06:53)
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Computed 8 initial states...
+Computed 16 initial states...
+Computed 32 initial states...
+Finished computing initial states: 64 distinct states generated at 2025-10-27 09:06:53.
+Progress(5) at 2025-10-27 09:06:56: 282,173 states generated (282,173 s/min), 76,870 distinct states found (76,870 ds/min), 52,894 states left on queue.
+Progress(9) at 2025-10-27 09:07:56: 8,812,825 states generated (8,530,652 s/min), 1,447,049 distinct states found (1,370,179 ds/min), 757,275 states left on queue.
+Progress(10) at 2025-10-27 09:08:56: 17,412,571 states generated (8,599,746 s/min), 2,811,272 distinct states found (1,364,223 ds/min), 1,449,185 states left on queue.
+Progress(10) at 2025-10-27 09:09:56: 26,124,977 states generated (8,712,406 s/min), 4,113,588 distinct states found (1,302,316 ds/min), 2,087,609 states left on queue.
+Progress(11) at 2025-10-27 09:10:56: 34,915,960 states generated (8,790,983 s/min), 5,613,724 distinct states found (1,500,136 ds/min), 2,908,793 states left on queue.
