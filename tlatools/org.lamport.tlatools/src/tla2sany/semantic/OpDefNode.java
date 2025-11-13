@@ -693,7 +693,7 @@ public class OpDefNode extends OpDefOrDeclNode
 						  final String qvName = "x" + i;
 						  valueBuilder.append("[").append(qvName).append(" \\in ").append(updateType).append(" |-> ");
 					  }
-					  valueBuilder.append(flAction.value);
+					  valueBuilder.append(flAction.target);
 					  for (int i = 0; i < updateTypes.size(); ++i) {
 						  valueBuilder.append("]");
 					  }
