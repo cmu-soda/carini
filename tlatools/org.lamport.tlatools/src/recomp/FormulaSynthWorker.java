@@ -403,12 +403,14 @@ public class FormulaSynthWorker implements Runnable {
 		}
 		
 		// create the indices that are needed for the traces
-		final String strIndices = IntStream.range(0, maxTraceLen+1)
+		// maxTraceLen+2 because (1) range() is exclusive and (2) the trace len is state based, so +1 from the action length
+		final String strIndices = IntStream.range(0, maxTraceLen+2)
 				.mapToObj(i -> "T" + i)
 				.collect(Collectors.joining(", "));
 		final String strIndicesDecl = "one sig " + strIndices + " extends Idx {}";
-		
-		final String strIndicesNextMulti = IntStream.range(0, maxTraceLen)
+
+		// maxTraceLen+1 because the trace len is state based, so +1 from the action length
+		final String strIndicesNextMulti = IntStream.range(0, maxTraceLen+1)
 				.mapToObj(i -> "T"+i + "->T"+(i+1))
 				.collect(Collectors.joining(" + "));
 		final String strIndicesNext = strIndicesNextMulti.isEmpty() ? "none->none" : strIndicesNextMulti;
@@ -466,9 +468,9 @@ public class FormulaSynthWorker implements Runnable {
 				.collect(Collectors.joining("\n"));
 		
 		// partial instances for optimization
-		final String lastIdxPartialInstance = "lastIdx = (EmptyTrace->T0) + " +
+		final String lastIdxPartialInstance = "lastIdx = " +
 				allTraces.stream()
-					.map(t -> "(" + t.name() + "->" + t.alloyLastIdx() + ")")
+					.map(t -> "(" + t.name() + "->" + t.alloyLastStateIdx() + ")")
 					.collect(Collectors.joining(" + "));
 		final String pathPartialInstance = "path = " +
 				allTraces.stream()
@@ -861,14 +863,13 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	lastIdx : Idx, // the last index in the path for the trace\n"
 			+ "	initiates : Env -> Idx -> FlSymAction, // the actions that initiate fluent values\n"
 			+ "	terminates : Env -> Idx -> FlSymAction, // the actions that terminate fluent values\n"
-			+ "	stateSat : Env -> Idx -> Formula, // formulas that satisfy this trace (state-based semantics)\n"
-			+ "	actSat : Env -> Idx -> Formula // formulas that satisfy this trace (action-based semantics)\n"
+			+ "	satisfies : Env -> Idx -> Formula // formulas that satisfy this trace (state-based semantics)\n"
 			+ "} {\n"
 			+ "    // fluent actions that initiate\n"
 			+ "    all e : Env, i : Idx, s : FlSymAction | e->i->s in initiates iff\n"
 			+ "        let a = i.path |\n"
-			+ "        let isInitAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target in stateSat |\n"
-			+ "        let isTermAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target not in stateSat |\n"
+			+ "        let isInitAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target in satisfies |\n"
+			+ "        let isTermAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target not in satisfies |\n"
 			+ "        let sPrev = previousPriorityFlSymAction[s] |\n"
 			+ "            isInitAct\n"
 			+ "            or\n"
@@ -877,8 +878,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "    // fluent actions that terminate\n"
 			+ "    all e : Env, i : Idx, s : FlSymAction | e->i->s in terminates iff\n"
 			+ "        let a = i.path |\n"
-			+ "        let isInitAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target in stateSat |\n"
-			+ "        let isTermAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target not in stateSat |\n"
+			+ "        let isInitAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target in satisfies |\n"
+			+ "        let isTermAct = some s and concreteMatchesSymAction[e,a,s] and e->i->s.target not in satisfies |\n"
 			+ "        let sPrev = previousPriorityFlSymAction[s] |\n"
 			+ "            isTermAct\n"
 			+ "            or\n"
@@ -886,64 +887,35 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "\n"
 			+ "	// state-based trace semantics\n"
-			+ "	// i refers to the index right before the action. therefore, we do not populate a value for the index after the final action.\n"
-			+ "	all e : Env, i : Idx, f : TT | e->i->f in stateSat\n"
-			+ "	all e : Env, i : Idx, f : FF | e->i->f not in stateSat\n"
-			+ "	all e : Env, i : Idx, f : Not | e->i->f in stateSat iff (e->i->f.child not in stateSat)\n"
-			+ "	all e : Env, i : Idx, f : Implies | e->i->f in stateSat iff (e->i->f.left in stateSat implies e->i->f.right in stateSat)\n"
-			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in stateSat iff (f.lhs).(e.maps) = (f.rhs).(e.maps)\n"
-			+ "	all e : Env, i : Idx, f : VarSetContains | e->i->f in stateSat iff setContains[(f.theSet).(e.maps), (f.elem).(e.maps)]\n"
-			+ "	all e : Env, i : Idx, f : VarLTE | e->i->f in stateSat iff lte[(f.lhs).(e.maps), (f.rhs).(e.maps)]\n"
+			+ "	// i refers to the index right before the action\n"
+			+ "	// e |- t,i |= f, where e is an environment, t is a trace, i is an index, and f is a formula\n"
+			+ "	all e : Env, i : Idx, f : TT | e->i->f in satisfies\n"
+			+ "	all e : Env, i : Idx, f : FF | e->i->f not in satisfies\n"
+			+ "	all e : Env, i : Idx, f : Not | e->i->f in satisfies iff (e->i->f.child not in satisfies)\n"
+			+ "	all e : Env, i : Idx, f : Implies | e->i->f in satisfies iff (e->i->f.left in satisfies implies e->i->f.right in satisfies)\n"
+			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in satisfies iff (f.lhs).(e.maps) = (f.rhs).(e.maps)\n"
+			+ "	all e : Env, i : Idx, f : VarSetContains | e->i->f in satisfies iff setContains[(f.theSet).(e.maps), (f.elem).(e.maps)]\n"
+			+ "	all e : Env, i : Idx, f : VarLTE | e->i->f in satisfies iff lte[(f.lhs).(e.maps), (f.rhs).(e.maps)]\n"
 			+ "\n"
-			+ "	all e : Env, i : Idx, f : FluentWrapper | e->i->f in stateSat iff\n"
+			+ "	all e : Env, i : Idx, f : FluentWrapper | e->i->f in satisfies iff\n"
 			+ "        let a = i.path |\n"
 			+ "        let flEnv = { env : Env | (~(f.fluent.vars)).(f.flToActParamsMap).(a.params) = env.maps } |\n"
-			+ "            some flEnv and flEnv->i->f.fluent in stateSat\n"
+			+ "            some flEnv and flEnv->i->f.fluent in satisfies\n"
 			+ "\n"
-			+ "    all e : Env, i : Idx, f : Fluent | e->i->f in stateSat iff\n"
+			+ "    all e : Env, i : Idx, f : Fluent | e->i->f in satisfies iff\n"
 			+ "        let a = (i.prev).path |\n"
 			+ "        let s = highestPriorityFlSymAction[f,a] |\n"
 			+ "        let isInitAct = some s and concreteMatchesSymAction[e,a,s] and some i.prev and e->i.prev->s in initiates |\n"
 			+ "        let isTermAct = some s and concreteMatchesSymAction[e,a,s] and some i.prev and e->i.prev->s in terminates |\n"
 			+ "            (no i.prev and f.initially = True) or\n"
 			+ "            (isInitAct) or\n"
-			+ "            (not isTermAct and some i.prev and e->i.prev->f in stateSat)\n"
+			+ "            (not isTermAct and some i.prev and e->i.prev->f in satisfies)\n"
 			+ "\n"
-			+ "	all e : Env, i : Idx, f : Forall | e->i->f not in stateSat\n"
-			+ "	all e : Env, i : Idx, f : Exists | e->i->f not in stateSat\n"
-			+ "	all e : Env, i : Idx, f : Root | e->i->f not in stateSat\n"
-			+ "\n"
-			+ "\n"
-			+ "	// action-based trace semantics\n"
-			+ "	// e |- t,i |= f, where e is an environment, t is a trace, i is an index, and f is a formula\n"
-			+ "	all e : Env, i : Idx, f : TT | e->i->f in actSat\n"
-			+ "	all e : Env, i : Idx, f : FF | e->i->f not in actSat\n"
-			+ "	all e : Env, i : Idx, f : Not | e->i->f in actSat iff (e->i->f.child not in actSat)\n"
-			+ "	all e : Env, i : Idx, f : Implies | e->i->f in actSat iff (e->i->f.left in actSat implies e->i->f.right in actSat)\n"
-			+ "	all e : Env, i : Idx, f : VarEquals | e->i->f in actSat iff (f.lhs).(e.maps) = (f.rhs).(e.maps)\n"
-			+ "	all e : Env, i : Idx, f : VarSetContains | e->i->f in actSat iff setContains[(f.theSet).(e.maps), (f.elem).(e.maps)]\n"
-			+ "	all e : Env, i : Idx, f : VarLTE | e->i->f in actSat iff lte[(f.lhs).(e.maps), (f.rhs).(e.maps)]\n"
-			+ "	all e : Env, i : Idx, f : FluentWrapper | e->i->f not in actSat // FluentWrapper's are not in the invariant\n"
-			+ "\n"
-			+ "	// e |- t,i |= f (where f is a fluent) iff any (the disjunction) of the following three hold:\n"
-			+ "	// 1. t[i] \\in f.initFl\n"
-			+ "	// 2. t[i] \\notin f.termFl and i = 0 and f.initally = True\n"
-			+ "	// 3. t[i] \\notin f.termFl and (e |- t,i-1 |= f)\n"
-			+ "	all e : Env, i : Idx, f : Fluent | e->i->f in actSat iff\n"
-			+ "        // a is the action at the current index i in the trace (i.e. a = t[i])\n"
-			+ "        let a = i.path |\n"
-			+ "        let s = highestPriorityFlSymAction[f,a] |\n"
-			+ "        let isInitAct = some s and e->i->s in initiates |\n"
-			+ "        let isTermAct = some s and e->i->s in terminates |\n"
-			+ "            isInitAct or\n"
-			+ "            (not isTermAct and no i.prev and f.initially = True) or\n"
-			+ "            (not isTermAct and some i.prev and e->i.prev->f in actSat)\n"
-			+ "\n"
-			+ "	all e : Env, i : Idx, f : Forall | e->i->f in actSat iff\n"
-			+ "		(all x : f.sort.atoms | some e' : Env | pushEnv[e',e,f.var,x] and e'->i->f.matrix in actSat)\n"
-			+ "	all e : Env, i : Idx, f : Exists | e->i->f in actSat iff\n"
-			+ "		(some x : f.sort.atoms | some e' : Env | pushEnv[e',e,f.var,x] and e'->i->f.matrix in actSat)\n"
-			+ "	all e : Env, i : Idx, f : Root | e->i->f in actSat iff e->i->f.children in actSat\n"
+			+ "	all e : Env, i : Idx, f : Forall | e->i->f in satisfies iff\n"
+			+ "		(all x : f.sort.atoms | some e' : Env | pushEnv[e',e,f.var,x] and e'->i->f.matrix in satisfies)\n"
+			+ "	all e : Env, i : Idx, f : Exists | e->i->f in satisfies iff\n"
+			+ "		(some x : f.sort.atoms | some e' : Env | pushEnv[e',e,f.var,x] and e'->i->f.matrix in satisfies)\n"
+			+ "	all e : Env, i : Idx, f : Root | e->i->f in satisfies iff e->i->f.children in satisfies\n"
 			+ "}\n"
 			+ "\n"
 			+ "pred concreteMatchesSymAction[e : Env, a : Act, s : FlSymAction] {\n"
@@ -983,9 +955,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "abstract sig PosTrace extends Trace {} {}\n"
 			+ "abstract sig NegTrace extends Trace {} {}\n"
-			+ "one sig EmptyTrace extends Trace {} {\n"
-			+ "	 no path\n"
-			+ "}\n"
 			+ "\n"
 			+ "\n"
 			+ "// 'partial fluents' are fluents that do not update every param in the fluent (and hence, in practice,\n"
@@ -998,9 +967,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "/* main */\n"
 			+ "run {\n"
 			+ "	// find a formula that separates \"good\" traces from \"bad\" ones\n"
-			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.actSat\n"
-			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.actSat) // target the last index\n"
-			+ "	EmptyEnv->T0->Root in EmptyTrace.actSat // the formula must satisfy the empty trace\n"
+			+ "	all pt : PosTrace | EmptyEnv->indices[pt]->Root in pt.satisfies\n"
+			+ "	all nt : NegTrace | no (EmptyEnv->nt.lastIdx->Root & nt.satisfies) // target the last index\n"
 			+ "\n"
 			+ "	// minimization constraints\n"
 			+ "	softno partialFluents // fewer partial fluents\n"

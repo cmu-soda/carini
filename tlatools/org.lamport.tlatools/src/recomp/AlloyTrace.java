@@ -13,6 +13,7 @@ public class AlloyTrace {
 	private final String ext;
 	private final int lastIdx;
 	private final String alloyLastIdx;
+	private final String alloyLastStateIdx;
 	private final String alloyTrace;
 	private final List<String> rawTrace;
 	private final List<String> sanitizedTrace;
@@ -27,6 +28,7 @@ public class AlloyTrace {
 		this.ext = null;
 		this.lastIdx = -1;
 		this.alloyLastIdx = null;
+		this.alloyLastStateIdx = null;
 		this.alloyTrace = null;
 		this.rawTrace = null;
 		this.sanitizedTrace = null;
@@ -40,6 +42,7 @@ public class AlloyTrace {
 			final Set<String> globalActions) {
 		final int lastIdx = sanitizedTrace.size() - 1;
 		final String alloyLastIdx = "T" + lastIdx;
+		final String alloyLastStateIdx = "T" + sanitizedTrace.size();
 		final String rawAlloyTrace = IntStream.range(0, sanitizedTrace.size())
 				.mapToObj(i -> {
 					final String time = "T" + i;
@@ -74,6 +77,7 @@ public class AlloyTrace {
 		this.ext = ext;
 		this.lastIdx = lastIdx;
 		this.alloyLastIdx = alloyLastIdx;
+		this.alloyLastStateIdx = alloyLastStateIdx;
 		this.alloyTrace = alloyTrace;
 		this.sanitizedTrace = sanitizedTrace;
 		this.tlaTrace = tlaTrace;
@@ -99,6 +103,10 @@ public class AlloyTrace {
 	
 	public String alloyLastIdx() {
 		return this.alloyLastIdx;
+	}
+	
+	public String alloyLastStateIdx() {
+		return this.alloyLastStateIdx;
 	}
 	
 	public String alloyTrace() {
