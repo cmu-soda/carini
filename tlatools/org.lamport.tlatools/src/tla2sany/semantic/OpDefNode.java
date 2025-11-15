@@ -635,6 +635,38 @@ public class OpDefNode extends OpDefOrDeclNode
 	  }
   }
   
+  private String replaceTargetIdxsWithActionParams(final String rawTarget, final List<String> actParams) {
+	  final int endFluentName = rawTarget.indexOf('[');
+	  if (endFluentName == -1) {
+		  return rawTarget;
+	  }
+	  
+	  final String fluentName = rawTarget.substring(0, endFluentName);
+	  final String paramsWithBrackets = rawTarget.substring(endFluentName);
+	  final String paramsWithoutBrackets = paramsWithBrackets.substring(1, paramsWithBrackets.length()-1);
+	  final List<Integer> paramMap = Utils.toArrayList(paramsWithoutBrackets.split(","))
+			  .stream()
+			  .map(i -> Integer.parseInt(i.trim()))
+			  .collect(Collectors.toList());
+	  Utils.assertTrue(!paramMap.isEmpty(), "paramMap is empty!");
+	
+	  // get the action-params for each action in fluent (in the correct order). for example, for a param
+	  // map that looks like: [3,0,1] and if the params to the action are: (var0,var1,var2,var3), then we
+	  // access the fluent as: fluentName[var3,var0,var1]
+	  final List<String> varTuple = paramMap
+			  .stream()
+			  .map(i -> actParams.get(i))
+			  .collect(Collectors.toList());
+	  
+	  // create the cells we want to update
+	  final String updateCells = varTuple
+			  .stream()
+			  .map(v -> "[" + v + "]")
+			  .collect(Collectors.joining());
+	  
+	  return fluentName + updateCells;
+  }
+  
   public void addFluentVars(final Formula formula, boolean addCandSep) {
 	  // the name of the action this node represents
 	  final String act = this.getName().toString();
@@ -693,7 +725,8 @@ public class OpDefNode extends OpDefOrDeclNode
 						  final String qvName = "x" + i;
 						  valueBuilder.append("[").append(qvName).append(" \\in ").append(updateType).append(" |-> ");
 					  }
-					  valueBuilder.append(flAction.target);
+					  final String target = replaceTargetIdxsWithActionParams(flAction.target, actParams);
+					  valueBuilder.append(target);
 					  for (int i = 0; i < updateTypes.size(); ++i) {
 						  valueBuilder.append("]");
 					  }
