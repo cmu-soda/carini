@@ -1050,10 +1050,13 @@ public class OpApplNode extends ExprNode implements ExploreNode {
 		  
 		  // EXCEPT op
 		  else if (isExcept(opKey)) {
-			  Utils.assertTrue(getChildren().length == 2, "EXCEPT op must have exactly 2 args!");
+			  Utils.assertTrue(getChildren().length >= 2, "EXCEPT op must have at least 2 args!");
 			  final String func = getChildren()[0].toTLA(false);
-			  final String exception = getChildren()[1].toTLA(false);
-			  return "[" + func + " EXCEPT!" + exception + "]";
+			  final String exceptions = Utils.toArrayList(getChildren()).subList(1, getChildren().length)
+					  .stream()
+					  .map(e -> e.toTLA(false))
+					  .collect(Collectors.joining(", !"));
+			  return "[" + func + " EXCEPT!" + exceptions + "]";
 		  }
 		  
 		  // pair, I guess an equality?
