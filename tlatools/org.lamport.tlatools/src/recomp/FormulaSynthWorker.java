@@ -22,8 +22,8 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_NUM_FLUENT_ACTS = 5;
-	private static final int MAX_NUM_TARGETS = 5;
+	private static final int MAX_NUM_FLUENT_ACTS = 4;
+	private static final int MAX_NUM_TARGETS = 4;
 	private static final int MAX_FLUENT_ACT_PRIORITY = 2; // TODO make a param?
 	
 	private final FormulaSynth formulaSynth;
@@ -685,8 +685,6 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "    // specify the action that wraps each FluentTarget\n"
 			+ "    all w : FluentTarget, s : FlSymAction | (w in s.target.*children) implies (w.wrappingAction = s)\n"
-			+ "\n"
-			+ "    FlSymAction.target in TT + FF // disable fancy targets for now\n"
 			+ "}\n"
 			+ "\n"
 			+ "\n"
@@ -840,9 +838,8 @@ public class FormulaSynthWorker implements Runnable {
 			+ "fact FormulaConstraints {\n"
 			+ "	all f : Formula | f not in f.^children // the DAG requirement\n"
 			+ "	no Root.(~children) // the root has no parents\n"
-			+ "	Formula = Root.*children // all Formulas must be part of the overall formula\n"
 			+ "	all f : (Formula - Root) | one f.(~children) // all non-root formulas have exactly one parent\n"
-			+ "	all f : Formula | f in Root.*children // all Formulas must be part of the overall formula\n"
+			+ "	Formula = Root.*children // all Formulas must be part of the overall formula\n"
 			+ "\n"
 			+ "	// no free vars, all vars must be used in the matrix\n"
 			+ "	let varsInMatrix = ParamIdx.(Fluent.vars) + VarEquals.(lhs+rhs) + VarSetContains.(elem+theSet) + VarLTE.(lhs+rhs) |\n"
@@ -855,6 +852,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "\n"
 			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n"
+			//+ "	(no FluentTarget) implies (some Implies) // heuristic for finding good formulas more quickly\n"
 			+ "}\n"
 			+ "\n"
 			+ "\n"

@@ -320,7 +320,8 @@ public class FormulaSeparation {
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
-    			final long fiveMinuteTimeout = 5L; // use a 5m timeout for pos traces
+    			final long oneMinuteTimeout = 1L;
+    			final long fiveMinuteTimeout = 5L;
     			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
     			final List<Formula> sortedNewSynthFormulas = newSynthFormulas
     					.stream()
@@ -331,7 +332,7 @@ public class FormulaSeparation {
 					System.out.println(formula);
 					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
 					final AlloyTrace newPosTrace =
-							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", fiveMinuteTimeout);
+							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", oneMinuteTimeout);
 					newSynthFormulaResults.put(formula, newPosTrace);
 					
 					final boolean isInvariant = !newPosTrace.hasError();

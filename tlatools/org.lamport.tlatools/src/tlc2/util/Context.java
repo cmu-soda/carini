@@ -8,6 +8,7 @@ package tlc2.util;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 
 import tla2sany.semantic.SymbolNode;
@@ -176,10 +177,13 @@ public final class Context implements Iterator<Context> {
 
 		Context cur;
 		for (cur = this.next; cur.name != null; cur = cur.next) {
-			res.put(cur.name.getName().toString(),
+			res.putIfAbsent(cur.name.getName().toString(),
 					cur.value instanceof Value ? (Value) cur.value : new StringValue(cur.value.toString()));
 		}
-		res.putAll(cur.toStrMap());
+		//res.putAll(cur.toStrMap());
+		for (Entry<String,Value> e : cur.toStrMap().entrySet()) {
+			res.putIfAbsent(e.getKey(), e.getValue());
+		}
 
 		return res;
 	}
