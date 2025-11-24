@@ -24,7 +24,7 @@ public class FormulaSynth {
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	private static final int MAX_NUM_THREADS = Runtime.getRuntime().availableProcessors();
 	private static final int MAX_NUM_WORKERS = MAX_NUM_THREADS;
-	private static final long SHUTDOWN_MULTIPLIER = 3L;
+	private static final long SHUTDOWN_MULTIPLIER = 2L;
 	private static final long MIN_SHUTDOWN_TIME = 1000L * 30L; // 30 seconds
 	
 	private Map<Map<String,String>, Formula> synthesizedFormulas;

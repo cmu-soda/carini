@@ -233,24 +233,13 @@ public class FormulaSeparation {
         	// 'dynamically' generate the init trace
     		final AlloyTrace fullPartialNegTrace = negTrace.cutToLen(partialNegTraceLen);
     		final AlloyTrace globalPartialNegTrace = fullPartialNegTrace.restrictToAlphabet(this.globalActions);
-        	String badAction = globalPartialNegTrace.rawTrace().get(globalPartialNegTrace.size()-1);
-        	AlloyTrace okNegPrefix = fullPartialNegTrace.newName("PT1", "PosTrace");
-        	while (globalPartialNegTrace.equals(okNegPrefix.restrictToAlphabet(this.globalActions))) {
-        		okNegPrefix = okNegPrefix.cutToLen(okNegPrefix.size()-1);
-        	}
-        	AlloyTrace initPosTrace = createInitPosTrace(badAction, okNegPrefix, defaultInitPosTrace);
         	
     		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
     		// formula synthesis task. these are the "current" pos traces that we will learn from (perform formula synth on).
         	long cumNumPosTraces = 1;
-        	final AlloyTrace ipt = initPosTrace;
     		Map<Map<String,String>, List<AlloyTrace>> currentPosTraces = allEnvVarTypes
     				.stream()
-    				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(ipt)));
-    		if (!foundInvariant) {
-            	System.out.println("Init pos trace:");
-            	System.out.println(initPosTrace);
-    		}
+    				.collect(Collectors.toMap(evt -> evt, evt -> new ArrayList<>()));
 
     		// use the negative trace and all existing positive traces to generate a formula
 			// keep generating positive traces until the formula turns into an invariant
@@ -298,16 +287,10 @@ public class FormulaSeparation {
                     ++partialNegTraceLen;
     				numFormulaSynthBatches = 0;
                     envVarTypes = new HashSet<>(allEnvVarTypes);
-                	badAction = negTrace.rawTrace().get(partialNegTraceLen-1);
-                	okNegPrefix = initPosTrace;
-                	initPosTrace = createInitPosTrace(badAction, okNegPrefix, defaultInitPosTrace);
-                	final AlloyTrace iptUnsat = initPosTrace;
                     currentPosTraces = allEnvVarTypes
             				.stream()
-            				.collect(Collectors.toMap(evt -> evt, evt -> Utils.listOf(iptUnsat)));
+            				.collect(Collectors.toMap(evt -> evt, evt -> new ArrayList<>()));
                     System.out.println("All synthesized formulas are UNSAT, increasing the size of the partial neg trace");
-                	System.out.println("New init pos trace:");
-                	System.out.println(initPosTrace);
                     System.out.println();
                     continue;
     			}

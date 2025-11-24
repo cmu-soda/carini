@@ -22,8 +22,8 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
 	// TODO make these params
-	private static final int MAX_NUM_FLUENT_ACTS = 4;
-	private static final int MAX_NUM_TARGETS = 4;
+	private static final int MAX_NUM_FLUENT_ACTS = 5;
+	private static final int MAX_NUM_TARGETS = 5;
 	private static final int MAX_FLUENT_ACT_PRIORITY = 2; // TODO make a param?
 	
 	private final FormulaSynth formulaSynth;
@@ -31,6 +31,7 @@ public class FormulaSynthWorker implements Runnable {
 	private final int id;
 	private final AlloyTrace negTrace;
 	private final List<AlloyTrace> posTraces;
+	private final int startNegIdx;
 	private final TLC tlcComp;
 	private final Set<String> globalActions;
 	private final Map<String, Set<String>> sortElementsMap;
@@ -58,6 +59,7 @@ public class FormulaSynthWorker implements Runnable {
 		this.envVarTypes = envVarTypes;
 		this.id = id;
 		this.negTrace = negTrace;
+		this.startNegIdx = negTrace.size() - 1;
 		this.posTraces = posTraces;
 		this.tlcComp = tlcComp;
 		this.globalActions = globalActions;
@@ -470,8 +472,7 @@ public class FormulaSynthWorker implements Runnable {
 				+ "	Root.children in Forall // the first quantifier must be a forall\n"
 				+ "}";
 		
-		final int startNegIdx = negTrace.size() - 1;
-		final String stateDecls = createStateDecls(posTraces, negTrace, startNegIdx);
+		final String stateDecls = createStateDecls(posTraces, negTrace, this.startNegIdx);
 		
 		// pos trace delcs
 		final List<String> posTraceDecls = posTraces
@@ -850,22 +851,24 @@ public class FormulaSynthWorker implements Runnable {
 			+ "\n"
 			+ "\n"
 			+ "    // fluent actions initiate iff their target formula evaluates to true (in the state before the action occurs)\n"
-			+ "    all s : State, e : Env, a : FlSymAction | e->a in s.initiates iff\n"
-			+ "        let isInitAct = concreteMatchesSymAction[e,s.act,a] and a.target->s.act in s.prevState.targetSat |\n"
-			+ "        let isTermAct = concreteMatchesSymAction[e,s.act,a] and a.target->s.act not in s.prevState.targetSat |\n"
-			+ "        let aPrev = previousPriorityFlSymAction[a] |\n"
-			+ "            isInitAct\n"
-			+ "            or\n"
-			+ "            (not isTermAct and some aPrev and e->aPrev in s.initiates)\n"
+			+ "    all postState : State, e : Env, symAct : FlSymAction | e->symAct in postState.initiates iff\n"
+			+ "        let a = postState.act |\n"
+			+ "        let s = postState.prevState |\n"
+			+ "        let isInitAct = concreteMatchesSymAction[e,a,symAct] and symAct.target->a in s.targetSat |\n"
+			+ "        let isTermAct = concreteMatchesSymAction[e,a,symAct] and symAct.target->a not in s.targetSat |\n"
+			+ "        let symActPrev = previousPriorityFlSymAction[symAct] |\n"
+			+ "            some s and\n"
+			+ "            (isInitAct or (not isTermAct and some symActPrev and e->symActPrev in postState.initiates))\n"
 			+ "\n"
 			+ "    // fluent actions terminate iff their target formula evaluates to false (in the state before the action occurs)\n"
-			+ "    all s : State, e : Env, a : FlSymAction | e->a in s.terminates iff\n"
-			+ "        let isInitAct = concreteMatchesSymAction[e,s.act,a] and a.target->s.act in s.prevState.targetSat |\n"
-			+ "        let isTermAct = concreteMatchesSymAction[e,s.act,a] and a.target->s.act not in s.prevState.targetSat |\n"
-			+ "        let aPrev = previousPriorityFlSymAction[a] |\n"
-			+ "            isTermAct\n"
-			+ "            or\n"
-			+ "            (not isInitAct and some aPrev and e->aPrev in s.terminates)\n"
+			+ "    all postState : State, e : Env, symAct : FlSymAction | e->symAct in postState.terminates iff\n"
+			+ "        let a = postState.act |\n"
+			+ "        let s = postState.prevState |\n"
+			+ "        let isInitAct = concreteMatchesSymAction[e,a,symAct] and symAct.target->a in s.targetSat |\n"
+			+ "        let isTermAct = concreteMatchesSymAction[e,a,symAct] and symAct.target->a not in s.targetSat |\n"
+			+ "        let symActPrev = previousPriorityFlSymAction[symAct] |\n"
+			+ "            some s and\n"
+			+ "            (isTermAct or (not isInitAct and some symActPrev and e->symActPrev in postState.terminates))\n"
 			+ "\n"
 			+ "\n"
 			+ "	// state-based trace semantics\n"
@@ -876,9 +879,10 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all s : State, e : Env, f : VarLTE | e->f in s.formulaSat iff lte[(f.lhs).(e.maps), (f.rhs).(e.maps)]\n"
 			+ "\n"
 			+ "    all s : State, e : Env, f : Fluent | e->f in s.formulaSat iff\n"
-			+ "        let a = highestPriorityFlSymAction[f,s.act] |\n"
-			+ "        let isInitAct = some a and concreteMatchesSymAction[e,s.act,a] and e->a in s.initiates |\n"
-			+ "        let isTermAct = some a and concreteMatchesSymAction[e,s.act,a] and e->a in s.terminates |\n"
+			+ "        let a = s.act |\n"
+			+ "        let symAct = highestPriorityFlSymAction[f,a] |\n"
+			+ "        let isInitAct = some symAct and e->symAct in s.initiates |\n"
+			+ "        let isTermAct = some symAct and e->symAct in s.terminates |\n"
 			+ "            (no s.prevState and f.initially = True) or\n"
 			+ "            (some s.prevState and isInitAct) or\n"
 			+ "            (some s.prevState and not isTermAct and e->f in s.prevState.formulaSat)\n"
@@ -889,6 +893,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "		(some x : f.sort.atoms | some e' : Env | pushEnv[e',e,f.var,x] and e'->f.matrix in s.formulaSat)\n"
 			+ "	all s : State, e : Env, f : Root | e->f in s.formulaSat iff e->f.children in s.formulaSat\n"
 			+ "}\n"
+			+ "\n"
 			+ "\n"
 			+ "pred concreteMatchesSymAction[e : Env, a : Act, s : FlSymAction] {\n"
 			+ "    a.baseName = s.baseName and\n"
@@ -931,14 +936,24 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	 { a : FlSymAction | some f : Fluent | a in f.flActions and a.flToActParamsMap.ParamIdx != f.vars.Var }\n"
 			+ "}\n"
 			+ "\n"
+			+ "// the violated neg states and all states that occur after. we want to maximize (i.e. maxsom) the number\n"
+			+ "// of such states in order to minimize the index of the violation for the neg trace.\n"
+			+ "fun violatedNegStatesAndAfter : set NegState {\n"
+			+ "	 let violated = { s : NegState | EmptyEnv->Root not in s.formulaSat } |\n"
+			+ "	 	 violated.*(~prevState)\n"
+			+ "}\n"
+			+ "\n"
 			+ "\n"
 			+ "/* main */\n"
 			+ "run {\n"
 			+ "	// find a formula that separates \"good\" traces from \"bad\" ones\n"
+			+ "	// the requirement below only requies one neg state to be violated; this is ok because we assume there\n"
+			+ "	// will be exactly one neg trace given.\n"
 			+ "	all pt : PosState | EmptyEnv->Root in pt.formulaSat\n"
-			+ "	all nt : NegState | EmptyEnv->Root not in nt.formulaSat\n"
+			+ "	some nt : NegState | EmptyEnv->Root not in nt.formulaSat\n"
 			+ "\n"
 			+ "	// minimization constraints\n"
+			+ "	maxsome violatedNegStatesAndAfter // minimize the violation idx (see above for why we use maxsome)\n"
 			+ "	softno partialFluents // fewer partial fluents\n"
 			+ "	softno (FlSymAction.target.*tchildren - (TT + FF)) // fewer targets that aren't TRUE or FALSE\n"
 			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"
