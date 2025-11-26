@@ -1,0 +1,50 @@
+#lang ivy1.7
+
+type key
+type value
+type node
+type seqnum
+
+relation owner(N:node, K:key)
+relation table(N:node, K:key, V:value)
+relation fluent52(S:seqnum, N:node, K:key)
+relation fluent51(S:seqnum, N:node, K:key)
+relation fluent20(S:seqnum, N:node)
+relation fluent19(S:seqnum, N:node)
+
+after init {
+  require forall N1, N2, K. owner(N1,K) & owner(N2,K) -> N1 = N2;
+  table(N, K, V) := false;
+  fluent52(S, N, K) := false;
+  fluent51(S, N, K) := false;
+  fluent20(S, N) := false;
+  fluent19(S, N) := false;
+}
+
+action reshard(n_old:node, n_new:node, k:key, v:value, s:seqnum) = {
+  require table(n_old, k, v);
+  table(n_old, k, v) := false;
+  owner(n_old, k) := false;
+  fluent52(s, n_old, k) := true;
+}
+
+action recv_transfer_msg(src:node, n:node, k:key, v:value, s:seqnum) = {
+  require ~fluent20(s, src) & fluent52(s, src, k);
+  table(n, k, v) := true;
+  owner(n, k) := true;
+  fluent51(s, src, k) := true;
+  fluent20(s, src) := true;
+  fluent19(s, src) := fluent20(s, src);
+}
+
+action put(n:node, k:key, v:value) = {
+  require owner(n, k);
+  table(n, k, V) := false;
+  table(n, k, v) := true;
+}
+
+export reshard
+export recv_transfer_msg
+export put
+
+invariant [1000000] forall K, N1, N2, V1, V2. table(N1,K,V1) & table(N2,K,V2) -> N1 = N2 & V1 = V2

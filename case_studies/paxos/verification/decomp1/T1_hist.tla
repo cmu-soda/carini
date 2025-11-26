@@ -3,13 +3,12 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets
 
 CONSTANTS Acceptor, Value, Ballot
 
-VARIABLES maxVal, Fluent7_2, msgs1b, Fluent6_2, msgs1a, maxBal, Fluent13_14, maxVBal, Fluent14_14, Fluent15_14
+VARIABLES maxVal, msgs1b, msgs1a, maxBal, Fluent6_7, Fluent5_7, maxVBal
 
-vars == <<maxVal, Fluent7_2, msgs1b, Fluent6_2, msgs1a, maxBal, Fluent13_14, maxVBal, Fluent14_14, Fluent15_14>>
+vars == <<maxVal, msgs1b, msgs1a, maxBal, Fluent6_7, Fluent5_7, maxVBal>>
 
 CandSep ==
-/\ \A var0 \in Ballot : \A var1 \in Ballot : (Fluent6_2[var1]) => ((Fluent7_2[var0]) => (var0 <= var1))
-/\ \A var0 \in Value : \E var1 \in Acceptor : (Fluent15_14[var0]) => ((Fluent13_14[var1]) => (Fluent14_14[var0]))
+\A var0 \in Acceptor : \E var1 \in Ballot : (Fluent5_7[var0]) => (~(Fluent6_7[var0][var1]))
 
 Quorum == { i \in SUBSET(Acceptor) : (Cardinality(i) * 2) > Cardinality(Acceptor) }
 
@@ -28,16 +27,13 @@ Init ==
 /\ maxVal = [a \in Acceptor |-> None]
 /\ msgs1a = {}
 /\ msgs1b = {}
-/\ Fluent13_14 = [ x0 \in Acceptor |-> FALSE]
-/\ Fluent7_2 = [ x0 \in Ballot |-> FALSE]
-/\ Fluent6_2 = [ x0 \in Ballot |-> FALSE]
-/\ Fluent14_14 = [ x0 \in Value |-> FALSE]
-/\ Fluent15_14 = [ x0 \in Value |-> FALSE]
+/\ Fluent6_7 = [ x0 \in Acceptor |-> [ x1 \in Ballot |-> FALSE]]
+/\ Fluent5_7 = [ x0 \in Acceptor |-> FALSE]
 
 Phase1a(b) ==
 /\ msgs1a' = (msgs1a \cup {b})
 /\ UNCHANGED <<maxBal,maxVBal,maxVal,msgs1b>>
-/\ UNCHANGED<<Fluent13_14, Fluent7_2, Fluent6_2, Fluent14_14, Fluent15_14>>
+/\ UNCHANGED<<Fluent6_7, Fluent5_7>>
 
 Phase1b(a,b) ==
 /\ (b \in msgs1a)
@@ -45,7 +41,7 @@ Phase1b(a,b) ==
 /\ maxBal' = [maxBal EXCEPT![a] = b]
 /\ msgs1b' = (msgs1b \cup {<<a,b,maxVBal[a],maxVal[a]>>})
 /\ UNCHANGED <<maxVBal,maxVal,msgs1a>>
-/\ UNCHANGED<<Fluent13_14, Fluent7_2, Fluent6_2, Fluent14_14, Fluent15_14>>
+/\ UNCHANGED<<Fluent6_7, Fluent5_7>>
 
 Phase2a(b,v,a) ==
 /\ (<<a,b,maxVBal[a],maxVal[a]>> \in msgs1b)
@@ -54,10 +50,8 @@ Phase2a(b,v,a) ==
   /\ (\A aa \in Q : (\E m \in Q1b : m[1] = aa))
   /\ (Q1bv = {} \/ (\E m \in Q1bv : (m[4] = v /\ (\A mm \in Q1bv : m[3] >= mm[3])))))
 /\ UNCHANGED <<maxBal,maxVBal,maxVal,msgs1a,msgs1b>>
-/\ Fluent7_2' = [Fluent7_2 EXCEPT ![b] = TRUE]
-/\ Fluent6_2' = [x0 \in Ballot |-> FALSE]
-/\ Fluent15_14' = [Fluent15_14 EXCEPT ![v] = TRUE]
-/\ UNCHANGED<<Fluent13_14, Fluent14_14>>
+/\ Fluent6_7' = [[Fluent6_7 EXCEPT ![a] = [x0 \in Ballot |-> TRUE]] EXCEPT ![a][b] = Fluent6_7[a][b]]
+/\ UNCHANGED<<Fluent5_7>>
 
 Phase2b(a,b,v) ==
 /\ b >= maxBal[a]
@@ -65,11 +59,8 @@ Phase2b(a,b,v) ==
 /\ maxVBal' = [maxVBal EXCEPT![a] = b]
 /\ maxVal' = [maxVal EXCEPT![a] = v]
 /\ UNCHANGED <<msgs1a,msgs1b>>
-/\ Fluent13_14' = [Fluent13_14 EXCEPT ![a] = TRUE]
-/\ Fluent6_2' = [Fluent6_2 EXCEPT ![b] = TRUE]
-/\ Fluent14_14' = [Fluent14_14 EXCEPT ![v] = TRUE]
-/\ Fluent15_14' = [x0 \in Value |-> FALSE]
-/\ UNCHANGED<<Fluent7_2>>
+/\ Fluent5_7' = [Fluent5_7 EXCEPT ![a] = TRUE]
+/\ UNCHANGED<<Fluent6_7>>
 
 Next ==
 \/ (\E b \in Ballot : Phase1a(b))

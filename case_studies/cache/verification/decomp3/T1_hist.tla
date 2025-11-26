@@ -3,12 +3,12 @@
 
 CONSTANTS Address, Core, Value
 
-VARIABLES proc_write, Fluent216_1, proc_read, bus_read_for_ownership, Fluent215_1, bus_transfer, invalid, bus_read, bus_upgrade, bus_in_use
+VARIABLES Fluent137_14, proc_write, Fluent136_14, proc_read, bus_read_for_ownership, bus_transfer, invalid, bus_read, bus_upgrade, bus_in_use
 
-vars == <<proc_write, Fluent216_1, proc_read, bus_read_for_ownership, Fluent215_1, bus_transfer, invalid, bus_read, bus_upgrade, bus_in_use>>
+vars == <<Fluent137_14, proc_write, Fluent136_14, proc_read, bus_read_for_ownership, bus_transfer, invalid, bus_read, bus_upgrade, bus_in_use>>
 
 CandSep ==
-\A var0 \in Address : (Fluent215_1[var0]) => (Fluent216_1[var0])
+\A var0 \in Address : (Fluent137_14[var0]) => (~(Fluent136_14[var0]))
 
 Init ==
 /\ invalid = [c \in Core |-> [a \in Address |-> TRUE]]
@@ -19,8 +19,8 @@ Init ==
 /\ bus_read_for_ownership = [c \in Core |-> [a \in Address |-> FALSE]]
 /\ bus_upgrade = [c \in Core |-> [a \in Address |-> FALSE]]
 /\ bus_transfer = [v \in Value |-> FALSE]
-/\ Fluent216_1 = [ x0 \in Address |-> FALSE]
-/\ Fluent215_1 = [ x0 \in Address |-> FALSE]
+/\ Fluent137_14 = [ x0 \in Address |-> FALSE]
+/\ Fluent136_14 = [ x0 \in Address |-> FALSE]
 
 issue_proc_read_invalid(c,a) ==
 /\ invalid[c][a]
@@ -29,14 +29,15 @@ issue_proc_read_invalid(c,a) ==
 /\ proc_read' = [proc_read EXCEPT![c][a] = TRUE]
 /\ bus_read' = [C \in Core |-> [A \in Address |-> (bus_read[C][A] \/ (C /= c /\ A = a))]]
 /\ UNCHANGED <<invalid,proc_write,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ Fluent137_14' = [Fluent137_14 EXCEPT ![a] = FALSE]
+/\ UNCHANGED<<Fluent136_14>>
 
 do_bus_read_invalid(c,a) ==
 /\ invalid[c][a]
 /\ bus_read[c][a]
 /\ bus_read' = [bus_read EXCEPT![c][a] = FALSE]
 /\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 do_bus_read_valid(c,a,v) ==
 /\ ~(invalid[c][a])
@@ -44,7 +45,7 @@ do_bus_read_valid(c,a,v) ==
 /\ bus_read' = [bus_read EXCEPT![c][a] = FALSE]
 /\ bus_transfer' = [bus_transfer EXCEPT![v] = TRUE]
 /\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read_for_ownership,bus_upgrade>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 complete_proc_read_invalid_shared(c,a,v) ==
 /\ invalid[c][a]
@@ -56,7 +57,8 @@ complete_proc_read_invalid_shared(c,a,v) ==
 /\ bus_in_use' = FALSE
 /\ proc_read' = [proc_read EXCEPT![c][a] = FALSE]
 /\ UNCHANGED <<proc_write,bus_read,bus_read_for_ownership,bus_upgrade>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ Fluent136_14' = [Fluent136_14 EXCEPT ![a] = TRUE]
+/\ UNCHANGED<<Fluent137_14>>
 
 complete_proc_read_invalid_exclusive(c,a,v) ==
 /\ invalid[c][a]
@@ -67,7 +69,7 @@ complete_proc_read_invalid_exclusive(c,a,v) ==
 /\ bus_in_use' = FALSE
 /\ proc_read' = [proc_read EXCEPT![c][a] = FALSE]
 /\ UNCHANGED <<proc_write,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 issue_proc_write_invalid(c,a,v) ==
 /\ invalid[c][a]
@@ -76,17 +78,15 @@ issue_proc_write_invalid(c,a,v) ==
 /\ proc_write' = [proc_write EXCEPT![c][a][v] = TRUE]
 /\ bus_read_for_ownership' = [C \in Core |-> [A \in Address |-> (bus_read_for_ownership[C][A] \/ (C /= c /\ A = a))]]
 /\ UNCHANGED <<invalid,proc_read,bus_read,bus_upgrade,bus_transfer>>
-/\ Fluent216_1' = [Fluent216_1 EXCEPT ![a] = TRUE]
-/\ Fluent215_1' = [Fluent215_1 EXCEPT ![a] = TRUE]
-/\ UNCHANGED<<>>
+/\ Fluent137_14' = [Fluent137_14 EXCEPT ![a] = TRUE]
+/\ UNCHANGED<<Fluent136_14>>
 
 do_bus_read_for_ownership_invalid(c,a) ==
 /\ invalid[c][a]
 /\ bus_read_for_ownership[c][a]
 /\ bus_read_for_ownership' = [bus_read_for_ownership EXCEPT![c][a] = FALSE]
 /\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read,bus_upgrade,bus_transfer>>
-/\ Fluent215_1' = [Fluent215_1 EXCEPT ![a] = FALSE]
-/\ UNCHANGED<<Fluent216_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 do_bus_read_for_ownership_valid(c,a,v) ==
 /\ ~(invalid[c][a])
@@ -95,8 +95,7 @@ do_bus_read_for_ownership_valid(c,a,v) ==
 /\ bus_read_for_ownership' = [bus_read_for_ownership EXCEPT![c][a] = FALSE]
 /\ bus_transfer' = [bus_transfer EXCEPT![v] = TRUE]
 /\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_upgrade>>
-/\ Fluent215_1' = [Fluent215_1 EXCEPT ![a] = FALSE]
-/\ UNCHANGED<<Fluent216_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 complete_proc_write_invalid(c,a,v) ==
 /\ invalid[c][a]
@@ -107,13 +106,12 @@ complete_proc_write_invalid(c,a,v) ==
 /\ bus_in_use' = FALSE
 /\ proc_write' = [proc_write EXCEPT![c][a][v] = FALSE]
 /\ UNCHANGED <<proc_read,bus_read,bus_read_for_ownership,bus_upgrade>>
-/\ Fluent216_1' = [Fluent216_1 EXCEPT ![a] = FALSE]
-/\ UNCHANGED<<Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 proc_write_exclusive(c,a,v) ==
 /\ ~(bus_in_use)
 /\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 issue_proc_write_shared(c,a,v) ==
 /\ ~(bus_in_use)
@@ -121,14 +119,14 @@ issue_proc_write_shared(c,a,v) ==
 /\ proc_write' = [proc_write EXCEPT![c][a][v] = TRUE]
 /\ bus_upgrade' = [C \in Core |-> [A \in Address |-> (bus_upgrade[C][A] \/ (C /= c /\ A = a))]]
 /\ UNCHANGED <<invalid,proc_read,bus_read,bus_read_for_ownership,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 do_bus_upgrade(c,a) ==
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 /\ bus_upgrade[c][a]
 /\ bus_upgrade' = [bus_upgrade EXCEPT![c][a] = FALSE]
 /\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 complete_proc_write_shared(c,a,v) ==
 /\ proc_write[c][a][v]
@@ -136,19 +134,19 @@ complete_proc_write_shared(c,a,v) ==
 /\ proc_write' = [proc_write EXCEPT![c][a][v] = FALSE]
 /\ bus_in_use' = FALSE
 /\ UNCHANGED <<invalid,proc_read,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 evict_modified(c,a) ==
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 /\ ~(bus_in_use)
 /\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 evict_exclusive_or_shared(c,a) ==
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
 /\ ~(bus_in_use)
 /\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
-/\ UNCHANGED<<Fluent216_1, Fluent215_1>>
+/\ UNCHANGED<<Fluent137_14, Fluent136_14>>
 
 Next ==
 \E c \in Core :

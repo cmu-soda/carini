@@ -3,168 +3,319 @@ EXTENDS Naturals, TLC
 
 CONSTANTS a1, a2, Address, Value, v1, v2, c1, c2, Core
 
-VARIABLES shared, cache, memory, err, invalid, exclusive, modified, Fluent17_18, Fluent18_18, cexTraceIdx
+VARIABLES Fluent137_14, proc_write, Fluent136_14, proc_read, bus_read_for_ownership, bus_transfer, invalid, bus_read, bus_upgrade, cexTraceIdx, bus_in_use
 
-vars == <<shared, cache, memory, err, invalid, exclusive, modified, Fluent17_18, Fluent18_18, cexTraceIdx>>
+vars == <<Fluent137_14, proc_write, Fluent136_14, proc_read, bus_read_for_ownership, bus_transfer, invalid, bus_read, bus_upgrade, cexTraceIdx, bus_in_use>>
 
-NoErr == err = FALSE
+TraceConstraint ==
+/\ cexTraceIdx = 0 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> TRUE @@ a2 :> TRUE) @@ c2 :> (a1 :> TRUE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = FALSE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
 
-CandSep == (\A var0 \in Address : (Fluent18_18[var0] => Fluent17_18[var0]))
+/\ cexTraceIdx = 1 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> TRUE @@ a2 :> TRUE) @@ c2 :> (a1 :> TRUE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = TRUE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+/\ cexTraceIdx = 2 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> FALSE @@ a2 :> TRUE) @@ c2 :> (a1 :> TRUE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = FALSE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+/\ cexTraceIdx = 3 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> FALSE @@ a2 :> TRUE) @@ c2 :> (a1 :> TRUE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = TRUE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+/\ cexTraceIdx = 4 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> TRUE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> FALSE @@ a2 :> TRUE) @@ c2 :> (a1 :> TRUE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = TRUE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+/\ cexTraceIdx = 5 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> FALSE @@ a2 :> TRUE) @@ c2 :> (a1 :> FALSE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = FALSE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> TRUE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+/\ cexTraceIdx = 6 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> TRUE @@ a2 :> TRUE) @@ c2 :> (a1 :> FALSE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_in_use = FALSE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> FALSE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> TRUE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+/\ cexTraceIdx = 7 =>
+  /\ proc_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+  /\ invalid = (c1 :> (a1 :> TRUE @@ a2 :> TRUE) @@ c2 :> (a1 :> FALSE @@ a2 :> TRUE))
+  /\ bus_read_for_ownership = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+  /\ bus_in_use = TRUE
+  /\ proc_write = ( c1 :>
+        ( a1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+    c2 :>
+        ( a1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+          a2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+  /\ Fluent137_14 = (a1 :> TRUE @@ a2 :> FALSE)
+  /\ Fluent136_14 = (a1 :> TRUE @@ a2 :> FALSE)
+  /\ bus_read = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+  /\ bus_upgrade = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> TRUE @@ a2 :> FALSE))
+
+
+CandSep == (\A var0 \in Address : (Fluent137_14[var0] => ~(Fluent136_14[var0])))
 
 Init ==
-/\ (memory \in [Address -> Value])
-/\ (cache \in [Core -> [Address -> Value]])
-/\ modified = [c \in Core |-> [a \in Address |-> FALSE]]
-/\ exclusive = [c \in Core |-> [a \in Address |-> FALSE]]
-/\ shared = [c \in Core |-> [a \in Address |-> FALSE]]
 /\ invalid = [c \in Core |-> [a \in Address |-> TRUE]]
-/\ Fluent17_18 = [x0 \in Address |-> FALSE]
-/\ Fluent18_18 = [x0 \in Address |-> FALSE]
+/\ proc_read = [c \in Core |-> [a \in Address |-> FALSE]]
+/\ proc_write = [c \in Core |-> [a \in Address |-> [v \in Value |-> FALSE]]]
+/\ bus_in_use = FALSE
+/\ bus_read = [c \in Core |-> [a \in Address |-> FALSE]]
+/\ bus_read_for_ownership = [c \in Core |-> [a \in Address |-> FALSE]]
+/\ bus_upgrade = [c \in Core |-> [a \in Address |-> FALSE]]
+/\ bus_transfer = [v \in Value |-> FALSE]
+/\ Fluent137_14 = [x0 \in Address |-> FALSE]
+/\ Fluent136_14 = [x0 \in Address |-> FALSE]
 /\ cexTraceIdx = 0
-/\ err = FALSE
+/\ TraceConstraint
 
 issue_proc_read_invalid(c,a) ==
 /\ invalid[c][a]
-/\ UNCHANGED <<memory,cache,modified,exclusive,shared,invalid>>
-/\ Fluent17_18' = [Fluent17_18 EXCEPT![a] = TRUE]
-/\ UNCHANGED <<Fluent18_18>>
-/\ CandSep'
+/\ ~(bus_in_use)
+/\ bus_in_use' = TRUE
+/\ proc_read' = [proc_read EXCEPT![c][a] = TRUE]
+/\ bus_read' = [C \in Core |-> [A \in Address |-> (bus_read[C][A] \/ (C /= c /\ A = a))]]
+/\ UNCHANGED <<invalid,proc_write,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ Fluent137_14' = [Fluent137_14 EXCEPT![a] = FALSE]
+/\ UNCHANGED <<Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 do_bus_read_invalid(c,a) ==
 /\ invalid[c][a]
-/\ UNCHANGED <<memory,cache,modified,exclusive,shared,invalid>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ bus_read[c][a]
+/\ bus_read' = [bus_read EXCEPT![c][a] = FALSE]
+/\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 do_bus_read_valid(c,a,v) ==
 /\ ~(invalid[c][a])
-/\ cache[c][a] = v
-/\ shared' = [shared EXCEPT![c][a] = TRUE]
-/\ modified' = [modified EXCEPT![c][a] = FALSE]
-/\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
-/\ (modified[c][a] => memory' = [memory EXCEPT![a] = v])
-/\ (~(modified[c][a]) => memory' = memory)
-/\ UNCHANGED <<cache,invalid>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ bus_read[c][a]
+/\ bus_read' = [bus_read EXCEPT![c][a] = FALSE]
+/\ bus_transfer' = [bus_transfer EXCEPT![v] = TRUE]
+/\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read_for_ownership,bus_upgrade>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 complete_proc_read_invalid_shared(c,a,v) ==
 /\ invalid[c][a]
 /\ invalid' = [invalid EXCEPT![c][a] = FALSE]
-/\ shared' = [shared EXCEPT![c][a] = TRUE]
-/\ cache' = [cache EXCEPT![c][a] = v]
-/\ UNCHANGED <<memory,modified,exclusive>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ proc_read[c][a]
+/\ bus_transfer[v]
+/\ (\A C \in Core : (\A A \in Address : ~(bus_read[C][A])))
+/\ bus_transfer' = [V \in Value |-> FALSE]
+/\ bus_in_use' = FALSE
+/\ proc_read' = [proc_read EXCEPT![c][a] = FALSE]
+/\ UNCHANGED <<proc_write,bus_read,bus_read_for_ownership,bus_upgrade>>
+/\ Fluent136_14' = [Fluent136_14 EXCEPT![a] = TRUE]
+/\ UNCHANGED <<Fluent137_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 complete_proc_read_invalid_exclusive(c,a,v) ==
 /\ invalid[c][a]
-/\ memory[a] = v
 /\ invalid' = [invalid EXCEPT![c][a] = FALSE]
-/\ exclusive' = [exclusive EXCEPT![c][a] = TRUE]
-/\ cache' = [cache EXCEPT![c][a] = v]
-/\ UNCHANGED <<memory,modified,shared>>
-/\ Fluent18_18' = [Fluent18_18 EXCEPT![a] = TRUE]
-/\ UNCHANGED <<Fluent17_18>>
-/\ CandSep'
+/\ proc_read[c][a]
+/\ (\A V \in Value : ~(bus_transfer[V]))
+/\ (\A C \in Core : (\A A \in Address : ~(bus_read[C][A])))
+/\ bus_in_use' = FALSE
+/\ proc_read' = [proc_read EXCEPT![c][a] = FALSE]
+/\ UNCHANGED <<proc_write,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 issue_proc_write_invalid(c,a,v) ==
 /\ invalid[c][a]
-/\ UNCHANGED <<memory,cache,modified,exclusive,shared,invalid>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ ~(bus_in_use)
+/\ bus_in_use' = TRUE
+/\ proc_write' = [proc_write EXCEPT![c][a][v] = TRUE]
+/\ bus_read_for_ownership' = [C \in Core |-> [A \in Address |-> (bus_read_for_ownership[C][A] \/ (C /= c /\ A = a))]]
+/\ UNCHANGED <<invalid,proc_read,bus_read,bus_upgrade,bus_transfer>>
+/\ Fluent137_14' = [Fluent137_14 EXCEPT![a] = TRUE]
+/\ UNCHANGED <<Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 do_bus_read_for_ownership_invalid(c,a) ==
 /\ invalid[c][a]
-/\ UNCHANGED <<memory,cache,modified,exclusive,shared,invalid>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ bus_read_for_ownership[c][a]
+/\ bus_read_for_ownership' = [bus_read_for_ownership EXCEPT![c][a] = FALSE]
+/\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 do_bus_read_for_ownership_valid(c,a,v) ==
 /\ ~(invalid[c][a])
-/\ cache[c][a] = v
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
-/\ shared' = [shared EXCEPT![c][a] = FALSE]
-/\ modified' = [modified EXCEPT![c][a] = FALSE]
-/\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
-/\ (modified[c][a] => memory' = [memory EXCEPT![a] = v])
-/\ (~(modified[c][a]) => memory' = memory)
-/\ UNCHANGED <<cache>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ bus_read_for_ownership[c][a]
+/\ bus_read_for_ownership' = [bus_read_for_ownership EXCEPT![c][a] = FALSE]
+/\ bus_transfer' = [bus_transfer EXCEPT![v] = TRUE]
+/\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_upgrade>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 complete_proc_write_invalid(c,a,v) ==
 /\ invalid[c][a]
 /\ invalid' = [invalid EXCEPT![c][a] = FALSE]
-/\ modified' = [modified EXCEPT![c][a] = TRUE]
-/\ cache' = [cache EXCEPT![c][a] = v]
-/\ UNCHANGED <<memory,exclusive,shared>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ proc_write[c][a][v]
+/\ (\A C \in Core : (\A A \in Address : ~(bus_read_for_ownership[C][A])))
+/\ bus_transfer' = [V \in Value |-> FALSE]
+/\ bus_in_use' = FALSE
+/\ proc_write' = [proc_write EXCEPT![c][a][v] = FALSE]
+/\ UNCHANGED <<proc_read,bus_read,bus_read_for_ownership,bus_upgrade>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 proc_write_exclusive(c,a,v) ==
-/\ exclusive[c][a]
-/\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
-/\ modified' = [modified EXCEPT![c][a] = TRUE]
-/\ cache' = [cache EXCEPT![c][a] = v]
-/\ UNCHANGED <<memory,invalid,shared>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ ~(bus_in_use)
+/\ UNCHANGED <<invalid,proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 issue_proc_write_shared(c,a,v) ==
-/\ shared[c][a]
-/\ UNCHANGED <<memory,cache,modified,exclusive,shared,invalid>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ ~(bus_in_use)
+/\ bus_in_use' = TRUE
+/\ proc_write' = [proc_write EXCEPT![c][a][v] = TRUE]
+/\ bus_upgrade' = [C \in Core |-> [A \in Address |-> (bus_upgrade[C][A] \/ (C /= c /\ A = a))]]
+/\ UNCHANGED <<invalid,proc_read,bus_read,bus_read_for_ownership,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 do_bus_upgrade(c,a) ==
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
-/\ shared' = [shared EXCEPT![c][a] = FALSE]
-/\ UNCHANGED <<memory,cache,modified,exclusive>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ bus_upgrade[c][a]
+/\ bus_upgrade' = [bus_upgrade EXCEPT![c][a] = FALSE]
+/\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 complete_proc_write_shared(c,a,v) ==
-/\ shared[c][a]
-/\ shared' = [shared EXCEPT![c][a] = FALSE]
-/\ modified' = [modified EXCEPT![c][a] = TRUE]
-/\ cache' = [cache EXCEPT![c][a] = v]
-/\ UNCHANGED <<memory,invalid,exclusive>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ proc_write[c][a][v]
+/\ (\A C \in Core : (\A A \in Address : ~(bus_upgrade[C][A])))
+/\ proc_write' = [proc_write EXCEPT![c][a][v] = FALSE]
+/\ bus_in_use' = FALSE
+/\ UNCHANGED <<invalid,proc_read,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 evict_modified(c,a) ==
-/\ modified[c][a]
-/\ memory' = [memory EXCEPT![a] = cache[c][a]]
-/\ modified' = [modified EXCEPT![c][a] = FALSE]
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
-/\ UNCHANGED <<cache,exclusive,shared>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ ~(bus_in_use)
+/\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 evict_exclusive_or_shared(c,a) ==
-/\ (exclusive[c][a] \/ shared[c][a])
-/\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
-/\ shared' = [shared EXCEPT![c][a] = FALSE]
 /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
-/\ UNCHANGED <<memory,cache,modified>>
-/\ UNCHANGED <<Fluent17_18,Fluent18_18>>
-/\ CandSep'
+/\ ~(bus_in_use)
+/\ UNCHANGED <<proc_read,proc_write,bus_in_use,bus_read,bus_read_for_ownership,bus_upgrade,bus_transfer>>
+/\ UNCHANGED <<Fluent137_14,Fluent136_14>>
 /\ cexTraceIdx' = cexTraceIdx + 1
+/\ TraceConstraint'
 
 Next ==
 \E c \in Core :
@@ -187,21 +338,4 @@ Next ==
 \/ evict_exclusive_or_shared(c,a)
 
 Spec == (Init /\ [][Next]_vars)
-
-Safety == (\A C \in Core : (\A A \in Address : ((~(invalid[C][A]) /\ ~(modified[C][A])) => cache[C][A] = memory[A])))
-
-TraceConstraint ==
-/\ cexTraceIdx = 0 => issue_proc_write_invalid(c1,a1,v1) /\ err' = err
-/\ cexTraceIdx = 1 => do_bus_read_for_ownership_invalid(c2,a1) /\ err' = err
-/\ cexTraceIdx = 2 => complete_proc_write_invalid(c1,a1,v1) /\ err' = err
-/\ cexTraceIdx = 3 => do_bus_read_valid(c1,a1,v1) /\ err' = err
-/\ cexTraceIdx = 4 => issue_proc_write_invalid(c2,a1,v2) /\ err' = err
-/\ cexTraceIdx = 5 => do_bus_read_for_ownership_invalid(c2,a1) /\ err' = err
-/\ cexTraceIdx = 6 => complete_proc_write_invalid(c2,a1,v2) /\ err' = err
-/\ cexTraceIdx = 7 => evict_modified(c2,a1) /\ err' = TRUE
-/\ cexTraceIdx >= 8 => FALSE
-
-InternalAction == UNCHANGED<<cexTraceIdx,err>>
-
-TraceConstraintSpec == Init /\ [][Next /\ (TraceConstraint \/ InternalAction)]_vars
 =============================================================================

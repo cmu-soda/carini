@@ -1,0 +1,44 @@
+sort key
+sort node
+sort value
+sort seqnum
+
+mutable relation table(node, key, value)
+mutable relation owner(node, key)
+mutable relation fluent52(seqnum, node, key)
+mutable relation fluent51(seqnum, node, key)
+mutable relation fluent20(seqnum, node)
+mutable relation fluent19(seqnum, node)
+
+init !table(N, K, V)
+init owner(N1, K) & owner(N2, K) -> N1 = N2
+init !fluent52(S, N, K)
+init !fluent51(S, N, K)
+init !fluent20(S, N)
+init !fluent19(S, N)
+
+transition reshard(n_old: node, n_new: node, k: key, v: value, s: seqnum)
+  modifies table, owner, fluent52
+  old(table(n_old, k, v)) &
+  (table(N, K, V) <-> old(table(N, K, V)) & !(N = n_old & K = k & V = v)) &
+  (owner(N, K) <-> old(owner(N, K)) & !(N = n_old & K = k)) &
+  (fluent52(S, N, K) <-> old(fluent52(S, N, K)) | (S=s & N=n_old & K=k))
+
+transition recv_transfer_msg(src: node, n: node, k: key, v: value, s: seqnum)
+  modifies table, owner, fluent51, fluent20, fluent19
+  (table(N, K, V) <-> old(table(N, K, V)) | (N = n & K = k & V = v)) &
+  (owner(N, K) <-> old(owner(N, K)) | N = n & K = k) &
+  (fluent51(S, N, K) <-> old(fluent51(S, N, K)) | (S=s & N=src & K=k)) &
+  (fluent20(S, N) <-> old(fluent20(S, N)) | (S=s & N=src)) &
+  (!(S=s & N=src) -> (fluent19(S, N) <-> old(fluent19(S, N)))) &
+  (fluent19(s, src) <-> old(fluent20(s, src))) &
+  !old(fluent20(s,src)) &
+  old(fluent52(s,src,k))
+
+transition put(n: node, k: key, v: value)
+  modifies table
+  old(owner(n, k)) &
+  (!(N = n & K = k) -> (table(N, K, V) <-> old(table(N, K, V)))) &
+  (table(n, k, V) <-> V = v)
+
+safety [keys_unique] table(N1, K, V1) & table(N2, K, V2) -> N1 = N2 & V1 = V2

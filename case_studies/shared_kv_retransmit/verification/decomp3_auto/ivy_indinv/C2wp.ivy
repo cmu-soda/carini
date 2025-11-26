@@ -1,0 +1,73 @@
+#lang ivy1.7
+
+type key
+type value
+type node
+type seqnum
+
+relation transfer_msg(N1:node, N2:node, K:key, V:value, S:seqnum)
+relation seqnum_sent(N:node, S:seqnum)
+relation seqnum_recvd(N1:node, N2:node, S:seqnum)
+relation fluent52(S:seqnum, N:node, K:key)
+relation fluent51(S:seqnum, N:node, K:key)
+relation fluent20(S:seqnum, N:node)
+relation fluent19(S:seqnum, N:node)
+relation fluent95(N:node, K:key, S:seqnum)
+relation fluent94(N:node, K:key, S:seqnum)
+relation fluent107(S:seqnum, N1:node, N2:node)
+relation fluent108(S:seqnum, N1:node, N2:node)
+
+after init {
+  transfer_msg(N1, N2, K, V, S) := false;
+  seqnum_sent(N, S) := false;
+  seqnum_recvd(N1, N2, S) := false;
+  fluent52(S, N, K) := false;
+  fluent51(S, N, K) := false;
+  fluent20(S, N) := false;
+  fluent19(S, N) := false;
+  fluent95(N, K, S) := false;
+  fluent94(N, K, S) := false;
+  fluent107(S, N1, N2) := false;
+  fluent108(S, N1, N2) := false;
+}
+
+action reshard(n_old:node, n_new:node, k:key, v:value, s:seqnum) = {
+  require ~seqnum_sent(n_old, s);
+  seqnum_sent(n_old, s) := true;
+  transfer_msg(n_old, n_new, k, v, s) := true;
+  fluent52(s, n_old, k) := true;
+  fluent95(n_old, k, s) := true;
+  fluent107(s, n_new, n_old) := true;
+}
+
+action drop_transfer_msg(src:node, dst:node, k:key, v:value, s:seqnum) = {
+  require transfer_msg(src, dst, k, v, s);
+  transfer_msg(src, dst, k, v, s) := false;
+}
+
+action retransmit(src:node, dst:node, k:key, v:value, s:seqnum) = {
+  require fluent95(src,k,s) & fluent107(s,dst,src);
+  transfer_msg(src, dst, k, v, s) := true;
+  fluent94(src, k, s) := true;
+  fluent108(s, dst, src) := true;
+}
+
+action recv_transfer_msg(src:node, n:node, k:key, v:value, s:seqnum) = {
+  require transfer_msg(src, n, k, v, s) & ~seqnum_recvd(n, src, s);
+  seqnum_recvd(n, src, s) := true;
+  fluent51(s, src, k) := true;
+  fluent20(s, src) := true;
+  fluent19(s, src) := fluent20(s, src);
+}
+
+#action send_ack(src:node, n:node, k:key, v:value, s:seqnum) = {
+  #require transfer_msg(src, n, k, v, s);
+#}
+
+export reshard
+export drop_transfer_msg
+export retransmit
+export recv_transfer_msg
+#export send_ack
+
+invariant [1000000] (fluent20(S,N) -> ~fluent19(S,N)) & (fluent51(S,N,K) -> fluent52(S,N,K))

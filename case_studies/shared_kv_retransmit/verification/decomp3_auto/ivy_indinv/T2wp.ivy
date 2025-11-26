@@ -1,0 +1,56 @@
+#lang ivy1.7
+
+type key
+type value
+type node
+type seqnum
+
+relation ack_msg(N1:node, N2:node, S:seqnum)
+relation unacked(N1:node, N2:node, K:key, V:value, S:seqnum)
+relation fluent95(N1:node, K:key, S:seqnum)
+relation fluent94(N1:node, K:key, S:seqnum)
+relation fluent107(S:seqnum, N1:node, N2:node)
+relation fluent108(S:seqnum, N1:node, N2:node)
+
+after init {
+  ack_msg(N1, N2, S) := false;
+  unacked(N1, N2, K, V, S) := false;
+  fluent95(N, K, S) := false;
+  fluent94(N, K, S) := false;
+  fluent107(S, N1, N2) := false;
+  fluent108(S, N1, N2) := false;
+}
+
+action reshard(n_old:node, n_new:node, k:key, v:value, s:seqnum) = {
+  unacked(n_old, n_new, k, v, s) := true;
+  fluent95(n_old, k, s) := true;
+  fluent107(s, n_new, n_old) := true;
+}
+
+action retransmit(src:node, dst:node, k:key, v:value, s:seqnum) = {
+  require unacked(src, dst, k, v, s);
+  fluent94(src, k, s) := true;
+  fluent108(s, dst, src) := true;
+}
+
+action send_ack(src:node, n:node, k:key, v:value, s:seqnum) = {
+  ack_msg(src, n, s) := true;
+}
+
+action drop_ack_msg(src:node, dst:node, k:key, s:seqnum) = {
+  require ack_msg(src, dst, s);
+  ack_msg(src, dst, s) := false;
+}
+
+action recv_ack_msg(src:node, dst:node, k:key, s:seqnum) = {
+  require ack_msg(src, dst, s);
+  unacked(src, dst, K, V, s) := false;
+}
+
+export reshard
+export retransmit
+export send_ack
+export drop_ack_msg
+export recv_ack_msg
+
+invariant [1000000] (fluent94(N,K,S) -> fluent95(N,K,S)) & (fluent108(S,N1,N2) -> fluent107(S,N1,N2))

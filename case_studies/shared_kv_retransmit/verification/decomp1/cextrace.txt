@@ -1,29 +1,40 @@
 TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
 Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
 (Use the -nowarning option to disable this warning.)
-Running breadth-first search Model-Checking with fp 88 and seed 5254330942805529509 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 63518] (Mac OS X 15.7.1 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
-Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/shared_kv_retransmit/verification/decomp1/C1_hist.tla
-Semantic processing of module C1_hist
-Starting... (2025-11-01 13:46:49)
+Running breadth-first search Model-Checking with fp 52 and seed 4534096548163464249 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 38755] (Mac OS X 15.7.2 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/shared_kv_retransmit/verification/decomp1/T1_hist.tla
+Semantic processing of module T1_hist
+Starting... (2025-11-19 09:31:22)
 Computing initial states...
 Computed 2 initial states...
 Computed 4 initial states...
 Computed 8 initial states...
-Finished computing initial states: 9 distinct states generated at 2025-11-01 13:46:49.
-Error: Invariant Safety is violated.
+Finished computing initial states: 9 distinct states generated at 2025-11-19 09:31:22.
+Error: Invariant CandSep is violated.
 Error: The behavior up to this point is:
 State 1: <Initial predicate>
-/\ Fluent2_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ Fluent1_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> TRUE))
-/\ Fluent4_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ Fluent3_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ table = ( n1 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+/\ ack_msg = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
+/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> FALSE))
+/\ seqnum_sent = (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>)
+/\ Fluent29_41 = ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ Fluent28_41 = ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ unacked = ( n1 :>
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) @@
   n2 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
 /\ transfer_msg = ( n1 :>
       ( n1 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
@@ -38,19 +49,32 @@ State 1: <Initial predicate>
         n2 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
               k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
+/\ seqnum_recvd = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
 
-State 2: <put line 64, col 1 to line 68, col 11 of module C1_hist>
-/\ Fluent2_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ Fluent1_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> TRUE))
-/\ Fluent4_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ Fluent3_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ table = ( n1 :>
-      ( k1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+State 2: <put line 75, col 1 to line 79, col 16 of module T1_hist>
+/\ ack_msg = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
+/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> FALSE))
+/\ seqnum_sent = (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>)
+/\ Fluent29_41 = ( k1 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<FALSE, FALSE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ Fluent28_41 = ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ unacked = ( n1 :>
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) @@
   n2 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
 /\ transfer_msg = ( n1 :>
       ( n1 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
@@ -65,19 +89,32 @@ State 2: <put line 64, col 1 to line 68, col 11 of module C1_hist>
         n2 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
               k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
+/\ seqnum_recvd = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
 
-State 3: <reshard line 25, col 1 to line 32, col 11 of module C1_hist>
-/\ Fluent2_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ Fluent1_59 = (n1 :> TRUE @@ n2 :> FALSE)
-/\ owner = (n1 :> (k1 :> FALSE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> TRUE))
-/\ Fluent4_15 = (v1 :> TRUE @@ v2 :> FALSE)
-/\ Fluent3_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ table = ( n1 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+State 3: <reshard line 25, col 1 to line 32, col 27 of module T1_hist>
+/\ ack_msg = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
+/\ owner = (n1 :> (k1 :> FALSE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> FALSE))
+/\ seqnum_sent = (n1 :> <<TRUE, FALSE>> @@ n2 :> <<FALSE, FALSE>>)
+/\ Fluent29_41 = ( k1 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<FALSE, FALSE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ Fluent28_41 = ( k1 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<TRUE, TRUE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ unacked = ( n1 :>
+      ( n1 :>
+            ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) @@
   n2 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
 /\ transfer_msg = ( n1 :>
       ( n1 :>
             ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
@@ -92,19 +129,32 @@ State 3: <reshard line 25, col 1 to line 32, col 11 of module C1_hist>
         n2 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
               k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
+/\ seqnum_recvd = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
 
-State 4: <recv_transfer_msg line 50, col 1 to line 55, col 11 of module C1_hist>
-/\ Fluent2_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ Fluent1_59 = (n1 :> TRUE @@ n2 :> FALSE)
-/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> TRUE))
-/\ Fluent4_15 = (v1 :> TRUE @@ v2 :> FALSE)
-/\ Fluent3_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ table = ( n1 :>
-      ( k1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+State 4: <recv_transfer_msg line 47, col 1 to line 53, col 27 of module T1_hist>
+/\ ack_msg = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
+/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> FALSE))
+/\ seqnum_sent = (n1 :> <<TRUE, FALSE>> @@ n2 :> <<FALSE, FALSE>>)
+/\ Fluent29_41 = ( k1 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<TRUE, TRUE>>) @@
+  k2 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<TRUE, TRUE>>) )
+/\ Fluent28_41 = ( k1 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<TRUE, TRUE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ unacked = ( n1 :>
+      ( n1 :>
+            ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) @@
   n2 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
 /\ transfer_msg = ( n1 :>
       ( n1 :>
             ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
@@ -119,19 +169,32 @@ State 4: <recv_transfer_msg line 50, col 1 to line 55, col 11 of module C1_hist>
         n2 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
               k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
+/\ seqnum_recvd = ( n1 :> (n1 :> <<TRUE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
 
-State 5: <put line 64, col 1 to line 68, col 11 of module C1_hist>
-/\ Fluent2_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ Fluent1_59 = (n1 :> TRUE @@ n2 :> FALSE)
-/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> TRUE))
-/\ Fluent4_15 = (v1 :> TRUE @@ v2 :> FALSE)
-/\ Fluent3_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ table = ( n1 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> TRUE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+State 5: <put line 75, col 1 to line 79, col 16 of module T1_hist>
+/\ ack_msg = ( n1 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
+/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> FALSE))
+/\ seqnum_sent = (n1 :> <<TRUE, FALSE>> @@ n2 :> <<FALSE, FALSE>>)
+/\ Fluent29_41 = ( k1 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<TRUE, TRUE>>) @@
+  k2 :> (v1 :> <<TRUE, TRUE>> @@ v2 :> <<TRUE, TRUE>>) )
+/\ Fluent28_41 = ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+  k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) )
+/\ unacked = ( n1 :>
+      ( n1 :>
+            ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) @@
   n2 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+      ( n1 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
+        n2 :>
+            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
+              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
 /\ transfer_msg = ( n1 :>
       ( n1 :>
             ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
@@ -146,35 +209,10 @@ State 5: <put line 64, col 1 to line 68, col 11 of module C1_hist>
         n2 :>
             ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
               k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
+/\ seqnum_recvd = ( n1 :> (n1 :> <<TRUE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) @@
+  n2 :> (n1 :> <<FALSE, FALSE>> @@ n2 :> <<FALSE, FALSE>>) )
 
-State 6: <recv_transfer_msg line 50, col 1 to line 55, col 11 of module C1_hist>
-/\ Fluent2_59 = (n1 :> FALSE @@ n2 :> FALSE)
-/\ Fluent1_59 = (n1 :> TRUE @@ n2 :> FALSE)
-/\ owner = (n1 :> (k1 :> TRUE @@ k2 :> FALSE) @@ n2 :> (k1 :> FALSE @@ k2 :> TRUE))
-/\ Fluent4_15 = (v1 :> TRUE @@ v2 :> FALSE)
-/\ Fluent3_15 = (v1 :> FALSE @@ v2 :> FALSE)
-/\ table = ( n1 :>
-      ( k1 :> (v1 :> TRUE @@ v2 :> TRUE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
-  n2 :>
-      ( k1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
-        k2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
-/\ transfer_msg = ( n1 :>
-      ( n1 :>
-            ( k1 :> (v1 :> <<TRUE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
-              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
-        n2 :>
-            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
-              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) @@
-  n2 :>
-      ( n1 :>
-            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
-              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) @@
-        n2 :>
-            ( k1 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) @@
-              k2 :> (v1 :> <<FALSE, FALSE>> @@ v2 :> <<FALSE, FALSE>>) ) ) )
-
-6780 states generated, 2076 distinct states found, 1727 states left on queue.
-The depth of the complete state graph search is 6.
-The average outdegree of the complete state graph is 6 (minimum is 0, the maximum 14 and the 95th percentile is 12).
-Finished in 00s at (2025-11-01 13:46:50)
+149410 states generated, 39909 distinct states found, 35172 states left on queue.
+The depth of the complete state graph search is 5.
+The average outdegree of the complete state graph is 8 (minimum is 0, the maximum 31 and the 95th percentile is 20).
+Finished in 00s at (2025-11-19 09:31:22)

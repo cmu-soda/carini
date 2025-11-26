@@ -3,12 +3,12 @@ EXTENDS Naturals, Integers, Sequences, FiniteSets
 
 CONSTANTS Acceptor, Value, Ballot
 
-VARIABLES Fluent11_19, maxVal, msgs2a, msgs1b, Fluent12_19, msgs1a, maxVBal
+VARIABLES Fluent21_18, maxVal, msgs2a, Fluent20_18, msgs1b, msgs1a, maxVBal, Fluent19_18
 
-vars == <<Fluent11_19, maxVal, msgs2a, msgs1b, Fluent12_19, msgs1a, maxVBal>>
+vars == <<Fluent21_18, maxVal, msgs2a, Fluent20_18, msgs1b, msgs1a, maxVBal, Fluent19_18>>
 
 CandSep ==
-\A var0 \in Acceptor : \E var1 \in Acceptor : \A var2 \in Ballot : (Fluent11_19[var0][var2]) => (Fluent12_19[var1][var2])
+\A var0 \in Acceptor : (Fluent21_18[var0]) => ((Fluent19_18[var0]) => (Fluent20_18[var0]))
 
 Quorum == { i \in SUBSET(Acceptor) : (Cardinality(i) * 2) > Cardinality(Acceptor) }
 
@@ -27,20 +27,21 @@ Init ==
 /\ msgs1a = {}
 /\ msgs1b = {}
 /\ msgs2a = {}
-/\ Fluent11_19 = [ x0 \in Acceptor |-> [ x1 \in Ballot |-> FALSE]]
-/\ Fluent12_19 = [ x0 \in Acceptor |-> [ x1 \in Ballot |-> FALSE]]
+/\ Fluent21_18 = [ x0 \in Acceptor |-> FALSE]
+/\ Fluent20_18 = [ x0 \in Acceptor |-> FALSE]
+/\ Fluent19_18 = [ x0 \in Acceptor |-> FALSE]
 
 Phase1a(b) ==
 /\ msgs1a' = (msgs1a \cup {b})
 /\ UNCHANGED <<maxVBal,maxVal,msgs1b,msgs2a>>
-/\ UNCHANGED<<Fluent11_19, Fluent12_19>>
+/\ UNCHANGED<<Fluent21_18, Fluent20_18, Fluent19_18>>
 
 Phase1b(a,b) ==
 /\ (b \in msgs1a)
 /\ msgs1b' = (msgs1b \cup {<<a,b,maxVBal[a],maxVal[a]>>})
 /\ UNCHANGED <<maxVBal,maxVal,msgs1a,msgs2a>>
-/\ Fluent12_19' = [[Fluent12_19 EXCEPT ![a] = [x0 \in Ballot |-> FALSE]] EXCEPT ![a][b] = TRUE]
-/\ UNCHANGED<<Fluent11_19>>
+/\ Fluent20_18' = [Fluent20_18 EXCEPT ![a] = Fluent21_18[a]]
+/\ UNCHANGED<<Fluent21_18, Fluent19_18>>
 
 Phase2a(b,v,a) ==
 /\ (<<a,b,maxVBal[a],maxVal[a]>> \in msgs1b)
@@ -51,15 +52,16 @@ Phase2a(b,v,a) ==
   /\ (Q1bv = {} \/ (\E m \in Q1bv : (m[4] = v /\ (\A mm \in Q1bv : m[3] >= mm[3])))))
 /\ msgs2a' = (msgs2a \cup {<<b,v>>})
 /\ UNCHANGED <<maxVBal,maxVal,msgs1a,msgs1b>>
-/\ UNCHANGED<<Fluent11_19, Fluent12_19>>
+/\ UNCHANGED<<Fluent21_18, Fluent20_18, Fluent19_18>>
 
 Phase2b(a,b,v) ==
 /\ (<<b,v>> \in msgs2a)
 /\ maxVBal' = [maxVBal EXCEPT![a] = b]
 /\ maxVal' = [maxVal EXCEPT![a] = v]
 /\ UNCHANGED <<msgs1a,msgs1b,msgs2a>>
-/\ Fluent11_19' = [Fluent11_19 EXCEPT ![a][b] = TRUE]
-/\ UNCHANGED<<Fluent12_19>>
+/\ Fluent21_18' = [Fluent21_18 EXCEPT ![a] = TRUE]
+/\ Fluent19_18' = [x0 \in Acceptor |-> Fluent20_18[a]]
+/\ UNCHANGED<<Fluent20_18>>
 
 Next ==
 \/ (\E b \in Ballot : Phase1a(b))

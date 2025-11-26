@@ -1,0 +1,4198 @@
+Round 1
+-------
+TLC neg trace generation time: 0.712 seconds
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.284 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_sharedc1a1v2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_sharedc1a1v2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.243 seconds
+\A var0 \in Value : ~(Fluent1_8[var0])
+  Fluent1_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Core : ~(Fluent1_26[var0])
+  Fluent1_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+\A var0 \in Value : ~(Fluent1_5[var0])
+  Fluent1_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Value : ~(Fluent1_12[var0])
+  Fluent1_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Value : ~(Fluent1_10[var0])
+  Fluent1_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Address : ~(Fluent1_3[var0])
+  Fluent1_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent1_4[var0])
+  Fluent1_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent1_9[var0])
+  Fluent1_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent1_18[var0])
+  Fluent1_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent1_13[var0])
+  Fluent1_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_sharedc1a1v2)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.374 seconds
+\A var0 \in Core : (Fluent3_0[var0]) => (Fluent2_0[var0])
+  Fluent3_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Value : (Fluent2_5[var0]) => (Fluent3_5[var0])
+  Fluent3_5[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+  Fluent2_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 0.0 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+Round 1 took 83.777 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 1.357 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.265 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->complete_proc_write_invalidc2a1v2 + T2->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.017 seconds
+\A var0 \in Core : ~(Fluent4_25[var0])
+  Fluent4_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+\A var0 \in Core : ~(Fluent4_26[var0])
+  Fluent4_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+\A var0 \in Value : ~(Fluent4_5[var0])
+  Fluent4_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent4_8[var0])
+  Fluent4_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent4_11[var0])
+  Fluent4_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent4_12[var0])
+  Fluent4_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent4_19[var0])
+  Fluent4_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Address : ~(Fluent4_4[var0])
+  Fluent4_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[1] = TRUE
+\A var0 \in Address : ~(Fluent4_14[var0])
+  Fluent4_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[1] = TRUE
+\A var0 \in Address : ~(Fluent4_21[var0])
+  Fluent4_21[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[1] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.075 seconds
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Found ret code 1 from TLC, treating like ret code 12
+Minimization book keeping finished in 0.633 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+Round 2 took 82.233 seconds
+
+Round 3
+-------
+TLC neg trace generation time: 3.019 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.024 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_sharedc1a1v2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_sharedc1a1v2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.575 seconds
+\A var0 \in Core : ~(Fluent7_6[var0])
+  Fluent7_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+\A var0 \in Core : ~(Fluent7_24[var0])
+  Fluent7_24[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+\A var0 \in Core : ~(Fluent7_17[var0])
+  Fluent7_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+\A var0 \in Value : ~(Fluent7_20[var0])
+  Fluent7_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Value : ~(Fluent7_12[var0])
+  Fluent7_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Value : ~(Fluent7_10[var0])
+  Fluent7_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Value : ~(Fluent7_11[var0])
+  Fluent7_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Value : ~(Fluent7_19[var0])
+  Fluent7_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Address : ~(Fluent7_3[var0])
+  Fluent7_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent7_14[var0])
+  Fluent7_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_sharedc1a1v2)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 8.795 seconds
+\A var0 \in Core : (Fluent8_6[var0]) => (Fluent9_6[var0])
+  Fluent8_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent9_6[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Value : (Fluent9_8[var0]) => (Fluent8_8[var0])
+  Fluent9_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+  Fluent8_8[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+\A var0 \in Core : (Fluent8_25[var0]) => (Fluent9_25[var0])
+  Fluent9_25[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+  Fluent8_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+\A var0 \in Core : (Fluent9_16[var0]) => (Fluent8_16[var0])
+  Fluent9_16[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent8_16[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Core : (Fluent8_26[var0]) => (Fluent9_26[var0])
+  Fluent8_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent9_26[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Address : (Fluent8_4[var0]) => (Fluent9_4[var0])
+  Fluent9_4[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent8_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Value : (Fluent9_20[var0]) => (Fluent8_20[var0])
+  Fluent8_20[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+  Fluent9_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+\A var0 \in Address : (Fluent9_1[var0]) => (Fluent8_1[var0])
+  Fluent9_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+  Fluent8_1[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent8_3[var0]) => (Fluent9_3[var0])
+  Fluent9_3[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent8_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+\A var0 \in Address : (Fluent8_14[var0]) => (Fluent9_14[var0])
+  Fluent9_14[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent8_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[1] = TRUE
+
+new pos trace(s):
+PT17 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a2v1 + T2->complete_proc_read_invalid_sharedc1a1v1)
+PT12 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc2a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1)
+PT18 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a1 + T4->do_bus_read_for_ownership_validc2a1v2 + T5->complete_proc_read_invalid_sharedc1a1v2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_sharedc1a1v2)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 17.791 seconds
+\A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+  Fluent9_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+  Fluent10_2[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+      do_bus_read_valid[2] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+  Fluent9_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+  Fluent10_2[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+      do_bus_read_valid[2] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 2.905 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+Round 3 took 115.693 seconds
+
+Round 4
+-------
+TLC neg trace generation time: 1.286 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.258 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_write_invalidc1a1v2 + T1->do_bus_read_for_ownership_validc1a1v2 + T2->complete_proc_read_invalid_sharedc1a2v2)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 1.22 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+Round 4 took 3.791 seconds
+
+Round 5
+-------
+TLC neg trace generation time: 13.013 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.521 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_write_invalidc1a1v1 + T2->complete_proc_write_invalidc2a1v2 + T3->do_bus_read_validc2a1v2 + T4->do_bus_read_for_ownership_validc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.04 seconds
+\A var0 \in Core : ~(Fluent11_25[var0])
+  Fluent11_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent11_26[var0])
+  Fluent11_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : ~(Fluent11_11[var0])
+  Fluent11_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : ~(Fluent11_1[var0])
+  Fluent11_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent11_9[var0])
+  Fluent11_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent11_3[var0])
+  Fluent11_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent11_22[var0])
+  Fluent11_22[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent11_21[var0])
+  Fluent11_21[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent11_14[var0])
+  Fluent11_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent11_18[var0])
+  Fluent11_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT8 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1)
+PT4 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 10.233 seconds
+\A var0 \in Core : (Fluent13_15[var0]) => (Fluent12_15[var0])
+  Fluent13_15[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent12_15[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Core : (Fluent13_16[var0]) => (Fluent12_16[var0])
+  Fluent13_16[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent12_16[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Core : (Fluent12_17[var0]) => (Fluent13_17[var0])
+  Fluent12_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent13_17[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Value : (Fluent13_20[var0]) => (Fluent12_20[var0])
+  Fluent13_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent12_20[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+\A var0 \in Address : (Fluent12_9[var0]) => (Fluent13_9[var0])
+  Fluent12_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent13_9[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Value : (Fluent13_10[var0]) => (Fluent12_10[var0])
+  Fluent13_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent12_10[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+\A var0 \in Address : (Fluent13_13[var0]) => (Fluent12_13[var0])
+  Fluent12_13[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent13_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Core : (Fluent12_24[var0]) => (~(Fluent13_24[var0]))
+  Fluent12_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent13_24[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent13_25[var0]) => (~(Fluent12_25[var0]))
+  Fluent13_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent12_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent13_23[var0]) => (~(Fluent12_23[var0]))
+  Fluent13_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent12_23[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+
+new pos trace(s):
+PT12 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_validc3a1v1 + T3->complete_proc_write_invalidc1a1v1)
+PT15 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v2 + T2->complete_proc_write_invalidc1a1v2)
+PT19 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+PT13 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_invalidc3a1 + T3->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 27.573 seconds
+\A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+  Fluent13_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent14_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      do_bus_read_valid[] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+  Fluent13_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent14_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      do_bus_read_valid[] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 5.592 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 5 took 138.133 seconds
+
+Round 6
+-------
+TLC neg trace generation time: 1.417 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.265 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->proc_write_exclusivec2a1v2 + T2->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 1.82 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 6 took 4.813 seconds
+
+Round 7
+-------
+TLC neg trace generation time: 2.623 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.518 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v2 + T1->complete_proc_write_invalidc1a1v2 + T2->do_bus_read_for_ownership_validc1a1v2 + T3->complete_proc_read_invalid_sharedc1a2v2)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 2.708 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 7 took 7.565 seconds
+
+Round 8
+-------
+TLC neg trace generation time: 37.738 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.523 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1 + T2->proc_write_exclusivec1a1v2 + T3->complete_proc_write_invalidc2a1v1 + T4->do_bus_read_validc2a1v1 + T5->evict_modifiedc1a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.574 seconds
+\A var0 \in Core : ~(Fluent15_26[var0])
+  Fluent15_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent15_15[var0])
+  Fluent15_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent15_24[var0])
+  Fluent15_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+\A var0 \in Value : ~(Fluent15_8[var0])
+  Fluent15_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent15_11[var0])
+  Fluent15_11[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Address : ~(Fluent15_3[var0])
+  Fluent15_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent15_1[var0])
+  Fluent15_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent15_22[var0])
+  Fluent15_22[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent15_21[var0])
+  Fluent15_21[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent15_14[var0])
+  Fluent15_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT7 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1)
+PT2 (PosTrace): (T0->issue_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.957 seconds
+\A var0 \in Core : (Fluent17_6[var0]) => (~(Fluent16_6[var0]))
+  Fluent17_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+  Fluent16_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Core : (Fluent17_17[var0]) => (~(Fluent16_17[var0]))
+  Fluent16_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent17_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent16_26[var0]) => (~(Fluent17_26[var0]))
+  Fluent16_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent17_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Core : (Fluent17_25[var0]) => (~(Fluent16_25[var0]))
+  Fluent17_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+  Fluent16_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Core : (Fluent16_16[var0]) => (~(Fluent17_16[var0]))
+  Fluent17_16[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+  Fluent16_16[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Value : (Fluent17_10[var0]) => (~(Fluent16_10[var0]))
+  Fluent17_10[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent16_10[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent16_19[var0]) => (~(Fluent17_19[var0]))
+  Fluent16_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent17_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Address : (Fluent17_3[var0]) => (~(Fluent16_3[var0]))
+  Fluent16_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent17_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent17_18[var0]) => (~(Fluent16_18[var0]))
+  Fluent17_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent16_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Address : (Fluent16_14[var0]) => (~(Fluent17_14[var0]))
+  Fluent17_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent16_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT13 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc1a1v1)
+PT17 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 24.084 seconds
+\A var0 \in Core : (Fluent17_0[var0]) => (~(Fluent18_0[var0]))
+  Fluent17_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent18_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : (Fluent18_7[var0]) => (~(Fluent17_7[var0]))
+  Fluent18_7[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = FALSE
+      issue_proc_read_invalid[] = TRUE
+      do_bus_read_valid[2] = FALSE
+  Fluent17_7[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Core : (Fluent17_24[var0]) => (~(Fluent18_24[var0]))
+  Fluent17_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+      issue_proc_read_invalid[0] = FALSE (priority 1)
+  Fluent18_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent18_15[var0]) => (~(Fluent17_15[var0]))
+  Fluent17_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE
+      issue_proc_read_invalid[0] = TRUE
+  Fluent18_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Address : (Fluent18_3[var0]) => (~(Fluent17_3[var0]))
+  Fluent18_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE
+      issue_proc_read_invalid[1] = TRUE
+  Fluent17_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : (Fluent17_20[var0]) => (~(Fluent18_20[var0]))
+  Fluent17_20[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent18_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = FALSE
+      issue_proc_read_invalid[] = TRUE
+      complete_proc_read_invalid_shared[2] = FALSE
+\A var0 \in Core : \E var1 \in Address : ~(Fluent17_25[var1][var0])
+  Fluent17_25[Address, Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1, 0] = TRUE
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent18_13[var0]) => (~(Fluent17_13[var0]))
+  Fluent17_13[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+  Fluent18_13[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : \E var1 \in Address : ~(Fluent17_11[var1][var0])
+  Fluent17_11[Address, Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      issue_proc_write_invalid[1, 2] = TRUE
+\A var0 \in Value : \A var1 \in Core : (Fluent18_19[var0]) => (~(Fluent17_19[var1]))
+  Fluent17_19[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE
+      issue_proc_read_invalid[0] = TRUE
+  Fluent18_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+
+new pos trace(s):
+PT24 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc2a1v1)
+PT30 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_read_invalidc1a2)
+PT29 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc1a2v1)
+PT23 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc1a1v2)
+PT28 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_read_invalidc1a2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 57.828s
+Formula synthesis complete in 50.637 seconds
+\A var0 \in Core : (Fluent18_6[var0]) => (~(Fluent19_6[var0]))
+  Fluent19_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent18_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+\A var0 \in Value : (Fluent18_5[var0]) => (~(Fluent19_5[var0]))
+  Fluent18_5[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent19_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[] = FALSE
+      issue_proc_read_invalid[] = TRUE
+      do_bus_read_valid[2] = FALSE
+\A var0 \in Core : (Fluent19_23[var0]) => (~(Fluent18_23[var0]))
+  Fluent18_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+  Fluent19_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Core : (Fluent18_15[var0]) => (~(Fluent19_15[var0]))
+  Fluent19_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+  Fluent18_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Address : (Fluent18_1[var0]) => (~(Fluent19_1[var0]))
+  Fluent18_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      complete_proc_read_invalid_shared[1] = FALSE
+  Fluent19_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Address : (Fluent18_4[var0]) => (~(Fluent19_4[var0]))
+  Fluent19_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+  Fluent18_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+\A var0 \in Address : (Fluent19_22[var0]) => (~(Fluent18_22[var0]))
+  Fluent18_22[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+  Fluent19_22[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+\A var0 \in Address : (Fluent18_14[var0]) => (~(Fluent19_14[var0]))
+  Fluent18_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+  Fluent19_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : \A var1 \in Address : (Fluent18_8[var1]) => (~(Fluent19_8[var0]))
+  Fluent19_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent18_8[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      do_bus_read_valid[1] = FALSE
+\A var0 \in Value : \A var1 \in Address : (Fluent18_11[var1]) => (~(Fluent19_11[var0]))
+  Fluent18_11[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+  Fluent19_11[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+
+new pos trace(s):
+PT33 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_read_invalidc1a1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a1v1)
+PT38 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a2v1)
+PT32 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc2a1v1)
+PT36 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1)
+Formula synth batch: 5
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 109.966s
+Formula synthesis complete in 129.573 seconds
+\A var0 \in Core : (Fluent20_24[var0]) => (~(Fluent19_24[var0]))
+  Fluent19_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      do_bus_read_valid[0] = FALSE
+  Fluent20_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : (Fluent20_19[var0]) => (~(Fluent19_19[var0]))
+  Fluent20_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent19_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[] = FALSE
+      issue_proc_read_invalid[] = TRUE
+      complete_proc_read_invalid_shared[2] = FALSE
+\A var0 \in Address : (Fluent20_4[var0]) => (~(Fluent19_4[var0]))
+  Fluent19_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+  Fluent20_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      do_bus_read_valid[1] = FALSE
+\A var0 \in Address : (Fluent20_9[var0]) => (~(Fluent19_9[var0]))
+  Fluent20_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      do_bus_read_valid[1] = FALSE
+  Fluent19_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Core : (Fluent20_25[var0]) => ((Fluent21_25[var0]) => (Fluent19_25[var0]))
+  Fluent19_25[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+\A var0 \in Core : (Fluent20_23[var0]) => ((Fluent19_23[var0]) => (Fluent21_23[var0]))
+  Fluent19_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent21_23[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+  Fluent20_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+\A var0 \in Value : (Fluent20_11[var0]) => ((Fluent21_11[var0]) => (Fluent19_11[var0]))
+  Fluent19_11[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+      complete_proc_read_invalid_exclusive[] = TRUE
+  Fluent20_11[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent21_11[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Value : \E var1 \in Address : \A var2 \in Value : (Fluent19_8[var1]) => (var2 = var0)
+  Fluent19_8[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      issue_proc_write_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      do_bus_read_valid[1] = FALSE
+\A var0 \in Value : \A var1 \in Value : \E var2 \in Address : (Fluent19_10[var2]) => (var1 = var0)
+  Fluent19_10[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      issue_proc_write_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      do_bus_read_valid[1] = FALSE
+\A var0 \in Address : \E var1 \in Address : \A var2 \in Address : (Fluent19_1[var1]) => (var0 = var2)
+  Fluent19_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      issue_proc_write_invalid[1] = TRUE
+      complete_proc_read_invalid_exclusive[1] = FALSE
+      complete_proc_read_invalid_shared[1] = FALSE
+
+new pos trace(s):
+PT44 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_read_invalidc1a1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a2v1)
+PT42 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_read_invalidc1a1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a1v1)
+PT43 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a1v2)
+PT50 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_read_invalidc1a1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_read_invalidc1a2)
+PT46 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc2a1)
+PT51 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc2a2v1)
+Formula synth batch: 6
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 258.858s
+Formula synthesis complete in 263.048 seconds
+\A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      complete_proc_read_invalid_shared[0] = FALSE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      issue_proc_write_invalid[] = FALSE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      complete_proc_read_invalid_shared[0] = FALSE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      issue_proc_write_invalid[] = FALSE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 11.109 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 8 took 632.393 seconds
+
+Round 9
+-------
+TLC neg trace generation time: 40.118 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.781 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->proc_write_exclusivec2a1v2 + T3->do_bus_read_invalidc3a1 + T4->complete_proc_read_invalid_exclusivec1a1v1 + T5->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->proc_write_exclusivec2a1v2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.715 seconds
+\A var0 \in Core : ~(Fluent22_6[var0])
+  Fluent22_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+\A var0 \in Core : ~(Fluent22_24[var0])
+  Fluent22_24[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+\A var0 \in Value : ~(Fluent22_2[var0])
+  Fluent22_2[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Core : ~(Fluent22_26[var0])
+  Fluent22_26[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+\A var0 \in Value : ~(Fluent22_20[var0])
+  Fluent22_20[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent22_11[var0])
+  Fluent22_11[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent22_12[var0])
+  Fluent22_12[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Address : ~(Fluent22_21[var0])
+  Fluent22_21[Address]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[1] = TRUE
+\A var0 \in Address : ~(Fluent22_14[var0])
+  Fluent22_14[Address]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[1] = TRUE
+\A var0 \in Address : ~(Fluent22_13[var0])
+  Fluent22_13[Address]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->proc_write_exclusivec1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->proc_write_exclusivec2a1v2)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 7.084 seconds
+\A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+  Fluent24_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent23_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+  Fluent24_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent23_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+
+Performing minimization book keeing.
+Found ret code 1 from TLC, treating like ret code 12
+Minimization book keeping finished in 12.711 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 9 took 134.664 seconds
+
+Round 10
+-------
+TLC neg trace generation time: 1.308 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.257 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->complete_proc_write_sharedc2a1v2 + T2->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 2.59 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 10 took 4.968 seconds
+
+Round 11
+-------
+TLC neg trace generation time: 57.482 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.778 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->complete_proc_write_sharedc2a1v2 + T3->do_bus_read_invalidc3a1 + T4->complete_proc_read_invalid_exclusivec1a1v1 + T5->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->complete_proc_write_sharedc2a1v2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.633 seconds
+\A var0 \in Core : ~(Fluent25_0[var0])
+  Fluent25_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+\A var0 \in Value : ~(Fluent25_2[var0])
+  Fluent25_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+\A var0 \in Core : ~(Fluent25_17[var0])
+  Fluent25_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+\A var0 \in Core : ~(Fluent25_24[var0])
+  Fluent25_24[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+\A var0 \in Value : ~(Fluent25_10[var0])
+  Fluent25_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+\A var0 \in Address : ~(Fluent25_1[var0])
+  Fluent25_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent25_3[var0])
+  Fluent25_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent25_4[var0])
+  Fluent25_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent25_21[var0])
+  Fluent25_21[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+\A var0 \in Address : ~(Fluent25_13[var0])
+  Fluent25_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->complete_proc_write_sharedc1a1v1)
+PT4 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->complete_proc_write_sharedc2a1v2)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.272 seconds
+\A var0 \in Core : (Fluent27_0[var0]) => (Fluent26_0[var0])
+  Fluent26_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+  Fluent27_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+\A var0 \in Value : (Fluent27_7[var0]) => (Fluent26_7[var0])
+  Fluent27_7[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+  Fluent26_7[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+\A var0 \in Value : (Fluent26_2[var0]) => (Fluent27_2[var0])
+  Fluent26_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+  Fluent27_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent26_5[var0]) => (Fluent27_5[var0])
+  Fluent27_5[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent26_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+\A var0 \in Address : (Fluent27_9[var0]) => (Fluent26_9[var0])
+  Fluent27_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+  Fluent26_9[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Value : (Fluent26_10[var0]) => (Fluent27_10[var0])
+  Fluent27_10[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+  Fluent26_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+\A var0 \in Value : (Fluent26_11[var0]) => (Fluent27_11[var0])
+  Fluent27_11[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent26_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = TRUE
+\A var0 \in Address : (Fluent27_22[var0]) => (Fluent26_22[var0])
+  Fluent27_22[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+  Fluent26_22[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent26_13[var0]) => (Fluent27_13[var0])
+  Fluent27_13[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent26_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+\A var0 \in Address : (Fluent26_3[var0]) => (~(Fluent27_3[var0]))
+  Fluent27_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = TRUE
+  Fluent26_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+
+new pos trace(s):
+PT17 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v2 + T2->complete_proc_write_sharedc1a1v1)
+PT21 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a1)
+PT16 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a2v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a1v1 + T4->complete_proc_write_sharedc1a1v1)
+PT20 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->do_bus_upgradec2a1 + T3->do_bus_upgradec3a1 + T4->complete_proc_write_sharedc1a1v1)
+PT12 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc2a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a1v1 + T4->complete_proc_write_sharedc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->complete_proc_write_sharedc2a1v2)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 24.913 seconds
+\A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+  Fluent28_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[] = TRUE
+  Fluent27_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+  Fluent28_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[] = TRUE
+  Fluent27_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 16.682 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 11 took 191.613 seconds
+
+Round 12
+-------
+TLC neg trace generation time: 2.416 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.259 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->issue_proc_write_invalidc2a1v2 + T2->complete_proc_write_invalidc2a1v2 + T3->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 3.909 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 12 took 7.383 seconds
+
+Round 13
+-------
+TLC neg trace generation time: 22.514 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.518 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->issue_proc_read_invalidc1a1 + T2->proc_write_exclusivec1a1v2 + T3->complete_proc_write_invalidc2a1v1 + T4->do_bus_read_validc2a1v1 + T5->evict_modifiedc1a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->issue_proc_read_invalidc1a1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.884 seconds
+\A var0 \in Value : ~(Fluent29_5[var0])
+  Fluent29_5[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Value : ~(Fluent29_7[var0])
+  Fluent29_7[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Value : ~(Fluent29_2[var0])
+  Fluent29_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Core : ~(Fluent29_23[var0])
+  Fluent29_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent29_25[var0])
+  Fluent29_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+\A var0 \in Value : ~(Fluent29_12[var0])
+  Fluent29_12[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Address : ~(Fluent29_3[var0])
+  Fluent29_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent29_22[var0])
+  Fluent29_22[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent29_21[var0])
+  Fluent29_21[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent29_13[var0])
+  Fluent29_13[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->issue_proc_read_invalidc1a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->issue_proc_read_invalidc1a1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.463 seconds
+\A var0 \in Core : (Fluent31_0[var0]) => (~(Fluent30_0[var0]))
+  Fluent30_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent31_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Core : (Fluent31_6[var0]) => (~(Fluent30_6[var0]))
+  Fluent30_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent31_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+\A var0 \in Value : (Fluent31_20[var0]) => (~(Fluent30_20[var0]))
+  Fluent30_20[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent31_20[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Address : (Fluent31_3[var0]) => (~(Fluent30_3[var0]))
+  Fluent31_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent30_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+\A var0 \in Value : (Fluent31_19[var0]) => (~(Fluent30_19[var0]))
+  Fluent31_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent30_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Address : (Fluent31_9[var0]) => (~(Fluent30_9[var0]))
+  Fluent30_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent31_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent31_4[var0]) => (~(Fluent30_4[var0]))
+  Fluent30_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent31_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Address : (Fluent31_14[var0]) => (~(Fluent30_14[var0]))
+  Fluent31_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+  Fluent30_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Address : (Fluent30_18[var0]) => (~(Fluent31_18[var0]))
+  Fluent31_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+  Fluent30_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Address : (Fluent30_21[var0]) => (~(Fluent31_21[var0]))
+  Fluent30_21[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+  Fluent31_21[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT19 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->issue_proc_read_invalidc1a1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.629 seconds
+\A var0 \in Value : (Fluent31_7[var0]) => (~(Fluent32_7[var0]))
+  Fluent31_7[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent32_7[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+      issue_proc_write_invalid[2] = FALSE
+\A var0 \in Core : (Fluent31_15[var0]) => (~(Fluent32_15[var0]))
+  Fluent32_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE
+      issue_proc_read_invalid[0] = TRUE
+  Fluent31_15[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Address : (Fluent31_1[var0]) => (~(Fluent32_1[var0]))
+  Fluent31_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent32_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = Fluent31_1[1]
+\A var0 \in Address : (Fluent31_4[var0]) => (~(Fluent32_4[var0]))
+  Fluent32_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = Fluent31_4[1]
+  Fluent31_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : (Fluent32_20[var0]) => (~(Fluent31_20[var0]))
+  Fluent32_20[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent31_20[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+      issue_proc_write_invalid[2] = FALSE
+\A var0 \in Value : (Fluent31_10[var0]) => (~(Fluent32_10[var0]))
+  Fluent32_10[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent31_10[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+      issue_proc_write_invalid[2] = FALSE
+\A var0 \in Core : \E var1 \in Address : ~(Fluent31_6[var1][var0])
+  Fluent31_6[Address, Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1, 0] = TRUE
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent32_22[var0]) => (~(Fluent31_22[var0]))
+  Fluent32_22[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE
+      issue_proc_read_invalid[1] = TRUE
+  Fluent31_22[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Value : \E var1 \in Address : ~(Fluent31_8[var1][var0])
+  Fluent31_8[Address, Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+      issue_proc_write_invalid[1, 2] = TRUE
+\A var0 \in Address : (Fluent31_14[var0]) => (~(Fluent32_14[var0]))
+  Fluent31_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent32_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+      issue_proc_read_invalid[1] = FALSE (priority 1)
+
+new pos trace(s):
+PT23 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc2a1v1)
+PT29 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc1a2v1)
+PT25 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a1)
+PT31 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc1a2v1)
+PT28 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_read_invalidc1a2)
+PT22 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->issue_proc_read_invalidc1a1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 51.686s
+Formula synthesis complete in 60.617 seconds
+\A var0 \in Core : (Fluent33_25[var0]) => (Fluent32_25[var0])
+  Fluent33_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      issue_proc_read_invalid[0] = FALSE
+  Fluent32_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      issue_proc_read_invalid[] = FALSE
+\A var0 \in Value : (Fluent32_11[var0]) => (Fluent33_11[var0])
+  Fluent33_11[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent32_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Core : (Fluent33_23[var0]) => (~(Fluent32_23[var0]))
+  Fluent33_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+      complete_proc_write_shared[0] = FALSE
+  Fluent32_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = Fluent33_23[0]
+\A var0 \in Core : (Fluent32_16[var0]) => (~(Fluent33_16[var0]))
+  Fluent33_16[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+  Fluent32_16[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+\A var0 \in Core : (Fluent33_17[var0]) => (~(Fluent32_17[var0]))
+  Fluent33_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = Fluent32_17[0]
+  Fluent32_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+      complete_proc_write_shared[0] = FALSE
+\A var0 \in Value : (Fluent32_12[var0]) => (~(Fluent33_12[var0]))
+  Fluent33_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+  Fluent32_12[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[] = TRUE
+      issue_proc_write_invalid[2] = FALSE
+\A var0 \in Address : (Fluent32_1[var0]) => (~(Fluent33_1[var0]))
+  Fluent33_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = FALSE
+      issue_proc_write_invalid[1] = TRUE
+  Fluent32_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE
+      issue_proc_read_invalid[] = TRUE
+\A var0 \in Address : (Fluent33_9[var0]) => (~(Fluent32_9[var0]))
+  Fluent33_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE (priority 1)
+      issue_proc_write_invalid[] = TRUE
+  Fluent32_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = Fluent33_9[1]
+\A var0 \in Address : (Fluent33_3[var0]) => (~(Fluent32_3[var0]))
+  Fluent33_3[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE
+      issue_proc_read_invalid[] = TRUE
+  Fluent32_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[1] = FALSE
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent32_18[var0]) => (~(Fluent33_18[var0]))
+  Fluent33_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+      issue_proc_read_invalid[1] = FALSE
+  Fluent32_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = FALSE
+      issue_proc_read_invalid[] = TRUE
+
+new pos trace(s):
+PT38 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_invalidc3a1 + T3->complete_proc_write_invalidc1a1v1 + T4->issue_proc_read_invalidc1a1)
+PT37 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->do_bus_read_for_ownership_validc2a1v1 + T3->do_bus_read_for_ownership_validc3a1v1 + T4->complete_proc_write_invalidc1a1v1 + T5->issue_proc_read_invalidc1a1)
+PT35 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_invalidc2a1v1)
+PT34 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc2a1)
+PT39 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_read_invalidc1a2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->issue_proc_read_invalidc1a1)
+Formula synth batch: 5
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 59.694s
+Killing 8 incomplete formula synth workers
+Formula synthesis complete in 89.803 seconds
+\A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 21.632 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 13 took 309.269 seconds
+
+Round 14
+-------
+TLC neg trace generation time: 15.574 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.526 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->complete_proc_write_invalidc1a1v1 + T2->issue_proc_read_invalidc2a1 + T3->do_bus_read_validc1a1v1 + T4->complete_proc_write_invalidc2a1v2 + T5->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.506 seconds
+\A var0 \in Core : ~(Fluent35_6[var0])
+  Fluent35_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent35_24[var0])
+  Fluent35_24[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent35_17[var0])
+  Fluent35_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : ~(Fluent35_10[var0])
+  Fluent35_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent35_20[var0])
+  Fluent35_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent35_19[var0])
+  Fluent35_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent35_12[var0])
+  Fluent35_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : ~(Fluent35_1[var0])
+  Fluent35_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent35_21[var0])
+  Fluent35_21[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent35_14[var0])
+  Fluent35_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.667 seconds
+\A var0 \in Core : (Fluent36_6[var0]) => (Fluent37_6[var0])
+  Fluent36_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent37_6[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Value : (Fluent37_8[var0]) => (Fluent36_8[var0])
+  Fluent36_8[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+  Fluent37_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Core : (Fluent36_15[var0]) => (Fluent37_15[var0])
+  Fluent37_15[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+  Fluent36_15[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent36_25[var0]) => (Fluent37_25[var0])
+  Fluent37_25[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+  Fluent36_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent37_23[var0]) => (Fluent36_23[var0])
+  Fluent37_23[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent36_23[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Address : (Fluent36_1[var0]) => (Fluent37_1[var0])
+  Fluent37_1[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent36_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Value : (Fluent36_7[var0]) => (~(Fluent37_7[var0]))
+  Fluent36_7[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent37_7[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent36_5[var0]) => (~(Fluent37_5[var0]))
+  Fluent37_5[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent36_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : (Fluent37_14[var0]) => (Fluent36_14[var0])
+  Fluent37_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent36_14[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent36_18[var0]) => (Fluent37_18[var0])
+  Fluent37_18[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent36_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT18 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1 + T3->issue_proc_write_invalidc1a1v1)
+PT13 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v2 + T2->complete_proc_write_invalidc1a1v2)
+PT14 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_invalidc3a1 + T3->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 25.1 seconds
+\A var0 \in Core : (Fluent38_6[var0]) => (Fluent37_6[var0])
+  Fluent37_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+  Fluent38_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Address : (Fluent37_1[var0]) => (Fluent38_1[var0])
+  Fluent37_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent38_1[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent38_4[var0]) => (Fluent37_4[var0])
+  Fluent38_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent37_4[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent37_13[var0]) => (Fluent38_13[var0])
+  Fluent37_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent38_13[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent37_18[var0]) => (Fluent38_18[var0])
+  Fluent37_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent38_18[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Value : \E var1 \in Address : ~(Fluent37_8[var0][var1])
+  Fluent37_8[Value, Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2, 1] = TRUE
+      issue_proc_write_invalid[2, 1] = TRUE
+\A var0 \in Value : \E var1 \in Address : ~(Fluent37_12[var0][var1])
+  Fluent37_12[Value, Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2, 1] = TRUE
+      issue_proc_write_invalid[2, 1] = TRUE
+\A var0 \in Value : \E var1 \in Address : ~(Fluent37_11[var1][var0])
+  Fluent37_11[Address, Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1, 2] = TRUE
+      issue_proc_write_invalid[1, 2] = TRUE
+\A var0 \in Value : \E var1 \in Core : (Fluent37_5[var0]) => (Fluent38_5[var1])
+  Fluent37_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent38_5[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Value : \A var1 \in Value : \E var2 \in Address : (Fluent37_10[var2]) => (var1 = var0)
+  Fluent37_10[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+      issue_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT25 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a2v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+PT22 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc2a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+PT28 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->complete_proc_write_sharedc1a1v1 + T3->issue_proc_write_invalidc1a2v1)
+PT23 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_validc2a1v1 + T2->do_bus_read_for_ownership_validc3a1v1 + T3->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a2v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 44.46s
+Formula synthesis complete in 43.512 seconds
+\A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+  Fluent38_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent39_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+      do_bus_read_valid[] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+  Fluent38_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent39_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+      do_bus_read_valid[] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 21.71 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+Round 14 took 204.789 seconds
+
+Round 15
+-------
+TLC neg trace generation time: 20.185 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.522 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->proc_write_exclusivec1a1v1 + T2->issue_proc_write_invalidc2a1v2 + T3->complete_proc_write_invalidc2a1v2 + T4->do_bus_read_validc2a1v2 + T5->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      complete_proc_read_invalid_shared[0] = FALSE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      issue_proc_write_invalid[] = FALSE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 10.66 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+Round 15 took 32.866 seconds
+
+Round 16
+-------
+TLC neg trace generation time: 21.179 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.515 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v2 + T1->issue_proc_read_invalidc1a1 + T2->complete_proc_write_invalidc1a1v1 + T3->complete_proc_write_invalidc2a1v2 + T4->do_bus_read_validc2a1v2 + T5->do_bus_read_for_ownership_validc1a1v1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 11.885 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 16 took 34.879 seconds
+
+Round 17
+-------
+TLC neg trace generation time: 30.297 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.528 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v1 + T1->issue_proc_read_invalidc1a1 + T2->proc_write_exclusivec1a1v2 + T3->complete_proc_write_invalidc2a1v1 + T4->do_bus_read_validc2a1v1 + T5->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 12.448 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+Round 17 took 44.558 seconds
+
+Round 18
+-------
+TLC neg trace generation time: 17.748 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.523 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v1 + T1->complete_proc_write_invalidc1a1v1 + T2->issue_proc_read_invalidc2a1 + T3->do_bus_read_validc1a1v1 + T4->complete_proc_write_invalidc2a1v2 + T5->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 4.685 seconds
+\A var0 \in Core : ~(Fluent40_0[var0])
+  Fluent40_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent40_25[var0])
+  Fluent40_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : ~(Fluent40_11[var0])
+  Fluent40_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent40_20[var0])
+  Fluent40_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : ~(Fluent40_3[var0])
+  Fluent40_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent40_1[var0])
+  Fluent40_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent40_4[var0])
+  Fluent40_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent40_18[var0])
+  Fluent40_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent40_22[var0])
+  Fluent40_22[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent40_14[var0])
+  Fluent40_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1)
+PT11 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 10.012 seconds
+\A var0 \in Core : (Fluent42_24[var0]) => (Fluent41_24[var0])
+  Fluent42_24[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent41_24[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Core : (Fluent41_26[var0]) => (Fluent42_26[var0])
+  Fluent41_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent42_26[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Address : (Fluent41_3[var0]) => (Fluent42_3[var0])
+  Fluent42_3[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent41_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Value : (Fluent42_8[var0]) => (~(Fluent41_8[var0]))
+  Fluent41_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent42_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent41_2[var0]) => (~(Fluent42_2[var0]))
+  Fluent41_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent42_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent41_5[var0]) => (~(Fluent42_5[var0]))
+  Fluent42_5[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent41_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent41_12[var0]) => (~(Fluent42_12[var0]))
+  Fluent42_12[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent41_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : (Fluent42_9[var0]) => (~(Fluent41_9[var0]))
+  Fluent41_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent42_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent42_18[var0]) => (~(Fluent41_18[var0]))
+  Fluent42_18[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent41_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent41_21[var0]) => (~(Fluent42_21[var0]))
+  Fluent42_21[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent41_21[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT20 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1 + T3->issue_proc_write_invalidc1a1v1)
+PT14 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_invalidc3a1 + T3->complete_proc_write_invalidc1a1v1)
+PT12 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_validc2a1v1 + T2->do_bus_read_for_ownership_validc3a1v1 + T3->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 46.044s
+Formula synthesis complete in 44.017 seconds
+\A var0 \in Value : (Fluent43_8[var0]) => (Fluent42_8[var0])
+  Fluent42_8[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+      do_bus_read_for_ownership_invalid[] = TRUE
+  Fluent43_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Core : (Fluent43_26[var0]) => (Fluent42_26[var0])
+  Fluent42_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+  Fluent43_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent42_24[var0]) => (Fluent43_24[var0])
+  Fluent42_24[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent43_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Core : (Fluent42_17[var0]) => (Fluent43_17[var0])
+  Fluent42_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent43_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Core : (Fluent43_16[var0]) => (Fluent42_16[var0])
+  Fluent42_16[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+  Fluent43_16[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent42_25[var0]) => (Fluent43_25[var0])
+  Fluent43_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+  Fluent42_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : (Fluent42_19[var0]) => (Fluent43_19[var0])
+  Fluent42_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent43_19[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+      do_bus_read_valid[2] = TRUE
+      do_bus_read_for_ownership_invalid[] = TRUE
+\A var0 \in Address : (Fluent42_3[var0]) => (Fluent43_3[var0])
+  Fluent42_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent43_3[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent43_18[var0]) => (Fluent42_18[var0])
+  Fluent42_18[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+  Fluent43_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent43_22[var0]) => (Fluent42_22[var0])
+  Fluent42_22[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+  Fluent43_22[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT30 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a2v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+PT22 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v2 + T2->complete_proc_write_invalidc1a1v2)
+PT23 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc2a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc2a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 38.9s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 58.38 seconds
+\A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+  Fluent43_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent44_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      issue_proc_read_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+  Fluent43_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent44_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      issue_proc_read_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 29.094 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+Round 18 took 251.13 seconds
+
+Round 19
+-------
+TLC neg trace generation time: 2.896 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.516 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc1a1v2 + T2->do_bus_read_for_ownership_validc1a1v2 + T3->complete_proc_read_invalid_sharedc1a2v2)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 7.652 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+Round 19 took 12.76 seconds
+
+Round 20
+-------
+TLC neg trace generation time: 27.321 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.515 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc1a1v1 + T2->issue_proc_read_invalidc2a1 + T3->do_bus_read_validc1a1v1 + T4->complete_proc_write_invalidc2a1v2 + T5->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 5.08 seconds
+\A var0 \in Core : ~(Fluent45_6[var0])
+  Fluent45_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : ~(Fluent45_25[var0])
+  Fluent45_25[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : ~(Fluent45_5[var0])
+  Fluent45_5[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent45_2[var0])
+  Fluent45_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent45_7[var0])
+  Fluent45_7[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Value : ~(Fluent45_19[var0])
+  Fluent45_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : ~(Fluent45_1[var0])
+  Fluent45_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent45_3[var0])
+  Fluent45_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent45_13[var0])
+  Fluent45_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : ~(Fluent45_22[var0])
+  Fluent45_22[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT8 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1)
+PT4 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 10.402 seconds
+\A var0 \in Core : (Fluent46_15[var0]) => (Fluent47_15[var0])
+  Fluent47_15[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[0] = TRUE
+  Fluent46_15[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : (Fluent47_10[var0]) => (Fluent46_10[var0])
+  Fluent47_10[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent46_10[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+\A var0 \in Value : (Fluent46_11[var0]) => (Fluent47_11[var0])
+  Fluent47_11[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[2] = TRUE
+  Fluent46_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Core : (Fluent46_16[var0]) => (~(Fluent47_16[var0]))
+  Fluent47_16[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+  Fluent46_16[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Core : (Fluent46_26[var0]) => (~(Fluent47_26[var0]))
+  Fluent47_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+  Fluent46_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+\A var0 \in Value : (Fluent47_19[var0]) => (~(Fluent46_19[var0]))
+  Fluent47_19[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent46_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Address : (Fluent46_9[var0]) => (~(Fluent47_9[var0]))
+  Fluent46_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent47_9[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+\A var0 \in Value : (Fluent47_12[var0]) => (~(Fluent46_12[var0]))
+  Fluent47_12[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent46_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+\A var0 \in Address : (Fluent47_4[var0]) => (~(Fluent46_4[var0]))
+  Fluent46_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+  Fluent47_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent47_14[var0]) => (~(Fluent46_14[var0]))
+  Fluent47_14[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent46_14[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+
+new pos trace(s):
+PT17 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v1 + T2->complete_proc_write_invalidc1a1v1 + T3->issue_proc_write_invalidc1a1v1)
+PT13 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_sharedc1a1v2 + T2->complete_proc_write_invalidc1a1v2)
+PT12 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_invalidc3a1 + T3->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 31.102 seconds
+\A var0 \in Core : (Fluent47_0[var0]) => (Fluent48_0[var0])
+  Fluent47_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent48_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[] = TRUE
+      do_bus_read_valid[0] = TRUE
+\A var0 \in Value : (Fluent47_7[var0]) => (Fluent48_7[var0])
+  Fluent47_7[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      do_bus_read_for_ownership_invalid[] = FALSE
+  Fluent48_7[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent47_2[var0]) => (Fluent48_2[var0])
+  Fluent47_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent48_2[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[] = TRUE
+      do_bus_read_for_ownership_invalid[] = TRUE
+\A var0 \in Address : (Fluent47_9[var0]) => (Fluent48_9[var0])
+  Fluent48_9[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent47_9[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent48_3[var0]) => (Fluent47_3[var0])
+  Fluent47_3[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+  Fluent48_3[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent47_1[var0]) => (Fluent48_1[var0])
+  Fluent48_1[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent47_1[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Address : (Fluent47_18[var0]) => (Fluent48_18[var0])
+  Fluent47_18[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent48_18[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+\A var0 \in Address : (Fluent47_13[var0]) => (Fluent48_13[var0])
+  Fluent48_13[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[1] = TRUE
+  Fluent47_13[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+\A var0 \in Value : (Fluent47_20[var0]) => (~(Fluent48_20[var0]))
+  Fluent48_20[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent47_20[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+      issue_proc_write_invalid[2] = FALSE
+\A var0 \in Value : \E var1 \in Address : (Fluent47_11[var0]) => (Fluent48_11[var1])
+  Fluent48_11[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_invalid[1] = TRUE
+      do_bus_read_valid[1] = TRUE
+  Fluent47_11[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+
+new pos trace(s):
+PT29 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_validc1a2v1 + T2->complete_proc_read_invalid_sharedc1a1v1 + T3->issue_proc_write_sharedc1a1v1 + T4->complete_proc_write_invalidc1a1v1)
+PT23 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->do_bus_read_for_ownership_validc2a1v1 + T3->do_bus_read_for_ownership_validc3a1v1 + T4->complete_proc_write_invalidc1a1v1)
+PT25 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_invalidc2a1 + T2->do_bus_read_for_ownership_invalidc3a1 + T3->complete_proc_write_invalidc1a1v1)
+PT24 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_validc2a1v1 + T2->do_bus_read_for_ownership_validc3a1v1 + T3->complete_proc_write_invalidc1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc1a1v1)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 87.984s
+Killing 6 incomplete formula synth workers
+Formula synthesis complete in 132.078 seconds
+\A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+  Fluent49_23[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[] = Fluent48_23[0]
+  Fluent48_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_for_ownership_valid[0] = TRUE
+      do_bus_read_for_ownership_invalid[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+  Fluent49_23[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[] = Fluent48_23[0]
+  Fluent48_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_for_ownership_valid[0] = TRUE
+      do_bus_read_for_ownership_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 32.756 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+Round 20 took 327.291 seconds
+
+Round 21
+-------
+TLC neg trace generation time: 1.809 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.255 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->do_bus_read_for_ownership_validc1a1v1 + T2->complete_proc_read_invalid_sharedc1a2v1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 5.174 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+Round 21 took 8.198 seconds
+
+Round 22
+-------
+TLC neg trace generation time: 46.45 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.518 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_write_invalidc1a1v1 + T2->issue_proc_read_invalidc2a1 + T3->do_bus_read_validc1a1v1 + T4->complete_proc_write_invalidc2a1v2 + T5->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+  Fluent38_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent39_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+      do_bus_read_valid[] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 12.644 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+Round 22 took 63.559 seconds
+
+Round 23
+-------
+TLC neg trace generation time: 3.699 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.26 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->issue_proc_read_invalidc2a1 + T2->proc_write_exclusivec2a1v2 + T3->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 6.678 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+Round 23 took 12.147 seconds
+
+Round 24
+-------
+TLC neg trace generation time: 57.403 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.522 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc1a1v1 + T2->proc_write_exclusivec1a1v1 + T3->complete_proc_write_invalidc2a1v2 + T4->do_bus_read_validc2a1v2 + T5->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      complete_proc_read_invalid_shared[0] = FALSE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      issue_proc_write_invalid[] = FALSE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 14.619 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+Round 24 took 73.856 seconds
+
+Round 25
+-------
+TLC neg trace generation time: 59.124 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.509 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->issue_proc_read_invalidc1a1 + T2->proc_write_exclusivec1a1v2 + T3->complete_proc_write_invalidc2a1v1 + T4->do_bus_read_validc2a1v1 + T5->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 15.24 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+Round 25 took 76.168 seconds
+
+Round 26
+-------
+TLC neg trace generation time: 46.077 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.514 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_write_invalidc2a1v1 + T2->issue_proc_read_invalidc1a1 + T3->proc_write_exclusivec1a1v2 + T4->do_bus_read_validc2a1v1 + T5->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+  Fluent43_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent44_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      issue_proc_read_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 13.985 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+Round 26 took 63.119 seconds
+
+Round 27
+-------
+TLC neg trace generation time: 42.234 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.381 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->do_bus_read_for_ownership_validc1a1v1 + T5->complete_proc_read_invalid_sharedc1a2v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->do_bus_read_for_ownership_validc1a1v1)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.737 seconds
+\A var0 \in Core : ~(Fluent50_6[var0])
+  Fluent50_6[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+\A var0 \in Core : ~(Fluent50_17[var0])
+  Fluent50_17[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+\A var0 \in Core : ~(Fluent50_25[var0])
+  Fluent50_25[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+\A var0 \in Core : ~(Fluent50_24[var0])
+  Fluent50_24[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+\A var0 \in Value : ~(Fluent50_19[var0])
+  Fluent50_19[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+\A var0 \in Value : ~(Fluent50_12[var0])
+  Fluent50_12[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+\A var0 \in Address : ~(Fluent50_3[var0])
+  Fluent50_3[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+\A var0 \in Address : ~(Fluent50_1[var0])
+  Fluent50_1[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+\A var0 \in Address : ~(Fluent50_13[var0])
+  Fluent50_13[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+\A var0 \in Address : ~(Fluent50_22[var0])
+  Fluent50_22[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+
+new pos trace(s):
+PT3 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_validc2a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->do_bus_read_for_ownership_validc1a1v1)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 9.128 seconds
+\A var0 \in Value : (Fluent51_2[var0]) => (Fluent52_2[var0])
+  Fluent51_2[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+  Fluent52_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Core : (Fluent51_6[var0]) => (~(Fluent52_6[var0]))
+  Fluent52_6[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+  Fluent51_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+\A var0 \in Value : (Fluent51_10[var0]) => (Fluent52_10[var0])
+  Fluent52_10[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+  Fluent51_10[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+\A var0 \in Value : (Fluent52_19[var0]) => (Fluent51_19[var0])
+  Fluent52_19[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+  Fluent51_19[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+\A var0 \in Value : (Fluent52_8[var0]) => (~(Fluent51_8[var0]))
+  Fluent52_8[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+  Fluent51_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Core : (Fluent52_17[var0]) => (~(Fluent51_17[var0]))
+  Fluent52_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent51_17[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+\A var0 \in Core : (Fluent52_24[var0]) => (~(Fluent51_24[var0]))
+  Fluent52_24[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+  Fluent51_24[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+\A var0 \in Value : (Fluent52_12[var0]) => (~(Fluent51_12[var0]))
+  Fluent52_12[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+  Fluent51_12[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[2] = TRUE
+\A var0 \in Address : (Fluent52_1[var0]) => (~(Fluent51_1[var0]))
+  Fluent52_1[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+  Fluent51_1[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+\A var0 \in Address : (Fluent51_13[var0]) => (~(Fluent52_13[var0]))
+  Fluent52_13[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[1] = TRUE
+  Fluent51_13[Address]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[1] = TRUE
+
+new pos trace(s):
+PT19 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc1a1v1 + T3->do_bus_read_for_ownership_validc2a1v1)
+PT17 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->issue_proc_write_invalidc2a1v1 + T3->do_bus_read_for_ownership_validc1a1v1)
+PT14 (PosTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->do_bus_read_for_ownership_validc2a1v2)
+PT15 (PosTrace): (T0->do_bus_read_validc1a1v1 + T1->issue_proc_write_invalidc1a1v1 + T2->do_bus_read_for_ownership_validc2a1v2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->do_bus_read_for_ownership_validc1a1v1)
+Formula synth batch: 3
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 19.657 seconds
+\A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+  Fluent53_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent52_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+  Fluent53_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent52_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 45.329 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 27 took 203.699 seconds
+
+Round 28
+-------
+TLC neg trace generation time: 61.292 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.517 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->issue_proc_write_invalidc2a1v2 + T2->issue_proc_write_invalidc3a1v1 + T3->complete_proc_write_invalidc1a1v2 + T4->do_bus_read_for_ownership_validc1a1v2 + T5->complete_proc_read_invalid_sharedc1a2v2)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 19.295 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 28 took 83.979 seconds
+
+Round 29
+-------
+TLC neg trace generation time: 247.968 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.524 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc1a1v1 + T2->proc_write_exclusivec1a1v1 + T3->issue_proc_read_invalidc2a1 + T4->complete_proc_write_invalidc2a1v2 + T5->do_bus_read_validc2a1v2 + T6->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      complete_proc_read_invalid_shared[0] = FALSE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      issue_proc_write_invalid[] = FALSE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 19.695 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 29 took 269.556 seconds
+
+Round 30
+-------
+TLC neg trace generation time: 255.71 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.516 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc1a1v1 + T2->proc_write_exclusivec1a1v2 + T3->issue_proc_read_invalidc2a1 + T4->complete_proc_write_invalidc2a1v1 + T5->do_bus_read_validc2a1v1 + T6->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+  Fluent20_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      complete_proc_read_invalid_exclusive[0] = FALSE
+      complete_proc_read_invalid_shared[0] = FALSE
+  Fluent21_25[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+      issue_proc_write_invalid[] = FALSE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 19.743 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent20_25[var0]) => (Fluent21_25[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 30 took 277.306 seconds
+
+Round 31
+-------
+TLC neg trace generation time: 241.784 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.763 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->issue_proc_read_invalidc2a1 + T5->proc_write_exclusivec2a1v2 + T6->evict_modifiedc2a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->issue_proc_read_invalidc2a1 + T5->proc_write_exclusivec2a1v2)
+Formula synth batch: 1
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 6.289 seconds
+\A var0 \in Core : ~(Fluent54_6[var0])
+  Fluent54_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+\A var0 \in Core : ~(Fluent54_16[var0])
+  Fluent54_16[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+\A var0 \in Value : ~(Fluent54_8[var0])
+  Fluent54_8[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Core : ~(Fluent54_15[var0])
+  Fluent54_15[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+\A var0 \in Value : ~(Fluent54_19[var0])
+  Fluent54_19[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent54_12[var0])
+  Fluent54_12[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Value : ~(Fluent54_20[var0])
+  Fluent54_20[Value]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[2] = TRUE
+\A var0 \in Address : ~(Fluent54_9[var0])
+  Fluent54_9[Address]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[1] = TRUE
+\A var0 \in Address : ~(Fluent54_1[var0])
+  Fluent54_1[Address]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[1] = TRUE
+\A var0 \in Address : ~(Fluent54_22[var0])
+  Fluent54_22[Address]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[1] = TRUE
+
+new pos trace(s):
+PT6 (PosTrace): (T0->issue_proc_read_invalidc1a1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->proc_write_exclusivec1a1v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->do_bus_read_invalidc2a1 + T2->do_bus_read_invalidc3a1 + T3->complete_proc_read_invalid_exclusivec1a1v1 + T4->issue_proc_read_invalidc2a1 + T5->proc_write_exclusivec2a1v2)
+Formula synth batch: 2
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 10.383 seconds
+\A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+  Fluent55_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+  Fluent56_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+  Fluent55_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+  Fluent56_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 49.468 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 31 took 382.513 seconds
+
+Round 32
+-------
+TLC neg trace generation time: 3.652 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.262 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->proc_write_exclusivec1a1v2 + T2->complete_proc_read_invalid_exclusivec2a1v1 + T3->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 7.785 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 32 took 15.065 seconds
+
+Round 33
+-------
+TLC neg trace generation time: 3.567 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.516 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_write_invalidc1a1v1 + T1->complete_proc_read_invalid_exclusivec1a1v1 + T2->complete_proc_write_invalidc2a1v2 + T3->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Value : (Fluent13_2[var0]) => (Fluent14_2[var0])
+  Fluent13_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[2] = TRUE
+  Fluent14_2[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      do_bus_read_valid[] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 9.733 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 33 took 15.962 seconds
+
+Round 34
+-------
+TLC neg trace generation time: 15.444 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.26 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->complete_proc_read_invalid_exclusivec1a1v1 + T1->issue_proc_read_invalidc2a1 + T2->do_bus_read_validc1a1v1 + T3->complete_proc_write_invalidc2a1v2 + T4->evict_modifiedc2a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 8.251 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 34 took 26.993 seconds
+
+Round 35
+-------
+TLC neg trace generation time: 110.265 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.514 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->issue_proc_read_invalidc1a1 + T1->issue_proc_write_invalidc1a1v1 + T2->issue_proc_read_invalidc2a1 + T3->complete_proc_write_invalidc2a1v1 + T4->do_bus_read_validc2a1v1 + T5->complete_proc_write_sharedc1a1v2 + T6->evict_modifiedc1a1)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+
+Performing minimization book keeing.
+Minimization book keeping finished in 22.963 seconds
+Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.
+Current partial assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+Round 35 took 135.317 seconds
+
+Round 36
+-------
+TLC neg trace generation time: 300.009 seconds
+Round 36 took 300.013 seconds
+
+The following formula is a separating assumption:
+/\ \A var0 \in Core : (Fluent27_0[var0]) => (Fluent28_0[var0])
+/\ \A var0 \in Core : (Fluent3_26[var0]) => (Fluent2_26[var0])
+/\ \A var0 \in Core : (Fluent6_6[var0]) => (Fluent5_6[var0])
+/\ \A var0 \in Core : (Fluent49_23[var0]) => (Fluent48_23[var0])
+/\ \A var0 \in Value : (Fluent9_2[var0]) => (Fluent10_2[var0])
+/\ \A var0 \in Core : (Fluent23_6[var0]) => (Fluent24_6[var0])
+/\ \A var0 \in Address : (Fluent38_4[var0]) => (Fluent39_4[var0])
+/\ \A var0 \in Core : (Fluent55_6[var0]) => (Fluent56_6[var0])
+/\ \A var0 \in Value : (Fluent33_8[var0]) => (Fluent34_8[var0])
+/\ \A var0 \in Core : (Fluent43_17[var0]) => (Fluent44_17[var0])
+/\ \A var0 \in Core : (Fluent52_0[var0]) => (Fluent53_0[var0])
+  Fluent49_23[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[] = Fluent48_23[0]
+  Fluent53_0[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[] = TRUE
+  Fluent52_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[0] = TRUE
+  Fluent3_26[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[0] = TRUE
+  Fluent2_26[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent10_2[Value]
+    initially: FALSE
+    flActions:
+      do_bus_read_for_ownership_valid[2] = TRUE
+      do_bus_read_valid[2] = TRUE
+  Fluent55_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+  Fluent28_0[Core]
+    initially: FALSE
+    flActions:
+      do_bus_read_valid[] = TRUE
+  Fluent27_0[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[0] = TRUE
+  Fluent24_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent38_4[Address]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[1] = TRUE
+  Fluent34_8[Value]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[2] = TRUE
+      issue_proc_read_invalid[] = FALSE
+  Fluent23_6[Core]
+    initially: FALSE
+    flActions:
+      proc_write_exclusive[0] = TRUE
+  Fluent39_4[Address]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[1] = TRUE
+      do_bus_read_valid[] = TRUE
+  Fluent56_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent33_8[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_write_shared[2] = FALSE
+      complete_proc_write_invalid[2] = FALSE
+      issue_proc_write_invalid[2] = TRUE
+  Fluent48_23[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      do_bus_read_for_ownership_valid[0] = TRUE
+      do_bus_read_for_ownership_invalid[0] = TRUE
+  Fluent6_6[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_exclusive[0] = TRUE
+  Fluent5_6[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_read_invalid[0] = TRUE
+  Fluent9_2[Value]
+    initially: FALSE
+    flActions:
+      complete_proc_read_invalid_shared[2] = TRUE
+  Fluent43_17[Core]
+    initially: FALSE
+    flActions:
+      complete_proc_write_invalid[0] = TRUE
+  Fluent44_17[Core]
+    initially: FALSE
+    flActions:
+      issue_proc_write_invalid[0] = TRUE
+      issue_proc_read_invalid[0] = TRUE
+      do_bus_read_valid[0] = TRUE

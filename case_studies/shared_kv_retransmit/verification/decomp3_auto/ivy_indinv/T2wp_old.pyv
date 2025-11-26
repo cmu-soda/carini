@@ -1,0 +1,47 @@
+sort key
+sort node
+sort value
+sort seqnum
+
+mutable relation unacked(node, node, key, value, seqnum)
+mutable relation ack_msg(node, node, seqnum)
+mutable relation fluent95(node, key, seqnum)
+mutable relation fluent94(node, key, seqnum)
+mutable relation fluent107(seqnum, node, node)
+mutable relation fluent108(seqnum, node, node)
+
+init !unacked(SRC, DST, K, V, S)
+init !ack_msg(SRC, DST, S)
+init !fluent95(N, K, S)
+init !fluent94(N, K, S)
+init !fluent107(S, N1, N2)
+init !fluent108(S, N1, N2)
+
+transition reshard(n_old: node, n_new: node, k: key, v: value, s: seqnum)
+  modifies unacked, fluent95, fluent107
+  (unacked(N1, N2, K, V, S) <-> old(unacked(N1, N2, K, V, S)) | N1 = n_old & N2 = n_new & K = k & V = v & S = s) &
+  (fluent95(N, K, S) <-> old(fluent95(N, K, S)) | (N=n_old & K=k & S=s)) &
+  (fluent107(S, N1, N2) <-> old(fluent107(S, N1, N2)) | (S=s & N1=n_new & N2=n_old))
+
+transition retransmit(src: node, dst: node, k: key, v: value, s: seqnum)
+  modifies fluent94, fluent108
+  old(unacked(src, dst, k, v, s)) &
+  (fluent94(N, K, S) <-> old(fluent94(N, K, S)) | (N=src & K=k & S=s)) &
+  (fluent108(S, N1, N2) <-> old(fluent108(S, N1, N2)) | (S=s & N1=dst & N2=src))
+
+transition send_ack(src: node, n: node, k: key, v: value, s: seqnum)
+  modifies ack_msg
+  (ack_msg(N1, N2, S) <-> old(ack_msg(N1, N2, S)) | N1 = src & N2 = n & S = s)
+
+transition drop_ack_msg(src: node, dst:node, s: seqnum)
+  modifies ack_msg
+  old(ack_msg(src, dst, s)) &
+  (ack_msg(N1, N2, S) <-> old(ack_msg(N1, N2, S)) & !(N1 = src & N2 = dst & S = s))
+
+transition recv_ack_msg(src: node, dst: node, s: seqnum)
+  modifies unacked
+  old(ack_msg(src, dst, s)) &
+  (!(N1 = src & N2 = dst & S = s) -> (unacked(N1, N2, K, V, S) <-> old(unacked(N1, N2, K, V, S)))) &
+  (!unacked(src, dst, K, V, s))
+
+safety (fluent94(N,K,S) -> fluent95(N,K,S)) & (fluent108(S,N1,N2) -> fluent107(S,N1,N2))

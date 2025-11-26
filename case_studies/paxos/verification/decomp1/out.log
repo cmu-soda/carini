@@ -1,121 +1,115 @@
-Building the LTS for the initial trace (T1.tla)
-Built the LTS in 0.356s
-Creating the initial trace
-WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
-Created the initial trace in 0.146s
-
 Round 1
 -------
-TLC neg trace generation time: 0.696 seconds
+TLC neg trace generation time: 0.812 seconds
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
 # neg traces: 1
 # min neg traces: 1
-partial neg trace generation time: 1.19 seconds
+partial neg trace generation time: 3.485 seconds
 attempting to eliminate the following neg trace this round:
 NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2 + T3->Phase2ba1NUM1v1 + T4->Phase2ba2NUM0v2 + T5->Phase2ba2NUM1v1)
 
-Init pos trace:
-PT1 (PosTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1)
 Using the following partial neg trace for formula synth:
 NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
 Formula synth batch: 1
 Total # workers: 27
 # workers using: 10
 First worker finished, shutdown count is 30.0s
-Formula synthesis complete in 5.792 seconds
-\A var0 \in Value : (Fluent2_14[var0]) => (Fluent1_14[var0])
-  Fluent2_14[Value]
+Formula synthesis complete in 7.417 seconds
+\A var0 \in Value : ~(Fluent1_10[var0])
+  Fluent1_10[Value]
     initially: FALSE
     flActions:
       Phase2b[2] = TRUE
-  Fluent1_14[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = FALSE
-\A var0 \in Acceptor : (Fluent2_7[var0]) => (Fluent1_7[var0])
-  Fluent2_7[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent1_7[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-\A var0 \in Ballot : (Fluent2_8[var0]) => (~(Fluent1_8[var0]))
-  Fluent2_8[Ballot]
+\A var0 \in Ballot : ~(Fluent1_4[var0])
+  Fluent1_4[Ballot]
     initially: FALSE
     flActions:
       Phase2b[1] = TRUE
-  Fluent1_8[Ballot]
+\A var0 \in Ballot : ~(Fluent1_9[var0])
+  Fluent1_9[Ballot]
     initially: FALSE
     flActions:
       Phase2b[1] = TRUE
-\A var0 \in Acceptor : (Fluent2_16[var0]) => (Fluent1_16[var0])
-  Fluent2_16[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent1_16[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-\A var0 \in Ballot : (Fluent1_23[var0]) => (~(Fluent2_23[var0]))
-  Fluent2_23[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent1_23[Ballot]
+\A var0 \in Ballot : ~(Fluent1_22[var0])
+  Fluent1_22[Ballot]
     initially: FALSE
     flActions:
       Phase2b[1] = TRUE
-\A var0 \in Acceptor : (Fluent1_20[var0]) => (~(Fluent2_20[var0]))
-  Fluent2_20[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent1_20[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = TRUE
-\A var0 \in Value : \A var1 \in Value : (Fluent1_1[var1]) => (var1 = var0)
-  Fluent1_1[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-\A var0 \in Value : \A var1 \in Value : (Fluent1_21[var1]) => (var1 = var0)
-  Fluent1_21[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-\A var0 \in Value : \A var1 \in Value : (var0 = var1) => (~(Fluent1_24[var1]))
-  Fluent1_24[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-\A var0 \in Ballot : \A var1 \in Ballot : (Fluent1_13[var0]) => (~(var0 = var1))
+\A var0 \in Ballot : ~(Fluent1_13[var0])
   Fluent1_13[Ballot]
     initially: FALSE
     flActions:
       Phase2b[1] = TRUE
+\A var0 \in Ballot : ~(Fluent1_23[var0])
+  Fluent1_23[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = TRUE
+\A var0 \in Acceptor : ~(Fluent1_18[var0])
+  Fluent1_18[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
+\A var0 \in Acceptor : ~(Fluent1_11[var0])
+  Fluent1_11[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
+\A var0 \in Acceptor : ~(Fluent1_15[var0])
+  Fluent1_15[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
+\A var0 \in Acceptor : ~(Fluent1_19[var0])
+  Fluent1_19[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
 
 new pos trace(s):
-PT6 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM0v1)
-PT7 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba2NUM0 + T2->Phase1ba1NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM0v1)
-PT11 (PosTrace): (T0->Phase1aNUM1 + T1->Phase2ba1NUM0v1)
-PT5 (PosTrace): (T0->Phase1aNUM0 + T1->Phase2ba1NUM0v1)
-PT4 (PosTrace): (T0->Phase2ba1NUM0v1)
+PT2 (PosTrace): (T0->Phase1aNUM0 + T1->Phase2ba1NUM0v1)
+PT8 (PosTrace): (T0->Phase2ba1NUM0v1)
+
 Using the following partial neg trace for formula synth:
 NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
 Formula synth batch: 2
 Total # workers: 27
 # workers using: 10
 First worker finished, shutdown count is 30.0s
-Formula synthesis complete in 21.074 seconds
-\A var0 \in Value : (Fluent2_1[var0]) => (~(Fluent3_1[var0]))
+Formula synthesis complete in 8.637 seconds
+\A var0 \in Value : (Fluent3_1[var0]) => (~(Fluent2_1[var0]))
   Fluent3_1[Value]
     initially: FALSE
     flActions:
       Phase2b[2] = TRUE
   Fluent2_1[Value]
+    initially: FALSE
+    flActions:
+      Phase2a[1] = TRUE
+\A var0 \in Value : (Fluent2_0[var0]) => (~(Fluent3_0[var0]))
+  Fluent3_0[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[2] = TRUE
+  Fluent2_0[Value]
+    initially: FALSE
+    flActions:
+      Phase2a[1] = TRUE
+\A var0 \in Ballot : (Fluent3_9[var0]) => (~(Fluent2_9[var0]))
+  Fluent3_9[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2a[0] = TRUE
+  Fluent2_9[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = TRUE
+\A var0 \in Value : (Fluent2_21[var0]) => (~(Fluent3_21[var0]))
+  Fluent3_21[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[2] = TRUE
+  Fluent2_21[Value]
     initially: FALSE
     flActions:
       Phase2a[1] = TRUE
@@ -128,877 +122,260 @@ Formula synthesis complete in 21.074 seconds
     initially: FALSE
     flActions:
       Phase2b[2] = TRUE
-\A var0 \in Value : (Fluent2_10[var0]) => (~(Fluent3_10[var0]))
-  Fluent3_10[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-  Fluent2_10[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
 \A var0 \in Value : (Fluent2_14[var0]) => (~(Fluent3_14[var0]))
   Fluent3_14[Value]
     initially: FALSE
     flActions:
-      Phase2b[2] = TRUE
+      Phase2a[1] = TRUE
   Fluent2_14[Value]
     initially: FALSE
     flActions:
-      Phase2a[1] = TRUE
-\A var0 \in Ballot : \E var1 \in Ballot : (Fluent2_13[var1]) => (~(Fluent3_13[var0]))
-  Fluent3_13[Ballot]
+      Phase2b[2] = TRUE
+\A var0 \in Ballot : (Fluent3_23[var0]) => (~(Fluent2_23[var0]))
+  Fluent2_23[Ballot]
     initially: FALSE
     flActions:
       Phase2b[1] = TRUE
-  Fluent2_13[Ballot]
+  Fluent3_23[Ballot]
     initially: FALSE
     flActions:
       Phase2a[0] = TRUE
-\A var0 \in Acceptor : \E var1 \in Value : (Fluent2_11[var1]) => (~(Fluent3_11[var0]))
-  Fluent3_11[Acceptor]
+\A var0 \in Acceptor : (Fluent3_2[var0]) => (~(Fluent2_2[var0]))
+  Fluent3_2[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2a[2] = TRUE
+  Fluent2_2[Acceptor]
     initially: FALSE
     flActions:
       Phase2b[0] = TRUE
-  Fluent2_11[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-\A var0 \in Acceptor : \A var1 \in Value : (Fluent3_16[var1]) => (~(Fluent2_16[var1][var0]))
-  Fluent2_16[Value, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[2, 0] = TRUE
-  Fluent3_16[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-\A var0 \in Acceptor : \E var1 \in Ballot : (Fluent2_20[var0]) => (~(Fluent3_20[var0][var1]))
-  Fluent3_20[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 0] = TRUE
-  Fluent2_20[Acceptor]
+\A var0 \in Acceptor : (Fluent3_7[var0]) => (~(Fluent2_7[var0]))
+  Fluent3_7[Acceptor]
     initially: FALSE
     flActions:
       Phase2b[0] = TRUE
-\A var0 \in Acceptor : \A var1 \in Acceptor : \E var2 \in Ballot : (var1 = var0) => (~(Fluent2_19[var2]))
-  Fluent2_19[Ballot]
+  Fluent2_7[Acceptor]
     initially: FALSE
     flActions:
-      Phase2a[] = FALSE
-      Phase2a[0] = TRUE (priority 1)
-      Phase2b[1] = TRUE
+      Phase2a[2] = TRUE
+\A var0 \in Acceptor : (Fluent3_15[var0]) => (~(Fluent2_15[var0]))
+  Fluent3_15[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2a[2] = TRUE
+  Fluent2_15[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
 
 new pos trace(s):
-PT18 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM0v2)
-PT14 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2ba1NUM0v1)
-PT19 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM1v1a1 + T7->Phase2aNUM0v2a1 + T8->Phase2ba1NUM1v1)
-PT12 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase1ba1NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2ba1NUM1v1)
-PT17 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2aNUM0v2a1 + T5->Phase2ba1NUM0v1)
-PT13 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba2NUM0 + T2->Phase1ba1NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2ba1NUM0v1)
-PT16 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1 + T8->Phase2ba1NUM1v1)
-PT15 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba2NUM0 + T4->Phase2aNUM0v1a1 + T5->Phase2ba1NUM0v1)
-PT20 (PosTrace): (T0->Phase2ba1NUM0v1 + T1->Phase2ba1NUM1v1)
+PT14 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM0v1)
+PT16 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2ba1NUM0v1)
+PT21 (PosTrace): (T0->Phase1aNUM2 + T1->Phase1ba1NUM2 + T2->Phase1ba2NUM2 + T3->Phase2aNUM2v1a1 + T4->Phase2ba1NUM2v1)
+PT17 (PosTrace): (T0->Phase1aNUM2 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba2NUM0 + T4->Phase2aNUM0v1a1 + T5->Phase2ba1NUM0v1)
+PT20 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba3NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2ba1NUM1v1)
+PT15 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2ba1NUM1v1)
+
 Using the following partial neg trace for formula synth:
 NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
 Formula synth batch: 3
-Total # workers: 26
-# workers using: 10
-Formula synthesis complete in 135.586 seconds
-
-new pos trace(s):
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
-Formula synth batch: 4
-Total # workers: 16
-# workers using: 10
-First worker finished, shutdown count is 72.309s
-Formula synthesis complete in 92.715 seconds
-\A var0 \in Ballot : \A var1 \in Ballot : (Fluent4_3[var1]) => ((Fluent5_3[var0]) => (var1 <= var0))
-  Fluent5_3[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = TRUE
-  Fluent4_3[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-\A var0 \in Ballot : \A var1 \in Ballot : (Fluent4_9[var0]) => ((Fluent5_9[var1]) => (var1 <= var0))
-  Fluent5_9[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent4_9[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = TRUE
-\A var0 \in Ballot : \E var1 \in Value : \A var2 \in Ballot : (Fluent4_1[var1][var0]) => (var0 <= var2)
-  Fluent4_1[Value, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-      Phase2a[1, 0] = TRUE
-
-new pos trace(s):
-PT23 (PosTrace): (T0->Phase1aNUM1 + T1->Phase2ba1NUM0v1 + T2->Phase2ba1NUM0v2)
-PT21 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase2ba1NUM0v1 + T3->Phase1ba1NUM1 + T4->Phase2aNUM1v1a1)
-PT22 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase1aNUM0 + T3->Phase2ba1NUM0v1 + T4->Phase1ba1NUM1 + T5->Phase2aNUM1v1a1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
-Formula synth batch: 5
-Total # workers: 9
-# workers using: 9
-First worker finished, shutdown count is 120.576s
-Formula synthesis complete in 124.786 seconds
-\A var0 \in Ballot : \E var1 \in Ballot : (Fluent5_4[var1]) => ((var0 <= var1) => (Fluent6_4[var0]))
-  Fluent6_4[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[0] = TRUE
-  Fluent5_4[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-\A var0 \in Ballot : \E var1 \in Ballot : (Fluent5_1[var1]) => ((var0 <= var1) => (Fluent6_1[var0]))
-  Fluent5_1[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent6_1[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[0] = TRUE
-\A var0 \in Ballot : \E var1 \in Ballot : (Fluent5_2[var1]) => ((var0 <= var1) => (Fluent6_2[var0]))
-  Fluent6_2[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[0] = TRUE
-  Fluent5_2[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-
-new pos trace(s):
-PT25 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase1ba2NUM0 + T3->Phase1ba1NUM0 + T4->Phase1ba1NUM1 + T5->Phase2aNUM0v2a1 + T6->Phase2ba2NUM0v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a1)
-PT26 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a1 + T6->Phase2ba2NUM0v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a1)
-PT24 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a1 + T6->Phase2ba2NUM0v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
-Formula synth batch: 6
-Total # workers: 3
-# workers using: 3
-First worker finished, shutdown count is 118.662s
-Formula synthesis complete in 58.376 seconds
-\A var0 \in Ballot : \A var1 \in Ballot : (Fluent6_2[var1]) => ((Fluent7_2[var0]) => (var0 <= var1))
-  Fluent7_2[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent6_2[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2b[1] = TRUE
-
-Found the following new invariant this round:
-\A var0 \in Ballot : \A var1 \in Ballot : (Fluent6_2[var1]) => ((Fluent7_2[var0]) => (var0 <= var1))
-  Fluent7_2[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent6_2[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2b[1] = TRUE
-
-Minimizing the invariants found thus far.
-Minimization finished in 0.001 seconds
-Current partial assumption:
-/\ \A var0 \in Ballot : \A var1 \in Ballot : (Fluent6_2[var1]) => ((Fluent7_2[var0]) => (var0 <= var1))
-Round 1 took 462.214 seconds
-
-Round 2
--------
-TLC neg trace generation time: 0.714 seconds
-# neg traces: 1
-# min neg traces: 1
-partial neg trace generation time: 1.522 seconds
-attempting to eliminate the following neg trace this round:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1 + T4->Phase2ba2NUM1v1 + T5->Phase2ba1NUM1v1)
-
-Init pos trace:
-PT1 (PosTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2ba1NUM1v1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1)
-Formula synth batch: 1
 Total # workers: 27
 # workers using: 10
 First worker finished, shutdown count is 30.0s
-Formula synthesis complete in 7.587 seconds
-\A var0 \in Ballot : (Fluent9_8[var0]) => (Fluent8_8[var0])
-  Fluent9_8[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent8_8[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2a[0] = TRUE (priority 1)
-\A var0 \in Value : (Fluent9_0[var0]) => (~(Fluent8_0[var0]))
-  Fluent9_0[Value]
+Formula synthesis complete in 33.462 seconds
+\A var0 \in Value : (Fluent3_0[var0]) => (~(Fluent4_0[var0]))
+  Fluent4_0[Value]
     initially: FALSE
     flActions:
       Phase2a[1] = TRUE
-  Fluent8_0[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = FALSE (priority 1)
-      Phase2a[] = TRUE
-\A var0 \in Acceptor : (Fluent9_18[var0]) => (Fluent8_18[var0])
-  Fluent9_18[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent8_18[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-      Phase2b[0] = TRUE
-\A var0 \in Value : (Fluent8_10[var0]) => (~(Fluent9_10[var0]))
-  Fluent9_10[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-  Fluent8_10[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = FALSE (priority 1)
-      Phase2a[] = TRUE
-\A var0 \in Acceptor : (Fluent8_7[var0]) => (~(Fluent9_7[var0]))
-  Fluent9_7[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent8_7[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = FALSE
-      Phase2a[2] = TRUE
-\A var0 \in Acceptor : (Fluent9_11[var0]) => (~(Fluent8_11[var0]))
-  Fluent8_11[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent9_11[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = FALSE
-      Phase2a[2] = TRUE
-\A var0 \in Acceptor : (Fluent8_15[var0]) => (~(Fluent9_15[var0]))
-  Fluent8_15[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = FALSE
-      Phase2a[2] = TRUE
-  Fluent9_15[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-\A var0 \in Value : \A var1 \in Value : \E var2 \in Value : (Fluent8_21[var2]) => (~(var1 = var0))
-  Fluent8_21[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-\A var0 \in Ballot : \E var1 \in Value : \A var2 \in Ballot : (Fluent8_3[var1]) => (~(var0 <= var2))
-  Fluent8_3[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-\A var0 \in Acceptor : \A var1 \in Acceptor : \E var2 \in Ballot : (Fluent8_19[var2]) => (var1 = var0)
-  Fluent8_19[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-
-new pos trace(s):
-PT10 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2aNUM1v2a1)
-PT7 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase2ba1NUM0v1 + T3->Phase1ba1NUM1 + T4->Phase2aNUM1v1a1)
-PT11 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a1 + T6->Phase1ba2NUM1 + T7->Phase2aNUM1v1a1)
-PT9 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2aNUM0v2a1)
-PT2 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1)
-PT3 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba2NUM0 + T4->Phase2aNUM0v1a1 + T5->Phase2aNUM0v2a1)
-PT6 (PosTrace): (T0->Phase1aNUM1 + T1->Phase2ba1NUM0v1 + T2->Phase1ba1NUM1 + T3->Phase1ba2NUM1 + T4->Phase2aNUM1v1a1)
-PT5 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba2NUM0 + T2->Phase1ba1NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2aNUM0v2a1)
-PT4 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase1aNUM0 + T3->Phase2ba1NUM0v1 + T4->Phase1ba1NUM1 + T5->Phase2aNUM1v1a1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1)
-Formula synth batch: 2
-Total # workers: 27
-# workers using: 10
-First worker finished, shutdown count is 39.054s
-Formula synthesis complete in 24.666 seconds
-\A var0 \in Acceptor : (Fluent10_18[var0]) => (Fluent9_18[var0])
-  Fluent10_18[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent9_18[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2b[0] = TRUE
-      Phase2a[2] = TRUE (priority 1)
-\A var0 \in Value : (Fluent10_14[var0]) => (~(Fluent9_14[var0]))
-  Fluent9_14[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = FALSE
-      Phase2a[1] = FALSE (priority 1)
-      Phase2a[] = TRUE
-  Fluent10_14[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-\A var0 \in Acceptor : (Fluent9_25[var0]) => (~(Fluent10_25[var0]))
-  Fluent9_25[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-      Phase2b[0] = TRUE
-  Fluent10_25[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = FALSE
-      Phase2a[] = TRUE
-\A var0 \in Ballot : \E var1 \in Value : (Fluent9_9[var0]) => (~(Fluent10_9[var1]))
-  Fluent10_9[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-  Fluent9_9[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = TRUE
-\A var0 \in Value : \E var1 \in Value : (Fluent10_21[var1]) => (~(Fluent9_21[var0]))
-  Fluent9_21[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-  Fluent10_21[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-\A var0 \in Ballot : \E var1 \in Ballot : (Fluent10_13[var0]) => (~(Fluent9_13[var1]))
-  Fluent9_13[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent10_13[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = TRUE
-\A var0 \in Ballot : \E var1 \in Acceptor : (Fluent10_8[var1]) => (~(Fluent9_8[var0]))
-  Fluent10_8[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent9_8[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[0] = TRUE
-\A var0 \in Value : \E var1 \in Acceptor : (Fluent9_10[var0]) => (~(Fluent10_10[var1]))
-  Fluent9_10[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = FALSE
-      Phase2a[1] = TRUE
-  Fluent10_10[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-\A var0 \in Ballot : \E var1 \in Acceptor : (Fluent9_17[var0]) => (~(Fluent10_17[var1]))
-  Fluent10_17[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent9_17[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[0] = TRUE
-\A var0 \in Acceptor : \E var1 \in Ballot : (Fluent9_20[var0]) => (~(Fluent10_20[var0][var1]))
-  Fluent9_20[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent10_20[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 0] = TRUE
-
-new pos trace(s):
-PT12 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2ba1NUM1v1 + T4->Phase2aNUM1v1a2)
-PT21 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM1v1a1 + T7->Phase2aNUM0v2a1 + T8->Phase2ba1NUM1v1)
-PT13 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase1ba1NUM1 + T3->Phase2ba1NUM1v1 + T4->Phase2aNUM1v2a2)
-PT16 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2aNUM0v2a1 + T5->Phase2ba1NUM0v1)
-PT17 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2ba1NUM1v1 + T8->Phase2aNUM1v1a2)
-PT18 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM1v2 + T5->Phase2ba2NUM1v1)
-PT19 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2ba1NUM1v2 + T5->Phase2ba2NUM0v2)
-PT15 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2ba1NUM0v1 + T5->Phase2aNUM0v2a2)
-PT14 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2ba1NUM0v1 + T4->Phase2aNUM0v1a2)
-PT20 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM1v1 + T5->Phase2ba2NUM1v1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1)
-Formula synth batch: 3
-Total # workers: 27
-# workers using: 10
-First worker finished, shutdown count is 96.795s
-Formula synthesis complete in 108.836 seconds
-\A var0 \in Value : \E var1 \in Ballot : (Fluent10_26[var1]) => (~(Fluent11_26[var0]))
-  Fluent10_26[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[] = FALSE
-      Phase2a[0] = TRUE
-      Phase2b[1] = TRUE (priority 1)
-  Fluent11_26[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-\A var0 \in Acceptor : \E var1 \in Acceptor : (Fluent11_25[var1]) => (Fluent10_25[var0])
-  Fluent10_25[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-      Phase2b[0] = TRUE
-  Fluent11_25[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-\A var0 \in Acceptor : \E var1 \in Acceptor : (Fluent10_18[var1]) => (Fluent11_18[var0])
-  Fluent10_18[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent11_18[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-      Phase2b[0] = TRUE
-\A var0 \in Value : \E var1 \in Acceptor : (Fluent11_10[var1][var0]) => (Fluent10_10[var1])
-  Fluent10_10[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2b[0] = TRUE
-  Fluent11_10[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[0, 2] = TRUE
-\A var0 \in Ballot : \E var1 \in Acceptor : (Fluent10_22[var1][var0]) => (Fluent11_22[var1])
-  Fluent11_22[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2b[0] = TRUE
-  Fluent10_22[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[0, 1] = TRUE
-\A var0 \in Acceptor : \A var1 \in Value : (Fluent11_16[var0][var1]) => (~(Fluent10_16[var0]))
-  Fluent10_16[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = FALSE
-      Phase2a[2] = TRUE
-  Fluent11_16[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 1] = FALSE
-      Phase2b[0, 2] = TRUE
-\A var0 \in Acceptor : \E var1 \in Ballot : (Fluent11_7[var1][var0]) => (~(Fluent10_7[var1][var0]))
-  Fluent10_7[Ballot, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[1, 0] = FALSE (priority 1)
-      Phase2b[] = TRUE
-  Fluent11_7[Ballot, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[0, 2] = TRUE
-\A var0 \in Value : \A var1 \in Value : \E var2 \in Ballot : (var1 = var0) => (~(Fluent10_24[var2][var0]))
-  Fluent10_24[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[] = FALSE
-      Phase2a[0, 1] = TRUE
-      Phase2b[1] = TRUE (priority 1)
-\A var0 \in Acceptor : \E var1 \in Ballot : (Fluent10_15[var0]) => ((Fluent12_15[var1]) => (Fluent11_15[var0]))
-  Fluent10_15[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent12_15[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent11_15[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = TRUE
-\A var0 \in Ballot : \E var1 \in Acceptor : \E var2 \in Value : (Fluent10_8[var1][var0]) => (~(Fluent11_8[var2]))
-  Fluent11_8[Value]
-    initially: FALSE
-    flActions:
-      Phase2a[1] = TRUE
-  Fluent10_8[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[0, 1] = TRUE
-
-new pos trace(s):
-PT23 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba2NUM1 + T3->Phase2ba1NUM0v1 + T4->Phase1ba1NUM1 + T5->Phase2aNUM1v1a1 + T6->Phase2ba2NUM1v1)
-PT24 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase2ba1NUM1v1 + T3->Phase2ba2NUM0v2 + T4->Phase1ba2NUM1 + T5->Phase2aNUM1v2a2)
-PT25 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba2NUM1 + T2->Phase2ba1NUM0v1 + T3->Phase1ba1NUM1 + T4->Phase2ba2NUM1v1 + T5->Phase2aNUM1v1a1)
-PT31 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2ba1NUM1v1 + T5->Phase2aNUM1v2a2 + T6->Phase2ba2NUM1v1)
-PT28 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1 + T8->Phase2ba2NUM1v1)
-PT22 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2ba1NUM1v2 + T4->Phase2aNUM0v1a2)
-PT26 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase2ba1NUM0v1 + T3->Phase1ba1NUM1 + T4->Phase2ba2NUM0v1 + T5->Phase1ba2NUM1 + T6->Phase2aNUM1v1a1)
-PT29 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2ba1NUM1v1 + T4->Phase2aNUM0v1a2)
-PT27 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase2ba2NUM0v1 + T3->Phase2ba2NUM0v2 + T4->Phase1ba2NUM1 + T5->Phase2aNUM1v2a2)
-PT30 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2ba2NUM1v1 + T8->Phase2aNUM1v1a1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1)
-Formula synth batch: 4
-Total # workers: 27
-# workers using: 10
-First worker finished, shutdown count is 243.999s
-Killing 1 incomplete formula synth workers
-Formula synthesis complete in 325.354 seconds
-\A var0 \in Ballot : (Fluent11_23[var0]) => ((Fluent13_23[var0]) => (Fluent12_23[var0]))
-  Fluent13_23[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[] = TRUE
-  Fluent12_23[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = FALSE
-      Phase2a[0] = TRUE
-  Fluent11_23[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-\A var0 \in Ballot : (Fluent13_22[var0]) => ((Fluent11_22[var0]) => (~(Fluent12_22[var0])))
-  Fluent11_22[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent13_22[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[1] = TRUE
-  Fluent12_22[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = FALSE (priority 1)
-      Phase2b[1] = FALSE
-      Phase2a[] = TRUE
-\A var0 \in Value : \E var1 \in Acceptor : (Fluent11_14[var1][var0]) => (Fluent12_14[var1][var0])
-  Fluent12_14[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2b[0, 2] = TRUE
-      Phase2a[2, 1] = TRUE (priority 1)
-  Fluent11_14[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[0, 2] = TRUE
-\A var0 \in Value : \E var1 \in Acceptor : \E var2 \in Ballot : (Fluent12_10[var2]) => (~(Fluent11_10[var0][var1]))
-  Fluent11_10[Value, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[2, 0] = TRUE
-  Fluent12_10[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-\A var0 \in Value : \E var1 \in Ballot : \E var2 \in Acceptor : (Fluent12_12[var0][var2]) => (~(Fluent11_12[var1]))
-  Fluent11_12[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent12_12[Value, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[2, 0] = TRUE
-\A var0 \in Ballot : \E var1 \in Acceptor : \E var2 \in Ballot : (Fluent11_17[var0][var1]) => (~(Fluent12_17[var2]))
-  Fluent11_17[Ballot, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[1, 0] = TRUE
-  Fluent12_17[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-\A var0 \in Acceptor : \E var1 \in Value : \E var2 \in Acceptor : (Fluent12_16[var0][var1]) => (~(Fluent11_16[var2]))
-  Fluent11_16[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent12_16[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 1] = TRUE
-\A var0 \in Acceptor : \E var1 \in Acceptor : \E var2 \in Ballot : (Fluent12_19[var0][var2]) => (~(Fluent11_19[var1]))
-  Fluent11_19[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent12_19[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 0] = TRUE
-
-new pos trace(s):
-PT34 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1aNUM0 + T3->Phase2ba1NUM1v1 + T4->Phase2ba2NUM0v1 + T5->Phase2ba2NUM0v2 + T6->Phase1ba2NUM1 + T7->Phase2aNUM1v2a2)
-PT37 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a1 + T6->Phase2ba1NUM1v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a2 + T9->Phase2ba2NUM1v1)
-PT35 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1 + T8->Phase2ba1NUM1v1 + T9->Phase2ba2NUM1v1)
-PT33 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase1aNUM1 + T4->Phase1ba1NUM1 + T5->Phase2aNUM0v2a1 + T6->Phase2ba2NUM0v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a1)
-PT32 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a1 + T6->Phase2ba2NUM0v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a1)
-PT38 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2aNUM1v2a1 + T5->Phase2ba2NUM1v1 + T6->Phase2ba1NUM1v1)
-PT36 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1 + T8->Phase2ba2NUM1v1 + T9->Phase2ba1NUM1v1)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1)
-Formula synth batch: 5
-Total # workers: 26
-# workers using: 10
-First worker finished, shutdown count is 449.199s
-Formula synthesis complete in 539.334 seconds
-\A var0 \in Acceptor : \E var1 \in Value : (Fluent13_11[var0]) => (Fluent12_11[var0][var1])
-  Fluent13_11[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent12_11[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 1] = FALSE
-      Phase2b[0, 2] = FALSE (priority 1)
-      Phase2b[0] = TRUE
-\A var0 \in Acceptor : \E var1 \in Value : (Fluent13_16[var0]) => (~(Fluent12_16[var0][var1]))
-  Fluent13_16[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent12_16[Acceptor, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = FALSE
-      Phase2b[0, 2] = TRUE (priority 1)
-      Phase2a[2, 1] = TRUE
-\A var0 \in Ballot : \A var1 \in Value : (Fluent14_3[var0][var1]) => ((Fluent12_3[var0][var1]) => (Fluent13_3[var0]))
-  Fluent12_3[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[1, 2] = TRUE
-  Fluent14_3[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[0, 1] = TRUE
-  Fluent13_3[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2a[0] = TRUE (priority 1)
-      Phase2b[1] = TRUE
-\A var0 \in Ballot : \A var1 \in Value : (Fluent12_9[var0][var1]) => ((Fluent14_9[var0][var1]) => (Fluent13_9[var0]))
-  Fluent12_9[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[1, 2] = TRUE
-  Fluent14_9[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[0, 1] = TRUE
-  Fluent13_9[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2a[0] = TRUE (priority 1)
-      Phase2b[1] = TRUE
-\A var0 \in Value : \E var1 \in Value : \A var2 \in Acceptor : (Fluent12_1[var1][var2]) => (~(Fluent13_1[var0][var2]))
-  Fluent13_1[Value, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[2, 0] = TRUE
-  Fluent12_1[Value, Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[] = FALSE
-      Phase2a[1, 2] = TRUE
-      Phase2b[2, 0] = TRUE (priority 1)
-\A var0 \in Ballot : \A var1 \in Value : (Fluent14_22[var0][var1]) => ((Fluent13_22[var0][var1]) => (Fluent12_22[var0]))
-  Fluent13_22[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[0, 1] = TRUE
-  Fluent14_22[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[1, 2] = TRUE
-  Fluent12_22[Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[] = FALSE
-      Phase2a[0] = TRUE (priority 1)
-      Phase2b[1] = TRUE
-\A var0 \in Ballot : \A var1 \in Acceptor : (Fluent12_21[var1][var0]) => ((Fluent14_21[var1][var0]) => (Fluent13_21[var1]))
-  Fluent14_21[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[0, 1] = TRUE
-  Fluent13_21[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-      Phase2b[0] = TRUE
-  Fluent12_21[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 0] = TRUE
-\A var0 \in Acceptor : \A var1 \in Ballot : (Fluent12_15[var0][var1]) => ((Fluent13_15[var0][var1]) => (Fluent14_15[var0]))
-  Fluent13_15[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2b[0, 1] = TRUE
-  Fluent14_15[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2a[2] = FALSE
-      Phase2b[0] = TRUE
-  Fluent12_15[Acceptor, Ballot]
-    initially: FALSE
-    flActions:
-      Phase2a[2, 0] = TRUE
-\A var0 \in Value : \E var1 \in Value : \E var2 \in Ballot : (Fluent12_23[var2][var0]) => (~(Fluent13_23[var2][var0][var1]))
-  Fluent13_23[Ballot, Value, Value]
-    initially: FALSE
-    flActions:
-      Phase2a[0] = TRUE
-  Fluent12_23[Ballot, Value]
-    initially: FALSE
-    flActions:
-      Phase2b[] = FALSE
-      Phase2a[0, 1] = FALSE (priority 1)
-      Phase2b[1, 2] = TRUE (priority 1)
-      Phase2a[0] = TRUE
-
-new pos trace(s):
-PT45 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba2NUM0 + T3->Phase1ba1NUM0 + T4->Phase1ba1NUM1 + T5->Phase1ba2NUM1 + T6->Phase2aNUM1v1a1 + T7->Phase2ba1NUM1v1 + T8->Phase2aNUM0v1a2)
-PT41 (PosTrace): (T0->Phase1aNUM1 + T1->Phase2ba1NUM0v1 + T2->Phase1ba1NUM1 + T3->Phase2ba2NUM0v2 + T4->Phase1ba2NUM1 + T5->Phase2aNUM1v1a2)
-PT43 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM1v1a1 + T7->Phase2ba1NUM1v1 + T8->Phase2aNUM0v1a2)
-PT42 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2ba1NUM1v1 + T7->Phase2aNUM1v1a2 + T8->Phase2aNUM0v1a2)
-PT40 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase2ba1NUM0v1 + T3->Phase1ba1NUM1 + T4->Phase2ba2NUM0v2 + T5->Phase1ba2NUM1 + T6->Phase2aNUM1v1a2)
-PT48 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v2a1)
-PT47 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a2 + T6->Phase2ba2NUM0v1 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v1a2)
-PT46 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v2a2 + T6->Phase2ba2NUM0v2 + T7->Phase1ba2NUM1 + T8->Phase2aNUM1v2a2)
-Using the following partial neg trace for formula synth:
-NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2ba1NUM0v2 + T2->Phase2ba2NUM0v2 + T3->Phase2aNUM1v1a1)
-Formula synth batch: 6
-Total # workers: 25
-# workers using: 10
-First worker finished, shutdown count is 776.316s
-Formula synthesis complete in 704.972 seconds
-\A var0 \in Value : \E var1 \in Ballot : (Fluent15_5[var1]) => ((Fluent14_5[var0]) => (Fluent13_5[var0]))
-  Fluent14_5[Value]
+  Fluent3_0[Value]
     initially: FALSE
     flActions:
       Phase2b[2] = FALSE (priority 1)
       Phase2b[] = TRUE
-  Fluent13_5[Value]
+\A var0 \in Acceptor : (Fluent4_7[var0]) => (Fluent3_7[var0])
+  Fluent3_7[Acceptor]
     initially: FALSE
     flActions:
-      Phase2a[1] = FALSE
+      Phase2b[0] = FALSE
+      Phase2a[2] = TRUE
+  Fluent4_7[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2a[2] = Fluent3_7[2]
+\A var0 \in Value : (Fluent4_10[var0]) => (~(Fluent3_10[var0]))
+  Fluent3_10[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[] = Fluent4_10[2]
+  Fluent4_10[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[2] = FALSE
+      Phase2a[1] = TRUE
+\A var0 \in Ballot : (Fluent4_13[var0]) => (~(Fluent3_13[var0]))
+  Fluent3_13[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = FALSE (priority 1)
       Phase2b[] = TRUE
-  Fluent15_5[Ballot]
+  Fluent4_13[Ballot]
     initially: FALSE
     flActions:
       Phase2a[0] = TRUE
-\A var0 \in Value : \E var1 \in Acceptor : (Fluent15_14[var0]) => ((Fluent13_14[var1]) => (Fluent14_14[var0]))
-  Fluent13_14[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent14_14[Value]
+\A var0 \in Value : \A var1 \in Ballot : (Fluent4_5[var0]) => (~(Fluent3_5[var1]))
+  Fluent4_5[Value]
     initially: FALSE
     flActions:
       Phase2b[2] = TRUE
-  Fluent15_14[Value]
+  Fluent3_5[Ballot]
     initially: FALSE
     flActions:
-      Phase2b[] = FALSE
-      Phase2a[1] = TRUE
-
-Found the following new invariant this round:
-\A var0 \in Value : \E var1 \in Acceptor : (Fluent15_14[var0]) => ((Fluent13_14[var1]) => (Fluent14_14[var0]))
-  Fluent13_14[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent14_14[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[2] = TRUE
-  Fluent15_14[Value]
-    initially: FALSE
-    flActions:
-      Phase2b[] = FALSE
-      Phase2a[1] = TRUE
-
-Minimizing the invariants found thus far.
-Minimization finished in 0.549 seconds
-Current partial assumption:
-/\ \A var0 \in Ballot : \A var1 \in Ballot : (Fluent6_2[var1]) => ((Fluent7_2[var0]) => (var0 <= var1))
-/\ \A var0 \in Value : \E var1 \in Acceptor : (Fluent15_14[var0]) => ((Fluent13_14[var1]) => (Fluent14_14[var0]))
-Round 2 took 1757.161 seconds
-
-Round 3
--------
-TLC neg trace generation time: 0.69 seconds
-Round 3 took 0.697 seconds
-
-The following formula is a separating assumption:
-/\ \A var0 \in Ballot : \A var1 \in Ballot : (Fluent6_2[var1]) => ((Fluent7_2[var0]) => (var0 <= var1))
-/\ \A var0 \in Value : \E var1 \in Acceptor : (Fluent15_14[var0]) => ((Fluent13_14[var1]) => (Fluent14_14[var0]))
-  Fluent13_14[Acceptor]
-    initially: FALSE
-    flActions:
-      Phase2b[0] = TRUE
-  Fluent7_2[Ballot]
-    initially: FALSE
-    flActions:
+      Phase2b[1] = FALSE
       Phase2a[0] = TRUE
-  Fluent6_2[Ballot]
+\A var0 \in Ballot : \E var1 \in Value : (Fluent3_9[var0]) => (~(Fluent4_9[var1]))
+  Fluent4_9[Value]
+    initially: FALSE
+    flActions:
+      Phase2a[1] = TRUE
+  Fluent3_9[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = TRUE
+\A var0 \in Value : \E var1 \in Value : (Fluent3_24[var1]) => (~(Fluent4_24[var0]))
+  Fluent3_24[Value]
+    initially: FALSE
+    flActions:
+      Phase2a[1] = TRUE
+  Fluent4_24[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[2] = TRUE
+\A var0 \in Value : \E var1 \in Value : (Fluent4_21[var1]) => (~(Fluent3_21[var0]))
+  Fluent3_21[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[2] = TRUE
+  Fluent4_21[Value]
+    initially: FALSE
+    flActions:
+      Phase2a[1] = TRUE
+\A var0 \in Value : \A var1 \in Ballot : (Fluent4_12[var1]) => (~(Fluent3_12[var0]))
+  Fluent3_12[Value]
+    initially: FALSE
+    flActions:
+      Phase2b[2] = TRUE
+  Fluent4_12[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = FALSE
+      Phase2a[0] = TRUE
+\A var0 \in Acceptor : \E var1 \in Value : (Fluent3_16[var1]) => (~(Fluent4_16[var0]))
+  Fluent3_16[Value]
+    initially: FALSE
+    flActions:
+      Phase2a[1] = TRUE
+  Fluent4_16[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
+
+new pos trace(s):
+PT22 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2ba1NUM1v2)
+PT29 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM2 + T2->Phase1ba1NUM1 + T3->Phase1ba2NUM1 + T4->Phase2aNUM1v1a1 + T5->Phase2aNUM1v2a2 + T6->Phase2ba1NUM1v1)
+PT24 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1aNUM2 + T3->Phase1ba1NUM0 + T4->Phase1ba2NUM0 + T5->Phase2aNUM0v1a1 + T6->Phase2aNUM0v2a1 + T7->Phase2ba1NUM0v1)
+PT30 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v2a1 + T4->Phase2ba1NUM1v1)
+PT26 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM2 + T2->Phase1ba1NUM1 + T3->Phase1ba2NUM1 + T4->Phase2aNUM1v1a1 + T5->Phase2ba1NUM2v1)
+PT28 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1ba1NUM0 + T2->Phase1ba2NUM0 + T3->Phase2aNUM0v1a1 + T4->Phase2aNUM0v2a1 + T5->Phase2ba1NUM0v1)
+PT23 (PosTrace): (T0->Phase1aNUM2 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba2NUM0 + T4->Phase2aNUM0v2a1 + T5->Phase2aNUM0v2a1 + T6->Phase2ba1NUM0v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
+Formula synth batch: 4
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 133.82s
+Killing 8 incomplete formula synth workers
+Formula synthesis complete in 200.82 seconds
+\A var0 \in Ballot : (Fluent5_8[var0]) => (~(Fluent4_8[var0]))
+  Fluent5_8[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = FALSE
+      Phase2a[0] = TRUE
+  Fluent4_8[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[] = Fluent5_8[1]
+\A var0 \in Ballot : (Fluent4_3[var0]) => (~(Fluent5_3[var0]))
+  Fluent5_3[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[1] = FALSE
+      Phase2a[0] = TRUE
+  Fluent4_3[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2b[] = Fluent5_3[1]
+
+new pos trace(s):
+PT32 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1aNUM0 + T2->Phase1ba1NUM0 + T3->Phase1ba2NUM0 + T4->Phase2aNUM0v2a1 + T5->Phase2ba1NUM0v1 + T6->Phase2aNUM0v1a2)
+PT33 (PosTrace): (T0->Phase1aNUM1 + T1->Phase1ba1NUM1 + T2->Phase1ba2NUM1 + T3->Phase2aNUM1v1a1 + T4->Phase2ba1NUM1v1 + T5->Phase2aNUM1v1a2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
+Formula synth batch: 5
+Total # workers: 27
+# workers using: 10
+First worker finished, shutdown count is 316.24s
+Killing 7 incomplete formula synth workers
+Formula synthesis complete in 474.41 seconds
+\A var0 \in Ballot : (Fluent6_17[var0]) => ((Fluent5_17[var0]) => (Fluent7_17[var0]))
+  Fluent7_17[Ballot]
     initially: FALSE
     flActions:
       Phase2a[] = FALSE
+      Phase2a[0] = TRUE (priority 1)
+  Fluent5_17[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2a[0] = TRUE
+  Fluent6_17[Ballot]
+    initially: FALSE
+    flActions:
       Phase2b[1] = TRUE
-  Fluent14_14[Value]
+\A var0 \in Ballot : (Fluent7_9[var0]) => ((Fluent6_9[var0]) => (~(Fluent5_9[var0])))
+  Fluent5_9[Ballot]
     initially: FALSE
     flActions:
-      Phase2b[2] = TRUE
-  Fluent15_14[Value]
+      Phase2a[0] = TRUE
+  Fluent7_9[Ballot]
     initially: FALSE
     flActions:
-      Phase2b[] = FALSE
-      Phase2a[1] = TRUE
+      Phase2b[1] = TRUE
+  Fluent6_9[Ballot]
+    initially: FALSE
+    flActions:
+      Phase2a[0] = FALSE (priority 1)
+      Phase2a[] = TRUE
+\A var0 \in Acceptor : \E var1 \in Ballot : (Fluent5_7[var0]) => (~(Fluent6_7[var0][var1]))
+  Fluent6_7[Acceptor, Ballot]
+    initially: FALSE
+    flActions:
+      Phase2a[2] = TRUE
+      Phase2a[2, 0] = Fluent6_7[2, 0] (priority 1)
+  Fluent5_7[Acceptor]
+    initially: FALSE
+    flActions:
+      Phase2b[0] = TRUE
+
+new pos trace(s):
+PT36 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1 + T8->Phase2ba1NUM1v1)
+PT34 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM1 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM1 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM1 + T6->Phase2aNUM0v2a1 + T7->Phase2aNUM1v1a1 + T8->Phase2ba3NUM0v1)
+PT35 (PosTrace): (T0->Phase1aNUM0 + T1->Phase1aNUM2 + T2->Phase1ba1NUM0 + T3->Phase1ba1NUM2 + T4->Phase1ba2NUM0 + T5->Phase1ba2NUM2 + T6->Phase2aNUM0v2a1 + T7->Phase2ba3NUM0v2 + T8->Phase2aNUM2v1a1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->Phase2aNUM0v2a1 + T1->Phase2aNUM1v1a1 + T2->Phase2ba1NUM0v2)
+Formula synth batch: 6
+Total # workers: 27
+# workers using: 10
