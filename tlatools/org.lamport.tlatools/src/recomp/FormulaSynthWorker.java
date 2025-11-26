@@ -953,7 +953,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	some nt : NegState | EmptyEnv->Root not in nt.formulaSat\n"
 			+ "\n"
 			+ "	// minimization constraints\n"
-			+ "	maxsome violatedNegStatesAndAfter // minimize the violation idx (see above for why we use maxsome)\n"
+			//+ "	maxsome violatedNegStatesAndAfter // minimize the violation idx (see above for why we use maxsome)\n" // this is not needed while using partial neg traces
 			+ "	softno partialFluents // fewer partial fluents\n"
 			+ "	softno (FlSymAction.target.*tchildren - (TT + FF)) // fewer targets that aren't TRUE or FALSE\n"
 			+ "	minsome Formula.children & (Forall+Exists+Fluent+VarEquals+VarSetContains+VarLTE) // smallest formula possible, counting only quants and terminals\n"

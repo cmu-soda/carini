@@ -165,11 +165,8 @@ public class FormulaSeparation {
 		final Set<Map<String,String>> allEnvVarTypes = createAllEnvVarTypes(allTypes);
 		Utils.assertTrue(!allEnvVarTypes.isEmpty(), "internal error: envVarTypes is empty!");
     	
-		// a minimal length "default" init pos trace we can use, in the case that the dynamically generated one
-		// (below) has 0 length (i.e. is not a real trace).
-    	final AlloyTrace defaultInitPosTrace = createDefaultInitPosTrace();
-    	
     	int largestFluentNumSeen = 0;
+    	int numRoundsSinceBrandNewInvariant = 0;
     	Set<AlloyTrace> allNegTraces = new HashSet<>();
     	Map<Formula, Set<AlloyTrace>> invariantsToNegTracesBlocked = new HashMap<>();
     	Set<Formula> allInvariants = new HashSet<>();
@@ -229,10 +226,6 @@ public class FormulaSeparation {
     			System.out.println(negTrace);
     			return Utils.setOf(Formula.UNSAT());
     		}
-        	
-        	// 'dynamically' generate the init trace
-    		final AlloyTrace fullPartialNegTrace = negTrace.cutToLen(partialNegTraceLen);
-    		final AlloyTrace globalPartialNegTrace = fullPartialNegTrace.restrictToAlphabet(this.globalActions);
         	
     		// keep track of pos traces corresponding to each env var type, as each env var type corresponds to a single
     		// formula synthesis task. these are the "current" pos traces that we will learn from (perform formula synth on).
@@ -384,6 +377,7 @@ public class FormulaSeparation {
         			allNewPosTraces
 							.stream()
 							.forEach(t -> System.out.println(t));
+        			System.out.println();
     			}
     		}
     		
@@ -392,15 +386,17 @@ public class FormulaSeparation {
     		// print out the blocking invariant
     		final boolean brandNewInvariant = !allInvariants.contains(blockingInvariant);
     		if (brandNewInvariant) {
+    			numRoundsSinceBrandNewInvariant = 0;
     			System.out.println("Found the following new invariant this round:");
     		} else {
+    			++numRoundsSinceBrandNewInvariant;
     			System.out.println("The following previously found invariant blocks the negative trace:");
     		}
 			System.out.println(blockingInvariant);
 			System.out.println();
-			
+
 			// find the minimum set of invariants needed to block all neg traces seen so far
-	    	System.out.println("Minimizing the invariants found thus far.");
+	    	System.out.println("Performing minimization book keeping.");
 	    	PerfTimer minTimer = new PerfTimer();
 	    	
 	    	// if the new invariant hasn't been seen before, then update the <invariantsToNegTracesBlocked> map for all
@@ -432,9 +428,18 @@ public class FormulaSeparation {
 	    	// update our data structures
 			allInvariants.add(blockingInvariant);
     		allNegTraces.add(negTrace);
-			activeInvariants = minimizeInvariants(allInvariants, invariantsToNegTracesBlocked, allNegTraces);
+			System.out.println("Minimization book keeping finished in " + minTimer.timeElapsedSeconds() + " seconds");
+
+			// only perform minimization at most twice in a row for previously found invariants
+			final boolean minimize = numRoundsSinceBrandNewInvariant <= 2;
+			if (minimize) {
+		    	System.out.println("Minimizing the invariants found thus far.");
+				activeInvariants = minimizeInvariants(allInvariants, invariantsToNegTracesBlocked, allNegTraces);
+			} else {
+		    	System.out.println("Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.");
+				activeInvariants.add(blockingInvariant);
+			}
 			
-			System.out.println("Minimization finished in " + minTimer.timeElapsedSeconds() + " seconds");
 			System.out.println("Current partial assumption:\n" + Formula.conjunction(activeInvariants).getFormula());
     		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
 			System.out.println();
