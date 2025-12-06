@@ -1,0 +1,772 @@
+Round 1
+-------
+TLC neg trace generation time: 0.943 seconds
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.396 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->cast_voten2v2NUM1 + T1->cast_voten1v1NUM1 + T2->cast_voten3v1NUM1 + T3->cast_voten1v2NUM1 + T4->decideNUM1v2_n1n2_ + T5->decideNUM1v1_n1n3_)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->cast_voten2v2NUM1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 11.695 seconds
+\A var0 \in Node : ~(Fluent1_1[var0])
+  Fluent1_1[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : ~(Fluent1_60[var0])
+  Fluent1_60[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : ~(Fluent1_22[var0])
+  Fluent1_22[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : ~(Fluent1_61[var0])
+  Fluent1_61[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Round : ~(Fluent1_21[var0])
+  Fluent1_21[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = TRUE
+\A var0 \in Value : ~(Fluent1_19[var0])
+  Fluent1_19[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Quorum : ~(Fluent1_0[var0])
+  Fluent1_0[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+\A var0 \in Round : ~(Fluent1_38[var0])
+  Fluent1_38[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = TRUE
+\A var0 \in Quorum : ~(Fluent1_63[var0])
+  Fluent1_63[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+\A var0 \in Quorum : ~(Fluent1_32[var0])
+  Fluent1_32[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn3NUM1 + T4->proposeNUM1_n1n3_NUM0v1 + T5->cast_voten1v1NUM1)
+PT4 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->proposeNUM1_n1n2_NUM2v1 + T5->cast_voten1v1NUM1)
+PT7 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->join_roundn2NUM1 + T3->proposeNUM1_n1n2_NUM2v1 + T4->cast_voten1v1NUM1)
+PT3 (PosTrace): (T0->send_1aNUM2 + T1->join_roundn1NUM2 + T2->join_roundn2NUM2 + T3->proposeNUM2_n1n2_NUM1v1 + T4->cast_voten1v1NUM2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->cast_voten2v2NUM1)
+Formula synth batch: 2
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 25.1 seconds
+\A var0 \in Round : (Fluent2_7[var0]) => (Fluent3_7[var0])
+  Fluent3_7[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+  Fluent2_7[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Round : (Fluent2_7[var0]) => (Fluent3_7[var0])
+  Fluent3_7[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+  Fluent2_7[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = TRUE
+
+Performing minimization book keeping.
+Minimization book keeping finished in 0.0 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Round : (Fluent2_7[var0]) => (Fluent3_7[var0])
+Round 1 took 47.676 seconds
+
+Round 2
+-------
+TLC neg trace generation time: 0.91 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.681 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->proposeNUM2_n1n2n3_NUM0v1 + T1->cast_voten2v1NUM2 + T2->cast_voten1v1NUM2 + T3->cast_voten2v2NUM2 + T4->cast_voten1v2NUM2 + T5->decideNUM2v1_n1n2_ + T6->decideNUM2v2_n1n2_)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM2_n1n2n3_NUM0v1 + T1->cast_voten2v1NUM2 + T2->cast_voten1v1NUM2 + T3->cast_voten2v2NUM2)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 21.118 seconds
+\A var0 \in Value : (Fluent5_9[var0]) => (Fluent4_9[var0])
+  Fluent5_9[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent4_9[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Value : (Fluent5_9[var0]) => (Fluent4_9[var0])
+  Fluent5_9[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent4_9[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+
+Performing minimization book keeping.
+Minimization book keeping finished in 0.644 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Value : (Fluent5_9[var0]) => (Fluent4_9[var0])
+Round 2 took 26.996 seconds
+
+Round 3
+-------
+TLC neg trace generation time: 0.999 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 0.861 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM1_n1n2_NUM0v2 + T2->cast_voten1v1NUM1 + T3->cast_voten2v1NUM1 + T4->cast_voten1v2NUM1 + T5->cast_voten2v2NUM1 + T6->decideNUM1v1_n1n2_ + T7->decideNUM1v2_n1n2_)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM1_n1n2_NUM0v2)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 26.099 seconds
+\A var0 \in Round : (Fluent7_37[var0]) => (Fluent6_37[var0])
+  Fluent7_37[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = Fluent6_37[2]
+  Fluent6_37[Round]
+    initially: FALSE
+    flActions:
+      propose[2] = TRUE
+\A var0 \in Quorum : (Fluent7_5[var0]) => (~(Fluent6_5[var0]))
+  Fluent7_5[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = Fluent6_5[1]
+  Fluent6_5[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE
+\A var0 \in Round : (Fluent7_38[var0]) => (~(Fluent6_38[var0]))
+  Fluent7_38[Round]
+    initially: FALSE
+    flActions:
+      propose[2] = TRUE
+  Fluent6_38[Round]
+    initially: FALSE
+    flActions:
+      propose[2] = Fluent7_38[2]
+\A var0 \in Node : \E var1 \in Value : ~(Fluent6_42[var1][var0])
+  Fluent6_42[Value, Node]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+\A var0 \in Quorum : (Fluent7_51[var0]) => (~(Fluent6_51[var0]))
+  Fluent7_51[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = Fluent6_51[1]
+  Fluent6_51[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE
+\A var0 \in Quorum : (Fluent6_24[var0]) => (~(Fluent7_24[var0]))
+  Fluent7_24[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE
+  Fluent6_24[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = Fluent7_24[1]
+\A var0 \in Value : \E var1 \in Value : ~(Fluent6_54[var1][var0])
+  Fluent6_54[Value, Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+\A var0 \in Quorum : \E var1 \in Value : ~(Fluent6_26[var1][var0])
+  Fluent6_26[Value, Quorum]
+    initially: FALSE
+    flActions:
+      propose[3, 1] = TRUE
+\A var0 \in Node : \E var1 \in Value : \A var2 \in Quorum : (var0 \in var2) => (~(Fluent6_31[var1]))
+  Fluent6_31[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+
+new pos trace(s):
+PT7 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn2NUM1 + T3->join_roundn1NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM2v1 + T7->proposeNUM2_n1n2_NUM0v2)
+PT9 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn3NUM1 + T4->join_roundn1NUM2 + T5->join_roundn3NUM2 + T6->proposeNUM1_n1n3_NUM0v1 + T7->proposeNUM2_n1n3_NUM0v2)
+PT8 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM2_n1n2_NUM1v1 + T7->proposeNUM1_n1n2_NUM0v2)
+PT3 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM2v1 + T7->proposeNUM2_n1n2_NUM0v1)
+PT4 (PosTrace): (T0->send_1aNUM2 + T1->join_roundn1NUM2 + T2->send_1aNUM1 + T3->join_roundn2NUM1 + T4->join_roundn3NUM1 + T5->join_roundn3NUM2 + T6->proposeNUM2_n1n3_NUM0v1 + T7->proposeNUM1_n2n3_NUM0v1)
+PT5 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM2v1 + T7->proposeNUM2_n1n2_NUM0v2)
+PT2 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n2_NUM0v1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM1_n1n2_NUM0v2)
+Formula synth batch: 2
+Total # workers: 63
+# workers using: 10
+First worker finished, shutdown count is 38.19s
+Killing 6 incomplete formula synth workers
+Formula synthesis complete in 57.365 seconds
+\A var0 \in Round : (Fluent7_2[var0]) => (~(Fluent8_2[var0]))
+  Fluent8_2[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = Fluent7_2[0]
+  Fluent7_2[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Round : (Fluent7_2[var0]) => (~(Fluent8_2[var0]))
+  Fluent8_2[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = Fluent7_2[0]
+  Fluent7_2[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+
+Performing minimization book keeping.
+Minimization book keeping finished in 1.551 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Value : (Fluent5_9[var0]) => (Fluent4_9[var0])
+/\ \A var0 \in Round : (Fluent7_2[var0]) => (~(Fluent8_2[var0]))
+Round 3 took 96.586 seconds
+
+Round 4
+-------
+TLC neg trace generation time: 0.971 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.41 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->proposeNUM2_n1n2n3_NUM0v1 + T1->proposeNUM1_n1n2_NUM0v2 + T2->cast_voten1v1NUM1 + T3->cast_voten1v2NUM1 + T4->cast_voten2v1NUM1 + T5->cast_voten3v2NUM1 + T6->decideNUM1v1_n1n2_ + T7->decideNUM1v2_n1n3_)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM2_n1n2n3_NUM0v1 + T1->proposeNUM1_n1n2_NUM0v2 + T2->cast_voten1v1NUM1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 21.111 seconds
+\A var0 \in Node : ~(Fluent9_3[var0])
+  Fluent9_3[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Round : ~(Fluent9_2[var0])
+  Fluent9_2[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = TRUE
+\A var0 \in Node : ~(Fluent9_22[var0])
+  Fluent9_22[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : ~(Fluent9_61[var0])
+  Fluent9_61[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Quorum : ~(Fluent9_5[var0])
+  Fluent9_5[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+\A var0 \in Round : ~(Fluent9_23[var0])
+  Fluent9_23[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = TRUE
+\A var0 \in Quorum : ~(Fluent9_0[var0])
+  Fluent9_0[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+\A var0 \in Value : ~(Fluent9_57[var0])
+  Fluent9_57[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Value : ~(Fluent9_41[var0])
+  Fluent9_41[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Quorum : ~(Fluent9_14[var0])
+  Fluent9_14[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn3NUM1 + T4->proposeNUM1_n1n3_NUM0v1 + T5->cast_voten1v1NUM1)
+PT11 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->proposeNUM1_n1n2_NUM2v1 + T5->cast_voten1v1NUM1)
+PT6 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->join_roundn2NUM1 + T3->proposeNUM1_n1n2_NUM2v1 + T4->cast_voten1v1NUM1)
+PT3 (PosTrace): (T0->send_1aNUM2 + T1->send_1aNUM1 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->proposeNUM1_n1n2_NUM2v1 + T5->cast_voten1v1NUM1)
+PT4 (PosTrace): (T0->send_1aNUM2 + T1->join_roundn1NUM2 + T2->join_roundn2NUM2 + T3->proposeNUM2_n1n2_NUM1v1 + T4->cast_voten1v1NUM2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM2_n1n2n3_NUM0v1 + T1->proposeNUM1_n1n2_NUM0v2 + T2->cast_voten1v1NUM1)
+Formula synth batch: 2
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Killing 3 incomplete formula synth workers
+Formula synthesis complete in 44.472 seconds
+\A var0 \in Round : (Fluent11_38[var0]) => (~(Fluent10_38[var0]))
+  Fluent10_38[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = FALSE (priority 1)
+      cast_vote[] = TRUE
+  Fluent11_38[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+\A var0 \in Round : (Fluent10_59[var0]) => (~(Fluent11_59[var0]))
+  Fluent10_59[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = FALSE (priority 1)
+      cast_vote[] = TRUE
+  Fluent11_59[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+\A var0 \in Round : (Fluent10_16[var0]) => (~(Fluent11_16[var0]))
+  Fluent10_16[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = FALSE (priority 1)
+      cast_vote[] = TRUE
+  Fluent11_16[Round]
+    initially: FALSE
+    flActions:
+      propose[0] = TRUE
+\A var0 \in Round : \E var1 \in Value : ~(Fluent10_12[var0][var1])
+  Fluent10_12[Round, Value]
+    initially: FALSE
+    flActions:
+      propose[0, 3] = TRUE
+      cast_vote[2, 1] = TRUE
+
+Found the following new invariant this round:
+\A var0 \in Round : \E var1 \in Value : ~(Fluent10_12[var0][var1])
+  Fluent10_12[Round, Value]
+    initially: FALSE
+    flActions:
+      propose[0, 3] = TRUE
+      cast_vote[2, 1] = TRUE
+
+Performing minimization book keeping.
+Minimization book keeping finished in 2.261 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Round : \E var1 \in Value : ~(Fluent10_12[var0][var1])
+Round 4 took 82.968 seconds
+
+Round 5
+-------
+TLC neg trace generation time: 0.852 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.755 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->proposeNUM1_n1n3_NUM0v1 + T1->cast_voten1v1NUM1 + T2->cast_voten2v1NUM1 + T3->cast_voten1v2NUM2 + T4->cast_voten3v2NUM2 + T5->decideNUM1v1_n1n2_ + T6->decideNUM2v2_n1n3_)
+
+The following previously found invariant blocks the negative trace:
+\A var0 \in Value : (Fluent5_9[var0]) => (Fluent4_9[var0])
+  Fluent5_9[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent4_9[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+
+Performing minimization book keeping.
+Minimization book keeping finished in 1.187 seconds
+Minimizing the invariants found thus far.
+Current partial assumption:
+/\ \A var0 \in Round : \E var1 \in Value : ~(Fluent10_12[var0][var1])
+/\ \A var0 \in Value : (Fluent5_9[var0]) => (Fluent4_9[var0])
+Round 5 took 5.925 seconds
+
+Round 6
+-------
+TLC neg trace generation time: 0.824 seconds
+# neg traces: 1
+# min neg traces: 1
+partial neg trace generation time: 1.339 seconds
+attempting to eliminate the following neg trace this round:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1 + T3->cast_voten1v1NUM1 + T4->cast_voten1v2NUM2 + T5->cast_voten2v2NUM2 + T6->decideNUM1v1_n1n2_ + T7->decideNUM2v2_n1n2_)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 1
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Formula synthesis complete in 10.869 seconds
+\A var0 \in Node : ~(Fluent11_39[var0])
+  Fluent11_39[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : ~(Fluent11_31[var0])
+  Fluent11_31[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Value : ~(Fluent11_20[var0])
+  Fluent11_20[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Value : ~(Fluent11_19[var0])
+  Fluent11_19[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Value : ~(Fluent11_57[var0])
+  Fluent11_57[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Value : ~(Fluent11_43[var0])
+  Fluent11_43[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Value : ~(Fluent11_46[var0])
+  Fluent11_46[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Value : ~(Fluent11_47[var0])
+  Fluent11_47[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+\A var0 \in Quorum : ~(Fluent11_11[var0])
+  Fluent11_11[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+\A var0 \in Quorum : ~(Fluent11_49[var0])
+  Fluent11_49[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+
+new pos trace(s):
+PT2 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->proposeNUM1_n1n2_NUM2v1 + T5->cast_voten1v1NUM1)
+PT10 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->join_roundn2NUM1 + T3->proposeNUM1_n1n2_NUM2v1 + T4->cast_voten1v1NUM1)
+PT4 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->join_roundn3NUM1 + T3->proposeNUM1_n1n3_NUM0v1 + T4->cast_voten1v1NUM1)
+PT5 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->join_roundn2NUM1 + T3->proposeNUM1_n1n2_NUM2v2 + T4->cast_voten1v2NUM1)
+PT6 (PosTrace): (T0->send_1aNUM2 + T1->join_roundn1NUM2 + T2->join_roundn2NUM2 + T3->proposeNUM2_n1n2_NUM1v1 + T4->cast_voten1v1NUM2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 2
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 30.0s
+Killing 2 incomplete formula synth workers
+Formula synthesis complete in 44.517 seconds
+\A var0 \in Value : (Fluent13_58[var0]) => (Fluent12_58[var0])
+  Fluent13_58[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent12_58[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE (priority 1)
+      propose[] = FALSE
+\A var0 \in Round : (Fluent12_44[var0]) => (~(Fluent13_44[var0]))
+  Fluent13_44[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = FALSE
+      propose[0] = TRUE
+  Fluent12_44[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+\A var0 \in Value : (Fluent12_47[var0]) => (~(Fluent13_47[var0]))
+  Fluent13_47[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = FALSE (priority 1)
+      cast_vote[] = TRUE
+  Fluent12_47[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+\A var0 \in Node : \A var1 \in Round : (Fluent12_60[var1]) => (~(Fluent13_60[var0]))
+  Fluent12_60[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[2] = FALSE
+      propose[0] = TRUE
+  Fluent13_60[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : \E var1 \in Round : (Fluent13_30[var1]) => (~(Fluent12_30[var0]))
+  Fluent13_30[Round]
+    initially: FALSE
+    flActions:
+      propose[2] = TRUE (priority 1)
+      propose[0] = TRUE
+  Fluent12_30[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+\A var0 \in Node : \E var1 \in Value : (Fluent13_31[var0]) => (~(Fluent12_31[var1]))
+  Fluent13_31[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+  Fluent12_31[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+\A var0 \in Value : \E var1 \in Value : (Fluent12_36[var1]) => (~(Fluent13_36[var0]))
+  Fluent13_36[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent12_36[Value]
+    initially: FALSE
+    flActions:
+      propose[3] = TRUE
+\A var0 \in Quorum : \E var1 \in Node : (Fluent12_24[var0]) => ((var1 \in var0) => (Fluent13_24[var0]))
+  Fluent12_24[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE
+  Fluent13_24[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = FALSE
+      propose[1] = TRUE
+
+new pos trace(s):
+PT14 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn3NUM2 + T6->proposeNUM2_n1n3_NUM2v1 + T7->proposeNUM1_n1n2_NUM0v2 + T8->cast_voten2v2NUM1)
+PT13 (PosTrace): (T0->send_1aNUM2 + T1->send_1aNUM1 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n2_NUM1v1 + T8->cast_voten3v1NUM1)
+PT18 (PosTrace): (T0->send_1aNUM2 + T1->join_roundn1NUM2 + T2->send_1aNUM1 + T3->join_roundn2NUM1 + T4->join_roundn3NUM1 + T5->join_roundn2NUM2 + T6->proposeNUM2_n1n2_NUM1v1 + T7->proposeNUM1_n2n3_NUM0v2 + T8->cast_voten3v2NUM1)
+PT12 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->send_1aNUM2 + T3->join_roundn2NUM1 + T4->join_roundn2NUM2 + T5->join_roundn1NUM2 + T6->proposeNUM1_n1n2_NUM2v1 + T7->cast_voten3v1NUM1 + T8->proposeNUM2_n1n2_NUM0v2)
+PT16 (PosTrace): (T0->send_1aNUM2 + T1->send_1aNUM1 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn3NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n3_NUM2v1 + T8->cast_voten2v1NUM1)
+PT15 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n2_NUM2v2 + T8->cast_voten3v1NUM1)
+PT19 (PosTrace): (T0->send_1aNUM1 + T1->join_roundn1NUM1 + T2->join_roundn2NUM1 + T3->join_roundn3NUM1 + T4->proposeNUM1_n1n2n3_NUM0v1 + T5->cast_voten1v1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 3
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 298.824s
+Killing 9 incomplete formula synth workers
+Formula synthesis complete in 448.392 seconds
+\A var0 \in Node : \A var1 \in Round : \E var2 \in Value : (Fluent13_60[var2][var1]) => (~(Fluent14_60[var0]))
+  Fluent13_60[Value, Round]
+    initially: FALSE
+    flActions:
+      propose[3, 2] = TRUE
+  Fluent14_60[Node]
+    initially: FALSE
+    flActions:
+      cast_vote[0] = TRUE
+
+new pos trace(s):
+PT20 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn1NUM2 + T4->join_roundn2NUM1 + T5->join_roundn2NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n2_NUM0v2 + T8->cast_voten3v1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 4
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 235.274s
+Killing 9 incomplete formula synth workers
+Formula synthesis complete in 353.035 seconds
+\A var0 \in Quorum : (Fluent14_0[var0]) => (Fluent15_0[var0])
+  Fluent15_0[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = FALSE
+      propose[] = TRUE
+  Fluent14_0[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = Fluent15_0[1]
+
+new pos trace(s):
+PT21 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn2NUM2 + T5->join_roundn1NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n2_NUM1v1 + T8->cast_voten3v1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 5
+Total # workers: 64
+# workers using: 10
+First worker finished, shutdown count is 446.632s
+Killing 8 incomplete formula synth workers
+Formula synthesis complete in 670.089 seconds
+\A var0 \in Quorum : (Fluent17_0[var0]) => ((Fluent16_0[var0]) => (~(Fluent15_0[var0])))
+  Fluent15_0[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+  Fluent17_0[Quorum]
+    initially: FALSE
+    flActions:
+      propose[] = TRUE
+      propose[1] = FALSE (priority 1)
+  Fluent16_0[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE
+
+new pos trace(s):
+PT22 (PosTrace): (T0->send_1aNUM2 + T1->join_roundn1NUM2 + T2->send_1aNUM1 + T3->join_roundn2NUM1 + T4->join_roundn2NUM2 + T5->join_roundn3NUM1 + T6->proposeNUM2_n1n2_NUM1v1 + T7->proposeNUM1_n2n3_NUM2v1 + T8->cast_voten3v1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 6
+Total # workers: 63
+# workers using: 10
+First worker finished, shutdown count is 455.776s
+Killing 9 incomplete formula synth workers
+Formula synthesis complete in 683.795 seconds
+\A var0 \in Quorum : \E var1 \in Node : \E var2 \in Value : (Fluent16_35[var2][var0]) => (~(var1 \in var0))
+  Fluent16_35[Value, Quorum]
+    initially: FALSE
+    flActions:
+      propose[3, 1] = TRUE
+      cast_vote[1] = TRUE
+
+new pos trace(s):
+PT23 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn2NUM2 + T6->join_roundn3NUM1 + T7->join_roundn3NUM2 + T8->proposeNUM1_n1n2n3_NUM0v1 + T9->proposeNUM2_n1n2n3_NUM0v2)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 7
+Total # workers: 63
+# workers using: 10
+First worker finished, shutdown count is 1154.46s
+Killing 4 incomplete formula synth workers
+Formula synthesis complete in 1731.743 seconds
+\A var0 \in Quorum : \E var1 \in Node : (var1 \in var0) => ((Fluent18_24[var0]) => (Fluent17_24[var0]))
+  Fluent17_24[Quorum]
+    initially: FALSE
+    flActions:
+      cast_vote[] = FALSE
+      propose[] = TRUE
+  Fluent18_24[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = Fluent17_24[1]
+\A var0 \in Quorum : \A var1 \in Value : (Fluent19_48[var0]) => ((Fluent17_48[var1]) => (Fluent18_48[var0][var1]))
+  Fluent19_48[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE (priority 1)
+      propose[] = FALSE
+  Fluent17_48[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent18_48[Quorum, Value]
+    initially: FALSE
+    flActions:
+      propose[1, 3] = TRUE
+\A var0 \in Quorum : \A var1 \in Value : (Fluent17_11[var1]) => ((Fluent18_11[var0]) => (Fluent19_11[var0][var1]))
+  Fluent17_11[Value]
+    initially: FALSE
+    flActions:
+      cast_vote[1] = TRUE
+  Fluent18_11[Quorum]
+    initially: FALSE
+    flActions:
+      propose[1] = TRUE (priority 1)
+      propose[] = FALSE
+  Fluent19_11[Quorum, Value]
+    initially: FALSE
+    flActions:
+      propose[1, 3] = TRUE
+\A var0 \in Quorum : \A var1 \in Round : (Fluent18_54[var1][var0]) => ((Fluent17_54[var1]) => (Fluent19_54[var1][var0]))
+  Fluent17_54[Round]
+    initially: FALSE
+    flActions:
+      cast_vote[] = TRUE
+  Fluent18_54[Round, Quorum]
+    initially: FALSE
+    flActions:
+      propose[2, 1] = TRUE
+  Fluent19_54[Round, Quorum]
+    initially: FALSE
+    flActions:
+      propose[2, 1] = TRUE (priority 1)
+      propose[2] = FALSE
+
+new pos trace(s):
+PT24 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn3NUM1 + T5->join_roundn1NUM2 + T6->join_roundn2NUM2 + T7->proposeNUM2_n1n2_NUM1v1 + T8->proposeNUM1_n1n2n3_NUM0v1 + T9->cast_voten3v1NUM1)
+PT27 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn3NUM2 + T6->proposeNUM2_n1n3_NUM0v1 + T7->proposeNUM1_n1n2_NUM0v1 + T8->cast_voten2v1NUM1)
+PT26 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn3NUM2 + T5->join_roundn1NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n3_NUM1v2 + T8->cast_voten2v1NUM1)
+PT25 (PosTrace): (T0->send_1aNUM1 + T1->send_1aNUM2 + T2->join_roundn1NUM1 + T3->join_roundn2NUM1 + T4->join_roundn1NUM2 + T5->join_roundn3NUM2 + T6->proposeNUM1_n1n2_NUM0v1 + T7->proposeNUM2_n1n3_NUM1v2 + T8->cast_voten2v1NUM1)
+
+Using the following partial neg trace for formula synth:
+NT1 (NegTrace): (T0->proposeNUM1_n1n2_NUM0v1 + T1->proposeNUM2_n1n2n3_NUM0v2 + T2->cast_voten2v1NUM1)
+Formula synth batch: 8
+Total # workers: 61
+# workers using: 10

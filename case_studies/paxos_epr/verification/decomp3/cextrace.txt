@@ -1,0 +1,206 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 48 and seed 1825226431089718050 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 89872] (Mac OS X 15.7.2 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/paxos_epr/verification/decomp3/T1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Semantic processing of module Naturals
+Semantic processing of module T1_hist
+Starting... (2025-12-05 09:42:04)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-12-05 09:42:04.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+
+State 2: <send_1a line 25, col 1 to line 28, col 53 of module T1_hist>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+
+State 3: <join_round line 31, col 1 to line 37, col 53 of module T1_hist>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+
+State 4: <join_round line 31, col 1 to line 37, col 53 of module T1_hist>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+
+State 5: <propose line 40, col 1 to line 47, col 27 of module T1_hist>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+
+State 6: <propose line 40, col 1 to line 47, col 27 of module T1_hist>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) )
+
+State 7: <cast_vote line 50, col 1 to line 55, col 40 of module T1_hist>
+/\ Fluent21_62 = ( v1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ Fluent20_62 = ( v1 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) )
+/\ one_a = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ one_b = ( n1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ left_round = ( n1 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n2 :> (0 :> TRUE @@ 1 :> FALSE @@ 2 :> FALSE) @@
+  n3 :> (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+/\ Fluent22_62 = ( v1 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) @@
+  v2 :> (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE) )
+
+19254 states generated, 5401 distinct states found, 4282 states left on queue.
+The depth of the complete state graph search is 7.
+The average outdegree of the complete state graph is 5 (minimum is 0, the maximum 18 and the 95th percentile is 11).
+Finished in 00s at (2025-12-05 09:42:04)

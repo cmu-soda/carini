@@ -1,0 +1,233 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 73 and seed -7191561919731176420 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 69077] (Mac OS X 15.7.2 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/paxos_epr/verification/decomp2/C1_hist.tla
+Parsing file /private/var/folders/dl/hzl20bt96699x9wpnq61qdmc0000gq/T/Naturals.tla
+Semantic processing of module Naturals
+Semantic processing of module C1_hist
+Starting... (2025-12-04 11:08:13)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-12-04 11:08:13.
+Error: Invariant Safety is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> FALSE @@ 2 :> FALSE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  2 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 2: <propose line 24, col 1 to line 28, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  2 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 3: <cast_vote line 31, col 1 to line 37, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> FALSE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> FALSE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 4: <propose line 24, col 1 to line 28, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> FALSE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 5: <cast_vote line 31, col 1 to line 37, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 6: <cast_vote line 31, col 1 to line 37, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> TRUE @@ n2 :> FALSE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 7: <cast_vote line 31, col 1 to line 37, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 8: <decide line 40, col 1 to line 42, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> FALSE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+State 9: <decide line 40, col 1 to line 42, col 11 of module C1_hist>
+/\ Fluent6_26 = (0 :> FALSE @@ 1 :> TRUE @@ 2 :> TRUE)
+/\ Fluent5_26 = ( 0 :> (n1 :> FALSE @@ n2 :> FALSE @@ n3 :> FALSE) @@
+  1 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) @@
+  2 :> (n1 :> TRUE @@ n2 :> TRUE @@ n3 :> FALSE) )
+/\ Fluent14_0 = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ decision = ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+  1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+  2 :> (v1 :> FALSE @@ v2 :> TRUE) )
+/\ vote = ( n1 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n2 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> TRUE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> TRUE) ) @@
+  n3 :>
+      ( 0 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        1 :> (v1 :> FALSE @@ v2 :> FALSE) @@
+        2 :> (v1 :> FALSE @@ v2 :> FALSE) ) )
+
+6563 states generated, 555 distinct states found, 98 states left on queue.
+The depth of the complete state graph search is 9.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 6 and the 95th percentile is 4).
+Finished in 00s at (2025-12-04 11:08:13)

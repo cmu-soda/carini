@@ -1,0 +1,113 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 113 and seed -5347521644936829076 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 71606] (Mac OS X 15.7.2 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/cache/verification/decomp8/T1_hist.tla
+Semantic processing of module T1_hist
+Starting... (2025-12-01 10:21:42)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-12-01 10:21:42.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+
+State 2: <issue_proc_read_invalid line 22, col 1 to line 24, col 40 of module T1_hist>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+
+State 3: <issue_proc_write_invalid line 53, col 1 to line 57, col 16 of module T1_hist>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> TRUE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+
+State 4: <issue_proc_write_shared line 80, col 1 to line 82, col 40 of module T1_hist>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> TRUE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+
+State 5: <do_bus_read_for_ownership_invalid line 60, col 1 to line 63, col 40 of module T1_hist>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> TRUE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+
+State 6: <do_bus_read_for_ownership_invalid line 60, col 1 to line 63, col 40 of module T1_hist>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> TRUE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> FALSE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+
+State 7: <complete_proc_write_invalid line 73, col 1 to line 77, col 27 of module T1_hist>
+/\ bus_transfer = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent14_22 = (a1 :> TRUE @@ a2 :> FALSE)
+/\ Fluent13_22 = (a1 :> TRUE @@ a2 :> FALSE)
+/\ bus_read_for_ownership = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> FALSE @@ a2 :> FALSE) )
+/\ bus_read = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+/\ bus_upgrade = ( c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@
+  c2 :> (a1 :> TRUE @@ a2 :> FALSE) @@
+  c3 :> (a1 :> TRUE @@ a2 :> FALSE) )
+
+63744 states generated, 9212 distinct states found, 8189 states left on queue.
+The depth of the complete state graph search is 7.
+The average outdegree of the complete state graph is 9 (minimum is 0, the maximum 31 and the 95th percentile is 22).
+Finished in 00s at (2025-12-01 10:21:42)

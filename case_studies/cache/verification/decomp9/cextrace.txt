@@ -1,0 +1,57 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Warning: Please run the Java VM which executes TLC with a throughput optimized garbage collector by passing the "-XX:+UseParallelGC" property.
+(Use the -nowarning option to disable this warning.)
+Running breadth-first search Model-Checking with fp 55 and seed 7610950232189653811 with 10 workers on 10 cores with 8192MB heap and 64MB offheap memory [pid: 40608] (Mac OS X 15.7.2 aarch64, Oracle Corporation 18.0.2.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/idardik/Documents/CMU/compositional_ii/carini/case_studies/cache/verification/decomp9/T1_hist.tla
+Semantic processing of module T1_hist
+Starting... (2025-12-03 11:46:25)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-12-03 11:46:25.
+Error: Invariant CandSep is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ Fluent155_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent156_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent157_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ exclusive = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+/\ shared = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+
+State 2: <do_bus_read_valid line 21, col 1 to line 23, col 53 of module T1_hist>
+/\ Fluent155_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent156_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent157_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ exclusive = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+/\ shared = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+
+State 3: <complete_proc_read_invalid_exclusive line 31, col 1 to line 35, col 27 of module T1_hist>
+/\ Fluent155_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent156_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent157_1 = (v1 :> TRUE @@ v2 :> FALSE)
+/\ exclusive = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+/\ shared = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+
+State 4: <complete_proc_read_invalid_exclusive line 31, col 1 to line 35, col 27 of module T1_hist>
+/\ Fluent155_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent156_1 = (v1 :> TRUE @@ v2 :> FALSE)
+/\ Fluent157_1 = (v1 :> TRUE @@ v2 :> FALSE)
+/\ exclusive = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+/\ shared = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+
+State 5: <complete_proc_write_shared line 59, col 1 to line 63, col 40 of module T1_hist>
+/\ Fluent155_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ Fluent156_1 = (v1 :> TRUE @@ v2 :> FALSE)
+/\ Fluent157_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ exclusive = (c1 :> (a1 :> TRUE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+/\ shared = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+
+State 6: <evict_exclusive_or_shared line 66, col 1 to line 70, col 40 of module T1_hist>
+/\ Fluent155_1 = (v1 :> TRUE @@ v2 :> TRUE)
+/\ Fluent156_1 = (v1 :> TRUE @@ v2 :> FALSE)
+/\ Fluent157_1 = (v1 :> FALSE @@ v2 :> FALSE)
+/\ exclusive = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+/\ shared = (c1 :> (a1 :> FALSE @@ a2 :> FALSE) @@ c2 :> (a1 :> FALSE @@ a2 :> FALSE))
+
+1602 states generated, 282 distinct states found, 245 states left on queue.
+The depth of the complete state graph search is 6.
+The average outdegree of the complete state graph is 8 (minimum is 2, the maximum 12 and the 95th percentile is 12).
+Finished in 00s at (2025-12-03 11:46:25)
