@@ -20,10 +20,7 @@ import tlc2.TLC;
 import tlc2.Utils;
 
 public class FormulaSynth {
-	public static final String maxNumWorkersEnvVar = "FSYNTH_MAX_NUM_WORKERS";
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
-	private static final int MAX_NUM_THREADS = Runtime.getRuntime().availableProcessors();
-	private static final int MAX_NUM_WORKERS = MAX_NUM_THREADS;
 	private static final long SHUTDOWN_MULTIPLIER = 2L;
 	private static final long MIN_SHUTDOWN_TIME = 1000L * 30L; // 30 seconds
 	
@@ -33,11 +30,13 @@ public class FormulaSynth {
 	private Random seed;
 	private boolean synthComplete;
 
+	private final int maxNumWorkersPerBatch;
 	private final Lock lock = new ReentrantLock();
 	private final Condition aWorkerIsDone = lock.newCondition();
 	
-	public FormulaSynth(Random rseed) {
+	public FormulaSynth(int numWorkers, Random rseed) {
 		resetMemberVars();
+		this.maxNumWorkersPerBatch = numWorkers;
 		this.seed = rseed;
 	}
 	
@@ -92,7 +91,7 @@ public class FormulaSynth {
 		
 		// randomly shuffle the workers then reduce the number to make formula synthesis faster
 		final int origNumWorkers = this.workers.size();
-		final int numWorkers = Math.min(origNumWorkers, MAX_NUM_WORKERS);
+		final int numWorkers = Math.min(origNumWorkers, maxNumWorkersPerBatch);
 		Collections.shuffle(this.workers, this.seed);
 		while (this.workers.size() > numWorkers) {
 			this.workers.remove(this.workers.size()-1);
@@ -105,7 +104,7 @@ public class FormulaSynth {
 		try {
 			this.lock.lock();
 			
-			this.threadPool = Executors.newFixedThreadPool(MAX_NUM_THREADS);
+			this.threadPool = Executors.newFixedThreadPool(numWorkers);
 			for (FormulaSynthWorker worker : workers) {
 				this.threadPool.submit(worker);
 			}

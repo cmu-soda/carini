@@ -28,6 +28,22 @@ public class Main {
 		
 		final boolean naive = hasFlag(args,"--naive");
 		
+		int numWorkers = Runtime.getRuntime().availableProcessors();
+		if (hasArg(args, "--workers")) {
+			final String strWorkers = getArg(args, "--workers");
+			numWorkers = Integer.parseInt(strWorkers);
+		}
+		else if (hasArg(args, "--max-workers")) {
+			final String strMaxWorkers = getArg(args, "--max-workers");
+			final int maxWorkers = Integer.parseInt(strMaxWorkers);
+			numWorkers = Math.min(numWorkers, maxWorkers);
+		}
+		else {
+			// by default, we cap the maximum number of workers at 32
+			final int maxWorkers = 32;
+			numWorkers = Math.min(numWorkers, maxWorkers);
+		}
+		
 		// main business logic
     	if (args.length >= 5 && !naive) {
     		final String tlaComp = args[0];
@@ -38,7 +54,7 @@ public class Main {
     		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
     	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
     		final Formula sep =
-    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, seed)
+    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, numWorkers, seed)
     					.synthesizeSepInvariant();
     		final String formula = sep.toString();
     		
@@ -77,7 +93,7 @@ public class Main {
     		final String tla = args[1];
     		final String cfg = args[2];
     		final long timeout = 10000L; // 10000 min
-    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",false,0L)
+    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",false,numWorkers,0L)
     				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
     		System.out.println(trace);
     	}
