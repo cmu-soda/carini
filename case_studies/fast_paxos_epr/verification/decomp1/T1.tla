@@ -1,0 +1,87 @@
+---- MODULE T1 ----
+EXTENDS Naturals
+
+CONSTANTS Node, Value, Quorum_c, Quorum_f, Round
+
+VARIABLES one_a, one_b, left_round, proposal, any_msg
+
+vars == <<one_a, one_b, left_round, proposal, any_msg>>
+
+None == 0
+
+ASSUME None \in Round
+ASSUME \A Q1, Q2 \in Quorum_c : \E N \in Node : N \in Q1 /\ N \in Q2
+ASSUME \A Q1 \in Quorum_c, Q2, Q3 \in Quorum_f : \E N \in Node : N \in Q1 /\ N \in Q2 /\ N \in Q3
+
+Init ==
+  /\ one_a = [R \in Round |-> FALSE]
+  /\ one_b = [N \in Node |-> [R \in Round |-> FALSE]]
+  /\ left_round = [N \in Node |-> [R \in Round |-> FALSE]]
+  /\ proposal = [R \in Round |-> [V \in Value |-> FALSE]]
+  /\ any_msg = [R \in Round |-> FALSE]
+
+send_1a(r) ==
+  /\ r # None
+  /\ one_a' = [one_a EXCEPT![r] = TRUE]
+  /\ UNCHANGED<<one_b, left_round, proposal, any_msg>>
+
+join_round(n, r) ==
+  /\ r # None
+  /\ one_a[r]
+  /\ ~left_round[n][r]
+  /\ one_b' = [one_b EXCEPT![n][r] = TRUE]
+  /\ left_round' = [N \in Node |-> [R \in Round |-> left_round[N][R] \/ (N = n /\ R < r)]]
+  /\ UNCHANGED<<one_a, proposal, any_msg>>
+
+propose_1(r, q, maxr, v, v2) ==
+  /\ r # None
+  /\ \A V \in Value : ~proposal[r][V]
+  /\ ~any_msg[r]
+  /\ \A N \in q : one_b[N][r]
+  /\ maxr # None
+  /\ proposal' = [proposal EXCEPT![r][v2] = TRUE]
+  /\ UNCHANGED<<one_a, one_b, left_round, any_msg>>
+
+propose_2(r, q, maxr, v) ==
+  /\ r # None
+  /\ \A V \in Value : ~proposal[r][V]
+  /\ ~any_msg[r]
+  /\ \A N \in q : one_b[N][r]
+  /\ maxr # None
+  /\ proposal' = [proposal EXCEPT![r][v] = TRUE]
+  /\ UNCHANGED<<one_a, one_b, left_round, any_msg>>
+
+propose_3(r, q, v) ==
+  /\ r # None
+  /\ \A V \in Value : ~proposal[r][V]
+  /\ ~any_msg[r]
+  /\ \A N \in q : one_b[N][r]
+  /\ any_msg' = [any_msg EXCEPT![r] = TRUE]
+  /\ UNCHANGED<<one_a, one_b, left_round, proposal>>
+
+propose_4(r, q, v) ==
+  /\ r # None
+  /\ \A V \in Value : ~proposal[r][V]
+  /\ ~any_msg[r]
+  /\ \A N \in q : one_b[N][r]
+  /\ proposal' = [proposal EXCEPT![r][v] = TRUE]
+  /\ UNCHANGED<<one_a, one_b, left_round, any_msg>>
+
+cast_vote(n, v, r) ==
+  /\ r # None
+  /\ ~left_round[n][r]
+  /\ proposal[r][v] \/ any_msg[r]
+  /\ UNCHANGED<<one_a, one_b, left_round, proposal, any_msg>>
+
+Next ==
+  \/ \E r \in Round : send_1a(r)
+  \/ \E n \in Node, r \in Round : join_round(n, r)
+  \/ \E r \in Round, q \in Quorum_c, maxr \in Round, v,v2 \in Value : propose_1(r, q, maxr, v, v2)
+  \/ \E r \in Round, q \in Quorum_c, maxr \in Round, v \in Value : propose_2(r, q, maxr, v)
+  \/ \E r \in Round, q \in Quorum_c, v \in Value : propose_3(r, q, v)
+  \/ \E r \in Round, q \in Quorum_c, v \in Value : propose_4(r, q, v)
+  \/ \E n \in Node, v \in Value, r \in Round : cast_vote(n, v, r)
+
+Spec == Init /\ [][Next]_vars
+
+======
