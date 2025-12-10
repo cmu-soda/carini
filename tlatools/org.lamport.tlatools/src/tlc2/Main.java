@@ -27,22 +27,8 @@ public class Main {
 		}
 		
 		final boolean naive = hasFlag(args,"--naive");
-		
-		int numWorkers = Runtime.getRuntime().availableProcessors();
-		if (hasArg(args, "--workers")) {
-			final String strWorkers = getArg(args, "--workers");
-			numWorkers = Integer.parseInt(strWorkers);
-		}
-		else if (hasArg(args, "--max-workers")) {
-			final String strMaxWorkers = getArg(args, "--max-workers");
-			final int maxWorkers = Integer.parseInt(strMaxWorkers);
-			numWorkers = Math.min(numWorkers, maxWorkers);
-		}
-		else {
-			// by default, we cap the maximum number of workers at 32
-			final int maxWorkers = 32;
-			numWorkers = Math.min(numWorkers, maxWorkers);
-		}
+		final int numWorkers = getNumWorkers(args);
+		final int numSymActions = getNumSymActions(args);
 		
 		// main business logic
     	if (args.length >= 5 && !naive) {
@@ -54,7 +40,7 @@ public class Main {
     		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
     	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
     		final Formula sep =
-    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, numWorkers, seed)
+    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, numWorkers, numSymActions, seed)
     					.synthesizeSepInvariant();
     		final String formula = sep.toString();
     		
@@ -93,7 +79,7 @@ public class Main {
     		final String tla = args[1];
     		final String cfg = args[2];
     		final long timeout = 10000L; // 10000 min
-    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",false,numWorkers,0L)
+    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",false,numWorkers,numSymActions,0L)
     				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
     		System.out.println(trace);
     	}
@@ -110,6 +96,37 @@ public class Main {
     		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <propFile> [--ext-negt]");
     	}
     	System.exit(0);
+    }
+    
+    private static int getNumSymActions(String[] args) {
+    	final String symActionsFlag = "--sym-actions";
+    	final int defaultNumSymActions = 5;
+    	if (hasArg(args, symActionsFlag)) {
+    		final String strNumSymActions = getArg(args, symActionsFlag);
+    		return Integer.parseInt(strNumSymActions);
+    	}
+    	return defaultNumSymActions;
+    }
+    
+    private static int getNumWorkers(String[] args) {
+    	final String numWorkersFlag = "--workers";
+    	final String maxNumWorkersFlag = "--max-workers";
+    	int numWorkers = Runtime.getRuntime().availableProcessors();
+		if (hasArg(args, numWorkersFlag)) {
+			final String strWorkers = getArg(args, numWorkersFlag);
+			numWorkers = Integer.parseInt(strWorkers);
+		}
+		else if (hasArg(args, maxNumWorkersFlag)) {
+			final String strMaxWorkers = getArg(args, maxNumWorkersFlag);
+			final int maxWorkers = Integer.parseInt(strMaxWorkers);
+			numWorkers = Math.min(numWorkers, maxWorkers);
+		}
+		else {
+			// by default, we cap the maximum number of workers at 32
+			final int maxWorkers = 32;
+			numWorkers = Math.min(numWorkers, maxWorkers);
+		}
+		return numWorkers;
     }
     
     private static boolean hasFlag(String[] args, final String flag) {

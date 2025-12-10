@@ -53,10 +53,11 @@ public class FormulaSeparation {
 	private final Set<Map<String,String>> allPermutations;
 	private final boolean extendedNegTraceSearch;
 	private final int numWorkersPerBatch;
+	private final int numSymActions;
 	private final Random seed;
 	
 	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
-			final String propFile, boolean extNegTraceSearch, int numWorkers, long rseed) {
+			final String propFile, boolean extNegTraceSearch, int numWorkers, int numSymActs, long rseed) {
 		this.tlaComp = tlaComp;
 		this.cfgComp = cfgComp;
 		this.tlaRest = tlaRest;
@@ -120,6 +121,7 @@ public class FormulaSeparation {
 		
 		extendedNegTraceSearch = extNegTraceSearch;
 		numWorkersPerBatch = numWorkers;
+		numSymActions = numSymActs;
 		seed = new Random(rseed);
 	}
 	
@@ -1144,7 +1146,7 @@ public class FormulaSeparation {
 		FormulaSynth formSynth = new FormulaSynth(this.numWorkersPerBatch, this.seed);
 		return formSynth.synthesizeFormulas(envVarTypes, globalNegTrace, globalPosTraces,
 				tlcComp, globalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
-				qvars, legalEnvVarCombos, curNumFluents);
+				qvars, legalEnvVarCombos, curNumFluents, numSymActions, numSymActions);
 	}
 	
 	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {

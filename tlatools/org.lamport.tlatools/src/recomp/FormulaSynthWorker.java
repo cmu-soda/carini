@@ -21,9 +21,6 @@ public class FormulaSynthWorker implements Runnable {
 	public static final String workerHeapSizeEnvVar = "FSYNTH_WORKER_HEAP_SIZE";
 	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
 	
-	// TODO make these params
-	private static final int MAX_NUM_FLUENT_ACTS = 5;
-	private static final int MAX_NUM_TARGETS = 5;
 	private static final int MAX_FLUENT_ACT_PRIORITY = 2; // TODO make a param?
 	
 	private final FormulaSynth formulaSynth;
@@ -41,6 +38,8 @@ public class FormulaSynthWorker implements Runnable {
 	private final List<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
+	private final int numSymActions;
+	private final int numTargets;
 
 	// for some reason using a lock is much faster than using the synchronized keyword
 	private final Lock lock;
@@ -54,7 +53,7 @@ public class FormulaSynthWorker implements Runnable {
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, List<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents) {
+			int curNumFluents, int numSymActions, int numTargets) {
 		this.formulaSynth = formulaSynth;
 		this.envVarTypes = envVarTypes;
 		this.id = id;
@@ -70,6 +69,8 @@ public class FormulaSynthWorker implements Runnable {
 		this.qvars = qvars;
 		this.legalEnvVarCombos = legalEnvVarCombos;
 		this.curNumFluents = curNumFluents;
+		this.numSymActions = numSymActions;
+		this.numTargets = numTargets;
 		
 		this.lock = new ReentrantLock();
 		this.process = null;
@@ -182,8 +183,8 @@ public class FormulaSynthWorker implements Runnable {
 	private void writeAlloyFormulaInferFile(final String fileName, final AlloyTrace negTrace, final List<AlloyTrace> posTraces,
 			final Map<String,String> envVarTypes) {
 		final int formulaSize = MAX_FORMULA_SIZE + 1; // +1 because of the formula root
-		final int numSymActs = MAX_NUM_FLUENT_ACTS;
-		final int targetSize = MAX_NUM_TARGETS;
+		final int numSymActs = this.numSymActions;
+		final int targetSize = this.numTargets;
 		final String strFormulaSize = "for " + formulaSize + " Formula, " + numSymActs + " FlSymAction, " + targetSize + " Target";
 		
 		// define the setContains predicate

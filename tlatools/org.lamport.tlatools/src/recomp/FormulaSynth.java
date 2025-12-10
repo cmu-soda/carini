@@ -76,7 +76,7 @@ public class FormulaSynth {
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> sortSetElementsMap,
 			Map<String, List<String>> actionParamTypes,
 			int maxActParamLen, List<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents) {
+			int curNumFluents, int numSymActs, int numTargets) {
 		
 		resetMemberVars();
 		PerfTimer timer = new PerfTimer();
@@ -85,7 +85,7 @@ public class FormulaSynth {
 			final List<AlloyTrace> evtPosTraces = posTraces.get(evt);
 			final FormulaSynthWorker worker = new FormulaSynthWorker(this, evt, id++, negTrace, evtPosTraces,
 					tlcComp, globalActions, sortElementsMap, sortSetElementsMap, actionParamTypes, maxActParamLen,
-					qvars, legalEnvVarCombos, curNumFluents);
+					qvars, legalEnvVarCombos, curNumFluents, numSymActs, numTargets);
 			this.workers.add(worker);
 		}
 		
