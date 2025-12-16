@@ -26,9 +26,22 @@ public class Main {
 			return;
 		}
 		
-		final boolean naive = hasFlag(args,"--naive");
+		// handle CLI args
+		final boolean naive = hasFlag(args, "--naive");
+		final boolean universal = hasFlag(args, "--universal");
 		final int numWorkers = getNumWorkers(args);
-		final int numSymActions = getNumSymActions(args);
+		final int numSymActions = getIntArg(args, "--sym-actions", 5);
+		final int formulaSize = getIntArg(args, "--formula-size", 7);
+		final int numQuantifiers = getIntArg(args, "--quants", 3);
+		final long negTraceCheckMinutes = getLongArg(args, "--neg-trace-check", 5L);
+		final long posTraceCheckMinutes = getLongArg(args, "--pos-trace-check", 1L);
+		final String workerHeapSize = getStrArg(args, "--heap", "6G");
+		
+		// experimental arg for extending the neg trace search
+		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
+		
+		// random seeds are not well supported
+	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : 0L; //System.nanoTime();
 		
 		// main business logic
     	if (args.length >= 5 && !naive) {
@@ -37,10 +50,11 @@ public class Main {
     		final String tlaRest = args[2];
     		final String cfgRest = args[3];
     		final String propFile = args[4];
-    		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
-    	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
     		final Formula sep =
-    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, numWorkers, numSymActions, seed)
+    				new FormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile,
+    						universal, numWorkers, numSymActions, formulaSize, numQuantifiers,
+    						negTraceCheckMinutes, posTraceCheckMinutes, workerHeapSize,
+    						extendedNegTraceSearch, seed)
     					.synthesizeSepInvariant();
     		final String formula = sep.toString();
     		
@@ -59,8 +73,6 @@ public class Main {
     		final String tlaRest = args[2];
     		final String cfgRest = args[3];
     		final String propFile = args[4];
-    		final boolean extendedNegTraceSearch = hasFlag(args,"--ext-negt");
-    	    final long seed = hasArg(args,"--seed") ? Long.parseLong(getArg(args,"--seed")) : System.nanoTime();
     		final Formula sep =
     				new NaiveFormulaSeparation(tlaComp, cfgComp, tlaRest, cfgRest, propFile, extendedNegTraceSearch, seed)
     					.synthesizeSepInvariant();
@@ -79,7 +91,10 @@ public class Main {
     		final String tla = args[1];
     		final String cfg = args[2];
     		final long timeout = 10000L; // 10000 min
-    		final AlloyTrace trace = new FormulaSeparation(tla,cfg,tla,cfg,"none",false,numWorkers,numSymActions,0L)
+    		final AlloyTrace trace = new FormulaSeparation(tla, cfg, tla, cfg, "none",
+    				universal, numWorkers, numSymActions, formulaSize, numQuantifiers,
+					negTraceCheckMinutes, posTraceCheckMinutes, workerHeapSize,
+					extendedNegTraceSearch, seed)
     				.genCexTraceForCandSepInvariant(tla, cfg, "", 0, "", timeout);
     		System.out.println(trace);
     	}
@@ -93,19 +108,20 @@ public class Main {
         	System.out.println("Is safe: " + isSafe);
     	}
     	else {
-    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <propFile> [--ext-negt]");
+    		System.out.println("usage: carini <tlaComp> <cfgComp> <tlaRest> <cfgRest> <propFile> [flags]");
+    		System.out.println("flags:");
+    		System.out.println(" --navie: uses the naive (non-incremental) algorithm.");
+    		System.out.println(" --universal: only searches for formulas with universal (forall) quantifiers.");
+    		System.out.println(" --workers: the maximum number of formula synthesis workers.");
+    		System.out.println(" --max-workers: the maximum number of formula synthesis workers will be: min(#cores on your machine, --max-workers)");
+    		System.out.println(" --sym-actions: the maximum number of symbolic actions that can be used in synthesized fluents.");
+    		System.out.println(" --formula-size: the maximum size of a synthesized formula.");
+    		System.out.println(" --quants: the maximum number of quantifiers that can appear in a synthesized formula.");
+    		System.out.println(" --neg-trace-check: timeout for checking for negative traces (in minutes).");
+    		System.out.println(" --pos-trace-check: timeout for checking for positive traces (in minutes).");
+    		System.out.println(" --heap: heap size for each worker, specified with a unit (e.g. the default value is '6G').");
     	}
     	System.exit(0);
-    }
-    
-    private static int getNumSymActions(String[] args) {
-    	final String symActionsFlag = "--sym-actions";
-    	final int defaultNumSymActions = 5;
-    	if (hasArg(args, symActionsFlag)) {
-    		final String strNumSymActions = getArg(args, symActionsFlag);
-    		return Integer.parseInt(strNumSymActions);
-    	}
-    	return defaultNumSymActions;
     }
     
     private static int getNumWorkers(String[] args) {
@@ -129,11 +145,40 @@ public class Main {
 		return numWorkers;
     }
     
-    private static boolean hasFlag(String[] args, final String flag) {
-    	return Utils.toArrayList(args)
-				.stream()
-				.filter(s -> s.equals(flag))
-				.count() > 0;
+    private static String getStrArg(String[] args, String param, String defaultValue) {
+    	if (hasArg(args, param)) {
+    		return getArg(args, param);
+    	}
+    	return defaultValue;
+    }
+    
+    private static int getIntArg(String[] args, String param, int defaultValue) {
+    	if (hasArg(args, param)) {
+    		final String strValue = getArg(args, param);
+    		return Integer.parseInt(strValue);
+    	}
+    	return defaultValue;
+    }
+    
+    private static long getLongArg(String[] args, String param, long defaultValue) {
+    	if (hasArg(args, param)) {
+    		final String strValue = getArg(args, param);
+    		return Long.parseLong(strValue);
+    	}
+    	return defaultValue;
+    }
+    
+    private static String getArg(String[] args, final String param) {
+    	int paramIdx = -1;
+    	for (int i = 0; i < args.length; ++i) {
+    		if (param.endsWith(args[i])) {
+    			// the positional arg is right after the param flag
+    			paramIdx = i + 1;
+    			break;
+    		}
+    	}
+    	Utils.assertTrue(paramIdx >= 0 && paramIdx < args.length, "Invalid use of the param flag: " + param);
+    	return args[paramIdx];
     }
     
     private static boolean hasArg(String[] args, final String param) {
@@ -148,16 +193,10 @@ public class Main {
     	return paramIdx >= 0 && paramIdx < args.length;
     }
     
-    private static String getArg(String[] args, final String param) {
-    	int paramIdx = -1;
-    	for (int i = 0; i < args.length; ++i) {
-    		if (param.endsWith(args[i])) {
-    			// the positional arg is right after the param flag
-    			paramIdx = i + 1;
-    			break;
-    		}
-    	}
-    	Utils.assertTrue(paramIdx >= 0 && paramIdx < args.length, "Invalid use of the param flag: " + param);
-    	return args[paramIdx];
+    private static boolean hasFlag(String[] args, final String flag) {
+    	return Utils.toArrayList(args)
+				.stream()
+				.filter(s -> s.equals(flag))
+				.count() > 0;
     }
 }

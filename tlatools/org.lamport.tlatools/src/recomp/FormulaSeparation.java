@@ -28,8 +28,6 @@ import tlc2.tool.impl.FastTool;
 
 public class FormulaSeparation {
 	private static final String TLC_JAR_PATH = System.getProperty("user.home") + "/bin/tla2tools.jar";
-	private static final long NEG_TRACE_TIMEOUT = System.getenv("FSYNTH_NEG_TRACE_TIMEOUT") != null ?
-			Long.parseLong(System.getenv("FSYNTH_NEG_TRACE_TIMEOUT")) : 5L;
 	
 	private final String tlaComp;
 	private final String cfgComp;
@@ -51,13 +49,19 @@ public class FormulaSeparation {
 	private final List<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final Set<Map<String,String>> allPermutations;
-	private final boolean extendedNegTraceSearch;
+	private final boolean universal;
 	private final int numWorkersPerBatch;
 	private final int numSymActions;
+	private final int formulaSize;
+	private final long negTraceCheckMinutes;
+	private final long posTraceCheckMinutes;
+	private final String workerHeapSize;
+	private final boolean extendedNegTraceSearch;
 	private final Random seed;
 	
-	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest,
-			final String propFile, boolean extNegTraceSearch, int numWorkers, int numSymActs, long rseed) {
+	public FormulaSeparation(final String tlaComp, final String cfgComp, final String tlaRest, final String cfgRest, final String propFile,
+			boolean universal, int numWorkers, int numSymActs, int formulaSize, int numQuants, long negTraceCheckMinutes, long posTraceCheckMinutes,
+			String workerHeapSize, boolean extNegTraceSearch, long rseed) {
 		this.tlaComp = tlaComp;
 		this.cfgComp = cfgComp;
 		this.tlaRest = tlaRest;
@@ -104,7 +108,7 @@ public class FormulaSeparation {
 				.getAsInt();
 
 		maxNumVarsPerType = 3; // TODO make this a param
-		final int maxNumVars = 3; // TODO make the number of vars a param
+		final int maxNumVars = numQuants;
 		final int numTypes = sortElementsMap.keySet().size();
 		final int numVars = Math.min(maxNumVars, maxNumVarsPerType*numTypes);
 		final String varNameBase = "var";
@@ -119,10 +123,15 @@ public class FormulaSeparation {
 						.collect(Collectors.toSet()))
 				.collect(Collectors.toSet());
 		
-		extendedNegTraceSearch = extNegTraceSearch;
-		numWorkersPerBatch = numWorkers;
-		numSymActions = numSymActs;
-		seed = new Random(rseed);
+		this.universal = universal;
+		this.numWorkersPerBatch = numWorkers;
+		this.numSymActions = numSymActs;
+		this.formulaSize = formulaSize;
+		this.negTraceCheckMinutes = negTraceCheckMinutes;
+		this.posTraceCheckMinutes = posTraceCheckMinutes;
+		this.workerHeapSize = workerHeapSize;
+		this.extendedNegTraceSearch = extNegTraceSearch;
+		this.seed = new Random(rseed);
 	}
 	
 	public Formula synthesizeSepInvariant() {
@@ -193,7 +202,7 @@ public class FormulaSeparation {
     		final Formula invariant = Formula.conjunction(activeInvariants);
         	final String tlaCompHV = writeHistVarsSpec(tlaComp, cfgComp, invariant, true);
 			// the default timeout is 5m, but can be changed via env var
-        	final AlloyTrace negTrace = genNegCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", NEG_TRACE_TIMEOUT);
+        	final AlloyTrace negTrace = genNegCexTraceForCandSepInvariant(tlaCompHV, cfgNegTraces, "NT", 1, "NegTrace", this.negTraceCheckMinutes);
     		formulaSeparates = !negTrace.hasError();
     		if (formulaSeparates) {
         		System.out.println("Round " + round + " took " + timer.timeElapsedSeconds() + " seconds");
@@ -300,8 +309,6 @@ public class FormulaSeparation {
     			}
     			
     			// generate positive traces to try and make the next set of formulas we synthesize invariants
-    			final long oneMinuteTimeout = 1L;
-    			final long fiveMinuteTimeout = 5L;
     			Map<Formula, AlloyTrace> newSynthFormulaResults = new HashMap<>();
     			final List<Formula> sortedNewSynthFormulas = newSynthFormulas
     					.stream()
@@ -312,7 +319,7 @@ public class FormulaSeparation {
 					System.out.println(formula);
 					final String tlaRestHV = writeHistVarsSpec(tlaRest, cfgRest, formula, false);
 					final AlloyTrace newPosTrace =
-							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", oneMinuteTimeout);
+							genCexTraceForCandSepInvariant(tlaRestHV, cfgPosTraces, "PT", ++cumNumPosTraces, "PosTrace", this.posTraceCheckMinutes);
 					newSynthFormulaResults.put(formula, newPosTrace);
 					
 					final boolean isInvariant = !newPosTrace.hasError();
@@ -440,7 +447,7 @@ public class FormulaSeparation {
 		    	System.out.println("Minimizing the invariants found thus far.");
 				activeInvariants = minimizeInvariants(allInvariants, invariantsToNegTracesBlocked, allNegTraces);
 			} else {
-		    	System.out.println("Not minimizing the invariants because it has been more than two round since a brand new invariant has been found.");
+		    	System.out.println("Not minimizing the invariants because it has been more than two rounds since a brand new invariant has been found.");
 				activeInvariants.add(blockingInvariant);
 			}
 			
@@ -1146,7 +1153,8 @@ public class FormulaSeparation {
 		FormulaSynth formSynth = new FormulaSynth(this.numWorkersPerBatch, this.seed);
 		return formSynth.synthesizeFormulas(envVarTypes, globalNegTrace, globalPosTraces,
 				tlcComp, globalActions, sortElementsMap, setSortElementsMap, actionParamTypes, maxActParamLen,
-				qvars, legalEnvVarCombos, curNumFluents, numSymActions, numSymActions);
+				qvars, legalEnvVarCombos, curNumFluents,
+				universal, numSymActions, numSymActions, formulaSize, workerHeapSize);
 	}
 	
 	private String writeHistVarsSpec(final String tla, final String cfg, final Formula candSep, boolean candSepInActions) {

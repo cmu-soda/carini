@@ -18,9 +18,6 @@ import tlc2.Utils;
 
 public class FormulaSynthWorker implements Runnable {
 	public static final String alsmFormulaSynthEnvVar = "ALSM_FORMULA_SYNTH";
-	public static final String workerHeapSizeEnvVar = "FSYNTH_WORKER_HEAP_SIZE";
-	public static final String maxFormulaSizeEnvVar = "FSYNTH_MAX_FORMULA_SIZE";
-	
 	private static final int MAX_FLUENT_ACT_PRIORITY = 2; // TODO make a param?
 	
 	private final FormulaSynth formulaSynth;
@@ -38,8 +35,11 @@ public class FormulaSynthWorker implements Runnable {
 	private final List<String> qvars;
 	private final Set<Set<String>> legalEnvVarCombos;
 	private final int curNumFluents;
+	private final boolean universal;
 	private final int numSymActions;
 	private final int numTargets;
+	private final int formulaSize;
+	private final String workerHeapSize;
 
 	// for some reason using a lock is much faster than using the synchronized keyword
 	private final Lock lock;
@@ -52,8 +52,8 @@ public class FormulaSynthWorker implements Runnable {
 			TLC tlcComp, Set<String> globalActions,
 			Map<String, Set<String>> sortElementsMap, Map<String, Map<String, Set<String>>> setSortElementsMap,
 			Map<String, List<String>> actionParamTypes,
-			int maxActParamLen, List<String> qvars, Set<Set<String>> legalEnvVarCombos,
-			int curNumFluents, int numSymActions, int numTargets) {
+			int maxActParamLen, List<String> qvars, Set<Set<String>> legalEnvVarCombos, int curNumFluents,
+			boolean universal, int numSymActions, int numTargets, int formulaSize, String workerHeapSize) {
 		this.formulaSynth = formulaSynth;
 		this.envVarTypes = envVarTypes;
 		this.id = id;
@@ -69,8 +69,11 @@ public class FormulaSynthWorker implements Runnable {
 		this.qvars = qvars;
 		this.legalEnvVarCombos = legalEnvVarCombos;
 		this.curNumFluents = curNumFluents;
+		this.universal = universal;
 		this.numSymActions = numSymActions;
 		this.numTargets = numTargets;
+		this.formulaSize = formulaSize;
+		this.workerHeapSize = workerHeapSize;
 		
 		this.lock = new ReentrantLock();
 		this.process = null;
@@ -182,7 +185,7 @@ public class FormulaSynthWorker implements Runnable {
 	
 	private void writeAlloyFormulaInferFile(final String fileName, final AlloyTrace negTrace, final List<AlloyTrace> posTraces,
 			final Map<String,String> envVarTypes) {
-		final int formulaSize = MAX_FORMULA_SIZE + 1; // +1 because of the formula root
+		final int formulaSize = this.formulaSize + 1; // +1 because of the formula root
 		final int numSymActs = this.numSymActions;
 		final int targetSize = this.numTargets;
 		final String strFormulaSize = "for " + formulaSize + " Formula, " + numSymActs + " FlSymAction, " + targetSize + " Target";
@@ -472,6 +475,12 @@ public class FormulaSynthWorker implements Runnable {
 				+ "	#(Forall + Exists) <= " + qvars.size() + " // allow only " + qvars.size() + " quantifiers\n"
 				+ "	Root.children in Forall // the first quantifier must be a forall\n"
 				+ "}";
+
+		// disable Exists in universal mode
+		final String universalFact = "fact {\n"
+				+ "	no Exists // universal mode\n"
+				+ "}";
+		final String universalMode = this.universal ? ("\n" + universalFact + "\n") : "";
 		
 		final String stateDecls = createStateDecls(posTraces, negTrace, this.startNegIdx);
 		
@@ -500,7 +509,8 @@ public class FormulaSynthWorker implements Runnable {
 				+ "\n" + strNonEmptyEnvsDecls + "\n\n"
 				+ "\n" + partialInstance + "\n\n"
 				+ "\n" + numQuantifiersFacts + "\n\n"
-				+ "\n" + stateDecls + "\n";
+				+ "\n" + stateDecls + "\n"
+				+ universalMode;
 		Utils.writeFile(fileName, alloyFormulaInfer);
 	}
 	
@@ -568,8 +578,6 @@ public class FormulaSynthWorker implements Runnable {
 	}
 	
 	private static final String alsmFormulaSynthesisPath = System.getenv(alsmFormulaSynthEnvVar);
-	private static final String workerHeapSize = System.getenv(workerHeapSizeEnvVar) != null ? System.getenv(workerHeapSizeEnvVar) : "4G";
-	private static final int MAX_FORMULA_SIZE = System.getenv(maxFormulaSizeEnvVar) != null ? Integer.parseInt(System.getenv(maxFormulaSizeEnvVar)) : 7;
 	private static final String alloyFormlaInferJar = alsmFormulaSynthesisPath + "/bin/alsm-formula-synthesis.jar";
 	private static final String openWboLibPath = alsmFormulaSynthesisPath + "/lib/";
 	
