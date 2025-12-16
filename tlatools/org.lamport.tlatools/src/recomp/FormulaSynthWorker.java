@@ -689,6 +689,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "} {\n"
 			+ "	children = left + right\n"
 			+ "	left != right\n"
+			+ "	not (left in Not and right in Not) // for readability\n"
 			+ "}\n"
 			+ "\n"
 			+ "abstract sig FlActionIdx {}\n"
