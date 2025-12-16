@@ -158,7 +158,7 @@ public class FormulaSynthWorker implements Runnable {
 		final String alloyFormulaInferFile = "formula_infer_" + this.id + ".als";
 		writeAlloyFormulaInferFile(alloyFormulaInferFile, negTrace, posTraces, this.envVarTypes);
 		
-		StringBuilder formulaBuilder = new StringBuilder();
+		String formula = "";
 		try {
 			final String[] cmd = {"java", "-Xmx"+workerHeapSize, "-Djava.library.path=" + openWboLibPath, "-jar", alloyFormlaInferJar, "-f", alloyFormulaInferFile, "--tla", "--json"};
 			this.process = createProcess(cmd);
@@ -168,9 +168,16 @@ public class FormulaSynthWorker implements Runnable {
 			}
 			BufferedReader reader = this.process.inputReader();
 			String line = null;
+			StringBuilder formulaBuilder = new StringBuilder();
 			while ((line = reader.readLine()) != null) {
 				formulaBuilder.append(line);
 			}
+			
+			// attempt to trim non-json parts of the string
+			formula = formulaBuilder.toString();
+			final int startLoc = formula.indexOf('{');
+			final int endLoc = formula.lastIndexOf('}') + 1;
+			formula = formula.substring(startLoc, endLoc);
 			
 			// to capture errors, we will need to put it into the json as an error field.
 		}
@@ -180,7 +187,7 @@ public class FormulaSynthWorker implements Runnable {
 			return "UNSAT";
 		}
 		
-		return formulaBuilder.toString();
+		return formula;
 	}
 	
 	private void writeAlloyFormulaInferFile(final String fileName, final AlloyTrace negTrace, final List<AlloyTrace> posTraces,
