@@ -837,7 +837,7 @@ public class FormulaSynthWorker implements Runnable {
 			+ "	all f1 : Exists, f2 : Forall | (f2 in f1.^children) implies not (f1.var = f2.var)\n"
 			+ "\n"
 			+ "	(Forall+Exists).^(~children) in (Root+Forall+Exists) // prenex normal form\n"
-			+ "	Implies not in Implies.left.*children // for efficiency (without loss of expressivness)\n"
+			+ "	no (Implies & Implies.left.*children) // for efficiency (without loss of expressivness)\n"
 			+ "}\n"
 			+ "\n"
 			+ "\n"
