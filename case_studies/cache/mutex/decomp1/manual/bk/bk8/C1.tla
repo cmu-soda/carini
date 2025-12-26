@@ -3,13 +3,24 @@
 CONSTANTS Address, Core, Value
 
 VARIABLES modified, exclusive, shared, invalid,
-    good, read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, transfer
+    good, read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop,
+    
+    \* orig 
+    state, transfer
 
 vars == <<modified, exclusive, shared, invalid,
-    good, read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, transfer>>
+    good, read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop,
+
+    state, transfer>>
 
 CandSep ==
     /\ good
+
+    /\ \A C \in Core, A \in Address : state[C][A] # "bad"
+
+    \*/\ \A C1,C2 \in Core, A1,A2 \in Address : (state[C1][A1] = "read" /\ state[C2][A2] = "read") => (C1 = C2 /\ A1 = A2)
+    \*/\ \A C1,C2 \in Core, A1,A2 \in Address : (state[C1][A1] = "write" /\ state[C2][A2] = "write") => (C1 = C2 /\ A1 = A2)
+    \*/\ \A C1,C2 \in Core, A1,A2 \in Address : (state[C1][A1] = "read" /\ state[C2][A2] = "write") => (C1 = C2 /\ A1 = A2)
 
 Init ==
     /\ modified = [c \in Core |-> [a \in Address |-> FALSE]]
@@ -23,6 +34,8 @@ Init ==
     /\ write_issuer = [c \in Core |-> [a \in Address |-> FALSE]]
     /\ ownership_snoop = [c \in Core |-> [a \in Address |-> FALSE]]
     /\ upgrade_snoop = [c \in Core |-> [a \in Address |-> FALSE]]
+
+    /\ state = [c \in Core |-> [a \in Address |-> "NA"]]
     /\ transfer = FALSE
 
 issue_proc_read_invalid(c, a) ==
@@ -30,9 +43,12 @@ issue_proc_read_invalid(c, a) ==
     /\ UNCHANGED<<modified, exclusive, shared, invalid>>
     /\ read_issuer' = [read_issuer EXCEPT![c][a] = TRUE]
     /\ read_snoop' = [C \in Core |-> [A \in Address |-> (read_snoop[C][A] \/ (C # c /\ A = a))]] \* all other cores snoop on the read
-    /\ good' = /\ \A C \in Core, A \in Address : ~read_issuer[C][A] \* multiple issues cannot happen concurrently
-               /\ \A C \in Core, A \in Address : ~write_issuer[C][A]
-    /\ UNCHANGED<<write_issuer, ownership_snoop, upgrade_snoop, transfer>>
+    /\ good' = \A C \in Core, A \in Address : ~read_issuer[C][A] \* multiple issues cannot happen concurrently
+    /\ UNCHANGED<<write_issuer, ownership_snoop, upgrade_snoop>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (\A C \in Core, A \in Address : state[C][A] = "NA") THEN "read" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 do_bus_read_invalid(c, a) ==
@@ -40,7 +56,11 @@ do_bus_read_invalid(c, a) ==
     /\ UNCHANGED<<modified, exclusive, shared, invalid>>
     /\ read_snoop' = [read_snoop EXCEPT![c][a] = FALSE]
     /\ good' = ~read_issuer[c][a] /\ read_snoop[c][a] \* the issuer does not snoop
-    /\ UNCHANGED<<read_issuer, write_issuer, ownership_snoop, upgrade_snoop, transfer>>
+    /\ UNCHANGED<<read_issuer, write_issuer, ownership_snoop, upgrade_snoop>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (state[c][a] = "read") THEN "bad" ELSE state[c][a] IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 do_bus_read_valid(c, a, v) ==
@@ -52,8 +72,11 @@ do_bus_read_valid(c, a, v) ==
     /\ UNCHANGED<<invalid>>
     /\ read_snoop' = [read_snoop EXCEPT![c][a] = FALSE]
     /\ good' = ~read_issuer[c][a] /\ read_snoop[c][a] \* the issuer does not snoop
-    /\ transfer' = TRUE
     /\ UNCHANGED<<read_issuer, write_issuer, ownership_snoop, upgrade_snoop>>
+
+    /\ LET state_val == IF (state[c][a] = "read") THEN "bad" ELSE state[c][a] IN
+       state' = [state EXCEPT![c][a] = state_val]
+    /\ transfer' = TRUE
     /\ CandSep'
 
 do_bus_read_modified(c, a, v) ==
@@ -65,8 +88,11 @@ do_bus_read_modified(c, a, v) ==
     /\ UNCHANGED<<invalid>>
     /\ read_snoop' = [read_snoop EXCEPT![c][a] = FALSE]
     /\ good' = ~read_issuer[c][a] /\ read_snoop[c][a] \* the issuer does not snoop
-    /\ transfer' = TRUE
     /\ UNCHANGED<<read_issuer, write_issuer, ownership_snoop, upgrade_snoop>>
+
+    /\ LET state_val == IF (state[c][a] = "read") THEN "bad" ELSE state[c][a] IN
+       state' = [state EXCEPT![c][a] = state_val]
+    /\ transfer' = TRUE
     /\ CandSep'
 
 complete_proc_read_invalid_shared(c, a, v) ==
@@ -76,10 +102,12 @@ complete_proc_read_invalid_shared(c, a, v) ==
     /\ UNCHANGED<<modified, exclusive>>
     /\ read_issuer' = [read_issuer EXCEPT![c][a] = FALSE] \* issue complete
     /\ good' = /\ \A C \in Core, A \in Address : ~read_snoop[C][A] \* all snoops must be complete
-               /\ read_issuer[c][a]
                /\ transfer
-    /\ transfer' = FALSE
     /\ UNCHANGED<<read_snoop, write_issuer, ownership_snoop, upgrade_snoop>>
+
+    /\ LET state_val == IF (state[c][a] = "read") THEN "NA" ELSE "bad" IN \* only allow the issuer to perform this action
+       state' = [state EXCEPT![c][a] = state_val]
+    /\ transfer' = FALSE
     /\ CandSep'
 
 complete_proc_read_invalid_exclusive(c, a, v) ==
@@ -89,9 +117,12 @@ complete_proc_read_invalid_exclusive(c, a, v) ==
     /\ UNCHANGED<<modified, shared>>
     /\ read_issuer' = [read_issuer EXCEPT![c][a] = FALSE] \* issue complete
     /\ good' = /\ \A C \in Core, A \in Address : ~read_snoop[C][A] \* all snoops must be complete
-               /\ read_issuer[c][a]
                /\ ~transfer
-    /\ UNCHANGED<<read_snoop, write_issuer, ownership_snoop, upgrade_snoop, transfer>>
+    /\ UNCHANGED<<read_snoop, write_issuer, ownership_snoop, upgrade_snoop>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (state[c][a] = "read") THEN "NA" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 issue_proc_write_invalid(c, a, v) ==
@@ -99,9 +130,12 @@ issue_proc_write_invalid(c, a, v) ==
     /\ UNCHANGED<<modified, exclusive, shared, invalid>>
     /\ write_issuer' = [write_issuer EXCEPT![c][a] = TRUE]
     /\ ownership_snoop' = [C \in Core |-> [A \in Address |-> (ownership_snoop[C][A] \/ (C # c /\ A = a))]] \* all other cores snoop on the ownerhsip request
-    /\ good' = /\ \A C \in Core, A \in Address : ~read_issuer[C][A] \* multiple issues cannot happen concurrently
-               /\ \A C \in Core, A \in Address : ~write_issuer[C][A]
-    /\ UNCHANGED<<read_issuer, read_snoop, upgrade_snoop, transfer>>
+    /\ good' = TRUE
+    /\ UNCHANGED<<read_issuer, read_snoop, upgrade_snoop>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (\A C \in Core, A \in Address : state[C][A] = "NA") THEN "write" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 do_bus_read_for_ownership_invalid(c, a) ==
@@ -109,7 +143,9 @@ do_bus_read_for_ownership_invalid(c, a) ==
     /\ UNCHANGED<<modified, exclusive, shared, invalid>>
     /\ ownership_snoop' = [ownership_snoop EXCEPT![c][a] = FALSE]
     /\ good' = ownership_snoop[c][a]
-    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, upgrade_snoop, transfer>>
+    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, upgrade_snoop>>
+
+    /\ UNCHANGED<<state, transfer>>
     /\ CandSep'
 
 do_bus_read_for_ownership_valid(c, a, v) ==
@@ -121,8 +157,10 @@ do_bus_read_for_ownership_valid(c, a, v) ==
     /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
     /\ ownership_snoop' = [ownership_snoop EXCEPT![c][a] = FALSE]
     /\ good' = ownership_snoop[c][a]
-    /\ transfer' = TRUE
     /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, upgrade_snoop>>
+
+    /\ UNCHANGED<<state>>
+    /\ transfer' = TRUE
     /\ CandSep'
 
 do_bus_read_for_ownership_modified(c, a, v) ==
@@ -134,8 +172,10 @@ do_bus_read_for_ownership_modified(c, a, v) ==
     /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
     /\ ownership_snoop' = [ownership_snoop EXCEPT![c][a] = FALSE]
     /\ good' = ownership_snoop[c][a]
-    /\ transfer' = TRUE
     /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, upgrade_snoop>>
+
+    /\ UNCHANGED<<state>>
+    /\ transfer' = TRUE
     /\ CandSep'
 
 complete_proc_write_invalid(c, a, v) ==
@@ -144,10 +184,12 @@ complete_proc_write_invalid(c, a, v) ==
     /\ modified' = [modified EXCEPT![c][a] = TRUE]
     /\ UNCHANGED<<exclusive, shared>>
     /\ write_issuer' = [write_issuer EXCEPT![c][a] = FALSE] \* issue complete
-    /\ good' = /\ \A C \in Core, A \in Address : ~ownership_snoop[C][A] \* all snoops must be complete
-               /\ write_issuer[c][a]
-    /\ transfer' = FALSE
+    /\ good' = \A C \in Core, A \in Address : ~ownership_snoop[C][A] \* all snoops must be complete
     /\ UNCHANGED<<read_issuer, read_snoop, ownership_snoop, upgrade_snoop>>
+
+    /\ LET state_val == IF (state[c][a] = "write") THEN "NA" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
+    /\ transfer' = FALSE
     /\ CandSep'
 
 proc_write_exclusive(c, a, v) ==
@@ -155,7 +197,11 @@ proc_write_exclusive(c, a, v) ==
     /\ exclusive' = [exclusive EXCEPT![c][a] = FALSE]
     /\ modified' = [modified EXCEPT![c][a] = TRUE]
     /\ UNCHANGED<<shared, invalid>>
-    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, good, transfer>>
+    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, good>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (\A C \in Core, A \in Address : state[C][A] = "NA") THEN "NA" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 issue_proc_write_shared(c, a, v) ==
@@ -163,9 +209,12 @@ issue_proc_write_shared(c, a, v) ==
     /\ UNCHANGED<<modified, exclusive, shared, invalid>>
     /\ write_issuer' = [write_issuer EXCEPT![c][a] = TRUE]
     /\ upgrade_snoop' = [C \in Core |-> [A \in Address |-> (upgrade_snoop[C][A] \/ (C # c /\ A = a))]] \* all other cores snoop on the upgrade request
-    /\ good' = /\ \A C \in Core, A \in Address : ~read_issuer[C][A] \* multiple issues cannot happen concurrently
-               /\ \A C \in Core, A \in Address : ~write_issuer[C][A]
-    /\ UNCHANGED<<read_issuer, read_snoop, ownership_snoop, transfer>>
+    /\ good' = TRUE
+    /\ UNCHANGED<<read_issuer, read_snoop, ownership_snoop>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (\A C \in Core, A \in Address : state[C][A] = "NA") THEN "write" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 \* better name: invalidate_after_bus_upgrade_signal
@@ -176,7 +225,9 @@ do_bus_upgrade(c, a) ==
     /\ UNCHANGED<<modified, exclusive>>
     /\ upgrade_snoop' = [upgrade_snoop EXCEPT![c][a] = FALSE]
     /\ good' = upgrade_snoop[c][a]
-    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, transfer>>
+    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop>>
+
+    /\ UNCHANGED<<state, transfer>>
     /\ CandSep'
 
 complete_proc_write_shared(c, a, v) ==
@@ -185,10 +236,12 @@ complete_proc_write_shared(c, a, v) ==
     /\ modified' = [modified EXCEPT![c][a] = TRUE]
     /\ UNCHANGED<<exclusive, invalid>>
     /\ upgrade_snoop' = [upgrade_snoop EXCEPT![c][a] = FALSE]
-    /\ write_issuer' = [write_issuer EXCEPT![c][a] = FALSE] \* issue complete
-    /\ good' = /\ \A C \in Core, A \in Address : ~upgrade_snoop[C][A]
-               /\ write_issuer[c][a]
-    /\ UNCHANGED<<read_issuer, read_snoop, ownership_snoop, transfer>>
+    /\ good' = \A C \in Core, A \in Address : ~upgrade_snoop[C][A]
+    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (state[c][a] = "write") THEN "NA" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 evict_modified(c, a) ==
@@ -196,9 +249,11 @@ evict_modified(c, a) ==
     /\ modified' = [modified EXCEPT![c][a] = FALSE]
     /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
     /\ UNCHANGED<<exclusive, shared>>
-    /\ good' = /\ \A C \in Core, A \in Address : ~read_issuer[C][A] \* multiple issues cannot happen concurrently
-               /\ \A C \in Core, A \in Address : ~write_issuer[C][A]
-    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, transfer>>
+    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, good>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (\A C \in Core, A \in Address : state[C][A] = "NA") THEN "NA" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 evict_exclusive_or_shared(c, a) ==
@@ -207,9 +262,11 @@ evict_exclusive_or_shared(c, a) ==
     /\ shared' = [shared EXCEPT![c][a] = FALSE]
     /\ invalid' = [invalid EXCEPT![c][a] = TRUE]
     /\ UNCHANGED<<modified>>
-    /\ good' = /\ \A C \in Core, A \in Address : ~read_issuer[C][A] \* multiple issues cannot happen concurrently
-               /\ \A C \in Core, A \in Address : ~write_issuer[C][A]
-    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, transfer>>
+    /\ UNCHANGED<<read_issuer, read_snoop, write_issuer, ownership_snoop, upgrade_snoop, good>>
+
+    /\ UNCHANGED<<transfer>>
+    /\ LET state_val == IF (\A C \in Core, A \in Address : state[C][A] = "NA") THEN "NA" ELSE "bad" IN
+       state' = [state EXCEPT![c][a] = state_val]
     /\ CandSep'
 
 Next ==
